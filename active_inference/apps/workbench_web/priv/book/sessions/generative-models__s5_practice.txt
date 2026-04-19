@@ -1,0 +1,177 @@
+neurons, whose output depends on the difference between their cortical
+and sensory inputs.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+84
+
+From a computational perspective, a reflex arc is one of the simplest pos­
+si­ble forms of controller; ­these correct deviations in predicted and observed
+proprioceptive signals. More complex motor be­hav­ior requires generating
+sequences of predictions and fulfilling them in order using reflex arcs. This
+mechanism sets active inference apart from other schemes for biological
+motor control, such as optimal control, which are not based on predictive
+coding and use inverse models and controllers that are more complex than
+reflex arcs (Friston 2011). Another peculiar characteristic of Active Inference
+is that it dispenses from notions of value or cost used in optimal control
+(and reinforcement learning); ­these are fully absorbed into the (generally
+more expressive) notion of priors (see chapter 10 for further discussion).
+4.6 Summary
+This chapter outlined the basic formal ideas that underwrite Active Inference. The key message to take away is that (approximate) Bayesian inference
+may be framed as minimizing a quantity known as variational f­ ree energy.
+This depends on a generative model that expresses our beliefs about how
+data are generated. We have looked at two forms of a generative model that
+may be employed depending on the inference prob­lem at hand: specifically, w
+­ hether we are interested in categorical or continuous variables. The
+­free energy minimizing solution to ­either can be unpacked in terms of message passing between populations of neurons, including the generalized
+predictive coding schemes that follow from continuous models. Fi­nally, we
+noted that ­free energy can be minimized not just by changing beliefs—­such
+that they become consistent with data—­but also by acting on the world to
+make data more consistent with beliefs. Over subsequent chapters, we w
+­ ill
+appeal to the formalisms introduced ­here and apply them to more concrete
+settings, providing an opportunity to explore the extensions of the broad
+concepts set out ­here.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+5
+
+Message Passing and Neurobiology
+
+Basically ­
+there are two types of animals: animals, and animals that have no
+brains; they are called plants. They d
+­ on’t need a ner­vous system b
+­ ecause they
+­don’t move actively, they d
+­ on’t pull up their roots and run in a forest fire! Anything that moves actively requires a ner­vous system; other­wise it would come to
+a quick death.
+—­Rodolfo Llinas
+
+5.1 Introduction
+In chapter 4, we saw the form that variational inference takes for two kinds
+of generative model. In this chapter, we focus on the pro­cess theories that
+arise from ­these inferential dynamics: theories that explain how the brain
+may implement variational inference. Central to this implementation of
+Bayesian belief updating is the notion of Bayesian message passing, which
+encompasses belief propagation and variational message passing, among
+other schemes. The idea subtending t­hese schemes is that every­thing does
+not directly depend on every­thing ­else. Instead, each variable in a generative
+model depends on relatively few other variables. Similarly, the brain exhibits
+a sparse connectivity structure, wherein the activity of any neuron depends
+only on t­ hose neurons with which it shares synapses. This chapter focuses on
+the way we can map the sparse message passing associated with variational
+inference to the sparse connectivity structure of biological computation.
+Let us take a step back from the technical material of chapter 4 and turn
+our attention to the pro­cess theories accompanying Active Inference. It is
+impor­tant to draw a distinction between a princi­ple (i.e., the minimization of ­free energy) and a pro­cess theory about how this princi­ple may be
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+86
+
+implemented in a certain kind of system, such as the brain. The latter lets
+us develop hypotheses that are answerable to empirical data. To address the
+ways in which Active Inference may manifest in the brain, we equate the
+message passing we saw at the end of chapter 4 with synaptic communication and the dynamics of gradient descent with neuronal activity. The dual
+aim of this chapter is to introduce readers with a technical background to
+the neurobiology of Active Inference and to highlight to biologists the relevance of theory to practical neuroscience. We emphasize that this chapter
+is not intended as the final word on pro­cess theories for Active Inference
+(Pezzulo, Rigoli, and Friston 2015, 2018; Friston and Buzsaki 2016; Friston
+and Herreros 2016; Friston, FitzGerald et al. 2017; Friston, Parr et al. 2017;
+Parr and Friston 2018b; Parr, Markovic et al. 2019); it is simply the interpretation that seems most consistent with currently available evidence. Nor is
+our aim to endorse a specific pro­cess theory but to illustrate how the ideas
+formulated in chapters 1–4 may be put to work in formulating hypotheses
+answerable to neurobiological mea­sure­ments.
+This chapter is or­ga­nized as follows. First, in section 5.2, we consider the
+role of a cortical microcircuit. This is a functional unit comprising several
+neural populations connected to one another. The pattern of connectivity is
+replicated over many cortical regions. We highlight the relationship between
+this ste­reo­typed cir­cuit and the message passing architectures of figures 4.4
+and 4.6—­themselves recapitulated over hierarchical levels. In section 5.3
+we move to effector systems and the formulation of motor control ­under
+Active Inference. This deals with the way in which the motor cortex tunes
+spinal and brain stem reflex arcs to generate purposeful be­hav­ior. Section 5.4
+touches on ideas relating to subcortical structures like the thalamus and basal
+ganglia—­which have impor­tant roles in planning and decision-­making. We
+then consider, in section 5.5, modulation of synaptic efficacy, including the
+role of neurotransmitters in precision optimization and of plastic changes in
+learning. Fi­nally, in section 5.6 we return to the theme of hierarchy and the
+relationship between decision-­making and movement generation.
+5.2 Microcircuits and Messages
+In chapter 4, we saw that the belief-­update equations mediating variational
+inference may be interpreted in terms of a (neuronal) network. The inference
+schemes presented—­for continuous and categorical models—­each give rise
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+87
+
+to a ste­reo­typed circuitry whose structure is repeated in hierarchical generative models. Similarly, the architecture of the ce­re­bral cortex has a ste­reo­typed
+structure (Shipp 2007). The neocortex is divided into six layers (or laminae),
+numbered from superficial (close the brain’s surface) to deep (closer to the
+subcortical white ­matter). Each layer is characterized by the presence of specific cell types and patterns of connectivity (Zeki and Shipp 1988, Felleman
+and Van Essen 1991, Callaway and Wiser 2009); this connectivity is summarized in the schematic of a single cortical column in figure 5.1.
+A cortical column in one region of the brain connects to columns in other
+regions and to subcortical structures. Cortical regions are often depicted in
+a hierarchy that (loosely speaking) assigns t­hose regions closest to sensory
+input or motor output to the lowest rungs of the hierarchy. As we move
+further away from t­hese regions—­for example, from primary to secondary
+visual cortex—we ascend the hierarchy. This notion of hierarchy is licensed
+by the laminar-­
+specific connectivity structure illustrated in figure 5.1.
+Ascending projections (i.e., connections) from lower cortical areas or sensory
+(primary) thalamic nuclei tend to target the spiny stellate cells in layer IV.
+Lower cortical areas give rise to ascending connections from their superficial
+pyramidal cells (layers II and III). Descending projections from higher cortical areas target both superficial and deep layers of lower areas, with origins in
+the deep (layer VI) pyramidal cells. In addition, deep pyramidal cells (of Betz)
+in layer V proj­ect to vari­ous other targets, including subcortical nuclei—­like
+the basal ganglia and secondary thalamic nuclei—­and spinal motor neurons.
+The ­middle schematic in figure 5.1 shows one pos­si­ble mapping from
+the network for predictive coding (figure 4.4) to the laminar anatomy of the
+cortex (Friston, Parr, and de Vries 2017). This is a ­little complicated to interpret, but the key points are as follows. The ascending input to layer IV
+spiny stellate cells is associated with the prediction error for hidden ­causes
+(ε!v(i)). The ascending output from layer III superficial pyramidal cells represents the same prediction error for the next layer of the hierarchy (ε!v(i +1)).
+Descending input represents the prediction ( g! (i +1)) from the higher level,
+while descending output is the prediction for the lower level ( g! (i)). At the
+lowest level, we see descending predictions coming from layer V, consistent
+with the output to spinal motor neurons shown on the left. We w
+­ ill return
+to this in section 5.3. Recall from chapter 4 that the role of hidden c­ auses
+is to link together hierarchical levels of a model that operates over multiple
+dif­fer­ent timescales. This contrasts with the hidden states, whose role is
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+88
+
+Higher cortical regions
+
+εv(i+1)
+
+g (i+1)
+
+µx(i)
+
+s(i)
+
+A(i+1)s(i+1)
+
+Cortical layer
+
+I
+s(i)
+
+
+II
+
+SP
+
+II
+
+µv(i)
+
+III

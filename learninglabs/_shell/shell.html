@@ -1,0 +1,73 @@
+<!-- Put at the very top of `.wrap` (or equivalent main container). -->
+<div class="ls-pathbar" role="region" aria-label="Learning path">
+  <span class="ls-pathlabel">Path:</span>
+  <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false" title="Story — narrative + physical objects (P1/P2)">🌱 Story</button>
+  <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true" title="Real-world analogies + practical missions (P3)">🧭 Real-world</button>
+  <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false" title="Equations + parameter sweeps (P4)">🛠️ Equation</button>
+  <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false" title="Proofs + derivations (P5)">🎓 Derivation</button>
+  <span class="ls-spacer"></span>
+  <button class="ls-toolbtn" id="lsPickerBtn" title="Change audience">♻ Switch audience</button>
+  <button class="ls-toolbtn" id="lsDysBtn" title="Toggle dyslexia-friendly font" aria-pressed="false">🅰 Font</button>
+</div>
+
+<!-- Put near the end of `.wrap` (footer area).  A 2-column layered panel + beat row. -->
+<div class="footer" style="margin-top:18px; display:grid; grid-template-columns: 1fr 1fr; gap:18px;">
+  <section class="panel" style="padding:18px;">
+    <div class="panelHeader" style="padding:0">Layered Equation Panel</div>
+    <div class="ls-eqpanel" id="lsEqPanel">
+      <div class="ls-eqtabs" role="tablist" aria-label="Explanation depth">
+        <button class="ls-eqtab" data-ls-tab="story" aria-pressed="false">Story</button>
+        <button class="ls-eqtab" data-ls-tab="picture" aria-pressed="false">Picture</button>
+        <button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button>
+        <button class="ls-eqtab" data-ls-tab="derivation" aria-pressed="false">Derivation</button>
+      </div>
+      <div class="ls-eqbody" id="lsEqBody" role="tabpanel"></div>
+    </div>
+    <div class="tiny" style="margin-top:10px; font-size:12px; color:var(--muted);">
+      Every tab shows the same math from four different depths. Switch anytime.
+    </div>
+  </section>
+
+  <section class="panel" style="padding:18px;">
+    <div class="panelHeader" style="padding:0">Beat Script</div>
+    <div id="lsBeatHost"></div>
+    <div class="tiny" style="margin-top:10px; font-size:12px; color:var(--muted);">
+      The beats walk one hero quantity at a time. Step forward to advance the scripted path; the sim itself keeps all the controls available.
+    </div>
+  </section>
+</div>
+
+<!-- Place these before `</body>`. -->
+<div class="ls-dock" role="region" aria-label="Learning shell tools">
+  <button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button>
+  <button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button>
+  <button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button>
+</div>
+
+<div class="ls-panel-overlay" id="lsPanelOverlay" aria-hidden="true"></div>
+<aside class="ls-panel" id="lsPanel" role="dialog" aria-modal="true" aria-labelledby="lsPanelTitle" aria-hidden="true">
+  <div class="ls-panel-head">
+    <h4 id="lsPanelTitle">Panel</h4>
+    <button class="ls-panel-close" id="lsPanelClose" aria-label="Close panel">Close ✕</button>
+  </div>
+  <div class="ls-panel-body" id="lsPanelBody"></div>
+</aside>
+
+<div class="ls-pick-overlay" id="lsPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="lsPickerTitle">
+  <div class="ls-pick-card">
+    <h3 id="lsPickerTitle">Pick a learning path</h3>
+    <div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths — only the vocabulary, depth, and narration change.</div>
+    <div class="ls-pick-grid">
+      <button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative, physical objects, one hero quantity at a time.</div></button>
+      <button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Everyday analogies, reason-through-it prose, a practical mission.</div></button>
+      <button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code, short derivations, parameter sweeps.</div></button>
+      <button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches + canonical references.</div></button>
+    </div>
+    <div class="ls-pick-actions">
+      <button id="lsPickerDismiss">Skip — I'll default to real-world</button>
+    </div>
+  </div>
+</div>
+
+<div class="ls-tooltip" id="lsTooltip" role="tooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>

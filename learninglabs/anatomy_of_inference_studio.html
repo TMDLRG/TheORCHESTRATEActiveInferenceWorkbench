@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Anatomy of Inference Studio — Figure 5.5 Teaching Sim</title>
+<style>
+:root{--bg:#120f0d;--panel:#211b17;--panel2:#2b231e;--edge:#5e5044;--edge2:#8e7b66;--text:#efe6db;--muted:#c9bbaa;--accent:#d7b26a;--accent2:#9bcfc6;--warn:#d98c74;--good:#9dc98f;--violet:#c3a2e6;--blue:#93b9e9;--shadow:0 10px 30px rgba(0,0,0,.35);--r:18px}
+*{box-sizing:border-box} body{margin:0;color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:radial-gradient(circle at 12% 0%, #30261f 0, transparent 24%),radial-gradient(circle at 88% 10%, #241d17 0, transparent 22%),linear-gradient(180deg,#17120f,#0f0d0b 45%,#15110f)}
+.wrap{max-width:1700px;margin:0 auto;padding:18px}.title{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;border:1px solid #4e4338;border-radius:22px;padding:18px 22px;background:linear-gradient(180deg,#2b241e,#1d1815);box-shadow:var(--shadow)}
+h1{margin:0;font-size:28px;letter-spacing:.06em}.sub{max-width:1120px;font-size:13px;line-height:1.52;color:var(--muted)}.badge{padding:8px 12px;border-radius:999px;background:#4a3f35;border:1px solid #8e7c67;font-size:12px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:440px 1fr;gap:16px;margin-top:16px}.col{display:flex;flex-direction:column;gap:16px}.panel{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid #52463a;border-radius:var(--r);padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden}.panel:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 28%);pointer-events:none}.panel h2{margin:0 0 10px 0;font-size:18px}.small{font-size:12px;color:var(--muted);line-height:1.45}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tab{padding:10px 12px;border-radius:999px;background:#3b3128;border:1px solid #756551;cursor:pointer}.tab.active{background:linear-gradient(180deg,#745f43,#5a4836);border-color:#c9ab72;color:#fff0c7}.module{display:none}.module.active{display:block}
+.topbar{display:flex;gap:8px;flex-wrap:wrap} button,select,input[type="number"]{font:inherit;color:var(--text);background:linear-gradient(180deg,#655545,#4d4034);border:1px solid #9a876f;border-radius:12px;padding:9px 11px} button{cursor:pointer} button:hover{filter:brightness(1.05)} button:active{transform:translateY(1px)} select,input[type="number"]{width:100%;background:#17120f} input[type="range"]{width:100%}
+.score{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}.card{border:1px solid #5a4d41;border-radius:14px;padding:12px;background:rgba(0,0,0,.14)}.big{font-size:22px;color:#fff0cb;margin-top:6px}.meter{height:14px;border-radius:999px;border:1px solid #6e5d4c;background:#120f0d;overflow:hidden}.meter>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--good),var(--accent),var(--warn))}
+.group{border:1px solid #5a4d41;border-radius:14px;padding:10px;background:rgba(0,0,0,.12)}.group h3{margin:0 0 8px 0;font-size:14px;color:#ffeab9}.line{display:grid;grid-template-columns:88px 1fr 60px;gap:8px;align-items:center;margin:8px 0}.line span{font-size:12px}.line2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.machine{display:grid;grid-template-columns:1.06fr .94fr;gap:16px} canvas{width:100%;height:600px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),#17120f;border:1px solid #594c40;border-radius:16px}.eq{white-space:pre-wrap;font-size:12px;line-height:1.5;background:#14100d;border:1px solid #5b4d41;border-radius:14px;padding:12px}.ledger{max-height:600px;overflow:auto}.log{max-height:260px;overflow:auto;border:1px solid #594c40;border-radius:12px;padding:10px;background:#13100d}.entry{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.07);font-size:12px}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#3a3129;border:1px solid #7a6855;font-size:11px;color:#fff1c8}
+.matrix-table{width:100%;border-collapse:collapse;font-size:12px}.matrix-table td,.matrix-table th{border:1px solid #5f5144;padding:6px 7px;text-align:left;vertical-align:top}.matrix-table th{color:#ffedbe;background:#231d18}.lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.policy-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+@media (max-width:1240px){.grid{grid-template-columns:1fr}.machine{grid-template-columns:1fr}.score{grid-template-columns:1fr 1fr}.lesson-grid{grid-template-columns:1fr}.policy-grid{grid-template-columns:1fr}}
+
+.stageStrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:12px;position:sticky;top:8px;z-index:5;background:linear-gradient(180deg,rgba(22,18,15,0.94),rgba(22,18,15,0.82));backdrop-filter:blur(8px);border:1px solid rgba(215,178,106,0.22);border-radius:14px;padding:9px}
+.stageStrip .cell{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 10px;min-width:0}
+.stageStrip .lab{font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageStrip .val{font-size:18px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageStrip .sub2{font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageToolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:9px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:12px;align-items:center}
+.stageToolbar button,.stageToolbar select{padding:9px 12px;font-size:13px;flex:0 0 auto}
+.iconBtn{width:34px;padding:9px 0 !important;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+.introStrip{background:linear-gradient(180deg,rgba(155,207,198,0.10),rgba(155,207,198,0.04));border:1px solid rgba(155,207,198,0.28);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.introStrip .body{display:grid;gap:6px;font-size:13px;line-height:1.4}
+.introStrip .row{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.introStrip .tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:rgba(155,207,198,0.24);color:#d5eae3;white-space:nowrap}
+.introStrip .dismiss{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);font-size:12px;padding:6px 10px}
+.introStrip.hidden{display:none}
+.tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px);z-index:9999;display:none;align-items:flex-end;justify-content:center;padding:24px}
+.tour-overlay.on{display:flex}
+.tour-card{background:linear-gradient(180deg,#2b241e,#1d1915);border:1px solid rgba(215,178,106,0.5);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;max-width:560px;width:100%;color:var(--text)}
+.tour-card h4{margin:0 0 8px;font-size:15px;color:var(--accent);letter-spacing:0.5px}
+.tour-card .step-line{font-size:13px;line-height:1.45;color:var(--text)}
+.tour-card .tour-actions{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+.tour-highlight{position:absolute;pointer-events:none;border:2px solid #e0c07a;border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,0.5),0 0 16px rgba(224,192,122,0.5);transition:top .2s ease,left .2s ease,width .2s ease,height .2s ease;z-index:9998}
+
+/* === Learning Shell === */
+.ls-pathbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;padding:8px 10px;background:linear-gradient(180deg,rgba(212,179,106,0.08),rgba(212,179,106,0.02));border:1px solid rgba(212,179,106,0.22);border-radius:12px;font-size:13px}
+.ls-pathbar .ls-pathlabel{color:var(--muted);margin-right:4px}
+.ls-pathbar .ls-pathbtn{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text);cursor:pointer;font-size:12px;font-weight:600}
+.ls-pathbar .ls-pathbtn:hover{background:rgba(255,255,255,0.10)}
+.ls-pathbar .ls-pathbtn[aria-pressed="true"]{background:linear-gradient(180deg,rgba(212,179,106,0.32),rgba(212,179,106,0.12));border-color:rgba(212,179,106,0.5);color:#fff8e6}
+.ls-pathbar .ls-spacer{flex:1 1 auto}
+.ls-pathbar .ls-toolbtn{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;font-size:12px}
+.ls-pick-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px}
+.ls-pick-overlay.on{display:flex}
+.ls-pick-card{background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(212,179,106,0.4);border-radius:16px;padding:22px 24px;max-width:720px;width:100%;color:var(--text)}
+.ls-pick-card h3{margin:0 0 6px;color:var(--accent);font-size:20px}
+.ls-pick-card .ls-pick-sub{color:var(--muted);font-size:13px;margin-bottom:14px;line-height:1.4}
+.ls-pick-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ls-pick-opt{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;color:var(--text)}
+.ls-pick-opt:hover{background:rgba(255,255,255,0.08)}
+.ls-pick-opt .ls-pick-icon{font-size:22px;display:block;margin-bottom:6px}
+.ls-pick-opt .ls-pick-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.ls-pick-opt .ls-pick-desc{font-size:12px;color:var(--muted);line-height:1.35}
+.ls-pick-card .ls-pick-actions{margin-top:14px;display:flex;justify-content:flex-end}
+.ls-pick-card .ls-pick-actions button{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);padding:6px 12px;border-radius:999px;font-size:12px;cursor:pointer}
+.ls-dock{position:fixed;right:18px;bottom:18px;z-index:200;display:flex;flex-direction:column;gap:8px}
+.ls-dock button{min-width:44px;height:44px;border-radius:22px;background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(212,179,106,0.35);color:var(--text);cursor:pointer;padding:0 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+.ls-dock button:hover{filter:brightness(1.1)}
+.ls-dock .ls-dock-ic{font-size:17px}
+.ls-panel-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);display:none}
+.ls-panel-overlay.on{display:block}
+.ls-panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,96vw);background:linear-gradient(180deg,#2b241d,#1d1714);border-left:1px solid rgba(212,179,106,0.3);box-shadow:-8px 0 24px rgba(0,0,0,0.45);z-index:310;display:none;flex-direction:column;color:var(--text)}
+.ls-panel.on{display:flex}
+.ls-panel-head{padding:14px 16px;border-bottom:1px solid rgba(212,179,106,0.2);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ls-panel-head h4{margin:0;font-size:15px;color:var(--accent)}
+.ls-panel-close{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer}
+.ls-panel-body{padding:14px 16px;overflow:auto;flex:1 1 auto;font-size:13px;line-height:1.45}
+.ls-term{border-bottom:1px dotted rgba(212,179,106,0.55);cursor:help}
+.ls-tooltip{position:absolute;z-index:400;background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(212,179,106,0.45);border-radius:10px;padding:10px 12px;max-width:340px;min-width:220px;color:var(--text);font-size:12px;line-height:1.45;box-shadow:0 8px 22px rgba(0,0,0,0.5);display:none}
+.ls-tooltip.on{display:block}
+.ls-tooltip .ls-term-name{font-weight:800;color:var(--accent);font-size:13px;margin-bottom:4px}
+.ls-tooltip .ls-term-tier{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.1);font-size:11px;color:var(--muted)}
+.ls-tooltip .ls-term-tier b{color:var(--text);font-weight:700}
+.ls-eqpanel .ls-eqtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.ls-eqpanel .ls-eqtab{padding:5px 10px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--muted);cursor:pointer}
+.ls-eqpanel .ls-eqtab[aria-pressed="true"]{background:linear-gradient(180deg,rgba(212,179,106,0.32),rgba(212,179,106,0.12));border-color:rgba(212,179,106,0.5);color:#fff8e6}
+.ls-eqpanel .ls-eqbody{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px;font-size:13px;line-height:1.55;color:var(--text);min-height:60px}
+.ls-eqpanel .ls-eqbody .ls-eqmath{font-family:"Courier New",monospace;white-space:pre-wrap;color:#f1eadc}
+.ls-eqpanel .ls-eqbody .ls-eqpic{display:flex;flex-direction:column;gap:6px;font-family:"Courier New",monospace;font-size:12px;color:#f1eadc}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqbox{padding:4px 8px;border:1px solid rgba(212,179,106,0.4);border-radius:6px;background:rgba(212,179,106,0.08)}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqarrow{color:var(--muted)}
+.ls-analogy{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.ls-analogy h6{margin:0 0 4px;font-size:13px;color:var(--accent)}
+.ls-analogy .ls-analogy-persona{display:inline-block;font-size:10px;letter-spacing:0.6px;text-transform:uppercase;background:rgba(212,179,106,0.2);color:#fff8e6;border-radius:999px;padding:2px 7px;margin-right:6px}
+.ls-analogy .ls-analogy-scenario{color:var(--text);margin:6px 0;font-size:12px}
+.ls-analogy .ls-analogy-map{font-size:11px;color:var(--muted);background:rgba(0,0,0,0.2);border-radius:6px;padding:6px 8px;margin-top:6px}
+.ls-analogy .ls-analogy-map table{width:100%;border-collapse:collapse}
+.ls-analogy .ls-analogy-map td{padding:2px 4px;border-bottom:1px dashed rgba(255,255,255,0.06);font-size:11px}
+.ls-analogy .ls-analogy-map td:first-child{color:var(--accent);font-weight:700;white-space:nowrap}
+.ls-analogy .ls-analogy-ex{font-size:11px;color:var(--muted);margin-top:6px;border-top:1px dashed rgba(255,255,255,0.08);padding-top:6px}
+.ls-analogy .ls-analogy-ex b{color:var(--accent)}
+.ls-exercise{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-bottom:10px}
+.ls-exercise h6{margin:0 0 6px;color:var(--accent);font-size:13px}
+.ls-exercise .ls-ex-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
+.ls-exercise .ls-ex-sect{margin-top:8px}
+.ls-exercise .ls-ex-sect b{color:var(--accent);font-size:11px;letter-spacing:.6px;text-transform:uppercase;display:block;margin-bottom:3px}
+.ls-exercise ol,.ls-exercise ul{margin:4px 0 4px 18px;padding:0}
+.ls-exercise li{margin-bottom:3px;font-size:12px}
+.ls-exercise .ls-ex-print{font-size:11px;background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.2);border-radius:999px;padding:4px 10px;cursor:pointer;margin-top:8px}
+@media print{body>*:not(.ls-print-root){display:none !important}.ls-print-root{display:block !important;color:#000 !important;background:#fff !important;padding:8px !important;font-size:11pt;max-width:5.5in}.ls-print-root *{color:#000 !important;background:transparent !important;border-color:#888 !important;box-shadow:none !important}@page{size:letter;margin:0.4in}}
+.ls-beat{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;margin-bottom:12px;background:linear-gradient(180deg,rgba(152,200,143,0.10),rgba(152,200,143,0.04));border:1px solid rgba(152,200,143,0.28);border-radius:12px;font-size:13px}
+.ls-beat .ls-beat-body{flex:1 1 200px;line-height:1.4}
+.ls-beat .ls-beat-head{display:block;font-size:11px;letter-spacing:.8px;color:#9fc59b;text-transform:uppercase;margin-bottom:3px}
+.ls-beat .ls-beat-ctrl{display:inline-flex;gap:6px}
+.ls-beat .ls-beat-ctrl button{padding:6px 10px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12)}
+.ls-beat .ls-beat-ctrl button.primary{background:linear-gradient(180deg,rgba(152,200,143,0.30),rgba(152,200,143,0.10));border-color:rgba(152,200,143,0.5)}
+.ls-beat .ls-beat-idx{font-weight:800;color:#d7e9c9;font-size:13px;font-variant-numeric:tabular-nums}
+.ls-glossary-entry{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);margin-bottom:8px}
+.ls-glossary-entry .ls-glossary-sym{display:inline-block;font-weight:800;color:var(--accent);margin-right:8px;font-family:"Courier New",monospace}
+.ls-glossary-entry .ls-glossary-tier{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.ls-glossary-entry .ls-glossary-tier b{color:var(--text);font-weight:700}
+.ls-glossary-search{width:100%;box-sizing:border-box;padding:8px 10px;margin-bottom:10px;background:rgba(0,0,0,0.2);color:var(--text);border:1px solid rgba(255,255,255,0.1);border-radius:8px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:100ms !important}}
+body.ls-dys{font-family:"Verdana","Tahoma","Trebuchet MS",sans-serif;letter-spacing:0.03em;word-spacing:0.08em}
+@media (max-width:820px){.ls-pathbar{font-size:12px}.ls-pathbar .ls-pathbtn{padding:5px 8px;font-size:11px}.ls-dock{right:10px;bottom:10px}.ls-dock button{padding:0 10px;font-size:12px;min-width:40px;height:40px}}
+</style>
+<link rel="stylesheet" href="/assets/suite-tokens.css" data-mark="suite-tokens-link-v1">
+</head>
+<body>
+<div class="wrap">
+  <div class="ls-pathbar" role="region" aria-label="Learning path">
+    <a class="ls-pathbtn ls-crumb" href="/learn" target="_top" data-ls-mark="ls-pathbar-breadcrumb-v1">← Learn</a><a class="ls-pathbtn ls-crumb" href="/" target="_top">Workbench ▸</a><span class="ls-pathlabel" style="margin-left:6px;">·</span><span class="ls-pathlabel">Path:</span>
+    <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false">🌱 Story</button>
+    <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true">🧭 Real-world</button>
+    <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false">🛠️ Equation</button>
+    <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false">🎓 Derivation</button>
+    <span class="ls-spacer"></span>
+    <button class="ls-toolbtn" id="lsPickerBtn">♻ Switch audience</button>
+    <button class="ls-toolbtn" id="lsDysBtn" aria-pressed="false">🅰 Font</button>
+  </div>
+  <div class="title">
+    <div>
+      <h1>ANATOMY OF INFERENCE STUDIO</h1>
+      <div class="sub">A detailed teaching sim for the anatomy-of-inference picture: habits, planning, goals, prediction, action, and the bridge from categorical policy messages to continuous predictive-coding control. It keeps the roles of the math faithful while using a compact editable teaching-world so every quantity stays visible. You can inspect policy posteriors, expected free energy, descending predictions, ascending prediction errors, hierarchical continuous-state updates, and action that only changes sensory input.</div>
+    </div>
+    <div class="badge">Standalone HTML</div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab active" data-tab="atlas">Inference Atlas</div>
+    <div class="tab" data-tab="policies">Policies, Habits, Goals</div>
+    <div class="tab" data-tab="continuous">Continuous Control</div>
+    <div class="tab" data-tab="bridge">Categorical to Continuous Bridge</div>
+    <div class="tab" data-tab="lessons">Guided Lessons</div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="panel">
+        <h2>Scenario Bay</h2>
+        <div class="small">Each scenario is a playable teaching-world. Start simple, then layer in habits, goal-sensitive policies, and the continuous action loop.</div>
+        <select id="presetSelect" style="margin-top:10px"></select>
+        <div class="topbar" style="margin-top:10px">
+          <button id="loadPresetBtn">Load preset</button>
+          <button id="randomizeBtn">Randomize beliefs</button>
+          <button id="resetBtn">Reset mu and u</button>
+          <button id="exportBtn">Export model JSON</button>
+        </div>
+        <div id="mission" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Global Controls</h2>
+        <div class="line"><span>lr mu</span><input type="range" id="lrMu" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrMuN" step="0.005" value="0.05"></div>
+        <div class="line"><span>lr u</span><input type="range" id="lrU" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrUN" step="0.005" value="0.05"></div>
+        <div class="line"><span>lr pi</span><input type="range" id="lrPi" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrPiN" step="0.005" value="0.05"></div>
+        <div class="line"><span>sensory Py</span><input type="range" id="py" min="0.2" max="8" step="0.1" value="2.0"><input type="number" id="pyN" step="0.1" value="2.0"></div>
+        <div class="line"><span>base y</span><input type="range" id="yBase" min="-4" max="4" step="0.1" value="0.0"><input type="number" id="yBaseN" step="0.1" value="0.0"></div>
+        <div class="line"><span>act gain</span><input type="range" id="actGain" min="-3" max="3" step="0.1" value="1.0"><input type="number" id="actGainN" step="0.1" value="1.0"></div>
+        <div class="topbar" style="margin-top:8px">
+          <button id="stepBeliefsBtn">Belief step</button>
+          <button id="stepActionBtn">Action step</button>
+          <button id="stepPolicyBtn">Policy step</button>
+          <button id="stepAllBtn">Run one full cycle</button>
+          <button id="autoBtn">Auto-run</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Policy / Goal / Habit Lab</h2>
+        <div class="small">Edit policy proposals. Habits bias policy selection. Goals shape preference mismatch. Ambiguity adds an expected-information cost.</div>
+        <div class="line"><span>dopa gamma</span><input type="range" id="gamma" min="0.2" max="8" step="0.1" value="2.0"><input type="number" id="gammaN" step="0.1" value="2.0"></div>
+        <div class="line"><span>goal chi</span><input type="range" id="chi" min="0.2" max="8" step="0.1" value="1.5"><input type="number" id="chiN" step="0.1" value="1.5"></div>
+        <div class="policy-grid" id="policyEditor"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Continuous-State Builder</h2>
+        <div class="small">Each cortical region has a small generalized-coordinate predictive-coding stack. Higher regions send predictions downward; lower regions send errors upward.</div>
+        <div class="topbar" style="margin-top:8px">
+          <button id="addLevelBtn">Add region</button>
+          <button id="removeLevelBtn">Remove top</button>
+          <button id="addOrderBtn">Add order</button>
+          <button id="removeOrderBtn">Remove order</button>
+        </div>
+        <div id="levelsEditor" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Session Log</h2>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="stageStrip" role="region" aria-label="System state">
+        <div class="cell"><div class="lab">Total F</div><div class="val" id="stripF">0.000</div><div class="sub2" id="stripFTarget">target pending</div></div>
+        <div class="cell"><div class="lab">Expected G</div><div class="val" id="stripG">0.000</div><div class="sub2">policy avg</div></div>
+        <div class="cell"><div class="lab">Best π</div><div class="val" id="stripPi">0.000</div><div class="sub2" id="stripPiName">—</div></div>
+        <div class="cell"><div class="lab">Action u</div><div class="val" id="stripU">0.000</div><div class="sub2">continuous output</div></div>
+        <div class="cell"><div class="lab">Sensory ey</div><div class="val" id="stripEy">0.000</div><div class="sub2">mismatch</div></div>
+        <div class="cell"><div class="lab">Shape</div><div class="val" id="stripShape">2×2</div><div class="sub2">regions × orders</div></div>
+      </div>
+
+      <div class="introStrip" id="introStrip" role="note">
+        <div class="body">
+          <div class="row"><span class="tag">Goal</span><span>See habits, goals, planning, prediction and action behave as one inferential system.</span></div>
+          <div class="row"><span class="tag">Watch</span><span>Total F falls with belief steps; best π shifts when you change habit/goal sliders.</span></div>
+          <div class="row"><span class="tag">First move</span><span>Click <strong>Belief step</strong>, then <strong>Policy step</strong>, then <strong>Action step</strong>. Or use <strong>Run full cycle</strong>.</span></div>
+        </div>
+        <button class="dismiss" id="introDismissBtn" aria-label="Dismiss intro">Got it ✕</button>
+      </div>
+
+      <div class="stageToolbar" role="toolbar" aria-label="Inference run controls">
+        <select id="toolbarPreset" style="width:auto;"></select>
+        <button id="tbLoadPreset">Load preset</button>
+        <button id="tbBelief">Belief step</button>
+        <button id="tbPolicy">Policy step</button>
+        <button id="tbAction">Action step</button>
+        <button id="tbFullCycle">Run full cycle</button>
+        <button id="tbAuto">Auto-run</button>
+        <button id="tbReset">Reset μ and u</button>
+        <button class="iconBtn" id="tourOpenBtn" title="Open guided tour" aria-label="Open guided tour">?</button>
+      </div>
+
+      <div class="panel">
+        <h2>Status Deck</h2>
+        <div class="score">
+          <div class="card"><div class="small">Total F</div><div class="big" id="Ftot">0.000</div><div class="meter"><span id="meterF"></span></div></div>
+          <div class="card"><div class="small">Sensory</div><div class="big" id="Fy">0.000</div><div class="small">half Py ey squared</div></div>
+          <div class="card"><div class="small">Dynamics</div><div class="big" id="Fx">0.000</div><div class="small">sum half Px ex squared</div></div>
+          <div class="card"><div class="small">Hierarchy</div><div class="big" id="Fv">0.000</div><div class="small">sum half Pv ev squared</div></div>
+          <div class="card"><div class="small">Expected G</div><div class="big" id="Gbar">0.000</div><div class="small">policy average</div></div>
+          <div class="card"><div class="small">Best pi</div><div class="big" id="bestPi">0.000</div><div class="small">policy posterior</div></div>
+          <div class="card"><div class="small">Action u</div><div class="big" id="uVal">0.000</div><div class="small">continuous output</div></div>
+        </div>
+      </div>
+
+      <div class="panel module active" id="module-atlas">
+        <h2>Inference Atlas</h2>
+        <div class="machine">
+          <canvas id="atlasCanvas" width="1040" height="600"></canvas>
+          <div class="ledger">
+            <div class="eq" id="summaryEq"></div>
+            <div class="eq" id="ledger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-policies">
+        <h2>Policies, Habits, Goals</h2>
+        <div class="machine">
+          <canvas id="policyCanvas" width="1040" height="600"></canvas>
+          <div class="ledger">
+            <div class="eq" id="policyEq"></div>
+            <div class="eq" id="policyLedger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-continuous">
+        <h2>Continuous Control</h2>
+        <div class="machine">
+          <canvas id="continuousCanvas" width="1040" height="600"></canvas>
+          <div class="ledger">
+            <div class="eq" id="continuousEq"></div>
+            <div class="eq" id="continuousLedger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-bridge">
+        <h2>Categorical to Continuous Bridge</h2>
+        <div class="machine">
+          <canvas id="bridgeCanvas" width="1040" height="600"></canvas>
+          <div class="ledger">
+            <div class="eq" id="bridgeEq"></div>
+            <table class="matrix-table" style="margin-top:12px">
+              <tr><th>Message stream</th><th>Teaching role here</th></tr>
+              <tr><td>Habits</td><td>Prior bias over policies.</td></tr>
+              <tr><td>Goals</td><td>Preference structure contributing to expected free energy.</td></tr>
+              <tr><td>Planning</td><td>Posterior over policies formed from softmax(-gamma G).</td></tr>
+              <tr><td>Prediction</td><td>Selected categorical policy sends a descending continuous target.</td></tr>
+              <tr><td>Action</td><td>Continuous control reduces sensory prediction error.</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-lessons">
+        <h2>Guided Lessons</h2>
+        <div class="lesson-grid">
+          <div class="group"><h3>1. Habits vs goal-sensitive control</h3><div class="small">Policy selection is influenced by both habit bias and expected free energy. A strong habit can dominate unless goal mismatch or ambiguity is costly enough.</div></div>
+          <div class="group"><h3>2. Planning</h3><div class="small">Each policy proposes a control tendency and predicts a likely outcome. The posterior over policies weighs these proposals.</div></div>
+          <div class="group"><h3>3. Prediction</h3><div class="small">The selected categorical outcome is translated into a continuous target or descending prediction for the lower predictive-coding machinery.</div></div>
+          <div class="group"><h3>4. Action</h3><div class="small">Action does not directly change high-level beliefs. It changes sensory data, which then alters sensory prediction error.</div></div>
+          <div class="group"><h3>5. Continuous predictive coding</h3><div class="small">Within a region, generalized orders are linked by D. Between regions, hidden causes connect the hierarchy.</div></div>
+          <div class="group"><h3>6. Figure 5.5 theme</h3><div class="small">The point is not separate disconnected circuits. The point is a single inferential system spanning habits, policy inference, cortical predictions, and action.</div></div>
+        </div>
+        <div class="eq" id="lessonEq" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;">
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px;color:var(--accent);font-size:14px;letter-spacing:1px;text-transform:uppercase;">Layered Equation Panel</h2>
+      <div class="ls-eqpanel" id="lsEqPanel">
+        <div class="ls-eqtabs"><button class="ls-eqtab" data-ls-tab="story">Story</button><button class="ls-eqtab" data-ls-tab="picture">Picture</button><button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button><button class="ls-eqtab" data-ls-tab="derivation">Derivation</button></div>
+        <div class="ls-eqbody" id="lsEqBody"></div>
+      </div>
+    </section>
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px;color:var(--accent);font-size:14px;letter-spacing:1px;text-transform:uppercase;">Beat Script</h2>
+      <div id="lsBeatHost"></div>
+    </section>
+  </div>
+</div>
+
+<div class="ls-dock"><button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button><button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button><button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button></div>
+<div class="ls-panel-overlay" id="lsPanelOverlay"></div>
+<aside class="ls-panel" id="lsPanel"><div class="ls-panel-head"><h4 id="lsPanelTitle">Panel</h4><button class="ls-panel-close" id="lsPanelClose">Close ✕</button></div><div class="ls-panel-body" id="lsPanelBody"></div></aside>
+<div class="ls-pick-overlay" id="lsPickerOverlay"><div class="ls-pick-card"><h3>Pick a learning path</h3><div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths.</div><div class="ls-pick-grid"><button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative + physical objects.</div></button><button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Analogies + missions.</div></button><button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code.</div></button><button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches.</div></button></div><div class="ls-pick-actions"><button id="lsPickerDismiss">Skip — I'll default to real-world</button></div></div></div>
+<div class="ls-tooltip" id="lsTooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id); let autoTimer=null; let currentPreset=0;
+function bindPair(a,b){$(a).addEventListener('input',()=>{$(b).value=$(a).value; update();}); $(b).addEventListener('input',()=>{$(a).value=$(b).value; update();});}
+['lrMu','lrU','lrPi','py','yBase','actGain','gamma','chi'].forEach(id=>bindPair(id,id+'N'));
+const presets=[
+{name:'Starter: goals beat weak habits',mission:'Get F below 0.35 and make the best policy posterior exceed 0.65.',targetF:0.35,targetPi:0.65,build:()=>makeModel(2,2,{py:2,yBase:0,actGain:1,gamma:2,chi:1.5,levels:[{px:1.5,pv:1.2,aObsX:1,aObsV:0.5,alpha:0.8,beta:0.4,predX:0.8,predV:0.7,mux:[-0.7,0.3],muv:[0.1,0],eta:[0,0]},{px:1,pv:0.9,aObsX:0,aObsV:0,alpha:0.7,beta:0.3,predX:0,predV:0,mux:[0.6,-0.1],muv:[0.4,0],eta:[0,0]}],policies:defaultPolicies()})},
+{name:'Habits vs exploration',mission:'Use ambiguity and habit sliders to flip which policy wins, then lower F.',targetF:0.6,targetPi:0.55,build:()=>makeModel(3,2,{py:2.3,yBase:-0.3,actGain:1,gamma:2.5,chi:1.3,levels:[{px:1.9,pv:1.5,aObsX:1.1,aObsV:0.6,alpha:0.9,beta:0.4,predX:0.9,predV:0.8,mux:[-1,0.4],muv:[0.2,0],eta:[0,0]},{px:1.2,pv:1,aObsX:0,aObsV:0,alpha:0.8,beta:0.4,predX:0.7,predV:0.7,mux:[0.5,-0.2],muv:[0.3,0.1],eta:[0,0]},{px:0.8,pv:0.8,aObsX:0,aObsV:0,alpha:0.6,beta:0.3,predX:0,predV:0,mux:[0.3,0.1],muv:[0.2,0],eta:[0,0]}],policies:[{name:'Habit left',control:-1.2,ambiguity:0.3,target:-1.2,habit:1.2},{name:'Explore',control:0.2,ambiguity:-0.4,target:0.7,habit:0},{name:'Goal right',control:1,ambiguity:0.2,target:1.8,habit:0.3}]})},
+{name:'Figure 5.5 style integrated loop',mission:'Stabilize the full loop: habit/planning/goal modules must settle on a policy that helps action lower sensory error.',targetF:0.9,targetPi:0.6,build:()=>makeModel(3,3,{py:2,yBase:0.2,actGain:1,gamma:2.2,chi:1.8,levels:[{px:2,pv:1.7,aObsX:1.1,aObsV:0.6,alpha:0.9,beta:0.5,predX:0.9,predV:0.8,mux:[-0.8,0.6,0.2],muv:[0.2,0,0],eta:[0,0,0]},{px:1.3,pv:1,aObsX:0,aObsV:0,alpha:0.8,beta:0.4,predX:0.7,predV:0.7,mux:[0.6,-0.1,0.1],muv:[0.5,0.1,0],eta:[0,0,0]},{px:0.9,pv:0.8,aObsX:0,aObsV:0,alpha:0.6,beta:0.3,predX:0,predV:0,mux:[0.4,0.1,0],muv:[0.2,0,0],eta:[0,0,0]}],policies:[{name:'Plan A',control:-0.8,ambiguity:0.3,target:-0.7,habit:0.4},{name:'Plan B',control:0,ambiguity:0,target:0.8,habit:0.2},{name:'Plan C',control:1.1,ambiguity:0.2,target:1.9,habit:0.6}]})}
+];
+function defaultPolicies(){return[{name:'Avoid',control:-1,ambiguity:0.3,target:-1,habit:0.2},{name:'Observe',control:0,ambiguity:0.4,target:0.4,habit:0},{name:'Approach',control:1.1,ambiguity:0.2,target:1.7,habit:0.4}];}
+function makeModel(L,O,cfg={}){const m={orders:O,levels:[],py:cfg.py??2,yBase:cfg.yBase??0,actGain:cfg.actGain??1,gamma:cfg.gamma??2,chi:cfg.chi??1.5,u:0,policies:(cfg.policies??defaultPolicies()).map(p=>({...p}))}; for(let i=0;i<L;i++){const b=(cfg.levels||[])[i]||{}; m.levels.push({name:`Region ${i+1}`,px:b.px??1.5,pv:b.pv??1.2,aObsX:b.aObsX??(i===0?1:0),aObsV:b.aObsV??(i===0?0.5:0),alpha:b.alpha??0.8,beta:b.beta??0.4,predX:b.predX??(i<L-1?0.8:0),predV:b.predV??(i<L-1?0.8:0),mux:norm(b.mux,O),muv:norm(b.muv,O),eta:norm(b.eta,O)});} return m;}
+function norm(arr,O){arr=(arr||[]).slice(); while(arr.length<O)arr.push(0); return arr.slice(0,O);}
+let model=presets[0].build();
+function fmt(x){x=Math.abs(x)<1e-10?0:x; return Number(x).toFixed(3);}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+function log(msg){const d=document.createElement('div'); d.className='entry'; d.textContent=`[${new Date().toLocaleTimeString()}] ${msg}`; $('log').prepend(d);}
+function yFromAction(m){return m.yBase+m.actGain*m.u;}
+function Dshift(arr){return arr.map((_,k)=>k<arr.length-1?arr[k+1]:0);}
+function obsPred(L){return L.aObsX*L.mux[0]+L.aObsV*L.muv[0];}
+function dynPred(L){return L.mux.map((_,k)=>{const next=k<L.mux.length-1?L.mux[k+1]:0; return L.alpha*next+L.beta*L.muv[k];});}
+function downPred(U,O){return Array.from({length:O},(_,k)=>U.predX*U.mux[k]+U.predV*U.muv[k]);}
+function computePolicies(m,sensory){const pols=m.policies.map(p=>{const predictedY=sensory+p.control; const risk=0.5*m.chi*Math.pow(predictedY-p.target,2); const G=risk+p.ambiguity-p.habit; return {...p,predictedY,risk,G};}); const exps=pols.map(p=>Math.exp(-m.gamma*p.G)); const Z=exps.reduce((a,b)=>a+b,0); pols.forEach((p,i)=>p.posterior=exps[i]/Z); const best=pols.reduce((a,b)=>a.posterior>b.posterior?a:b); const Gbar=pols.reduce((s,p)=>s+p.posterior*p.G,0); const bridgeTarget=pols.reduce((s,p)=>s+p.posterior*p.target,0); const bridgeControl=pols.reduce((s,p)=>s+p.posterior*p.control,0); return {pols,best,Gbar,bridgeTarget,bridgeControl};}
+function compute(m){const y=yFromAction(m); const out={y,levels:[],Fy:0,Fx:0,Fv:0,F:0}; out.ey=y-obsPred(m.levels[0]); out.Fy=0.5*m.py*out.ey*out.ey; for(let i=0;i<m.levels.length;i++){const L=m.levels[i],Dmx=Dshift(L.mux),f=dynPred(L),ex=Dmx.map((v,k)=>v-f[k]); let ev,predFromAbove=null; if(i===m.levels.length-1){ev=L.muv.map((v,k)=>v-L.eta[k]);} else {predFromAbove=downPred(m.levels[i+1],m.orders); ev=L.muv.map((v,k)=>v-predFromAbove[k]);} const Fx_i=0.5*L.px*ex.reduce((s,v)=>s+v*v,0), Fv_i=0.5*L.pv*ev.reduce((s,v)=>s+v*v,0); out.Fx+=Fx_i; out.Fv+=Fv_i; out.levels.push({Dmx,f,ex,ev,predFromAbove,Fx_i,Fv_i});} out.F=out.Fy+out.Fx+out.Fv; out.policy=computePolicies(m,y); return out;}
+function flattenMu(m){const a=[]; m.levels.forEach(L=>{L.mux.forEach(v=>a.push(v)); L.muv.forEach(v=>a.push(v));}); return a;}
+function unflattenMu(m,arr){let c=0; m.levels.forEach(L=>{for(let k=0;k<m.orders;k++)L.mux[k]=arr[c++]; for(let k=0;k<m.orders;k++)L.muv[k]=arr[c++];});}
+function clone(x){return JSON.parse(JSON.stringify(x));}
+function freeEnergyOf(m){return compute(m).F;}
+function muGradient(m){const base=freeEnergyOf(m),h=1e-4,vals=flattenMu(m),grad=Array(vals.length).fill(0); for(let i=0;i<vals.length;i++){const cp=clone(m),arr=flattenMu(cp); arr[i]+=h; unflattenMu(cp,arr); grad[i]=(freeEnergyOf(cp)-base)/h;} return grad;}
+function uGradient(m){const h=1e-4,base=freeEnergyOf(m),cp=clone(m); cp.u+=h; return (freeEnergyOf(cp)-base)/h;}
+function beliefStep(){const lr=parseFloat($('lrMu').value),grad=muGradient(model),vals=flattenMu(model); for(let i=0;i<vals.length;i++)vals[i]=clamp(vals[i]-lr*grad[i],-5,5); unflattenMu(model,vals); renderEditors(); update(); log(`Belief step: ||grad_mu F|| approx ${fmt(Math.sqrt(grad.reduce((s,v)=>s+v*v,0)))}.`);}
+function actionStep(){const lr=parseFloat($('lrU').value),g=uGradient(model); model.u=clamp(model.u-lr*g,-5,5); update(); log(`Action step: dF/du approx ${fmt(g)}.`);}
+function policyStep(){const lr=parseFloat($('lrPi').value),C=compute(model); model.u=clamp(model.u+lr*(C.policy.bridgeControl-model.u),-5,5); const top=model.levels[model.levels.length-1]; top.muv[0]=clamp(top.muv[0]+0.3*lr*(C.policy.bridgeTarget-top.muv[0]),-5,5); renderEditors(); update(); log(`Policy step: bridge control ${fmt(C.policy.bridgeControl)}, bridge target ${fmt(C.policy.bridgeTarget)}.`);}
+function randomizeBeliefs(){model.levels.forEach(L=>{L.mux=L.mux.map(()=>Math.random()*3-1.5); L.muv=L.muv.map(()=>Math.random()*3-1.5);}); model.u=Math.random()*2-1; renderEditors(); update(); log('Randomized beliefs and action.');}
+function resetBeliefs(){model.levels.forEach(L=>{L.mux=L.mux.map(()=>0); L.muv=L.muv.map(()=>0);}); model.u=0; renderEditors(); update(); log('Reset mu and u.');}
+function addLevel(){const O=model.orders; model.levels.push({name:`Region ${model.levels.length+1}`,px:1,pv:0.9,aObsX:0,aObsV:0,alpha:0.7,beta:0.35,predX:0,predV:0,mux:Array(O).fill(0),muv:Array(O).fill(0),eta:Array(O).fill(0)}); if(model.levels.length>1){model.levels[model.levels.length-2].predX ||=0.8; model.levels[model.levels.length-2].predV ||=0.8;} renderEditors(); update(); log('Added a cortical region.');}
+function removeLevel(){if(model.levels.length<=1)return; model.levels.pop(); model.levels[model.levels.length-1].predX=0; model.levels[model.levels.length-1].predV=0; renderEditors(); update(); log('Removed the top region.');}
+function addOrder(){if(model.orders>=4)return; model.orders+=1; model.levels.forEach(L=>{L.mux.push(0);L.muv.push(0);L.eta.push(0);}); renderEditors(); update(); log('Added a generalized order.');}
+function removeOrder(){if(model.orders<=1)return; model.orders-=1; model.levels.forEach(L=>{L.mux.pop();L.muv.pop();L.eta.pop();}); renderEditors(); update(); log('Removed a generalized order.');}
+function exportModel(){const blob=new Blob([JSON.stringify(model,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='anatomy_of_inference_model.json'; a.click(); URL.revokeObjectURL(a.href);}
+function renderPolicyEditor(){const el=$('policyEditor'); el.innerHTML=model.policies.map((p,i)=>`<div class="group"><h3>${p.name}</h3><div class="line"><span>control</span><input type="range" min="-3" max="3" step="0.1" value="${p.control}" data-p="${i}" data-k="control"><input type="number" step="0.1" value="${p.control}" data-pn="${i}" data-kn="control"></div><div class="line"><span>target</span><input type="range" min="-3" max="3" step="0.1" value="${p.target}" data-p="${i}" data-k="target"><input type="number" step="0.1" value="${p.target}" data-pn="${i}" data-kn="target"></div><div class="line"><span>habit</span><input type="range" min="-2" max="2" step="0.1" value="${p.habit}" data-p="${i}" data-k="habit"><input type="number" step="0.1" value="${p.habit}" data-pn="${i}" data-kn="habit"></div><div class="line"><span>ambiguity</span><input type="range" min="-1" max="2" step="0.1" value="${p.ambiguity}" data-p="${i}" data-k="ambiguity"><input type="number" step="0.1" value="${p.ambiguity}" data-pn="${i}" data-kn="ambiguity"></div></div>`).join(''); el.querySelectorAll('input[data-p]').forEach(inp=>inp.addEventListener('input',e=>{const i=+e.target.dataset.p,k=e.target.dataset.k,v=parseFloat(e.target.value); model.policies[i][k]=v; el.querySelector(`input[data-pn="${i}"][data-kn="${k}"]`).value=v; update();})); el.querySelectorAll('input[data-pn]').forEach(inp=>inp.addEventListener('input',e=>{const i=+e.target.dataset.pn,k=e.target.dataset.kn,v=parseFloat(e.target.value); model.policies[i][k]=v; el.querySelector(`input[data-p="${i}"][data-k="${k}"]`).value=v; update();}));}
+function renderEditors(){
+  const wrap=$('levelsEditor');
+  wrap.innerHTML='';
+  model.levels.forEach((L,i)=>{
+    const div=document.createElement('div');
+    div.className='group';
+    const orderRows = Array.from({length:model.orders},(_,k)=>
+      `<div class="line2">`+
+        `<div><div class="small">mux[${k+1}]</div><input type="number" value="${L.mux[k]??0}" step="0.1" data-level="${i}" data-vec="mux" data-k="${k}"></div>`+
+        `<div><div class="small">muv[${k+1}]</div><input type="number" value="${L.muv[k]??0}" step="0.1" data-level="${i}" data-vec="muv" data-k="${k}"></div>`+
+      `</div>`
+    ).join('');
+    const etaRows = (i===model.levels.length-1)
+      ? Array.from({length:model.orders},(_,k)=>
+          `<div class="line2">`+
+            `<div><div class="small">eta[${k+1}] (top prior)</div><input type="number" value="${L.eta[k]??0}" step="0.1" data-level="${i}" data-vec="eta" data-k="${k}"></div>`+
+          `</div>`).join('')
+      : '';
+    div.innerHTML=
+      `<h3>${L.name} <span class="pill">${i+1}/${model.levels.length}</span></h3>`+
+      `<div class="line2"><div><div class="small">Px</div><input type="number" value="${L.px}" step="0.1" data-level="${i}" data-key="px"></div>`+
+      `<div><div class="small">Pv</div><input type="number" value="${L.pv}" step="0.1" data-level="${i}" data-key="pv"></div></div>`+
+      `<div class="line2"><div><div class="small">alpha</div><input type="number" value="${L.alpha}" step="0.1" data-level="${i}" data-key="alpha"></div>`+
+      `<div><div class="small">beta</div><input type="number" value="${L.beta}" step="0.1" data-level="${i}" data-key="beta"></div></div>`+
+      `<div class="line2"><div><div class="small">predX</div><input type="number" value="${L.predX}" step="0.1" data-level="${i}" data-key="predX"></div>`+
+      `<div><div class="small">predV</div><input type="number" value="${L.predV}" step="0.1" data-level="${i}" data-key="predV"></div></div>`+
+      (i===0 ? `<div class="line2"><div><div class="small">aObsX</div><input type="number" value="${L.aObsX}" step="0.1" data-level="${i}" data-key="aObsX"></div>`+
+               `<div><div class="small">aObsV</div><input type="number" value="${L.aObsV}" step="0.1" data-level="${i}" data-key="aObsV"></div></div>` : '')+
+      orderRows+etaRows;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('input[data-key]').forEach(inp=>inp.addEventListener('input',e=>{const i=+e.target.dataset.level,k=e.target.dataset.key; model.levels[i][k]=parseFloat(e.target.value); update();}));
+  wrap.querySelectorAll('input[data-vec]').forEach(inp=>inp.addEventListener('input',e=>{const i=+e.target.dataset.level,k=+e.target.dataset.k,vec=e.target.dataset.vec; if(k>=model.orders)return; model.levels[i][vec][k]=parseFloat(e.target.value); update();}));
+  renderPolicyEditor();
+}
+function updateGlobalsFromUI(){model.py=parseFloat($('py').value); model.yBase=parseFloat($('yBase').value); model.actGain=parseFloat($('actGain').value); model.gamma=parseFloat($('gamma').value); model.chi=parseFloat($('chi').value);}
+function setMission(text,targetF,targetPi){$('mission').innerHTML=`<div class="small">${text}<br><span class="pill">Target F < ${fmt(targetF)}</span> <span class="pill">Best pi > ${fmt(targetPi)}</span></div>`;}
+function loadPreset(ix){currentPreset=ix; model=presets[ix].build(); $('py').value=$('pyN').value=model.py; $('yBase').value=$('yBaseN').value=model.yBase; $('actGain').value=$('actGainN').value=model.actGain; $('gamma').value=$('gammaN').value=model.gamma; $('chi').value=$('chiN').value=model.chi; setMission(presets[ix].mission,presets[ix].targetF,presets[ix].targetPi); renderEditors(); update(); log(`Loaded preset: ${presets[ix].name}.`);}
+function update(){updateGlobalsFromUI(); const C=compute(model); $('Ftot').textContent=fmt(C.F); $('Fy').textContent=fmt(C.Fy); $('Fx').textContent=fmt(C.Fx); $('Fv').textContent=fmt(C.Fv); $('Gbar').textContent=fmt(C.policy.Gbar); $('bestPi').textContent=fmt(C.policy.best.posterior); $('uVal').textContent=fmt(model.u); $('meterF').style.width=Math.min(100,C.F*8)+'%';
+  // Sticky strip
+  $('stripF').textContent=fmt(C.F); $('stripG').textContent=fmt(C.policy.Gbar); $('stripPi').textContent=fmt(C.policy.best.posterior);
+  $('stripPiName').textContent=C.policy.best.name; $('stripU').textContent=fmt(model.u); $('stripEy').textContent=fmt(C.ey);
+  $('stripShape').textContent=`${model.levels.length}×${model.orders}`;
+  const p = presets[currentPreset];
+  $('stripFTarget').textContent = p ? (C.F < p.targetF && C.policy.best.posterior > p.targetPi ? `✓ cleared` : `F<${p.targetF.toFixed(2)}, π>${p.targetPi.toFixed(2)}`) : 'open';
+$('summaryEq').textContent=`Core teaching equations
+
+Continuous predictive coding
+mu_dot - D mu = - grad_mu F
+
+Quadratic free energy in the continuous layer
+F = 1/2 Py ey^2 + sum_i 1/2 Px_i ||ex_i||^2 + sum_i 1/2 Pv_i ||ev_i||^2
+
+Errors
+ey = y(u) - g0(mu_x^1, mu_v^1)
+ex_i = D mu_x^i - f_i(mu_x^i, mu_v^i)
+ev_i = mu_v^i - g^(i+1)(mu_x^(i+1), mu_v^(i+1))
+
+Categorical policy layer
+G_pi = 1/2 chi ( y + control_pi - target_pi )^2 + ambiguity_pi - habit_pi
+pi = softmax( - gamma G )
+
+Bridge
+continuous target = sum_pi pi * target_pi
+continuous control tendency = sum_pi pi * control_pi`;
+const lines=[]; lines.push(`Sensory stream`); lines.push(`y(u) = ${fmt(model.yBase)} + ${fmt(model.actGain)} * ${fmt(model.u)} = ${fmt(C.y)}`); lines.push(`lowest prediction g0 = ${fmt(obsPred(model.levels[0]))}`); lines.push(`ey = ${fmt(C.ey)} ; Fy = ${fmt(C.Fy)}`); model.levels.forEach((L,i)=>{const R=C.levels[i]; lines.push(''); lines.push(`REGION ${i+1}`); lines.push(`mux = [${L.mux.map(fmt).join(', ')}]`); lines.push(`muv = [${L.muv.map(fmt).join(', ')}]`); lines.push(`D mux = [${R.Dmx.map(fmt).join(', ')}]`); lines.push(`f = [${R.f.map(fmt).join(', ')}]`); lines.push(`ex = [${R.ex.map(fmt).join(', ')}], Fx_i = ${fmt(R.Fx_i)}`); if(i<model.levels.length-1){lines.push(`g_above = [${R.predFromAbove.map(fmt).join(', ')}]`);} else {lines.push(`eta = [${L.eta.map(fmt).join(', ')}]`);} lines.push(`ev = [${R.ev.map(fmt).join(', ')}], Fv_i = ${fmt(R.Fv_i)}`);}); lines.push(''); lines.push('POLICIES'); C.policy.pols.forEach(p=>lines.push(`${p.name}: predicted y=${fmt(p.predictedY)}, risk=${fmt(p.risk)}, ambiguity=${fmt(p.ambiguity)}, habit=${fmt(p.habit)}, G=${fmt(p.G)}, posterior=${fmt(p.posterior)}`)); lines.push(`bridge target = ${fmt(C.policy.bridgeTarget)}`); lines.push(`bridge control = ${fmt(C.policy.bridgeControl)}`); lines.push(`best policy = ${C.policy.best.name}`); $('ledger').textContent=lines.join('\n');
+$('policyEq').textContent=`Figure 5.5 teaching view
+
+Habits provide prior bias over candidate policies.
+Goals provide preferred outcomes and shape expected free energy.
+Planning computes the posterior over policies:
+pi = softmax( - gamma G )
+
+In this simulator
+habit enters G with a minus sign
+ambiguity raises G
+goal mismatch contributes 1/2 chi (predicted outcome - preferred outcome)^2
+
+A high posterior policy then contributes to the continuous bridge below.`;
+$('policyLedger').textContent=C.policy.pols.map(p=>`${p.name}
+  G = 1/2 * ${fmt(model.chi)} * (${fmt(C.y)} + ${fmt(p.control)} - ${fmt(p.target)})^2 + ${fmt(p.ambiguity)} - ${fmt(p.habit)}
+    = ${fmt(p.G)}
+  posterior = ${fmt(p.posterior)}`).join('\n\n');
+$('continuousEq').textContent=`Continuous control loop
+
+Action only changes the sensory stream:
+y(u) = base + gain*u
+
+So the direct action gradient comes from the sensory term:
+u_dot = - dF/du
+
+The predictive-coding region stack then updates hidden states so that descending
+predictions and ascending errors come into alignment.`;
+$('continuousLedger').textContent=`Current action
+u = ${fmt(model.u)}
+
+Current sensory mismatch
+ey = ${fmt(C.ey)}
+
+Interpretation
+- if y(u) is too large relative to the descending prediction, action should decrease
+- if y(u) is too small, action should increase
+- belief updates and action updates work together rather than competing`;
+$('bridgeEq').textContent=`Categorical-to-continuous bridge
+
+The categorical layer does not directly move muscles here.
+Instead it sends a weighted continuous bias:
+
+bridge target = sum_pi pi * target_pi
+bridge control = sum_pi pi * control_pi
+
+Then:
+1) policy step nudges action toward bridge control
+2) policy step also nudges the top hidden cause toward bridge target
+3) the continuous hierarchy propagates that target downward by message passing`;
+$('lessonEq').textContent=`How to learn this sim
+
+1) Make one policy strongly habitual and watch it dominate.
+2) Increase goal mismatch for that policy and see when planning overcomes the habit.
+3) Run policy steps and watch the bridge target move the top hidden cause.
+4) Run action steps and see the sensory error shrink.
+5) Add another region or generalized order and inspect how the same inferential theme extends deeper into the hierarchy.`;
+drawAtlas(model,C); drawPolicies(model,C); drawContinuous(model,C); drawBridge(model,C); checkMission(C);}
+function checkMission(C){const p=presets[currentPreset]; if(C.F<p.targetF && C.policy.best.posterior>p.targetPi){$('mission').innerHTML=`<div class="small">${p.mission}<br><span class="pill">Mission cleared</span></div>`;}}
+function roundRect(ctx,x,y,w,h,r,fill,stroke){ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); if(fill)ctx.fill(); if(stroke)ctx.stroke();}
+function panelFrame(ctx,w,h,title){ctx.clearRect(0,0,w,h); ctx.fillStyle='#15110e'; ctx.strokeStyle='#5e5145'; ctx.lineWidth=2; roundRect(ctx,18,18,w-36,h-36,18,true,true); ctx.fillStyle='#d1c6b8'; ctx.font='13px monospace'; ctx.fillText(title,24,36);}
+function node(ctx,x,y,r,main,sub,fill='#221b16',stroke='#8d7a65'){r=Math.max(r,26); ctx.fillStyle=fill; ctx.strokeStyle=stroke; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.fillStyle='#fff1cd'; ctx.font='bold 13px ui-monospace, monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(main,x,y); ctx.fillStyle='#d2c4b0'; ctx.font='11px ui-monospace, monospace'; ctx.textBaseline='alphabetic'; ctx.fillText(sub,x,y+r+14); ctx.textAlign='left';}
+function box(ctx,x,y,w,h,label,fill='#211b16',stroke='#8d7a65'){ctx.fillStyle=fill; ctx.strokeStyle=stroke; ctx.lineWidth=2; roundRect(ctx,x,y,w,h,14,true,true); ctx.fillStyle='#fff1cd'; ctx.font='13px monospace'; ctx.textAlign='center'; ctx.fillText(label,x+w/2,y+h/2+4); ctx.textAlign='left';}
+function wire(ctx,x1,y1,x2,y2,strength,dotted=false,label=''){ctx.strokeStyle='#655545'; ctx.lineWidth=9; ctx.lineCap='round'; ctx.setLineDash(dotted?[4,5]:[]); ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke(); ctx.setLineDash([]); ctx.strokeStyle='#d1ae69'; ctx.lineWidth=4; const t=Math.min(1,strength/3.5); ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x1+(x2-x1)*t,y1+(y2-y1)*t); ctx.stroke(); if(label){ctx.fillStyle='#e8decd'; ctx.font='12px monospace'; ctx.fillText(label,(x1+x2)/2,(y1+y2)/2-6);}}
+function gear(ctx,x,y,r,label,spin=0){ctx.save(); ctx.translate(x,y); ctx.rotate(spin); for(let i=0;i<10;i++){ctx.save(); ctx.rotate(i*Math.PI/5); ctx.fillStyle='#8f775d'; ctx.fillRect(r-4,-5,12,10); ctx.restore();} ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fillStyle='#473b31'; ctx.fill(); ctx.lineWidth=6; ctx.strokeStyle='#8f775d'; ctx.stroke(); ctx.beginPath(); ctx.arc(0,0,r*0.35,0,Math.PI*2); ctx.fillStyle='#1a1511'; ctx.fill(); ctx.fillStyle='#fff1cd'; ctx.font='bold 14px monospace'; ctx.textAlign='center'; ctx.fillText(label,0,5); ctx.restore(); ctx.textAlign='left';}
+function drawAtlas(m,C){const cv=$('atlasCanvas'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height; panelFrame(ctx,W,H,'Integrated anatomy of inference'); ctx.fillStyle='rgba(230,230,230,.10)'; ctx.beginPath(); ctx.ellipse(180,120,100,65,-0.2,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(520,110,100,65,-0.1,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.ellipse(840,120,100,65,0.15,0,Math.PI*2); ctx.fill(); box(ctx,305,70,110,42,'Prediction'); box(ctx,250,255,100,42,'Habits'); box(ctx,515,255,100,42,'Goals'); box(ctx,270,425,110,42,'Planning'); box(ctx,695,425,100,42,'Action');
+const pol=C.policy.pols; node(ctx,150,160,25,fmt(pol[0].posterior),'s1'); node(ctx,185,110,25,fmt(pol[1].posterior),'s2'); node(ctx,220,160,25,fmt(pol[2].posterior),'s3'); node(ctx,445,160,25,fmt(pol[0].G),'z1'); node(ctx,480,110,25,fmt(pol[1].G),'z2'); node(ctx,515,160,25,fmt(pol[2].G),'z3'); node(ctx,250,500,25,fmt(pol[0].habit),'E1'); node(ctx,360,500,28,fmt(pol[0].posterior),'pi'); node(ctx,480,500,25,fmt(pol[1].habit),'E2'); node(ctx,585,500,28,fmt(C.policy.Gbar),'gamma G'); node(ctx,690,500,25,fmt(pol[2].habit),'E3');
+const x0=860,y0=200; node(ctx,x0,y0,24,fmt(m.levels[0].muv[0]),'muv'); node(ctx,x0-70,y0+75,24,fmt(m.levels[0].mux[0]),'mux'); node(ctx,x0-140,y0+150,22,fmt(C.ey),'ey'); node(ctx,x0-70,y0+150,22,fmt(C.levels[0].ex[0]),'ex'); node(ctx,x0,y0+150,22,fmt(C.levels[0].ev[0]),'ev'); node(ctx,930,390,28,fmt(m.u),'u'); node(ctx,930,515,24,fmt(C.y),'y');
+wire(ctx,250,255,360,470,Math.abs(pol[0].habit),false,'habit bias'); wire(ctx,515,255,585,470,Math.abs(C.policy.Gbar),false,'goal term'); wire(ctx,360,470,305,425,Math.abs(C.policy.best.posterior),false); wire(ctx,585,470,380,425,Math.abs(C.policy.Gbar),false); wire(ctx,380,425,305,92,Math.abs(C.policy.bridgeTarget),false,'categorical pred'); wire(ctx,380,425,930,390,Math.abs(C.policy.bridgeControl),false,'policy to action'); wire(ctx,360,470,780,200,Math.abs(C.policy.best.posterior),false,'planning to continuous'); wire(ctx,415,92,860,200,Math.abs(C.policy.bridgeTarget),false,'descending pred'); wire(ctx,930,390,930,491,Math.abs(m.u),false,'act'); wire(ctx,930,491,790,350,Math.abs(C.ey),true,'sensory error'); wire(ctx,790,350,860,200,Math.abs(C.ey),true,'ascending e');
+ctx.fillStyle='#d7cbbb'; ctx.font='13px monospace'; ctx.fillText('Prediction to cortex',330,60); ctx.fillText('Planning to basal ganglia',250,410); ctx.fillText('Continuous predictive coding',730,170);}
+function drawPolicies(m,C){const cv=$('policyCanvas'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height; panelFrame(ctx,W,H,'Policies, habits, goals, and posterior over policies'); const xs=[220,520,820]; C.policy.pols.forEach((p,i)=>{box(ctx,xs[i]-90,70,180,48,p.name); node(ctx,xs[i]-60,180,30,fmt(p.habit),'habit'); node(ctx,xs[i],180,30,fmt(p.risk),'risk'); node(ctx,xs[i]+60,180,30,fmt(p.ambiguity),'ambig'); node(ctx,xs[i]-30,320,34,fmt(p.G),'G'); node(ctx,xs[i]+60,320,34,fmt(p.posterior),'pi'); node(ctx,xs[i]+15,470,34,fmt(p.control),'u_pi'); wire(ctx,xs[i]-60,210,xs[i]-30,288,Math.abs(p.habit),false); wire(ctx,xs[i],210,xs[i]-30,288,Math.abs(p.risk),false); wire(ctx,xs[i]+60,210,xs[i]-30,288,Math.abs(p.ambiguity),false); wire(ctx,xs[i]-30,352,xs[i]+60,288,Math.abs(p.posterior),false,'softmax'); wire(ctx,xs[i]+60,352,xs[i]+15,438,Math.abs(p.posterior),false); ctx.fillStyle='#d9cdbd'; ctx.font='12px monospace'; ctx.fillText(`target ${fmt(p.target)}`,xs[i]-50,545);}); box(ctx,430,540,180,40,`best = ${C.policy.best.name}`);}
+function drawContinuous(m,C){const cv=$('continuousCanvas'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height; panelFrame(ctx,W,H,'Continuous predictive-coding control stack'); const levels=m.levels.length,orders=m.orders,left=150,top=90,levelGap=(H-150)/levels,orderGap=orders>1?180/(orders-1):0,xErrX=left+90,xMuX=left+190,xMuV=left+370,xErrV=left+470; node(ctx,80,H-80,26,fmt(C.y),'y(u)'); wire(ctx,80,H-106,xErrV,top+(levels-1)*levelGap+50,Math.abs(C.ey),true,'ey'); for(let i=0;i<levels;i++){const drawRow=levels-1-i,yBase=top+drawRow*levelGap,L=m.levels[i],R=C.levels[i]; ctx.fillStyle='#e7dcc8'; ctx.font='12px monospace'; ctx.fillText(`Region ${i+1}`,36,yBase+8); gear(ctx,left+285,yBase+18,18,'D',Date.now()/700+i*0.2); gear(ctx,left+285,yBase+118,18,'f',Date.now()/650-i*0.15); if(i<levels-1)gear(ctx,left+535,yBase+18,18,'g',Date.now()/850+i*0.13); for(let k=0;k<orders;k++){const yk=yBase+50+k*orderGap; node(ctx,xErrX,yk,24,fmt(R.ex[k]),`ex${k+1}`); node(ctx,xMuX,yk,28,fmt(L.mux[k]),`mux${k+1}`); node(ctx,xMuV,yk,28,fmt(L.muv[k]),`muv${k+1}`); node(ctx,xErrV,yk,24,fmt(i===0&&k===0?C.ey:R.ev[k]),i===0&&k===0?'ey':`ev${k+1}`); if(k<orders-1){wire(ctx,xMuX,yk,xMuX,yk+orderGap-28,Math.abs(L.mux[k+1]),false); wire(ctx,xMuV,yk,xMuV,yk+orderGap-28,Math.abs(L.muv[k+1]),false);} wire(ctx,xMuX-28,yk,xErrX+24,yk,Math.abs(R.ex[k]),true); wire(ctx,xMuV+28,yk,xErrV-24,yk,Math.abs(R.ev[k]),true);} wire(ctx,xMuX,yBase+50,left+267,yBase+18,Math.hypot(...R.ex),false); wire(ctx,left+303,yBase+118,xErrX+22,yBase+50,Math.hypot(...R.ex),true); wire(ctx,xMuV,yBase+50,left+303,yBase+118,Math.hypot(...R.ex),false); if(i<levels-1){wire(ctx,xMuX+28,yBase+50,left+517,yBase+18,Math.hypot(...R.ev),false); wire(ctx,xMuV+28,yBase+50,left+553,yBase+18,Math.hypot(...R.ev),false); wire(ctx,left+553,yBase+18,xErrV-24,yBase+50,Math.hypot(...R.ev),true);}}}
+function drawBridge(m,C){const cv=$('bridgeCanvas'),ctx=cv.getContext('2d'),W=cv.width,H=cv.height; panelFrame(ctx,W,H,'Bridge from categorical planning to continuous control'); box(ctx,90,90,150,44,'Habits'); box(ctx,310,90,150,44,'Planning'); box(ctx,530,90,150,44,'Goals'); box(ctx,750,90,150,44,'Prediction'); box(ctx,855,310,120,44,'Action'); C.policy.pols.forEach((p,i)=>{node(ctx,150+i*70,220,24,fmt(p.habit),`E${i+1}`); node(ctx,370+i*70,220,28,fmt(p.posterior),`pi${i+1}`); node(ctx,590+i*70,220,24,fmt(p.G),`G${i+1}`); wire(ctx,150+i*70,188,370+i*70,192,Math.abs(p.habit),false); wire(ctx,590+i*70,188,370+i*70,192,Math.abs(p.G),false);}); node(ctx,825,220,30,fmt(C.policy.bridgeTarget),'mu*'); node(ctx,915,220,30,fmt(C.policy.bridgeControl),'u*'); node(ctx,915,420,30,fmt(m.u),'u'); node(ctx,915,530,24,fmt(C.y),'y'); node(ctx,740,420,24,fmt(C.ey),'ey'); wire(ctx,450,112,750,112,Math.abs(C.policy.bridgeTarget),false,'goal contribution'); wire(ctx,385,220,825,220,Math.abs(C.policy.bridgeTarget),false,'target bridge'); wire(ctx,455,220,915,220,Math.abs(C.policy.bridgeControl),false,'control bridge'); wire(ctx,915,250,915,388,Math.abs(m.u),false); wire(ctx,915,452,915,506,Math.abs(C.y),false); wire(ctx,915,530,740,420,Math.abs(C.ey),true,'sensory error'); wire(ctx,740,420,825,248,Math.abs(C.ey),true,'ascending e'); wire(ctx,825,248,825,356,Math.abs(C.policy.bridgeTarget),false,'descending prediction');}
+document.querySelectorAll('.tab').forEach(tab=>tab.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); document.querySelectorAll('.module').forEach(m=>m.classList.remove('active')); tab.classList.add('active'); $('module-'+tab.dataset.tab).classList.add('active');}));
+presets.forEach((p,i)=>{const o=document.createElement('option'); o.value=i; o.textContent=p.name; $('presetSelect').appendChild(o);});
+$('loadPresetBtn').addEventListener('click',()=>loadPreset(parseInt($('presetSelect').value,10)));
+$('randomizeBtn').addEventListener('click',randomizeBeliefs); $('resetBtn').addEventListener('click',resetBeliefs); $('exportBtn').addEventListener('click',exportModel);
+$('addLevelBtn').addEventListener('click',addLevel); $('removeLevelBtn').addEventListener('click',removeLevel); $('addOrderBtn').addEventListener('click',addOrder); $('removeOrderBtn').addEventListener('click',removeOrder);
+$('stepBeliefsBtn').addEventListener('click',beliefStep); $('stepActionBtn').addEventListener('click',actionStep); $('stepPolicyBtn').addEventListener('click',policyStep); $('stepAllBtn').addEventListener('click',()=>{beliefStep(); actionStep(); policyStep(); log('Ran one full cycle.');});
+$('autoBtn').addEventListener('click',()=>{if(autoTimer){clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Stopped auto-run.'); return;} autoTimer=setInterval(()=>{const before=freeEnergyOf(model); beliefStep(); actionStep(); policyStep(); const after=freeEnergyOf(model); if(Math.abs(before-after)<1e-4){clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Auto-run converged.');}},300); $('autoBtn').textContent='Stop auto'; log('Started auto-run.');});
+// Populate toolbar preset dropdown
+presets.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.name;$('toolbarPreset').appendChild(o);});
+
+// Toolbar wiring
+$('tbLoadPreset').addEventListener('click',()=>{const i=parseInt($('toolbarPreset').value,10);$('presetSelect').value=$('toolbarPreset').value;loadPreset(i);});
+$('tbBelief').addEventListener('click',beliefStep);
+$('tbPolicy').addEventListener('click',policyStep);
+$('tbAction').addEventListener('click',actionStep);
+$('tbFullCycle').addEventListener('click',()=>{beliefStep();actionStep();policyStep();log('Toolbar: full cycle.');});
+$('tbAuto').addEventListener('click',()=>$('autoBtn').click());
+$('tbReset').addEventListener('click',resetBeliefs);
+
+// Intro strip persistence
+const INTRO_KEY='learninglabs.AnatomyStudio.introDismissed';
+const introEl=$('introStrip');
+if(localStorage.getItem(INTRO_KEY)==='1')introEl.classList.add('hidden');
+$('introDismissBtn').addEventListener('click',()=>{introEl.classList.add('hidden');localStorage.setItem(INTRO_KEY,'1');});
+
+// Guided tour
+const tourSteps=[
+  {sel:'#toolbarPreset',title:'Pick a scenario',body:'Each scenario bundles policies (habit/goal/exploration), a continuous hierarchy, and a mission target.'},
+  {sel:'#stripF',title:'Total F',body:'Quadratic free energy of the continuous predictive-coding stack. Lower is better.'},
+  {sel:'#stripPi',title:'Best policy posterior',body:'After policy scoring, π = softmax(−γ G) determines which plan dominates.'},
+  {sel:'#tbBelief',title:'Belief step',body:'Runs a numerical gradient on μ (posterior modes). Use this first.'},
+  {sel:'#tbPolicy',title:'Policy step',body:'Writes the policy-posterior-weighted target onto the top hidden cause and nudges action u toward the weighted control.'},
+  {sel:'#tbAction',title:'Action step',body:'Action only changes sensory input: u̇ = −∂F/∂u. Use after beliefs settle.'}
+];
+let tourIndex=0;
+const tourOverlay=document.createElement('div');tourOverlay.className='tour-overlay';
+tourOverlay.innerHTML=`<div class="tour-card"><h4 id="tourTitle"></h4><div class="step-line" id="tourBody"></div><div class="tour-actions"><button id="tourSkipBtn">Close</button><div style="display:flex;gap:8px;align-items:center;"><span id="tourProgress" class="small"></span><button id="tourNextBtn">Next →</button></div></div></div>`;
+document.body.appendChild(tourOverlay);
+const tourHighlight=document.createElement('div');tourHighlight.className='tour-highlight';
+function showTourStep(i){const s=tourSteps[i];if(!s){closeTour();return;}tourOverlay.querySelector('#tourTitle').textContent=s.title;tourOverlay.querySelector('#tourBody').textContent=s.body;tourOverlay.querySelector('#tourProgress').textContent=`${i+1} / ${tourSteps.length}`;tourOverlay.querySelector('#tourNextBtn').textContent=i===tourSteps.length-1?'Finish ✓':'Next →';const t=document.querySelector(s.sel);if(t){t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>{const r=t.getBoundingClientRect();tourHighlight.style.left=(window.scrollX+r.left-6)+'px';tourHighlight.style.top=(window.scrollY+r.top-6)+'px';tourHighlight.style.width=(r.width+12)+'px';tourHighlight.style.height=(r.height+12)+'px';if(!tourHighlight.parentNode)document.body.appendChild(tourHighlight);},220);}}
+function openTour(){tourIndex=0;tourOverlay.classList.add('on');showTourStep(0);}
+function closeTour(){tourOverlay.classList.remove('on');if(tourHighlight.parentNode)tourHighlight.parentNode.removeChild(tourHighlight);}
+$('tourOpenBtn').addEventListener('click',openTour);
+tourOverlay.querySelector('#tourSkipBtn').addEventListener('click',closeTour);
+tourOverlay.querySelector('#tourNextBtn').addEventListener('click',()=>{tourIndex+=1;if(tourIndex>=tourSteps.length){closeTour();return;}showTourStep(tourIndex);});
+tourOverlay.addEventListener('click',(e)=>{if(e.target===tourOverlay)closeTour();});
+
+loadPreset(0); renderEditors(); update();
+})();
+</script>
+
+<script>
+/* Learning Shell — isolated from the sim IIFE */
+(function(){
+  const LS=window.LS={};const state={path:'real',cfg:null,eqTab:'equation',beatIdx:0};
+  const $=id=>document.getElementById(id);
+  const pathbar=document.querySelector('.ls-pathbar'),picker=$('lsPickerOverlay'),pickerDismiss=$('lsPickerDismiss'),pickerBtn=$('lsPickerBtn'),dysBtn=$('lsDysBtn');
+  const dockG=$('lsDockGlossary'),dockA=$('lsDockAnalogies'),dockX=$('lsDockExercises');
+  const panel=$('lsPanel'),panelOv=$('lsPanelOverlay'),panelTitle=$('lsPanelTitle'),panelBody=$('lsPanelBody'),panelClose=$('lsPanelClose');
+  const eqBody=$('lsEqBody'),eqTabs=[...document.querySelectorAll('[data-ls-tab]')],beatHost=$('lsBeatHost'),tooltip=$('lsTooltip'),printRoot=$('lsPrintRoot');
+  LS.init=function(cfg){state.cfg=cfg;const key='ls.'+cfg.simKey+'.path',dysKey='ls.'+cfg.simKey+'.dys';/* ls-params-compact-v1 */try{var _qs=new URLSearchParams(window.location.search);var _qp=_qs.get('path');if(_qp && ['kid','real','equation','derivation'].indexOf(_qp)!==-1){localStorage.setItem(key,_qp);}var _cm=document.cookie && document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);if(_cm && !_qp){var _cv=decodeURIComponent(_cm[1]);if(['kid','real','equation','derivation'].indexOf(_cv)!==-1 && !localStorage.getItem(key)){localStorage.setItem(key,_cv);}}var _qb=parseInt(_qs.get('beat')||'',10);if(!isNaN(_qb) && _qb>0){setTimeout(function(){if(window.LS && window.LS.setBeat) window.LS.setBeat(_qb-1);},80);}}catch(_){}const saved=localStorage.getItem(key);if(localStorage.getItem(dysKey)==='1'){document.body.classList.add('ls-dys');if(dysBtn)dysBtn.setAttribute('aria-pressed','true');}if(!saved){if(picker)picker.classList.add('on');state.path='real';}else state.path=saved;applyPathButtons();renderEqPanel();renderBeat();wireTooltipTerms(document.body);if(cfg.onPathChange)cfg.onPathChange(state.path);};
+  LS.setPath=function(p){state.path=p;if(state.cfg)localStorage.setItem('ls.'+state.cfg.simKey+'.path',p);applyPathButtons();renderEqPanel();renderBeat();if(state.cfg&&state.cfg.onPathChange)state.cfg.onPathChange(p);};
+  LS.getPath=function(){return state.path;};
+  function applyPathButtons(){document.querySelectorAll('[data-ls-path]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lsPath===state.path?'true':'false'));}
+  if(pathbar)pathbar.addEventListener('click',e=>{const b=e.target.closest('[data-ls-path]');if(b)LS.setPath(b.dataset.lsPath);});
+  if(picker)picker.addEventListener('click',e=>{const b=e.target.closest('[data-ls-path]');if(b){picker.classList.remove('on');LS.setPath(b.dataset.lsPath);}});
+  if(pickerDismiss)pickerDismiss.addEventListener('click',()=>{picker.classList.remove('on');LS.setPath('real');});
+  if(pickerBtn)pickerBtn.addEventListener('click',()=>picker.classList.add('on'));
+  if(dysBtn)dysBtn.addEventListener('click',()=>{document.body.classList.toggle('ls-dys');const on=document.body.classList.contains('ls-dys');dysBtn.setAttribute('aria-pressed',on?'true':'false');if(state.cfg)localStorage.setItem('ls.'+state.cfg.simKey+'.dys',on?'1':'0');});
+  function openPanel(title,body){panelTitle.textContent=title;panelBody.innerHTML=body;panel.classList.add('on');panelOv.classList.add('on');wireTooltipTerms(panelBody);}
+  function closePanel(){panel.classList.remove('on');panelOv.classList.remove('on');}
+  if(panelClose)panelClose.addEventListener('click',closePanel);
+  if(panelOv)panelOv.addEventListener('click',closePanel);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePanel();if(picker)picker.classList.remove('on');hideTooltip();}});
+  function esc(s){return(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function tierFor(t){return(state.cfg&&state.cfg.terms&&state.cfg.terms[t])||null;}
+  function showTooltip(el){const term=el.dataset.term,entry=tierFor(term);if(!entry){tooltip.innerHTML=`<div class="ls-term-name">${esc(term)}</div><div class="ls-term-tier">No glossary entry yet.</div>`;}else{const order={kid:['kid','adult','phd'],real:['adult','kid','phd'],equation:['adult','phd','kid'],derivation:['phd','adult','kid']}[state.path]||['adult','phd','kid'];const labels={kid:'For a 5th grader',adult:'For a curious adult',phd:'For a PhD'};let html=`<div class="ls-term-name">${esc(entry.name||term)}</div>`;for(const t of order)if(entry[t])html+=`<div class="ls-term-tier"><b>${labels[t]}:</b> ${esc(entry[t])}</div>`;tooltip.innerHTML=html;}const r=el.getBoundingClientRect(),tw=320,th=140;let left=window.scrollX+r.left,top=window.scrollY+r.bottom+6;if(left+tw>window.scrollX+window.innerWidth-8)left=window.scrollX+window.innerWidth-tw-8;if(top+th>window.scrollY+window.innerHeight-8)top=window.scrollY+r.top-th-6;tooltip.style.left=Math.max(8,left)+'px';tooltip.style.top=Math.max(8,top)+'px';tooltip.classList.add('on');}
+  function hideTooltip(){if(tooltip)tooltip.classList.remove('on');}
+  function wireTooltipTerms(root){if(!root)return;root.querySelectorAll('[data-term]:not([data-ls-wired])').forEach(el=>{el.classList.add('ls-term');el.setAttribute('tabindex','0');el.setAttribute('data-ls-wired','1');el.setAttribute('aria-label','Definition of '+el.dataset.term);el.addEventListener('mouseenter',()=>showTooltip(el));el.addEventListener('mouseleave',hideTooltip);el.addEventListener('focus',()=>showTooltip(el));el.addEventListener('blur',hideTooltip);el.addEventListener('click',e=>{e.stopPropagation();showTooltip(el);});});}
+  document.addEventListener('click',e=>{if(!e.target.closest('[data-term]')&&!e.target.closest('.ls-tooltip'))hideTooltip();});
+  LS.wireTooltipTerms=wireTooltipTerms;
+  if(dockG)dockG.addEventListener('click',()=>{const terms=(state.cfg&&state.cfg.terms)||{};const rows=Object.keys(terms).sort();let html='<input class="ls-glossary-search" id="lsGSearch" placeholder="Search terms…" />';html+='<div id="lsGList">'+rows.map(k=>gRow(k,terms[k])).join('')+'</div>';openPanel('Glossary · '+rows.length+' terms',html);const input=$('lsGSearch'),list=$('lsGList');input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase();list.innerHTML=rows.filter(k=>{const e=terms[k];const hay=(k+' '+(e.name||'')+' '+(e.kid||'')+' '+(e.adult||'')+' '+(e.phd||'')).toLowerCase();return q===''||hay.includes(q);}).map(k=>gRow(k,terms[k])).join('');});});
+  function gRow(k,e){return`<div class="ls-glossary-entry"><span class="ls-glossary-sym">${esc(e.name||k)}</span><div class="ls-glossary-tier"><b>Kid:</b> ${esc(e.kid||'—')}</div><div class="ls-glossary-tier"><b>Adult:</b> ${esc(e.adult||'—')}</div><div class="ls-glossary-tier"><b>PhD:</b> ${esc(e.phd||'—')}</div></div>`;}
+  if(dockA)dockA.addEventListener('click',()=>{const an=(state.cfg&&state.cfg.analogies)||[];const html=an.map(a=>`<div class="ls-analogy"><h6><span class="ls-analogy-persona">${esc(a.persona||'')}</span>${esc(a.title||'')}</h6><div class="ls-analogy-scenario">${a.scenario||''}</div>${a.map?`<div class="ls-analogy-map"><b style="color:var(--accent);font-size:11px;display:block;margin-bottom:2px;">Variable map</b><table>${Object.entries(a.map).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</table></div>`:''}${a.exercise?`<div class="ls-analogy-ex"><b>Micro-exercise:</b> ${esc(a.exercise)}</div>`:''}</div>`).join('');openPanel('Analogy library · '+an.length+' analogies',html||'<div>No analogies defined.</div>');});
+  if(dockX)dockX.addEventListener('click',()=>{const ex=(state.cfg&&state.cfg.exercises)||[];const html=ex.map((e,i)=>`<div class="ls-exercise"><h6>${esc(e.title||'Exercise '+(i+1))}</h6><div class="ls-ex-meta">${esc(e.time||'2–5 minutes')} · ${esc(e.materials||'Household objects')}</div><div class="ls-ex-sect"><b>What you need</b><ul>${(e.need||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="ls-ex-sect"><b>Do this</b><ol>${(e.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div class="ls-ex-sect"><b>What you should see</b><div style="font-size:12px;color:var(--text)">${esc(e.outcome||'')}</div></div><div class="ls-ex-sect"><b>Back to the sim</b><div style="font-size:12px;color:var(--muted)">${esc(e.back||'')}</div></div><button class="ls-ex-print" data-ex-print="${i}">Print this card (half-letter)</button></div>`).join('');openPanel('Physical exercises · '+ex.length+' cards',html||'<div>No exercises defined.</div>');panelBody.addEventListener('click',e=>{const b=e.target.closest('[data-ex-print]');if(!b)return;printEx(ex[parseInt(b.dataset.exPrint,10)]);});});
+  function printEx(e){if(!e||!printRoot)return;printRoot.style.display='block';printRoot.innerHTML=`<h3 style="margin:0 0 4px;font-size:14pt;">${esc(e.title||'Exercise')}</h3><div style="font-size:10pt;margin-bottom:8px;">${esc(e.time||'')} · ${esc(e.materials||'')}</div><div style="margin-bottom:8px;"><b>What you need</b><ul style="margin:2px 0 0 18px;">${(e.need||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div style="margin-bottom:8px;"><b>Do this</b><ol style="margin:2px 0 0 18px;">${(e.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div style="margin-bottom:8px;"><b>What you should see</b><div>${esc(e.outcome||'')}</div></div><div><b>Back to the sim</b><div>${esc(e.back||'')}</div></div>`;setTimeout(()=>{window.print();printRoot.style.display='none';},50);}
+  eqTabs.forEach(t=>t.addEventListener('click',()=>{state.eqTab=t.dataset.lsTab;renderEqPanel();}));
+  function renderEqPanel(){eqTabs.forEach(t=>t.setAttribute('aria-pressed',t.dataset.lsTab===state.eqTab?'true':'false'));const ep=(state.cfg&&state.cfg.equationPanel)||{};const body=ep[state.eqTab];if(!eqBody)return;if(!body){eqBody.innerHTML='<div style="color:var(--muted)">(no content)</div>';return;}if(typeof body==='string')eqBody.innerHTML=body;else if(body.html)eqBody.innerHTML=body.html;wireTooltipTerms(eqBody);}
+  function renderBeat(){if(!beatHost)return;const beats=(state.cfg&&state.cfg.beats)||[];if(!beats.length){beatHost.innerHTML='<div style="color:var(--muted);font-size:13px;">No beats defined.</div>';return;}state.beatIdx=Math.max(0,Math.min(beats.length-1,state.beatIdx));const b=beats[state.beatIdx];const text=(b.text&&(b.text[state.path]||b.text.adult||b.text.real||b.text.kid))||b.hero||'';beatHost.innerHTML=`<div class="ls-beat"><div class="ls-beat-body"><span class="ls-beat-head">Beat <span class="ls-beat-idx">${state.beatIdx+1} / ${beats.length}</span> · ${esc(b.hero||'')}</span><span>${text}</span></div><div class="ls-beat-ctrl"><button id="lsBeatPrev">◀</button><button class="primary" id="lsBeatDo">${esc(b.action||'Do this')}</button><button id="lsBeatNext">▶</button></div></div>`;wireTooltipTerms(beatHost);$('lsBeatPrev').addEventListener('click',()=>{state.beatIdx--;renderBeat();});$('lsBeatNext').addEventListener('click',()=>{state.beatIdx++;renderBeat();});$('lsBeatDo').addEventListener('click',()=>{if(b.do){try{b.do();}catch(_){}}});}
+  LS.renderBeat=renderBeat;LS.setBeat=function(i){state.beatIdx=i;renderBeat();};
+})();
+
+/* ---- Per-sim content: Anatomy of Inference Studio ---- */
+const ANAT_TERMS = {
+  'F':{name:'F',kid:'How wrong the sensor story looks right now.',adult:'Variational free energy (continuous, quadratic, Laplace form).',phd:'F = ½ Σ εᵀ Π ε over levels; lower bound on −ln p(y).'},
+  'G':{name:'G',kid:'Expected cost of each plan.',adult:'Scalar-EFE proxy: ½ χ (y + control_π − target_π)² + ambiguity_π − habit_π. Teaching simplification.',phd:'Scalar surrogate for EFE; full form is risk + ambiguity − epistemic value. See Eq 4.14.'},
+  'π':{name:'π',kid:'Which plan is most likely chosen.',adult:'Posterior over policies: π = softmax(−γ G).',phd:'Categorical posterior over discrete actions; softened by γ.'},
+  'γ':{name:'γ',kid:'How decisive the planner is.',adult:'Policy precision (inverse temperature).',phd:'Dopaminergic-style gain on softmax; controls concentration.'},
+  'χ':{name:'χ',kid:'How much the planner cares about the goal.',adult:'Preference weight multiplying (y − target)² in G.',phd:'Scalar on risk term in the EFE proxy.'},
+  'E':{name:'E',kid:'Habits. Your default plan before any thinking.',adult:'Log-prior over policies (habit).',phd:'Action prior ∝ exp(−E); amortised policy amortiser.'},
+  'C':{name:'C',kid:'What you want to see / feel.',adult:'Preferred-outcome target (log-prior on observations).',phd:'C[o] enters G via KL(Q(o|π) || C).'},
+  'u':{name:'u',kid:'Your action. Only changes what the sensors see.',adult:'Continuous control variable; u̇ = −∂F/∂u.',phd:'Active inference control law; couples through sensory channel.'},
+  'target_π':{name:'target_π',kid:'What each plan expects to see next.',adult:'Policy-predicted outcome; averaged by π for the bridge.',phd:'Outcome prediction used in the scalar EFE proxy.'},
+  'bridge':{name:'bridge',kid:'How plans push on the fine-grained state.',adult:'Policy-posterior-weighted target descending to the top continuous cause.',phd:'Categorical→continuous message: Σ π · target_π drives μv[top].'},
+  'εy':{name:'εy',kid:'Sensor-story error.',adult:'Sensory residual at the lowest level.',phd:'εy = y − g₀(μx¹, μv¹).'}
+};
+const ANAT_ANALOGIES = [
+  {persona:'P1 · Kid',title:'Coach and player',scenario:'The coach picks a move (plan). The player does it (action). Both watch the game (sensors) and update.',map:{'π':'Coach\u2019s chosen move','u':'Player\u2019s action','εy':'Game scoreboard surprise','C':'What the team wants'},exercise:'Play pretend-soccer: one person coaches, one plays; track how often the plan changes.'},
+  {persona:'P2 · Pre-algebra',title:'Siri picking an app',scenario:'Habit says "music" (default). Goal says "weather" (current request). The final action blends both.',map:{'E':'Habit prior','C':'Goal now','π':'Blended choice'},exercise:'Write down 3 defaults and 3 goals; see which wins each time.'},
+  {persona:'P3 · Adult',title:'Commute driver',scenario:'Driving home on autopilot (habit). You remember you need gas (goal). The goal overrides the habit for one turn.',map:{'E':'Autopilot route','C':'New goal','γ':'How strongly you commit'},exercise:'Take a new route home once; observe how attention spikes only when habits fail.'},
+  {persona:'P4 · Quantitative',title:'Scalar-EFE proxy + continuous PC',scenario:'G_π = ½ χ (y + u_π − t_π)² + ambiguity − habit; π = softmax(−γ G). This is a compact teaching form of EFE; continuous PC handles the rest.',map:{'G':'Policy score','π':'softmax(−γG)','bridge':'Σ π·t_π drives μv[top]'},exercise:'Vary χ and γ in the sim; observe how one sharpens π vs how the other sharpens risk.'},
+  {persona:'P5 · PhD',title:'Figure 5.5 full decomposition',scenario:'Anatomy of inference: habits (E), policy inference, goal priors (C), continuous predictive coding, and action. The scalar EFE is a simplification; the full form is risk + ambiguity with an epistemic value term. See Parr–Pezzulo–Friston 5.5.',map:{'π':'Cat. policy post.','bridge':'Msg to continuous hierarchy','μv top':'Continuous control target'},exercise:'Derive the message map from categorical π to continuous targets; verify against the sim\u2019s bridge tab.'}
+];
+const ANAT_EXERCISES = [
+  {title:'E1 · Habit vs goal board game',time:'8 minutes',materials:'Cards + dice',need:['10 "habit" cards','10 "goal" cards','1 die'],steps:['Shuffle each pile.','Each round, draw one of each.','Roll die: 1–3 habit wins, 4–6 goal wins.','Write the action taken.','After 10 rounds, tally habit vs goal.'],outcome:'High γ (always goal) makes the tally lopsided.',back:'Raise γ in the sim; watch π spike.'},
+  {title:'E2 · Sticky-note rank',time:'3 minutes',materials:'Sticky notes',need:['2 sticky notes','Pen'],steps:['Write "habit" on one, "goal" on the other.','For 5 common daily decisions (coffee, shoes, commute), rank which wins.','Discuss why.'],outcome:'Habits dominate when stakes are low; goals win when they are high.',back:'Change χ in the sim; observe risk term scale.'},
+  {title:'E3 · Role play',time:'5 minutes',materials:'Just people',need:['3 people'],steps:['Assign roles: Habit, Goal, Action.','Read a scenario ("it\u2019s raining, leaving home").','Habit and Goal each argue for a choice.','Action picks the winner, explains.'],outcome:'Clear articulation of how π blends prior and target.',back:'Click Policy step in the sim; inspect π row in the ledger.'}
+];
+const ANAT_BEATS = [
+  {hero:'One system',text:{kid:'Habits, plans, goals, predictions, and actions are one machine.',real:'Anatomy-of-inference: one continuous system spans habits, policy, cortex, action.',equation:'F (continuous) + G-proxy (policy); bridge glues them.',derivation:'Figure 5.5: categorical planning messages bridge to continuous PC.'},action:'Load preset',do:()=>document.querySelector('button#loadPresetBtn,button[data-preset]')?.click()},
+  {hero:'Policy step',text:{kid:'Decide which plan is most likely.',real:'Compute G for each policy, then π = softmax(−γG).',equation:'π = softmax(−γG).',derivation:'Categorical posterior update.'},action:'Policy step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/policy step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Belief step',text:{kid:'Update the fine-grained guess of what the world is.',real:'Gradient step on F drops continuous-level beliefs.',equation:'μ̇ = −∂F/∂μ.',derivation:'Laplace PC update.'},action:'Belief step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/^belief step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Action step',text:{kid:'Act! Only sensors change.',real:'u̇ = −∂F/∂u closes the loop through the world.',equation:'u̇ = −∂F/∂u.',derivation:'Active inference control.'},action:'Action step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/^action step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Bridge',text:{kid:'Plans quietly nudge the fine-grained state target.',real:'Σ π · target_π descends to μv[top].',equation:'bridge_target = Σ_π π · target_π.',derivation:'Categorical→continuous message passing.'},action:'Full cycle',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/full cycle/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Habits vs goals',text:{kid:'When habits are strong, you do the usual. When goals are strong, you break habit.',real:'E drags π toward default; C × χ drags π toward goal-consistent outcomes.',equation:'G = ½χ(y+u_π−t_π)² + ambig − habit.',derivation:'Scalar EFE proxy; see Eq. 4.14 for full form.'},action:'Policy step'},
+  {hero:'Reset',text:{kid:'Start fresh with new settings.',real:'Reset clears μ, π, and u.',equation:'Reset: μ←0, π←uniform, u←0.',derivation:'Return to prior; observe F from cold state.'},action:'Reset',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/reset/i.test(x.textContent));if(b)b.click();}}
+];
+const ANAT_EQ_PANEL = {
+  story:`<div class="ls-eqmath">Think of your brain as a coach + player watching a game. The <span data-term="π">coach</span> picks a plan. The <span data-term="u">player</span> runs it. Both watch the <span data-term="εy">scoreboard</span>. Plans blend two voices: old habits and current goals.</div>`,
+  picture:`<div class="ls-eqpic">
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="E">habit E</span><span class="ls-eqarrow">+</span><span class="ls-eqbox" data-term="C">goal C×χ</span><span class="ls-eqarrow">→</span><span class="ls-eqbox" data-term="G">G</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="G">G</span><span class="ls-eqarrow">−γ</span><span class="ls-eqbox" data-term="π">π = softmax(−γG)</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="π">π</span><span class="ls-eqarrow">bridge</span><span class="ls-eqbox" data-term="bridge">μv[top] target</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="u">u̇ = −∂F/∂u</span><span class="ls-eqarrow">action</span></div>
+  </div>`,
+  equation:`<div class="ls-eqmath"><span data-term="G">G_π</span> = ½ <span data-term="χ">χ</span> (y + u_π − t_π)² + ambiguity_π − <span data-term="E">habit_π</span>
+<span data-term="π">π</span> = softmax(−<span data-term="γ">γ</span> · G)
+<span data-term="bridge">bridge</span>: μv[top] target = Σ_π π · t_π
+<span data-term="F">F</span> (continuous) → belief & action updates</div>`,
+  derivation:`<div class="ls-eqmath">Full Figure 5.5 decomposition per Parr, Pezzulo & Friston. Categorical policy posterior updates propagate as descending messages that bias the continuous hierarchy toward goal-consistent trajectories. Scalar G shown here is a teaching simplification of Eq. 4.14 EFE (risk + ambiguity − epistemic value). Epistemic value appears only when policies influence what is observed.</div>`
+};
+LS.init({simKey:'AnatomyStudio',terms:ANAT_TERMS,analogies:ANAT_ANALOGIES,exercises:ANAT_EXERCISES,beats:ANAT_BEATS,equationPanel:ANAT_EQ_PANEL,onPathChange:(p)=>LS.renderBeat&&LS.renderBeat()});
+</script>
+</body>
+</html>

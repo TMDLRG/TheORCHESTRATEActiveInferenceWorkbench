@@ -1,0 +1,49 @@
+{
+  "slug": "multimodal-silence-informs",
+  "title": "The Absence of Signal Is Itself a Signal",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 8,
+  "tags": ["multi-modal", "absence", "bayes", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(frog_pond)",
+    "world": "frog_pond",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "A 'silent' observation (wall_hit=clear) still moves the posterior, because P(clear|s) varies across tiles."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=multimodal-silence-informs",
+    "labs_url": "/labs?recipe=multimodal-silence-informs&world=frog_pond"
+  },
+  "math": {
+    "latex": "q(s \\mid \\text{clear}) \\propto q(s) \\cdot P(\\text{clear} \\mid s)",
+    "symbols": {
+      "clear": "the 'no wall hit' observation",
+      "P(clear|s)": "varies by tile; the absence of a hit is still state-dependent"
+    }
+  },
+  "audiences": {
+    "kid": "You didn't hear a splash. That's a clue too: maybe nothing's nearby.",
+    "real": "Absence-of-observation is not zero information. As long as P(absence | s) differs across states, it updates the posterior.",
+    "equation": "q(s|clear) = q(s) P(clear|s) / Z. Non-uniform P(clear|s) -> non-trivial update.",
+    "derivation": "Bayes' theorem applies to any observation, including the 'no event' one. Information is asymmetry across states; absence is no exception (Pearl 1988)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["low-road/s2"],
+  "labs": ["bayes", "frog"],
+  "orchestrate": {
+    "objective": "Show that 'no observation' still carries information via a non-uniform likelihood.",
+    "role": "Absence-of-evidence tutor.",
+    "context": "frog_pond; compare posterior after obs={wall_hit=clear} vs. prior."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 2.",
+    "Pearl (1988), Probabilistic Reasoning in Intelligent Systems."
+  ]
+}

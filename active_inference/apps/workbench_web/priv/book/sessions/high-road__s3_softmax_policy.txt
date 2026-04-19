@@ -1,0 +1,196 @@
+Another impor­tant equivalence is between the minimization of expected
+­free energy and inferring the most likely course of action, or policy. This goes
+beyond specifying the least surprising part of state-­space and deals with
+how surprising alternative routes to that part or location may be. ­These
+alternative paths are expressed in terms of policies, which are essentially
+trajectories across states. Importantly, in Active Inference the log probability of a policy is set proportional to the expected f­ree energy if that policy
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+53
+
+was pursued. This implies that the most probable or least surprising path is
+(set to be) the one that minimizes expected f­ ree energy. This formulation is
+equivalent to the way Action is defined in physics, where it scores the probability of a path by an integral (or sum) of an energy. While a physical system
+may pursue a space of hy­po­thet­i­cal trajectories, the path it actually follows
+is the one for which Action is minimized—­that is, Hamilton’s princi­ple of
+least Action. This analogy between Active Inference and Hamilton’s princi­
+ple of least Action is unpacked in the next section.
+3.5 Active Inference: A Novel Foundation to Understand
+Be­hav­ior and Cognition
+In fields like optimal control, reinforcement learning, and economics, the
+optimization of be­hav­ior results from a value function of states, following
+Bellman’s equation (Sutton and Barto 1998). Essentially, each state (or state-­
+action pair) is assigned a value, which represents how good a state is for an
+agent to be in. The value of states (or state-­action pairs) is usually learned
+by trial and error, by counting how many times—­and ­after how much
+time—­one obtains reward by starting from ­those states. Be­hav­ior consists
+in optimizing reward acquisition by reaching high-­valued states, hence
+capitalizing on learning history.
+In contrast, in Active Inference, be­hav­ior is the result of inference and
+its optimization is a function of beliefs. This formulation unites notions
+of (prior) belief and preference. As discussed above, using the notion of
+expected ­free energy amounts to endowing the agent with an implicit prior
+belief that it ­will realize its preferences. Hence, the agent’s preference for a
+course of action becomes simply a belief about what it expects to do, and to
+encounter, in the ­future—or a belief about ­future trajectories of states that it
+­will visit. This replaces the notion of value with the notion of (prior) belief.
+This is an apparently strange move, if one has a background in reinforcement learning (where value and belief are separated) or Bayesian statistics
+(where belief does not entail any value). However, it is a power­ful move, for
+at least three reasons.
+First, it automatically entails a self-­consistent pro­cess model of purposive
+(or teleological) be­hav­ior, which is akin to cybernetic formulations. If we
+endow an Active Inference agent with some prior preference, then it w
+­ ill
+act to realize such preferences—­because this is the only course of action
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+54
+
+consistent with its prior belief that it ­will act to fulfill its expectations. Note
+that the resulting (preferred) course of action, or policy, is directly mea­sur­
+able in experimental settings, whereas a value function or prior belief needs
+to be inferred and hence is a more indirect, if not tautological, mea­sure.
+Second, casting be­hav­ior as a functional of beliefs (probability distributions) automatically entails notions such as degree of belief and uncertainty.
+­These notions undergird impor­tant facets of adaptive action but are not
+directly available in the Bellman formulation. By the same token, this formulation gives more flexibility in modeling sequential dynamics and itinerant be­hav­iors, which are harder to model in terms of a value function of
+states (Friston, Daunizeau, and Kiebel 2009).
+Third, in this formulation, optimal be­hav­ior comes to follow a Hamiltonian princi­ple of least Action in statistical physics. Indeed, Active Inference
+goes one step further ­toward the idea that be­hav­ior is a function of beliefs:
+it also assumes that it becomes an energy function—­and the most likely
+course of action of an Active Inference agent is the one that minimizes f­ ree
+energy. A profound consequence is that living organisms behave according
+to Hamilton’s princi­ple of least Action: they follow a path of least re­sis­tance
+­until they reach a steady state (or a trajectory of states), as exemplified by
+the be­hav­ior of a random dynamical system (shown in figure 3.3). This is a
+fundamental assumption that distinguishes Active Inference from alternative theories of be­hav­ior and cognition based on the Bellman formulation.
+It is worth briefly outlining what we mean by drawing analogies between
+Hamiltonian physics and Active Inference. This is intended on three levels.
+The first is that the advance offered by Active Inference to the behavioral
+and life sciences is comparable to the advance Lagrangian4 and Hamiltonian
+formulations offered to Newton’s accounts of mechanics. While Newtonian
+mechanics ­were originally formulated in terms of differential equations—­
+including Newton’s famous third law expressing the proportionality
+between acceleration and force—­a complementary perspective on mechanics was offered by considering what is conserved by dynamical systems.
+Newtonian dynamics can then be derived from ­these conservation laws.
+­These offer a perspective on which to base further theoretical advances, and
+they form the basis for parts of stochastic, relativistic, and quantum physics. Analogously, Active Inference reformulates the sorts of neuronal and
+behavioral dynamics that might previously have been built up from a series
+of differential equations by specifying the quantity—­free energy—­from
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+55
+
+which ­these dynamics may be derived. Just as dif­fer­ent sorts of Hamiltonians lead to dif­fer­ent types of physics, ­free energies based on dif­fer­ent
+generative models lead to dif­fer­ent neuronal and behavioral dynamics.
+The second point of connection between Hamiltonian physics and Active
+Inference arises from a more direct association between a Hamiltonian and
+probability mea­sures. The idea ­here is to associate the conserved Hamiltonian with the energy of the system. Remember that the quantities we have
+referred to as energies so far (­here and in chapter 2) have all had the form of
+a negative log probability. This reflects an interpretation of energy as simply
+a mea­sure of the improbability of any given configuration of a system. On
+this view, conservation of energy and of probability are equivalent laws. As
+dissipative systems—­coupled to external states via a Markov blanket—­move
+to states of low energy or high probability, we can directly associate the
+energy or Hamiltonian with surprise. As such, Active Inference is Hamil­­
+tonian physics applied to a certain kind of system (systems that feature a
+Markov blanket).
+The third association between ­these formulations is the variational calculus that underwrites the association between energies and dynamics.
+This is most apparent when Hamiltonian physics is expressed as a princi­
+ple of least Action, where Action refers to the integral of a Lagrangian over
+a path. Crucially, this Action is a functional of a path. ­Here, a path is a
+function of time whose output is the position and velocity of a particle
+on that path at that time. The path followed by a (deterministic) particle
+minimizes this Action. Similarly, Active Inference is predicated on the idea
+that beliefs (themselves functions of hidden states) must minimize a ­free
+energy functional. The key point of contact h
+­ ere is that in both cases, functions (paths or beliefs) must be optimized in relation to functionals (Action
+or ­free energy, respectively). This places both in the context of variational
+calculus, which is a branch of mathe­matics dedicated to finding extrema of
+functionals. In physics, this leads to the Euler-­Lagrange equations. In Active
+Inference, we arrive at variational inference procedures.
+3.6 Models, Policies, and Trajectories
+In section 3.2, we highlighted that the scope of Active Inference pertains to
+­those systems that enjoy some separation from their environment and saw
+that this translates into the presence of a Markov blanket. In section 3.3,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+56
+
+we highlighted that the per­sis­tence of this blanket requires dynamics that
+(on average) minimize the surprise of (sensory) states. As this may be interpreted as self-­evidencing, we arrive at the conclusion that be­hav­ior is determined by a steady-­state distribution that can be interpreted as a generative
+model of how (sensory) data are generated.
+This tells us something very impor­tant. Each generative model should be
+associated with dif­fer­ent sorts of be­hav­ior. As such, dif­fer­ent sorts of be­hav­
+ior may be accounted for by specifying dif­fer­ent generative models—­and
+implicitly what that system would find surprising. Furthermore, dif­fer­ent
+kinds of generative model may correspond to adaptive or cognitive creatures
+having vari­ous levels of complexity (Corcoran et al. 2020). Very s­ imple generative models of the sort driving the dynamics in figure 3.3 offer a minimal
+sort of cognition, as they cannot entertain the possibility of alternative (or
+counterfactual) trajectories. Further, ­these models are shallow, in the sense
+that they afford inference at just one timescale. In contrast, hierarchical generative models afford inference at multiple timescales. In hierarchical or
+deep models, the dynamics at higher hierarchical levels generally encode
+­things that change more slowly (e.g., the sentence I am reading) and that
+contextualize ­things that change faster (e.g., the word I am reading), which
+are represented at lower hierarchical levels (Kiebel et al. 2008; Friston, Parr,
+and de Vries 2017).
+What do we need to include in a model to derive more complex be­hav­
+iors of the sort we would associate with agency and sentient systems? One
+answer to this is the capacity to model alternative ­futures, or dif­fer­ent ways
+in which events might play out—­and to select among them. In turn, considering pos­si­ble ­futures requires a generative model that has some temporal depth and explic­itly represents the consequences of actions. Working
+this into the model ­will ensure be­hav­ior that conforms to the most likely of
+­these ­futures. The (counterfactual) capacity to entertain t­hese alternatives
+may be what separates the steady state associated with sentient systems
+from simpler creatures. When alternative ­futures pertain to ­things over
+which we have control, we refer to t­ hese as policies or plans. As we saw in
+chapter 2, one way of disambiguating between ­these plans is to incorporate
+a prior belief into a model that says that ­those policies with the lowest
+expected ­free energy are the most plausible. This offers a way of characterizing a certain kind of system with a Markov blanket at steady state—­which
+seems to correspond well to systems like us.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+57
+
+3.7 Reconciliation of Enactive, Cybernetic, and Predictive Theories
+­under Active Inference
+By emphasizing f­ree energy minimization, Active Inference unites and
+extends three apparently disconnected theoretical perspectives.
+First, Active Inference is in keeping with enactive theories of life and
+cognition, which emphasize the self-­organization of be­hav­ior and autopoietic interactions with the environment, which ensure that living organisms
+remain within acceptable bounds (Maturana and Varela 1980). Active Inference provides a formal framework explaining how living organisms manage
+to resist the dispersion of their states by self-­organizing a statistical structure—­
+the Markov blanket—­that affords reciprocal exchanges between organism
+and environment while also separating (and in a sense protecting the integrity of ) the organisms’ states from external, environmental dynamics.
+Second, Active Inference is in keeping with cybernetic theories, which
+describe be­hav­ior as purposive and teleological. Teleology means that be­hav­
+ior is internally regulated by a mechanism that continuously tests ­whether
+a goal is achieved and, if not, steers corrective actions (Rosenblueth et al.
+1943, Wiener 1948, Ashby 1952, G. Miller et al. 1960, Powers 1973). Similarly, Active Inference agents use both perception and action to minimize
+the discrepancy between preferred and sensed states. Active Inference provides a normative and v
+­ iable description of the minimization pro­cess by
+specifying that what is actually minimized is a statistical quantity that the
+agent can measure—­variational ­free energy—­which ­under certain conditions corresponds to a prediction error, or the difference between what is
+expected and what is sensed. This implies a formulation of cybernetic control as a prospective process—­which leads us to the next point.
+Third, Active Inference is in keeping with theories that describe control
+as a prospective pro­cess that rests on a model of the environment—­possibly
+physically implemented in the brain (Craik 1943). Active Inference assumes
+that agents use a (generative) model to construct predictions that guide perception and action and to evaluate their ­future (and counterfactual) action
+possibilities. This assumption is coherent with the good regulator theorem
+(Conant and Ashby 1970), which says that any controller should have—or
+be—­a good model of the environment. Active Inference reconciles t­hese
+model-­based perspectives on brain and be­hav­ior u
+­ nder a rigorous characterization in terms of (approximate) Bayesian inference and (variational
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+58

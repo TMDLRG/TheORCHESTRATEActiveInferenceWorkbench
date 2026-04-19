@@ -1,0 +1,394 @@
+of discrete states and times. Effectively, this means we can select (at regular time
+intervals) between alternative segments of a continuous trajectory.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+167
+
+sort addressed in this chapter at each discrete time step. This decomposes
+continuous time into a discrete sequence of short continuous trajectories.
+To translate from the outcomes of the discrete level to the continuous
+level, we need to associate each alternative outcome with a point in some
+continuous space. To develop intuition for this idea, we consider the example of a delay-­period oculomotor task—­often used in primate research; see
+figure 8.7. This task involves three stages. First, a target appears in one of (for
+example) four pos­si­ble locations, while a monkey maintains fixation on a
+central fixation cross. Next, the target dis­appears and must be remembered
+during a delay period. Fi­nally, a signal is given for the monkey to make
+a saccade, at which point it must look at the location where the original
+target appeared. To complete this task, the monkey must be able to draw
+inferences about sequences (which stage of the task is currently in play) and
+to infer which of four locations to aim for. ­These are categorical inference
+prob­lems suited to a POMDP formulation. However, once the appropriate
+location has been selected, the monkey must perform the eye movement
+that brings its fovea to the (continuous) coordinates of the target location.
+Figure 8.7 illustrates the functioning of a mixed generative model that
+solves this prob­lem. In the top panel, the model’s higher level makes categorical decisions: it computes the posterior beliefs about four discrete target
+locations at four time periods. In the m
+­ iddle and bottom plots, the model’s
+lower level computes continuous behavioral trajectories (eye movements)
+resulting from discrete inferences at the higher level.
+Transforming decisions about discrete target locations into continuous
+eye movements requires each discrete target location (o) to be associated
+with a distribution over continuous hidden c­ auses (v), which identifies the
+target coordinates. The prior over target coordinates can then be computed
+by taking the Bayesian model average over t­ hese locations, weighted by the
+inferences at the POMDP level:
+! v)
+P ( v! |oτ ) = N (η! oτ , Π
+! v)
+!, Π
+! ≈ N (η
+P( v)
+
+(8.8)
+
+! = EQ (o ) [η! ] = oτ i η!
+η
+τ
+
+To infer which discrete target best explains continuous data, we need to
+be able to compute the evidence associated with each hy­po­thet­i­cal target—­
+which is a function of observed continuous data. This exemplifies the fact
+that mixed models require reciprocal interactions between higher and lower
+hierarchical levels. As we see in figure 8.7, this facilitates the formation of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+168
+
+1
+0.8
+0.6
+
+Saccade up (τ = 3)
+Fixate up (τ = 4)
+
+Fixate center (τ = 2)
+
+0.4
+0.2
+0
+
+Delay
+
+Cue
+25
+
+Firing rates (discrete)
+
+Saccade
+Speed
+
+Behavior (continuous)
+
+Distance
+
+0.5
+0.4
+
+15
+
+0.3
+
+10
+
+0.2
+
+5
+0
+
+0.6
+
+m/s
+
+Distance
+cm
+
+20
+
+Fixate
+
+Speed
+
+Probability
+
+Fixate center (τ = 1)
+
+0.1
+0
+
+200
+
+400
+
+ms
+Time
+
+600
+
+800
+
+0
+
+Figure 8.7
+Transforming decisions into movement using mixed or hybrid models (Parr and Friston 2019b). This ­simple example uses the oculomotor delay-­period paradigm outlined in the main text. Top: Neuronal firing rates representing posterior beliefs about
+the target location. The target may be in four dif­fer­ent locations, and ­there are four
+time steps in this synthetic experiment, so t­ here are 16 neural populations representing each of ­these combinations. The lines corresponding to the final inferred state of
+affairs are annotated explic­itly. Note the belief updating at the first time step (from 0
+to 250 ms), when the target initially appears, and at the third time step (from 500 to
+750 ms), when the agent observes itself performing a saccade to that location. ­Middle:
+Be­hav­ior (i.e., a saccade from the center location to the target location). During the
+first quarter of the experiment, the target is vis­i­ble in the upper location. Next, ­there
+is a delay period, during which fixation is maintained. Then a saccade is performed
+to the correct location. Fi­nally, ­there is a period during which fixation is maintained
+at the target location. Bottom: Continuous behavioral trajectories that result from the
+discrete inferences of the top plot.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+169
+
+Box 8.3
+Mixture models and clustering
+The issue of combining categorical and continuous generative models outside
+of Active Inference has primarily been framed through the lens of clustering.
+­Here, the aim is to assign each (continuous) data point to a (discrete) cluster.
+A range of algorithms have been employed to solve this prob­lem, but most of
+them implicitly rely on a generative model similar to that used ­here. This is a
+mixture of Gaussians (aka a Gaussian mixture model):
+
+∏ P(s | D)P(y | s ,η,Π)
+
+! s! , D, η , Π) = P(D)P(η )P(Π)
+P( y,
+
+i
+
+i
+
+i
+
+i
+
+P(D) = Dir(d)
+P(si |D) = Cat(D)
+P(yi | si , η , Π) = N (ηsi , Πsi )
+The prob­lem in clustering approaches is to infer the mean and precision
+(η and Π, respectively) of each cluster and the posterior probability that each
+data-­point ( yi) belongs to a given cluster P(si | yi). For our purposes (as described
+in section 8.5), we assume precise (delta-­function) priors for η and Π and calculate Q(si) ≈ P(si | yi) via Bayesian model reduction (see box 7.3).
+
+beliefs about where to perform saccades and the execution of ­those saccades
+at the appropriate times. At the first discrete time step (up to 250 ms on the
+continuous scale), the monkey is able to infer with some confidence that
+its eyes are centered on the fixation cross during the first time step, that it
+­will maintain this fixation at the second time step (up to 500 ms), and that
+the most likely course of action a
+­ fter this ­will result in foveating the upper
+location. This can be seen in the discrete firing rates (top plot). This translates into the continuous be­hav­ior which, when implemented, increases the
+confidence in beliefs about the discrete states (note the increase in probability for an upward saccade at the third time step once the continuous data
+become available between 500 and 750 ms). This s­ imple example, based on
+experimental cognitive research, illustrates the basic princi­ples of translation
+between discrete action plans and their continuous implementation.
+8.6 Summary
+In this chapter, we have overviewed the applications of continuous-­time
+generative models ­under Active Inference. This is a huge topic, and much
+has been left out (see ­table 8.1 for further reading). However, the broad
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+170
+
+­Table 8.1
+Key advances in continuous-­time models
+Application
+
+Sources
+
+Notes
+
+Synthetic
+birdsong
+
+Friston and Frith 2015a
+Friston and Frith 2015b
+Isomura, Parr, and
+Friston 2019
+
+This series of papers deals with
+communication and the interaction
+between synthetic agents, a simulated pair (or group) of songbirds
+singing to one another. The studies
+unpack phenomena from generalized synchrony to perceptual inference to sensory attenuation.
+
+Oculomotor
+delays
+
+Perrinet, Adams, and
+Friston 2014
+
+By taking advantage of beliefs
+about the near past and ­future
+implicit in models formulated in
+generalized coordinates of motion,
+it is pos­si­ble to account for sensori­
+motor delays through projections
+a short way into the ­future or past.
+
+Conditioned
+reflexes
+
+Friston and Herreros
+2016
+
+Using a model based on a Lotka-­
+Volterra system, the temporal
+relationship between a conditioned
+and unconditioned stimulus is
+learned and used to generate an
+anticipatory blink.
+
+Smooth pursuit
+eye movements
+
+Adams, Perrinet, and
+Friston 2012
+
+This work looks at the role of
+smooth pursuit eye movements,
+following a visual target. It aims
+to reproduce differences between
+neurotypical and schizophrenic
+individuals in response to pursuit
+with and without visual occlusion.
+
+Psychosis
+
+Adams, Stephan et al.
+2013
+
+Building on the songbird and
+smooth pursuit models, this
+research looks at how false, psychotic inference may arise from
+suboptimal prior beliefs.
+
+Illusions
+
+Brown and Friston 2012
+Brown, Adams et al. 2013
+
+Illusions offer a useful tool to reveal
+the prior beliefs our brains appeal
+to in the presence of uncertain or
+ambiguous sensory input. ­These
+papers take several examples of
+common illusions and demonstrate
+the optimality of illusory inferences
+­under certain prior beliefs.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+171
+
+­Table 8.1
+(continued)
+Application
+
+Sources
+
+Notes
+
+Saccades
+
+Friston, Adams et al.
+2012
+Donnarumma et al. 2017
+Parr and Friston 2018a
+
+Like the smooth pursuit simulations, ­these papers consider eye
+movement control. However, ­here
+the eyes do not simply follow a
+target but must move to one of
+several pos­si­ble target locations.
+They deal with the generative
+models we need to be able to do
+this and (once the models have
+been specified) the emergent architectures and physiology.
+
+Action
+observation
+
+Friston, Mattout, and
+Kilner 2011
+
+This work considers the role of the
+mirror neuron system and formalizes the idea that generative models
+of our own actions can also be put
+to use in modeling, and replicating,
+be­hav­ior observed in ­others.
+
+Attention
+
+Feldman and Friston
+2010
+Kanai et al. 2015
+
+Through predicting precision, we
+implicitly select the data that we
+believe is most informative. This
+work highlights how implementations of this idea reproduce classical
+psychophysical findings in the
+Posner paradigm and figure-­ground
+discrimination tasks.
+
+Hybrid models
+
+Friston, Parr, and de
+Vries 2017
+Parr and Friston 2018c
+Parr and Friston 2019b
+
+­These models make use of discrete
+POMDP models in combination
+with predictive coding schemes.
+Most current examples of this
+modeling are framed in terms of
+visual search be­hav­ior or oculo­
+motor control. ­These require
+selecting where to look and then
+implementing the pro­cess of
+looking ­there.
+
+Self-­organization
+
+Friston 2013
+Friston, Levin et al. 2015
+Palacios et al. 2020
+
+This line of research is based on
+the idea that groups of cells can
+or­ga­nize into a predefined structure when each cell has the same
+implicit generative model of that
+structure. Specifically, they must
+know what sort of sensory input
+they would predict if they ­were a
+par­tic­u­lar kind of cell.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+172
+
+concepts outlined h
+­ ere provide a foundation from which t­ hese models may
+be further explored. Specifically, we have considered movement generation
+in terms of the fulfillment of predictions. This greatly simplifies the treatment of motor control prob­lems, as we do not need any additional machinery or inverse models—­just spinal or brain stem reflex arcs. We highlighted
+the role of precision and sensory attenuation in motor control of this sort.
+Given that a key advantage of continuous schemes is to articulate generative
+models in terms of dynamical systems, we outlined two ubiquitous types of
+dynamical system that have found widespread application in Active Inference research. Generalized Lotka-­Volterra systems act to provide temporal

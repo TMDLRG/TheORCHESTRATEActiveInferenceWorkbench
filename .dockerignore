@@ -1,0 +1,40 @@
+# Keep the Docker build context small + deterministic.
+# The Dockerfile COPYs `jido/` and `active_inference/` explicitly.
+# Everything else is excluded by default below and re-included with `!`.
+
+**/*
+
+# Required for the build
+!active_inference/
+!jido/
+
+# Always drop these even under active_inference/ and jido/
+**/.git/
+**/_build/
+**/deps/
+**/doc/
+**/cover/
+**/.elixir_ls/
+**/.elixir-tools/
+**/erl_crash.dump
+**/*.ez
+**/mix.lock.backup
+
+# Mnesia on-disk data (never ship dev state into a prod image)
+**/priv/mnesia/
+
+# Phoenix generated static caches
+**/priv/static/cache_manifest.json
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Editor / OS noise
+**/.DS_Store
+**/.vscode/
+**/.idea/
+
+# Nested Claude / AI scaffolding
+**/.claude/

@@ -1,0 +1,140 @@
+In chapter 7, we discuss Active Inference models that address prob­lems
+formulated in discrete time; for example, as hidden Markov models (HMMs)
+or partially observable Markov decision pro­cesses (POMDPs). Our examples
+include a model of perceptual pro­cessing and a model of discrete foraging
+choices—­that is, w
+­ hether to turn left or right at a decision point to secure
+a reward. We also introduce topics such as information seeking, learning,
+and novelty seeking, which can be treated in terms of discrete-­time Active
+Inference.
+In chapter 8, we discuss Active Inference models that address prob­lems
+formulated in continuous time, using stochastic differential equations.
+­These include models of perception (like predictive coding), movement control, and sequential dynamics. Interestingly, it is in the continuous-­time
+formulation that some of the most distinctive predictions of Active Inference appear, such as the idea that movement generation stems from the fulfillment of predictions and that attentional phenomena can be understood
+in terms of precision control. We also introduce hybrid models of Active
+Inference that include both discrete-­and continuous-­time variables. ­These
+permit simultaneous assessment of the choice among discrete options (e.g.,
+targets for saccades) and the continuous movements resulting from the
+choice (e.g., oculomotor movements).
+In chapter 9, we illustrate how to use Active Inference models to analyze
+data from behavioral experiments. We discuss the specific steps that are
+necessary for model-­based data analy­sis, from the collection of data to
+the formulation of a model and its inversion to support the analy­sis of data
+from single participants or at the group level.
+In chapter 10, we discuss the relations between Active Inference and
+other theories in psy­chol­ogy, neuroscience, AI, and philosophy. We also
+highlight the most impor­tant aspects of Active Inference that distinguish it
+from the other theories.
+In the appendixes, we briefly discuss the mathematical background
+required to understand the most technical parts of the book, including
+the notions of Taylor series approximation, variational Laplace, variational
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Overview
+
+13
+
+calculus, and more. For reference we also pre­sent in a concise form the most
+impor­tant equations used in Active Inference.
+In sum, the second part of the book illustrates a broad variety of models of biological and cognitive phenomena that can be constructed using
+Active Inference and a methodology to design novel ones. Apart from the
+interest of the specific models, we hope that our treatment clarifies the
+value of using a unified, normative framework to address biological and
+cognitive phenomena from a coherent perspective. In the end, this is the
+real appeal of normative frameworks: to provide a unified perspective and
+a guiding princi­ple to reconcile apparently disconnected phenomena—in
+this case, phenomena like perception, decision-­making, attention, learning,
+and movement control, each having its separate chapter in any psy­chol­ogy
+or neuroscience manual.
+The models highlighted in the second part have been selected to illustrate specific points as simply as pos­si­ble. While we cover several models
+and domains, from discrete-­time decisions to continuous-­time perception
+and movement control, we are clearly disregarding many o
+­ thers that are
+equally in­ter­est­ing. Many other Active Inference models exist in the lit­er­
+a­ture that cover domains as diverse as biological self-­organization and the
+origins of life (Friston 2013), morphogenesis (Friston, Levin et al. 2015), cognitive robotics (Pio-­Lopez et al. 2016, Sancaktar et al. 2020), social dynamics and niche construction (Bruineberg, Rietveld et al. 2018), the dynamics
+of synaptic networks (Palacios, Isomura et al. 2019), learning in biological
+networks (Friston and Herreros 2016), and psychopathological conditions,
+such as post-­traumatic stress disorder (Linson et al. 2020) and panic disorder (Maisto, Barca et al. 2021). T
+­ hese models vary along many dimensions:
+some are more directly related to biology whereas ­others are less so; some
+are single-­agent models whereas ­others are multi-­agent models; some target adaptive inference whereas other target maladaptive inference (e.g., in
+patient groups), and so on.
+This growing lit­er­a­ture exemplifies the increasing popularity of Active
+Inference and the possibility of using it in a very large variety of domains.
+The aim of this book is to provide our readers with the ability to understand and use Active inference in their own research—­possibly, to explore
+its unforeseen potentialities.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+14
+
+1.5 Summary
+This chapter briefly introduces the Active Inference approach to explain
+biological prob­lems from a normative perspective—­and previews some
+implications of this perspective that ­will be unpacked in ­later chapters. Furthermore, this chapter highlights the division of the book into two parts,
+which aim to help readers understand Active Inference and use it in their
+own research, respectively. Over the next few chapters, we ­will develop
+the low road and high road perspectives outlined herein, before delving
+into the structure of generative models and the resulting message passing.
+Together ­these comprise Active Inference in princi­ple and provide the preliminaries for Active Inference in practice. We hope that ­these chapters ­will
+persuade readers that Active Inference offers not only a unifying princi­ple
+­under which to understand be­hav­ior but also a tractable approach to studying action and perception in autonomous systems.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+2
+
+The Low Road to Active Inference
+
+My thinking is first and last and always for the sake of my ­doing.
+—­William James
+
+2.1 Introduction
+This chapter introduces Active Inference by starting from the H
+­ elmholtzian—
+or perhaps Kantian—­view of “perception as unconscious inference” (Helmholtz 1867) and related ideas that have emerged more recently u
+­ nder the
+Bayesian brain hypothesis. It explains how Active Inference subsumes and
+extends t­ hese ideas by treating not just perception but also action, planning,
+and learning as prob­lems of (Bayesian) inference and by deriving a principled
+(variational) approximation to such other­wise intractable prob­lems.
+2.2 Perception as Inference
+­There is a long tradition of seeing the brain as a “predictive machine,”
+or a statistical organ that infers and predicts external states of the world.
+This idea dates back to the notion of “perception as unconscious inference” (Helmholtz 1866). More recently, this has been reformulated as the
+“Bayesian brain” hypothesis (Doya 2007). From this perspective, perception is not a purely bottom-up transduction of sensory states (e.g., from the
+ret­ina) into internal repre­sen­ta­tions of what is out t­here (e.g., as patterns
+of neuronal activity). Rather, it is an inferential pro­cess that combines (top-­
+down) prior information about the most likely ­causes of sensations with
+(bottom-up) sensory stimuli. Inferential pro­cesses operate on probabilistic
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+16
+
+repre­sen­ta­tions of states of the world and follow Bayes’ rule, which prescribes the (optimal) update in the light of sensory evidence. Perception is
+not a passive outside-in process—in which information is extracted from
+impressions on our sensory epithelia from “out ­there.” It is a constructive
+inside-­out process—in which sensations are used to confirm or disconfirm
+hypotheses about how they ­were generated (MacKay 1956, Gregory 1980,
+Yuille and Kersten 2006, Neisser 2014, A. Clark 2015).
+In turn, performing Bayesian inference requires a generative model—­
+sometimes referred to as a forward model. A generative model is a construct
+from statistical theory that generates predictions about observations. It may
+be formulated as the joint probability P( y, x) of observations y and the world’s
+hidden states x that generate t­hese observations. The latter are referred to
+as hidden or latent states as they cannot be observed directly. This joint
+probability can be decomposed into two parts. The first is a prior P(x), which
+denotes the organism’s knowledge about the hidden states of the world prior
+to seeing sensory data. The second is the likelihood P( y | x), which denotes
+the organism’s knowledge of how observations are generated from states.
+Bayes’ rule tells us how to combine ­these two ele­ments, essentially updating
+a prior probability P(x) into a posterior probability of hidden states a
+­ fter receiving observations P(x | y). For readers who need a brief refresher on basic
+probability theory, box 2.1 provides a summary.
+Bayesian inference is a broad topic that arises in disciplines like statistics,
+machine learning, and computational neuroscience. A full treatment of the
+associated topics is beyond the scope of this book, but ­there are excellent
+resources available for ­those who wish to understand it in depth (Murphy

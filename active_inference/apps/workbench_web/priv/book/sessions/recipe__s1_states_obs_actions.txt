@@ -1,0 +1,255 @@
+Markov blanket is drawn around a single neuron but not when the blanket
+is drawn around the ner­vous system.
+The above is particularly relevant when dealing with embodied or
+extended perspectives on cognition (Clark and Chal­mers 1998; Barsalou
+2008; Pezzulo, Lw et al. 2011). For example, if we draw the blanket around
+the ner­vous system, the rest of the body becomes an external state, about
+which we must make inferences from interoceptive sensory states (Allen
+et al. 2019). Alternatively, we could draw our blanket around the entire
+organism. This would make it look as if organs other than the brain ­were
+making inferences about their environment. For example, depression of
+the skin in response to an external pressure could be framed as an inference
+about the source of the external pressure. The extended cognition perspective takes this further and says that objects external to the body may be
+incorporated into the Markov blanket (e.g., the use of a calculator to assist
+in inference implies that the calculator is part of the internal state-­space
+of the inferring system). Fi­nally, we could have multiple Markov blankets,
+nested within one another (e.g., brains, organisms, communities).
+In sum, defining the Markov blanket ensures we know what is being inferred
+(external states) and what is ­doing the inferring. Indeed, minimization of ­free
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+110
+
+energy with re­spect to a generative model only involves the internal and
+active states of a system: t­hese only see the sensory states, so they can only
+infer the external state of the world vicariously.
+6.4 What Is the Most Appropriate Form for the Generative Model?
+Once we have de­cided on the internal states of a system and the states that
+mediate their interaction with the world outside, we need to specify the
+generative model that explains how external states influence sensory states.
+As discussed in previous chapters, Active Inference can operate on dif­
+fer­ent kinds of generative models. Therefore, we need to specify the most
+appropriate form of the generative model for the prob­lem at hand. This
+implies making three main design choices. The first is a choice between
+models that include continuous or discrete variables (or both). The second is a choice between shallow models, in which inference operates on a
+single timescale (i.e., all variables evolve at the same timescale), and hierarchical or deep models, in which inference operates on multiple timescales (i.e., dif­fer­ent variables evolve at dif­fer­ent timescales). The third is
+a choice between models that only consider pre­sent observations versus
+models having some temporal depth, which consider the consequences of
+actions or plans.
+6.4.1 Discrete or Continuous Variables (or Both)?
+The first design choice is to consider w
+­ hether generative models that use discrete or continuous variables are more appropriate. The former include object
+identities, alternative action plans, and discretized repre­sen­ta­tions of continuous variables. ­These are modeled through expressing the ­probability—at each
+time step—of one variable transitioning into another type. The latter include
+­things like position, velocity, muscle length, and luminance and require a
+generative model expressed in terms of rates of change.
+Computationally, the distinction between the two may not be clear-­cut
+­because a continuous variable may be discretized, and a discrete variable
+may be expressed through continuous variables. However, this distinction
+is impor­tant conceptually, as it underlies specific hypotheses about the
+time course (discrete or continuous) of the cognitive pro­cesses of interest.1
+In most current implementations of Active Inference, high-­level decision
+pro­cesses, such as the choice between alternative courses of actions, are
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+111
+
+modeled using discrete variables, whereas more fine-­grained perception and
+action dynamics are implemented using continuous variables; we w
+­ ill provide examples of both in chapters 7 and 8, respectively.
+Furthermore, the choice between discrete and continuous variables is
+relevant for neurobiology. While each style of modeling appeals to ­free
+energy minimization, the message passing t­ hese imply take dif­fer­ent forms.
+To the extent that one considers message passing relevant for a pro­cess theory (see chapter 5), this implies that the neural dynamics that realize this
+minimization are dif­fer­ent u
+­ nder each sort of model. Continuous schemes
+underwrite predictive coding—­a theory of neural pro­cessing that relies on
+top-­down predictions corrected by bottom-up prediction errors. However,
+the analogous pro­cess theories for discrete inferences involve messages of a
+dif­fer­ent form. Fi­nally, the two types of model may be combined such that
+discrete states are associated with continuous variables. This means we can
+specify a generative model wherein a discrete state (e.g., object identity)
+generates some pattern of continuous variables (e.g., luminance). We ­will
+discuss an example of a hybrid or mixed generative model that includes
+both discrete and continuous variables in chapter 8.
+6.4.2 Timescales of Inference: Shallow versus Hierarchical Models
+The second design choice concerns the timescales of Active Inference.
+One can select ­either (shallow) generative models, in which all the variables evolve at the same timescale, or (hierarchical or deep) models, which
+include variables that evolve at dif­fer­ent timescales: slower for higher levels
+and faster for lower levels.
+While many s­ imple cognitive models only require shallow models, t­ hese
+are not sufficient when ­there is a clear separation of timescales between dif­
+fer­ent aspects of a cognitive pro­cess of interest. One example of this is in language pro­cessing, in which short sequences of phonemes are contextualized
+by the word that is spoken and short sequences of words are contextualized
+by the current sentence. Crucially, the duration of the word transcends that
+of any one phoneme in the sequence and the duration of the sentence transcends that of any one word in the sequence. Hence, to model language pro­
+cessing, one can consider a hierarchical model in which sentences, words,
+and phonemes appear at dif­fer­ent (higher to lower) hierarchical levels and
+evolve over (slower to faster) timescales that are approximately in­de­pen­
+dent of one another. This is only an approximate separation, as levels must
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+112
+
+influence each other (e.g., the sentence influences the next words in the
+sequence; the word influences the next phonemes in the sequence).
+However, this does not mean we need to attempt to model the entire
+brain to develop meaningful simulations of a single level. For example, if
+we wanted to focus on word pro­cessing, we could address some aspects
+without having to deal with phoneme pro­cessing. This means we can treat
+input from parts of the brain drawing inferences about phonemes as providing observations from the perspective of word-­processing areas. Phrasing this in terms of a Markov blanket, this typically means we treat the
+inferences performed by lower levels of a model as part of the sensory states
+of the blanket. This means we can summarize the inferences performed at
+the timescale of interest without having to specify the details of lower-­level
+(faster) inferential processes—­
+and this hierarchical factorization entails
+­great computational benefits.
+Another example is in the domain of intentional action se­lection, where
+the same goal (enter your apartment) can be active for an extended period
+of time and contextualizes a series of subgoals and actions (find keys, open
+door, enter) that are resolved at a much faster timescale. This separation of
+timescales, ­whether in the continuous or discrete domain, demands a hierarchical (deep) generative model. In neuroscience, one can assume that cortical hierarchies embed this sort of temporal separation of timescales, with
+slowly evolving states at higher levels and rapidly evolving states at lower
+levels, and that this recapitulates environmental dynamics, which also
+evolve at multiple timescales (e.g., during perceptual tasks like speech recognition or reading). In psy­chol­ogy, this sort of model is useful in reproducing
+hierarchical goal pro­cessing (Pezzulo, Rigoli, and Friston 2018) and working
+memory tasks (Parr and Friston 2017c) of the sort that rely on delay-­period
+activity (Funahashi et al. 1989).
+6.4.3 Temporal Depth of Inference and Planning
+The third design choice concerns the temporal depth of inference. It is impor­
+tant to draw a distinction between two kinds of generative model: the first
+have temporal depth and represent explic­itly the consequences of actions or
+action sequences (policies or plans), whereas the second lack temporal depth
+and only consider pre­sent but not ­future observations. ­These two kinds of
+model are exemplified in figure 4.3: the dynamic POMDP at the top and the
+continuous-­time model at the bottom.2 The key difference between ­these
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+113
+
+two models is not that they use discrete or continuous variables, respectively, but that only the former (temporally deep) model endows creatures
+with the ability to plan ahead and select among pos­si­ble ­futures.
+Imagine a rodent who plans a route to a known food location in a maze.
+­Doing this benefits from a temporally deep model, loosely equivalent to a spatial or cognitive map (Tolman 1948), which encodes contingencies between
+pre­sent and ­future locations conditioned on actions (e.g., the ­future location
+­after turning right or left). The animal can use the temporally deep model to
+counterfactually consider multiple courses of action (e.g., series of right and
+left turns) and select the one expected to reach the food location.
+Why is a temporally deep model required for planning? In Active Inference, planning is realized by calculating the expected f­ ree energy associated
+with dif­fer­ent actions or policies and then selecting the policy that is associated with the lowest expected f­ree energy. Expected f­ree energy is not just
+a function of pre­sent observations (like variational ­free energy) but also a
+functional of ­future observations. The latter cannot be observed (by definition) but only predicted using a temporally deep model, which describes
+the ways in which actions produce f­ uture observations.
+When designing an Active Inference agent it is useful to consider w
+­ hether
+it should have planning and future-­oriented capacities—­and, in this case, to
+select a temporally deep model. Furthermore, it is useful to consider planning depth—­that is, how far in the ­future the planning pro­cess can look.
+Fi­nally, one can design generative models that are both hierarchical and
+temporally deep, wherein planning proceeds at multiple timescales—­faster
+­ hether to model
+at lower levels, and slower at higher levels.3 The decision w
+alternative ­futures, contingent on policy se­lection, is largely tied up with the
+choice between discrete and continuous models b
+­ ecause the idea of selecting
+between alternative f­utures, defined by sequences of actions, is more simply
+articulated using discrete-­time models.
+6.5 How to Set Up the Generative Model?
+When we have specified our system of interest and identified the relevant
+forms of the generative model (e.g., continuous or discrete repre­sen­ta­tion,
+shallow versus hierarchical structure), our next challenges are to specify the
+specific variables to include in the generative model and decide which of
+­these variables remain fixed or change as an effect of learning.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+114
+
+6.5.1 Setting Up the Variables of the Generative Model
+The variables of generative models can be e­ ither predefined or learned from
+data. For illustrative purposes, most models that we discuss in this book
+use predefined variables. When designing t­hese models, in practice, the
+main challenge is deciding which hidden states, observations, and actions
+are most appropriate for the prob­lem at hand. For example, the perceptual
+model able to distinguish frogs from apples in chapter 2 only included two
+hidden states (frogs, apples) and two observations (jumps, does not jump).
+A more sophisticated model could include additional observations (e.g.,
+red, green) as well as actions such as touching, which produce differential
+sensory effects (jump or no jump) in the presence of a frog or an apple.
+Figure 6.2 schematically illustrates a generative model for the concept
+of a jumping frog. The concept is cast as a hierarchical model, where
+Interoceptive sensations
+(e.g., high heart rate)
+Auditory sensations
+(e.g., croaking)
+Interoceptive percept
+Auditory percept
+Tactile percept
+Tactile sensation
+(e.g., wrinkliness)
+
+Jumping frog
+Visual percept
+Action
+(e.g., touching)
+
+Visual sensations
+(e.g., green, jumping)
+
+Figure 6.2
+(Hierarchical) generative model for the concept of a jumping frog uses a simplified notation compared to chapter 4: nodes within the dotted circle correspond to
+hidden states, whereas nodes at the periphery correspond to sensory observations.
+Beliefs about hidden states, following inversion of the model, correspond to percepts
+that may be tied to a sensory modality (e.g., visual percept) or may be amodal (e.g.,
+the jumping frog). Action contingencies are represented as dashed lines. Horizontal dependencies between hidden states in dif­fer­ent modalities, as well as temporal
+dependencies between hidden states (as we saw in the dynamical generative models
+of chapter 4), are ignored for the sake of simplicity.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+115
+
+Box 6.1
+Va­ri­e­ties of sensory modalities: Exteroceptive, proprioceptive, and interoceptive
+In Active Inference, a conceptual distinction is often made between three
+kinds of sensory modalities: exteroceptive (e.g., vision and audition), proprioceptive (e.g., the sense of joint and limb positions), and interoceptive (e.g.,
+the sense of the internal organs of the body, such as heart and stomach). In
+multimodal generative models, one can often factorize parts of the model that
+relate to dif­fer­ent modalities; this permits representing that (for example) saccadic movements have visual but not auditory consequences.
+Importantly, the same princi­ples of Active Inference operate across all the
+modalities. For example, in the same way visual pro­cessing can be described
+as the inference about (hidden variables about) a perceptual scene, interoceptive pro­cessing can be described as the inference about (hidden variables
+that report) the internal state of the body. Furthermore, motor actions that
+change the perceptual scene and internally directed actions that change the
+interoceptive state can be described in a similar way. The former engages spinal reflexes that fulfill proprioceptive predictions, whereas the latter engages
+autonomic reflexes that fulfill interoceptive predictions. Such interoceptive
+pro­cessing supports allostasis and adaptive regulation, and its dysfunctions
+can have psychopathological consequences (Pezzulo 2013, Seth 2013, Pezzulo
+and Levin 2015, Seth and Friston 2016, Allen et al. 2019).
+
+a single (multimodal or supramodal) hidden state at the center of the
+figure unfolds in a cascade of (unimodal) hidden states corresponding
+to percepts in dif­fer­ent modalities (exteroceptive, proprioceptive, and
+interoceptive; see box 6.1) and ultimately causing sensations in the same
+modalities. This arrangement corresponds to casting the jumping frog concept as the common cause of multiple sensory consequences (e.g., something
+green and jumping in the visual domain; a croaking sound in the auditory domain), some of which can be action-­contingent (e.g., the sight of
+something jumping may increase on touching it). The inversion of the
+generative model corresponds to a perceptual inference (e.g., the presence
+of a jumping frog) from its observed sensory consequences (e.g., the sight
+of something green and jumpy), and it integrates information across multiple modalities.
+Once ­these variables of interest have been established, the next exercise is to write down the full generative model. One example is the ­simple
+generative model for frogs and apples in figure 2.1, which is fully specified
+by prior beliefs about hidden states and a (likelihood) mapping between
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+116

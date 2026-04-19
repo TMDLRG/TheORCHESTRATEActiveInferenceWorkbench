@@ -1,0 +1,11 @@
+**/venv/
+**/.venv/
+**/__pycache__/
+**/*.pyc
+**/.pytest_cache/
+**/tests/
+**/test_*.py
+**/*.md
+**/.git/
+**/.DS_Store
+claude-voice-connector-stdio/examples/

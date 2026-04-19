@@ -1,0 +1,1787 @@
+s2
+
+s3
+
+s4
+
+s5
+
+1
+
+2
+
+3
+4
+Time step
+
+5
+
+o1
+
+o2
+
+o3
+
+o4
+
+o5
+
+0.15
+
+ετ
+
+0.1
+0.05
+0
+–0.05
+
+Figure 7.2
+­These simulated perceptual inference plots illustrate the belief-­updating pro­cess in
+an example trial based on the generative model outlined in the main text. Upper-­
+left: Beliefs (posterior probabilities) about each note in the sequence at each time
+step. Upper-­right: As the numerical values of ­these beliefs are difficult to track the
+beliefs at the end of the sequence, having heard each note (i.e., retrospective beliefs)
+are shown. Each column shows (retrospective) beliefs about the hidden states at a
+given time step. Each row represents an alternative hypothesis for that hidden state.
+The darker the shading, the more probable that note is considered to have been
+(with black indicating a probability of one and white a probability of zero). Lower-­
+left: (Negative) f­ree energy gradients (i.e., prediction errors) over time. The rate of
+change of the beliefs in the upper-­left plot is determined by the value of ­these errors
+at each time step. Lower-­right: Sequence of musical notes presented to our synthetic
+agent (i.e., the observations he receives during time steps 1 to 5). Note that while
+at the third time step (o3) the listener heard the second note (third column of the
+lower-­right plot), he infers the third note with higher probability (third column of
+the upper-­right plot).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+129
+
+7.3 Decision-­Making and Planning as Inference
+The HMM used above illustrates a very ­simple form of categorical inference
+based on a sequence of outcomes. However, the sort of (sessile) creature
+that this describes is rather uninteresting. Autonomous creatures are clearly
+more than passive recipients of sensory data. Instead, they actively change
+their environment and engage in a bidirectional exchange with their sensorium. This speaks to the importance of converting an HMM into a POMDP,
+whereby we must infer not only how our environment is changing but also
+how our chosen course of action changes it and which course of action to
+choose.
+Figure 7.3 shows a POMDP generative model. This is the same as that
+introduced in chapter 4, where the details of inference in this sort of model
+are unpacked. Note the similarity of this structure to the HMM in figure 7.1
+
+G
+
+m
+
+
+
+D
+
+sτ–1
+
+B
+
+sτ
+
+1
+
+2
+
+n
+
+A P(oτ | sτ , sτ ,…,sτ ,…)
+B P(snτ+1 | sτn, )
+B
+
+sτ+1
+
+m
+C P(oτ )
+
+A
+
+A
+
+A
+
+D P(s1n)
+
+oτ–1
+
+oτ
+
+oτ+1
+
+G P( | C, E)
+
+Figure 7.3
+POMDP from figure 4.3, unpacking the probability distributions in terms of hidden
+state f­actors and outcome modalities. (Figure 7.1 is a special case of this structure.)
+Three points of note: First, the factorization of the hidden states now means that the
+distribution encoded by A has (potentially) many state f­actors in its conditioning
+set and can no longer be encoded by a matrix. Instead, this becomes a tensor object,
+in which each index corresponds to a state f­actor. Second, the separation of the
+outcomes into dif­fer­ent modalities means ­there ­will be a separate A tensor for each
+modality. Third, while C and E appear in the panel on the right, they do not appear
+in the f­actor graph on the left ­because they only get into the generative model via
+prior beliefs about policies. For an alternative perspective on this, see Parr and Friston
+(2018d) and van de Laar and de Vries (2019).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+130
+
+and the addition of an extra variable (π ), on which the transition probabilities (B) are conditioned. This means we can entertain alternative hypotheses
+about the dynamics of states. ­These hypotheses may be interpreted as plans
+that a creature may select between. This perspective equates policy evaluation with model comparison and says that a policy is simply an explanatory
+variable for an observed sequence of (self-­generated) sensations.
+The model in figure 7.3 differs subtly from that introduced in chapter 4: it
+allows factorization of states (superscript n) and of outcomes (superscript m).
+The utility of this is obvious when we consider the factorization of the visual
+world into where an object is and what it is. Clearly, it would be extremely
+inefficient (and incur a high complexity cost) to represent ­every pos­si­ble
+combination of location and identity, when identity is (normally) invariant
+to location and vice versa. A similar argument may be used for factorization
+of time from identity and location (Friston and Buzsaki 2016). The benefit
+of introducing this factorization at this stage is that we can separate t­hose
+states of the world over which a creature has control from ­those that it does
+not. While the transition probabilities governing the former w
+­ ill be dif­fer­ent
+­under each policy, the latter w
+­ ill be invariant to this.
+With t­hese preliminaries in place, we now outline a ­simple example of
+a task (Friston, FitzGerald et al. 2017) that requires planning and illustrates
+some of the key aspects of active inference using POMDPs. This involves a
+rat in a T-­maze containing an aversive stimulus in one arm, an attractive
+stimulus in another, and a cue that indicates the location of the two stimuli
+in the final arm. This setup means that the rat can behave in (broadly) two
+ways. It could choose to go straight to one of the two arms that might contain the attractive stimulus, risking the aversive stimulus. Alternatively, it
+could choose to seek out the informative cue and then go to the arm most
+likely to contain the attractive stimulus.
+This choice speaks to the classical exploration-­exploitation dilemma in
+psy­chol­ogy: a dilemma that is resolved ­under Active Inference. The resolution stems from the minimization of expected ­free energy mandated by
+prior beliefs about policies. To review this briefly (see chapter 4 for details),
+the most probable policies (for a creature who minimizes its variational f­ ree
+energy) are ­those that lead to the lowest expected ­free energy. The expected
+­free energy has the following form:
+G(π ) = EQ ( s! |π )[ H[ P( o! | s! )]] − H[Q( o! |π )] − EQ ( o! |π )[ln P( o! |C)]
+!######"######
+$ "$$$#$$$
+%
+Negative epistemic value (−I ( π ))
+
+(7.4)
+
+Pragmatic value
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+131
+
+This decomposition of the expected f­ ree energy into epistemic and pragmatic value highlights the (epistemic) drive t­ oward information gathering
+and the (pragmatic) drive t­ oward realizing prior beliefs (C in figure 7.3). We
+­will attempt to provide a deeper intuition for the epistemic value in the next
+section, but it can be thought of simply as the amount of information we
+stand to gain ­under a specific policy. The form of the pragmatic value effectively treats the probability of outcomes, averaged over all policies, as if it
+­were a prior. In d
+­ oing so, t­ hose policies with consequences consistent with
+this prior become more probable, as they are associated with lower expected
+­free energy. To put this in more intuitive terms, if we consider a certain sort
+of observation to be very probable, we w
+­ ill act to fulfill our belief that we
+­will encounter t­hese. Therefore, the log probability of outcomes may be
+thought of as equivalent to a utility function in other formalisms, such as
+optimal control theory and reinforcement learning. The fact that utility
+and the value of information emerge as two components of the expected
+­free energy means that we do not need to worry about balancing exploration and exploitation. Both are in ser­vice of optimizing the same function.
+To see how this unfolds in the T-­maze example, we need to formalize the
+generative model in the same way as with the HMM above. Figures 7.4–7.6
+illustrate the likelihood and transition probabilities that comprise the generative model for the T-­maze. We ­will go through this in some detail, as this
+minimal example provides the building blocks from which readers can construct their own generative models. The first t­ hing to do is to decide on the
+number of outcome modalities that represent the (sensory) data our model is
+supposed to explain. This tells us the number of A-­matrices we must specify.
+­Here, we have two modalities that represent exteroceptive data pertaining to
+where the rat is in the maze (A1) and a what modality that may be the interoceptive data the rat experiences when it has found the attractive (edible) stimulus (A2). The levels in ­these modalities (i.e., the alternative observations that
+could be made in each) determine the rows of each A-­matrix. The next decision is the number of hidden state f­ actors that may be used to explain t­ hese
+data; this is the number of B-­matrices we require. We consider two f­actors
+­here: the position of the rat in the maze, and the context (attractive stimulus on left or right). ­These have four and two levels, respectively. We now
+must specify, for each combination of hidden states, the probability of each
+outcome. Context 1 is shown in figure 7.4; context 2 is shown in figure 7.5.
+For the first modality, our A1 associates each location with an outcome with
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+132
+
+A1
+
+R
+
+A2
+
+1
+
+O
+
+O
+
+O
+
+O
+
+O
+
+O
+
+O
+
+L
+
+O
+
+1
+
+O
+
+O
+
+R
+
+O
+
+O
+
+1
+
+O
+
+O
+
+O
+
+O
+
+1
+
+1
+
+1
+
+0
+
+0
+
+2
+
+0
+
+98
+
+0
+
+0
+100
+100
+
+0
+98
+2
+
+100
+
+100
+
+Figure 7.4
+Likelihood in context 1. Left: T-­maze configuration of cues and stimuli: the attractive
+stimulus is on the right and the aversive stimulus is on the left. Right: Likelihood or
+observation model specifies the probabilistic mapping from location to exteroceptive
+cues (A1) and to interoceptive cues (A2). Each ele­ment of ­these matrices is the probability of the outcome illustrated at the end of the row, conditioned on the context
+being one, and on being in the location indicated by the row. The exteroceptive
+outcomes are visual or proprioceptive input associated with each location, whereby
+the cue location can give rise to a rightward or a leftward cue. The interoceptive
+outcomes are absent (circle with dashed outline), attractive (filled circle), or aversive
+(unfilled circle).
+
+probability one. The cue location may be associated with a left or a right
+cue, depending on the context. The interoceptive modality (A2) associates
+a neutral outcome with the start and cue locations and a 98 ­percent chance
+of finding the attractive outcome when the context matches the arm of the
+maze the rat has entered. Technically, t­ hese A-­matrices are tensor quantities,
+­because their ele­ments are specified by three numbers (outcome, location,
+and context), while a matrix is only specified by two (row and column).
+We then need to specify transition probabilities. The B-­matrices specify
+the probability of transitioning from a state (column) to another state (row),
+depending on the choice of policy (π ). ­These specify the transitions pertaining to the position of the rat in the maze (B1) and transitions in the context
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+133
+
+1
+A
+
+L
+
+2
+A
+
+1
+
+O
+
+O
+
+O
+
+O
+
+1
+
+O
+
+O
+
+L
+
+O
+
+O
+
+O
+
+O
+
+R
+
+O
+
+O
+
+1
+
+O
+
+O
+
+O
+
+O
+
+1
+
+1
+
+1
+
+0
+
+0
+
+98
+
+0
+
+2
+
+0
+
+0
+100
+100
+
+0
+2
+98
+
+100
+
+100
+
+Figure 7.5
+Likelihood in context 2. Nearly identical to figure 7.4—in this context, the aversive
+and attractive stimuli have been swapped. This is reflected in the probability of the
+exteroceptive outcomes in the cue location and the probabilities of the interoceptive
+outcomes in the right and left arms of the maze.
+
+(B2). Figure 7.6 shows the controllable B1-­transitions. Each matrix shows
+the probabilities u
+­ nder a dif­fer­ent action choice (subscripted). T
+­ hese allow
+a move from any location to any other location, except for from the two
+arms of the maze, which are absorbing states. This means that once ­there,
+the rat must stay t­ here, regardless of the actions it chooses. In contrast, the
+rat has no control over the context (i.e., ­whether it is in context 1, shown
+in figure 7.4, or context 2, shown in figure 7.5). Context stays constant over
+time and can be represented as an identity matrix:
+⎡1 0⎤
+Bπ2 = ⎢
+⎥
+⎣0 1⎦
+
+(7.5)
+
+­Here each column (and row) refers to a state indexing ­either figure 7.4
+or figure 7.5. This means that whichever context we start in stays constant (transitions to itself ) over time. This is true regardless of the policy
+selected. The C1-­vector shows prior preferences for each of the outcomes in
+this modality, with uniform preferences except for a slight aversion (−1) to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+134
+
+1
+
+B (τ ) = 1 =
+
+B1(τ ) = 2 =
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+1
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+1
+
+1
+
+1
+
+0
+
+1
+
+1
+
+B (τ ) = 3 =
+
+B1(τ ) = 4 =
+
+Figure 7.6
+Controllable transition probabilities for moving between the dif­fer­ent locations. Each
+of the four matrices corresponds to an alternative action the rat can choose. ­These
+allow for a move from any state (except the right and left arm) to any other state. The
+right and left arms are absorbing states, in which the rat must stay once entered.
+
+the start location. The C2-­vector specifies preferences (+6) for the attractive
+stimulus and aversion (−6) to the aversive stimulus. The absence of ­either is
+considered neutral (0).
+C1 = σ ([−1, 0, 0, 0, 0]T )
+C 2 = σ ([0, 6, − 6]T )
+
+(7.6)
+
+The order of ele­ments in t­ hese vectors corresponds to the order of rows
+in the corresponding A-­matrices. The softmax function (σ ) allows us to
+specify preferences in terms of positive and negative values (corresponding
+to unnormalized log probabilities), which are then converted to probabilities. This preserves the difference in log probabilities (or the relative probability) while ensuring normalization. Practically, this formulation means
+the attractive stimulus is considered e6 (≈ 400) times more probable than
+the neutral stimulus ­under the rat’s generative model. This is a very strong
+preference that means the rat believes its actions are much more likely to
+lead to the attractive outcome. This constraint on inference about action is
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+135
+
+crucial for the be­hav­ior that follows. Fi­nally, the D-­vectors specify the prior
+probabilities for the initial states:
+D1 = [1, 0, 0, 0 ]
+
+T
+
+(7.7)
+
+D2 = 21 [1,1]
+
+T
+
+The order of ele­ments in t­ hese vectors matches t­ hose of the B-­matrices. The
+D1-­vector indicates a confident belief in starting at the center of the maze.
+The D2-­vector indicates that the two contexts (figure 7.4 or 7.5) are considered equally probable at the start.
+Figure 7.7 shows what happens when we invert the generative model of
+figures 7.4–7.6. The upper row illustrates what we would see if observing
+the rat’s be­hav­ior. It starts in the center and then goes to the informative
+cue. This is due to the high epistemic value associated with this location (i.e.,
+the observations made at this location have the potential to resolve uncertainty about the context). On seeing the cue that indicates a left context
+(context 1), the rat chooses the left arm of the maze and finds the rewarding stimulus. This move is driven by the high pragmatic value attributed
+to this location. The lower plots illustrate the belief updating that occurs
+during this ­simple trial. As in figure 7.2, this is shown in the form we might
+expect to observe in an idealized rat if we ­were mea­sur­ing neuronal activity
+(i.e., firing rates and local field potentials [LFPs]). Note the rapid change in
+beliefs at the second time step, when the rat reaches the informative cue
+location, and associated LFP (dashed line).
+7.4 Information Seeking
+The simulation in section 7.2 illustrates a ­simple example of an exploration-­
+exploitation trade-­off, which is solved by foraging for information ­until
+uncertainty is resolved, then exploiting what has been inferred to fulfill
+prior preferences. In this section, we unpack the concept of epistemic value
+in greater detail. As we saw in equation 7.4, this comprises two terms:
+I (π ) = H[Q( o! |π )] − EQ ( s! |π )[ H[ P( o! | s! )]]
+!
+!#"#$ !###"###
+$
+
+Epistemic value
+
+Post. pred. entropy
+
+Expected ambiguity
+
+= DKL[ P( o! | s! )Q( s! |π ) || Q( o! |π )Q( s! |π )]
+!######
+#"#######
+$
+
+(7.8)
+
+Mutual information
+
+! || Q( s! |π )]]; Q( s! |π , o)
+! !
+= EQ ( o! |π )[ DKL[Q( s! |π , o)
+!######"######
+$
+Information gain, salience, Bayesian surprise
+
+P( o! | s! )Q( s! |π )
+Q( o! |π )
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+τ=1
+
+τ=2
+
+τ=3
+
+L
+L
+
+L
+
+L
+
+1
+0.8
+
+Sτ
+
+0.6
+0.4
+0.2
+0
+1
+
+2
+
+3
+
+S1
+
+1
+
+S2
+
+1
+
+S3
+
+1
+
+2
+
+S2
+
+2
+
+S3
+
+0.08
+0.06
+
+ετ
+
+0.04
+L
+
+0.02
+
+0.00
+–0.02
+–0.04
+R
+
+–0.06
+1
+
+2
+Time step
+
+3
+
+S1
+
+2
+
+Figure 7.7
+Simulated epistemic and pragmatic be­hav­ior of a rat foraging in a T-­maze. The rat
+starts in the central location but then chooses to sample the informative cue in the
+lower arm of the maze. This location is associated with the greatest epistemic value,
+as observing the cue in this location reveals the context (reward right or left) that
+the rat finds itself in. On observing the cue, the rat undergoes rapid belief updating
+(s), inducing an LFP (ε). With no more uncertainty to resolve, the rat selects the pragmatically valuable option and goes to the left arm of the maze. The two plots on the
+right show the beliefs held by the rat at the end of the trial about all previous times
+(i.e., t­hese are retrospective beliefs and not the beliefs of the rat at the moment of
+the decision). It believes (correctly) that it started in the central location, went to the
+cue arm, and then went to the left arm. For the context hidden state ­factor, the rat
+believes that the context was the left context throughout.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+137
+
+­These are the posterior predictive entropy and the expected ambiguity, respectively.
+Below ­these, we highlight the correspondence between t­ hese and other rearrangements. To unpack t­ hese in an intuitive way, we w
+­ ill frame this in terms
+of a visual paradigm, where alternative saccades (π ) lead to dif­fer­ent transitions between fixation locations (s). In addition to fixation locations, the hidden states include the identity of a stimulus at each location. A combination
+of stimulus and fixation generate visual and proprioceptive consequences (o).
+With this in mind, we can interpret the posterior predictive entropy as the
+dispersion (or uncertainty) associated with “what I would see if I performed
+this eye movement.” From the perspective of a scientist, this quantifies how
+uncertain we might be about the data we would obtain on performing a given
+experiment. ­Under this perspective, it makes sense that we should select
+­those saccades (or experiments) that are associated with the greatest posterior
+predictive entropy, as ­these offer the greatest potential for uncertainty resolution. We would gain nothing by performing an experiment if we already
+knew what the results would be with a high degree of confidence.
+However, the predictive entropy only tells us the total amount of uncertainty. It does not tell us how much uncertainty is actually resolvable. We
+­will always be uncertain about the next number in a sequence of randomly
+generated numbers, but we ­will never resolve our uncertainty about the
+pro­cess generating them by fixating on t­hese. This is where the expected
+ambiguity comes in. This quantifies the degree to which observations and
+states are in­de­pen­dent of one another. If states always generate the same
+observation, this quantity w
+­ ill be zero. It w
+­ ill be maximal if, as in the random number generator, ­there is no association between states and outcomes.
+In the visual domain, this implies that the best saccade ­will be that ­toward a
+well-­lit stimulus, where t­ here is ­little ambiguity about “what I would see if I
+looked at this stimulus.” Taken together, this says that the best saccades (i.e.,
+perceptual experiments) are ­those for which ­there is the greatest uncertainty
+to resolve (posterior predictive entropy) but only if that uncertainty can be
+resolved (negative ambiguity). Interestingly, this has exactly the same form
+as expressions developed in statistics to score experimental design in terms
+of information gain (Lindley 1956).
+Figure 7.9 illustrates what happens in a saccadic paradigm (Parr and
+­Friston 2017b) when we simulate manipulations to the ambiguity and posterior predictive entropy. This shows four stimuli (squares), each of which
+may change color from moment to moment. Superimposed on ­these is a
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+138
+
+simulated eye-­tracking trace, as if we w
+­ ere mea­sur­ing where an experimental
+participant was looking. Crucially, we specify prior beliefs about outcomes
+to be uniform (i.e., pragmatic value to be absent), precluding any preference-­
+based choices. This means each saccade is selected to maximize epistemic
+value. When the generative model treats all four stimuli as equivalent (left
+image), all are sampled with approximately the same frequency. However,
+we can modulate the uncertainty associated with each stimulus (see box
+7.1). If we set one stimulus to have a greater ambiguity (by increasing the
+value of off-­diagonal ele­ments of the corresponding A-­matrix), this square
+is ignored (­middle image). This is an example of the famous “streetlight”
+effect (Demirdjian et al. 2005), which takes its name from the meta­phor of
+Box 7.1
+Uncertainty and precision
+The example in figure 7.7 appeals to the concept of precision—an impor­tant
+idea in this book. Precision is the inverse of variance and scores our confidence in a given probability distribution. This is closely related to the negative
+entropy (negentropy) of a distribution:
+−H[P(s)] = E P(s)[ ln P(s)]
+A ­simple way to pa­ram­e­terize a distribution such that it can be made more
+or less precise is to use a Gibbs form with an inverse temperature pa­ram­e­ter (ω ).
+This has the following form:
+P(s| ω ) = Cat(σ (ω lnD))
+Note that the precision multiplies the log prior, so it can be interpreted as a
+gain-­control device (amplifying as opposed to adding to neural signals). The
+plots in figure 7.8 show how the probability distribution (each column representing the probability of an alternative state) changes for a given D when we
+vary ω. Note the increasing confidence with increasing precision.
+This sort of pa­ram­e­terization may be applied to any of the distributions
+used in a POMDP. In addition, we can define priors over the precision and infer
+ω = 0.1
+
+ω=1
+
+ω = 10
+
+ω = 100
+
+Figure 7.8
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+139
+
+Box 7.1 (continued)
+this just as we infer other latent variables (i.e., through f­ree energy minimization). Assuming the prior has a Gamma distribution (precluding negative values of the precision), we get the following updates (see appendix B for details):
+P(ω ) = Γ(1, βω )
+Q(ω ) = Γ(1,βω )
+.
+−1
+⇒ βω = (Dβω − s) i ln D + βω − βω
+­There is an increasing recognition that the biological substrate of ­these
+precision par­ameters may be the neuromodulatory systems that set the gain of
+neural responses. Chapter 5 discusses the evidence relating ­these par­ameters
+to specific neurochemicals.
+
+Figure 7.9
+Simulated epistemic visual search paradigm (Parr and Friston 2017b) with the synthetic eye-­tracking trace superimposed on the four stimulus locations. Each stimulus (shaded square) is associated with a transition matrix that may be more or less
+predictable and a likelihood matrix that may be more or less ambiguous. Left: When
+transitions and likelihoods are equally predictable for all four locations, all locations
+are sampled with about the same frequency. ­Middle: The viewer shows aversion to
+the upper-­left square when it is specified with a less precise (more ambiguous) likelihood mapping. Right: The lower-­left square is epistemically attractive when the
+transition probabilities are specified as more uncertain.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+140
+
+­people who have lost their keys late at night. The first place they might look
+is ­under the streetlight—­not ­because the keys are most likely to be ­there, but
+­because it is the best place to find high-­quality, unambiguous, uncertainty-­
+resolving information. The simulation shows how the ambiguous (e.g.,
+poorly lit) square is ignored, reproducing an in silico streetlight effect.
+In contrast, the right image in figure 7.8 shows what happens when we
+make the transitions less predictable for the lower-­left square. We accumulate uncertainty about this location very quickly, ensuring a high posterior
+predictive entropy with no change to the ambiguity. As we can see, this
+leads to more frequent fixation on this location, as t­here is always new
+uncertainty to resolve h
+­ ere. Intuitively, if I know something has very predictable dynamics, I do not have to look at it very often to be confident
+about its state. In contrast, if something may have changed in the time that
+I have been looking at something ­else, it is worth looking back at to check.
+­These simulations are designed to offer an intuition for the two parts of the
+epistemic value, to see how minimization of expected ­free energy ensures
+we actively select our sensory data to find out about the world.
+7.5 Learning and Novelty
+Sections 7.2–7.4 set out every­thing that is required for the majority of practical applications of Active Inference. However, we have assumed that the
+generative model is already known and does not change as an effect of learning. In some practical applications, we may want to consider how one or
+more parts of the generative model (e.g., the A-­ or B-­matrix) are learned
+during an experiment or, more broadly, how we optimize the structure of
+the generative model itself, given some data (Friston, FitzGerald et al. 2016).
+In ­doing so, Active Inference extends to active learning, and the salience
+(equation 7.5) describing information gain about states is complemented
+by novelty, which deals with resolution of uncertainty about (for example)
+the ele­ments of the A matrix shown in equation 7.1, the B matrix shown in
+equation 7.2, or any other par­ameters of the generative model. ­These beliefs
+can now vary with time rather than being fixed, as assumed so far (Schwartenbeck et al. 2019). To get to this, we first have to extend the generative
+model as in Figure 7.10 to include beliefs about t­ hese model par­ameters.
+Conceptually, including beliefs about par­ameters in the generative model
+permits treating learning as another form of Bayesian inference—­namely,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+141
+
+c
+
+e
+
+C
+
+E
+
+G
+
+d
+
+
+
+D
+
+b
+a
+
+B
+
+sτ–1
+
+B
+
+sτ
+
+B
+
+sτ+1
+B
+
+A
+
+A
+
+A
+
+oτ–1
+
+oτ
+
+oτ+1
+
+A
+
+Figure 7.10
+This generative model for learning uses the same POMDP structure as in figure 7.3,
+but the priors for each of the hidden states now depend on variables (in circles),
+which themselves now come equipped with prior beliefs. ­These have the form of
+Dirichlet distributions, which are conjugate (see box 7.2) to the categorical distributions considered thus far. The model shows how the likelihood of outcomes given
+states now also depends on a variable A (which is the same for all time-­points), the
+transition probabilities are now conditioned on a variable B, the preferences depend
+on C, the initial states depend on D, and the fixed form policy prior depends on E. By
+making prior beliefs about the par­ameters of the generative model explicit, this figure
+emphasizes that both inference and learning are ­free energy minimizing pro­cesses,
+but they are distinct. In short, inference describes the optimization of beliefs about
+the state of the world as it is (s), including beliefs about the way in which we are acting (π ). In contrast, learning describes optimization of beliefs about the relationships
+between ­these variables (A,  B,  C,  D, or E ). The latter vary much more slowly than the
+former and may only be learned when the states have been inferred. We w
+­ ill return to
+this separation of timescales below when we consider hierarchical generative models.
+
+as the passage from prior to posterior beliefs about model par­ameters. This
+highlights the fundamental similarity of perception and learning: in the
+same way that perception can be described as the inversion of a generative
+model to infer hidden states from observations, learning can be described
+as the inversion of a generative model to include beliefs about par­ameters
+(although normally this inversion may operate on a slower timescale).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+142
+
+Box 7.2
+Conjugate priors
+When setting up a generative model of the form in figure 7.10, it is impor­tant to
+carefully select the appropriate distribution for prior beliefs. Typically, ­these ­will
+be the conjugate prior distribution associated with the likelihood. A conjugate
+prior belief means that, when used to perform Bayesian inference, the posterior
+belief w
+­ ill be the same type of distribution. For example, using Bayes’ rule:
+P(D | s) ∝ P(D) P(s | D)
+If P(s | D) is a categorical distribution, when we choose a Dirichlet distribution
+(conjugate to categorical ) for P(D), we can guarantee that P(D | s) is also a Dirichlet distribution. Put formally:
+P(D) = Dir(d)
+
+⎫
+⎬ ⇒ P(D |s) = Dir(d)
+P(s| D) = Cat(D) ⎭
+
+The simplest way to choose the right kind of prior is to look up the conjugate prior for what­ever form the likelihood distribution takes. For the categorical distributions used h
+­ ere, a Dirichlet distribution is the appropriate
+choice for beliefs about par­ameters (see box 7.2). Having included ­these additional prior beliefs, we can now optimize posterior beliefs about the structure
+of the generative model. This means incorporating t­ hese into the f­ ree energy
+(as we did for states in chapter 4) and finding the ­free energy minima.
+
+θ = ( A, B, C, D, E)
+F = EQ (π ,θ )[ F(π ,θ )] + DKL[Q(θ ) || P(θ )] + DKL[Q(π ) || P(π )]
+
+(7.9)
+
+Dirichlet distributions are pa­ram­e­terized by counts (or pseudo-­counts)
+that index the number of times a given categorical variable has been seen
+(or, in the case of the priors, as if it had been seen that number of times).
+For the derivation of the update rules for t­ hese par­ameters, see appendix B.
+For now, we summarize the update rule and key properties of a Dirichlet
+distribution, focusing on the a and a concentration par­ameters associated
+with the prior and posterior over A.
+a=a+
+
+∑τ sτ ⊗ oτ
+
+EQ [ Aij ] = A ij ≈
+
+aij
+a0 j
+
+(7.10)
+
+EQ [ln Aij ] = ln A ij = ψ (aij ) − ψ (a 0 j )
+a0 j !
+
+∑a
+k
+
+kj
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+143
+
+The first line ­here expresses the update from prior to posterior concentration par­ameters following a series of observations, with beliefs about the
+states that caused them. The cross in the circle indicates a Kronecker tensor product (or outer product in the case of two vectors), h
+­ ere giving rise
+to a matrix in which each ele­ment is the product of a pair of ele­ments in
+sτ and oτ. This update rule may be interpreted simply as a form of activity-­
+dependent plasticity. When an outcome is observed in combination with a
+posterior belief that a par­tic­ul­ar state caused it, the ele­ment of the matrix
+representing the relationship between the two is incremented. The second
+line of the equation highlights the interpretation of the Dirichlet concentration par­ameters in terms of counts. For a given state (column), each ele­
+ment of a is the number of times the corresponding outcome has been seen.
+Dividing by the sum of the ele­ments in the column (total number of observations or pseudo-­observations) gives the probability of each outcome given
+that state. To understand why this (pseudo) counting method makes intuitive sense, consider the amateur musician example from the beginning of
+this chapter. If one counts how many times the musician hits the first note
+when she intends to do so (first row and column), how many times she hits
+the second note when she intends to do so (second row and column), and
+so on, and divides t­ hese by the total number of times she intends each note,
+one ­will eventually converge to the correct numerical values of the A-­matrix
+shown in equation 7.1—­namely, that the musician hits all her intended
+notes 70 ­percent of the time. The counting method has another impor­tant
+consequence that we ­will return to: The number of counts or pseudo-­counts
+preceding an observation tells us how likely we are to update our beliefs on
+making the observation. Imagine flipping a coin five times and getting five
+heads in a row. This might lead us to update our beliefs to ­favor the hypothesis that this is an unfair coin. However, if this had been preceded by 100 flips
+with 50 heads and 50 tails, the final five heads would do l­ittle to influence
+our beliefs about w
+­ hether this is a fair coin. The third line of equation 7.10
+shows a useful identity associated with Dirichlet distributions: the expected
+log of the random variable is given by the difference in two digamma functions (derivative of a gamma function).
+The inferential approach to learning highlights an impor­tant difference
+between Active Inference and most other approaches to computational
+neuroscience and machine learning, which incorporate vari­ous learning
+rules (e.g., Hebbian rules or error backpropagation) that are considered
+biologically realistic or computationally efficient. In Active Inference, the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+144
+
+update rules that govern learning are derived from statistical considerations, yet they turn out to be remarkably similar to biologically motivated
+rules for activity-­dependent plasticity (see the above considerations on the
+first line of equation 7.10). This exemplifies one of the appeals of normative approaches, which start from first princi­ples to explain what we know
+about brains and be­hav­ior—­and ­things that we did not know.
+A further difference between Active Inference and most machine learning approaches is that learning is naturally described as an active pro­cess, in
+which creatures autonomously select the most appropriate data to improve
+their generative models. This becomes evident if one considers that when
+including beliefs about par­ameters in the model, the expected f­ree energy
+acquires an additional term:
+G(π ) = DKL[Q( o! |π ) || P( o! |C)] + EQ ( s! |π )[ H[ P( o! | s! )]]
+"$$$
+$#$$$$
+% "$$$#$$$
+%
+Risk
+
+Ambiguity
+
+! s! )]
++ EQ! ( o,! s! ,θ |π )[lnQ(θ ) − ln P(θ | o,
+"$$$$$$#$$$$$$
+%
+
+(7.11)
+
+Parameter information gain
+
+! || Q( s! |π )]]
+= −EQ ( o|! π )[ DKL[Q( s! |π , o)
+!######"######
+$
+Salience
+
+! s! ) || Q(θ )]] − EQ ( o|! π )[ln P( o! |C)]
+− EQ! ( o,! s! |π )[ DKL[Q(θ | o,
+%
+!#####
+#"######
+$ "$$$#$$$
+
+Novelty
+
+Pragmatic value
+
+The salience and pragmatic value terms ­were already in place in equation 7.4,
+but the novelty term is new. The final equality h
+­ ere shows an arrangement
+that highlights the relationship between salience and novelty. In short,
+salience is to inference what novelty is to learning. Both are expressions
+of the change in beliefs anticipated once a perceptual experiment (i.e., an
+action in a policy) is performed. As with scientific experiments, the greater
+the change in beliefs following data collection, the better the experiment.
+Returning to the analogy of flipping a coin and accumulating counts, this
+tells us something useful. If we have two coins and can choose to flip e­ ither
+one, we can elicit the greatest change in beliefs by flipping the coin we had
+flipped only five times previously rather than the coin with 100 previous
+flips. ­There is greater novelty associated with flipping the former (less familiar) coin. Similarly, if we have confident prior beliefs as if we had observed
+something many times, policies that interrogate t­hese variables are associated with less novelty than ­those about which we have less confident beliefs.
+To illustrate how this works in practice, imagine we have a very myopic
+creature standing on a tiled floor. This creature can only see the color of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+145
+
+the tile it is standing on and can only move one tile at a time. For any suitably large landscape with many tiles, it is very computationally expensive
+to represent the color of each tile as a dif­fer­ent hidden state. However, a
+simpler form of model is available. If we associate hidden states only with
+location, and colors only with outcomes, we can efficiently represent beliefs
+about “what I would see if I went over ­there” in the A matrix that generates
+colored tiles from locations. By accumulating Dirichlet par­ameters (equation
+7.10), our creature can optimize ­these beliefs on the basis of observations. We
+might interpret this as a form of synaptic memory as opposed to the maintenance of per­sis­tent activity in neurons representing beliefs about the color
+of a given tile. Given this sort of generative model, wherein all of the uncertainty is in the par­ameters of the likelihood distribution, it is in­ter­est­ing to
+see what happens in the absence of any preferences (i.e., when the novelty
+term of equation 7.11 dominates policy se­lection). Figure 7.11 shows a simulation of a s­ imple environment comprising 64 black or white tiles. As each
+tile is visited, beliefs about the likelihood of observing black or white in
+that location are updated through accumulation of Dirichlet par­ameters. As
+large Dirichlet par­ameters preclude large belief updates, the drive to novelty
+resolution given by expected f­ ree energy minimization leads our simulated
+creature to avoid any previously visited locations.
+The same princi­ples could be applied to a range of other paradigms (e.g.,
+if we reinterpret the path taken by our creature as a saccadic scan path,
+this could be applied to active visual sampling). In the domain of active
+vision, this has been used to simulate the kinds of visual search be­hav­ior
+induced by target cancellation tasks (Parr and Friston 2017a). Subsequently,
+evidence for the short-­term plasticity required in accumulating Dirichlet
+par­ameters in this setting has been demonstrated (Parr, Mirza et al. 2019).
+Just as we can extend ideas about inference to learning, it is pos­si­ble to
+go (at least) one step further and think about structure learning: the pro­cess
+of not just optimizing the par­ameters in the model but selecting between
+dif­fer­ent models with more or fewer par­ameters in play. Box 7.3 sets out a
+way of d
+­ oing this that involves efficient post hoc comparisons of alternative hy­po­thet­ic­ al models. This has been used as a meta­phor for sleep (Friston, Lin et al. 2017) and resting spontaneous activity (Pezzulo, Zorzi, and
+Corbetta 2020), where no new data are collected but the structure of the
+model may still be refined and simplified.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+146
+
+Likelihood
+
+Time
+
+Path
+
+Figure 7.11
+Active learning is demonstrated by a synthetic creature exploring a ­simple world of
+black and white tiles (Bruineberg et al. 2018, Kaplan and Friston 2018). Left: Path
+taken by the creature, showing which tiles are white and which are black (dots correspond to visited locations). Right: A matrix of the creature and the beliefs (in terms
+of normalized Dirichlet counts) the creature has about what it would see on g
+­ oing
+to dif­fer­ent locations. Cells in the A matrix are white (or black) if the creature has a
+strong belief that the corresponding tile is white (or black); they are grey if the creature is uncertain about color. Crucially, ­these beliefs influence which path it takes via
+the novelty term of the expected ­free energy. T
+­ hose locations about which it has confident beliefs afford relatively ­little opportunity for uncertainty resolution, so it does
+not revisit them. In other words, the phenomenon of “inhibition of return” (Posner
+et al. 1985) emerges naturally from the minimization of expected f­ ree energy.
+
+7.6 Hierarchical or Deep Inference
+In the previous section, we saw one method for hierarchical extension of
+the original generative model based on defining priors over the par­ameters
+of the generative model. Figure 7.12 shows a second form of hierarchy that
+speaks to the nesting of temporal scales. This generative model for hierarchical or deep inference can be conceived of as a hierarchical extension
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+147
+
+Box 7.3
+Structure learning and model reduction
+The discussion in section 7.4 deals with an impor­tant, but ­limited, form of
+(parametric) learning. The next level of sophistication—in learning about the
+structure of the world—­goes beyond the optimization of model par­ameters
+and asks w
+­ hether we should expand or prune the model structure. This can
+be cast as a question of model comparison (Friston, Lin et al. 2017). In other
+words, would my ­free energy increase or decrease if I ­were to (for example)
+eliminate ele­ments of a likelihood matrix? By comparing models with and
+without ­these ele­ments, we can answer this question. However, it may be very
+costly to have to explic­itly invert multiple models. Fortunately, an efficient
+method for ­doing this—­known as Bayesian model reduction (Friston, Litvak
+et al. 2016; Friston, Parr, and Zeidman 2018)—is available and only requires
+inversion of a single full model. In a general setting, comparison between a
+full model and one with alternative priors (indicated by ~) can be achieved
+through the following formulae:
+⎡ P(θ ) ⎤
+! θ )] − F[P(θ )] = ln E
+ΔF = F[ P(
+Q (θ ) ⎢ !
+⎥
+⎣ P(θ ) ⎦
+! θ ) ∝ exp lnQ(θ ) + ln P(
+! θ ) − ln P(θ ) + ΔF
+Q(
+
+(
+
+)
+
+For the Dirichlet priors used in section 7.5, this takes the form (where B is
+the multivariate beta function):
+! − ln Β(d) + ln Β(d) − ln Β(d)
+!
+ΔF = ln Β( d)
+d! = d + d! − d
+This form of model reduction may be impor­tant in understanding offline
+model optimization, of the sort that may occur during sleep. We w
+­ ill briefly
+revisit Bayesian model reduction in chapter 8, when considering the optimization of hierarchical models with both discrete and continuous components.
+
+of the shallow model shown in figure 7.3: it includes a series of POMDP
+models at the lower level that are the same as in Figure 7.3 (one example
+is outlined with the dashed box), contextualized by a higher-­level POMDP.
+Importantly, this generative model includes variables that evolve at dif­
+fer­ent timescales: slower for higher levels and faster for lower levels (Friston
+2008; Friston, Rosch et al. 2017; Pezzulo, Rigoli, and Friston 2018). This
+becomes evident if one considers that the POMDP models at level 1 evolve
+over three time steps, but each of t­ hese short trajectories of states and outcomes depends on a single state at the higher level (level 2) that persists
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+148
+
+throughout the entire trajectory at the lower level. In other words, for ­every
+time step from the perspective of the higher level, t­ here are multiple (­here,
+three) time steps for the lower level.
+To gain some intuition for this separation of timescales—­which underwrites deep temporal inference—it is worth thinking about a s­ imple example of hierarchy in everyday life: reading. We draw inferences about words
+that combine to form sentences. Sentences combine to form paragraphs,
+pages, books, libraries, and so on. If we imagine that each state at the lower
+level of figure 7.12 is a word, each state at the higher level can be thought
+of as a sentence. Crucially, the duration of the sentence transcends that of
+any one word in the sequence.
+The reading example is illustrated in more detail in figure 7.13, which is
+based on the example from Friston, Rosch et al. (2017), to which we refer
+G
+
+LEVEL 1
+
+LEVEL 2
+
+
+D
+
+D
+
+sτ–1
+
+sτ
+
+B
+
+sτ+1
+
+B
+
+A
+
+A
+
+A
+
+oτ–1
+
+oτ
+
+oτ+1
+
+G
+
+G
+
+G
+
+
+
+
+
+
+
+sτ–1 B
+
+sτ
+
+A
+
+A
+
+oτ–1
+
+oτ
+
+B
+
+sτ+1
+
+sτ–1 B
+
+sτ
+
+A
+
+A
+
+A
+
+oτ+1
+
+oτ–1
+
+oτ
+
+D
+
+B
+
+sτ+1
+
+sτ–1 B
+
+sτ
+
+A
+
+A
+
+A
+
+A
+
+oτ+1
+
+oτ–1
+
+oτ
+
+oτ+1
+
+B
+
+B
+
+sτ+1
+
+Figure 7.12
+We can extend the (shallow) generative model set out in figure 7.3 so that it affords
+hierarchical or deep inference, which evolves over multiple timescales. The full generative model includes a slowly changing context (at level 2) that generates a series
+of short trajectories at the lower, faster level 1. The form of the POMDP is the same at
+the higher level as at the lower level (one of the POMDPs is outlined with the dashed
+box). The only difference is that it is stretched out in time (horizontally) and that the
+outcomes it generates are not directly observed. Instead, they form empirical priors
+for the lower level, which generates observable outcomes.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+149
+
+for more details. The model is structured as in figure 7.12 and represents
+sentences (at the higher level) and words (at the lower level) drawn from
+a very s­ imple language. This language comprises three pos­si­ble words ( flee,
+feed, wait) that may be arranged into six pos­si­ble four-­word sentences. If the
+sentence is “flee, wait, feed, wait,” the higher level predicts the word flee for
+the first of the lower-­level POMDPs, wait for the second, and so on. At the
+lower level, we start with an empirical prior (D) based on the higher level,
+which tells us which words are most plausible. For example, if we started
+with a uniform distribution over the sentences shown in the upper panel of
+figure 7.13, we see that the first word is wait in two-­thirds of the sentences
+and flee in the other third. This means that at the first time step of the first
+low-­level POMDP, our D-­vector should ascribe ­these probabilities to ­these
+words.
+The words at the lower level then generate observations, visual inputs
+based on which part of the word is currently foveated. Much as in the
+example of figure 7.9, the POMDP allows for se­lection of dif­fer­ent foveal
+targets to accumulate evidence for or against each hy­po­thet­i­cal word. This
+appeals to the same expected f­ree energy minimizing pro­cesses outlined
+above; therefore, we ­will not detail the specific foveations made ­here, but
+we note that with each time step at the lower level, ­there is an increase in
+confidence about the word in play. In the sequence shown in figure 7.13,
+we see that evidence is accumulated for the word flee at the lower level over
+the first few time steps (over the fast scale, τ (1)). This inference is propagated back up to the higher level, where it provides evidence for the first
+and fourth sentences (each of which start with this word). Over subsequent
+time steps the evidence accumulated at the lower level is consistent with
+both sentences. At the fourth step (at the slow scale, τ (2)), we would predict
+wait ­under the first sentence and flee ­under the second. On inferring wait
+at the fast timescale, the first sentence is inferred at the slow scale. At the
+final step, the simulation selects the correct sentence and is rewarded with
+correct feedback. The resulting belief updating is seen in the LFP plot in the
+lower part of figure 7.12.
+Deep temporal models of this sort have been used to simulate reading
+(Friston, Rosch et al. 2017), delay-­period working memory tasks (Parr and
+Friston 2017c), and computation of empirical priors for visual inference (Parr,
+Benrimoh et al. 2018). In addition, they have been leveraged in theoretical
+accounts of motivation and control (Pezzulo, Rigoli, and Friston 2018). In
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+150
+
+“flee,
+“wait,
+“wait,
+“flee,
+“wait,
+“wait,
+
+sτ(2)
+
+wait,
+wait,
+flee,
+wait,
+wait,
+flee,
+
+feed,
+wait,
+wait,
+feed,
+wait,
+wait,
+
+wait”
+feed”
+feed”
+flee”
+flee”
+flee”
+
+“flee”
+sτ(1)
+
+“feed”
+“wait”
+
+“wait”
+
+.
+Vτ
+
+τ (2) =
+
+1,
+
+τ (1) =
+
+1,
+
+2,
+2,
+
+3,
+
+1,
+
+3,
+2,
+
+3,
+
+1,
+
+4,
+2,
+
+3,
+
+1,
+
+5
+2,
+
+3,
+
+1,
+
+2,
+
+3
+
+Figure 7.13
+Belief updating occurs over multiple timescales by inverting a simulated hierarchical
+inference model. This relies on a generative model with a separation of timescales
+(shown as a slow timescale—­τ    (2)—­and a fast timescale—­τ (1)). Belief updating at the
+higher level (s(2) ), representing sentences, is slower than at the lower level (s(1)), representing words. Lower panel: LFPs, i.e., the rate of change of the log expectations—­
+which is proportional to the prediction errors (ε ) shown in previous figures.
+
+princi­ple, ­these models can be extended to an arbitrary number of levels,
+accounting for a deeply structured world with dynamics that play out over
+many dif­fer­ent temporal scales.
+We can draw an in­
+ter­
+est­
+ing parallel between hierarchical models of
+the sort in figures 7.12 and 7.13 and learning models of the sort in figure 7.10. Learning models can be considered hierarchical generative models, which highlight a separation of timescales between faster inferential
+dynamics (updates of beliefs about states) and slower learning dynamics
+(updates of beliefs about par­ameters). The models shown in figures 7.10
+and 7.12 may be also combined to arbitrary levels of complexity, wherein
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+151
+
+the relationships between variables on dif­fer­ent levels may themselves be
+learned. This permits designing increasingly sophisticated generative models that address systems-­level cognitive and neurobiological questions.
+7.7 Summary
+In this chapter, we saw some of the ways that discrete-­time generative models
+may be constructed to address a range of cognitive and neurobiological prob­
+lems, such as perceptual inference, decision-­making and planning, balancing
+exploration and exploitation, parametric and structure learning, and novelty
+seeking. This is far from an exhaustive summary of applications of discrete
+models in Active Inference, but it serves to illustrate the key princi­ples of
+this sort of modeling. The models outlined above may be combined hierarchically, with added priors over par­ameters, and with context-­sensitive priors for policies or preferences. Importantly, inference using both s­ imple and
+more complex generative models can always proceed through f­ree energy
+minimization, which illustrates the generality of the approach. The fact that
+dif­fer­ent aspects of Active Inference become apparent ­under distinct generative models (e.g., novelty seeking with priors over model par­ameters) opens
+up the possibility of exploring an open-­ended set of cognitive and biological
+prob­lems by designing the appropriate generative models.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+8
+
+Active Inference in Continuous Time
+
+Every­thing flows, nothing stands still.
+—­Heraclitus, 501 BC
+
+8.1 Introduction
+This chapter complements chapter 7 by continuing our discussion of how to
+build a generative model. Our focus ­here is on continuous state-­space models, which are well suited for modeling the physical fluctuations impinging
+on sensory receptors and for the continuous motion of the effectors (e.g.,
+muscles) we use to change the world around us. T
+­ here are many applications of ­these models. In this chapter, we set out the princi­ples ­behind
+their use. We highlight the kinds of model used in motor control and the
+dynamical systems that play a role in such models, and we touch on the
+concept of generalized synchrony. Fi­nally, we discuss the reconciliation of
+discrete and continuous generative models.
+8.2 Movement Control
+As we saw in chapter 4, the generative model that underwrites active inference in continuous time may be written as a pair of stochastic equations
+that determine how states ( x ) generate data ( y) and how states evolve over
+time depending on some static variable (v):
+y = g(x) + ω y
+.
+x = f (x,v) + ω x
+
+(8.1)
+
+­These equations and the precision associated with the fluctuations (ω ) determine the model used to draw inferences about the c­ auses of sensations.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+154
+
+Note that action is absent from equation 8.1. This is ­because (as outlined in
+chapter 6), action is part of the generative pro­cess, not the generative model.
+The generative model only deals with t­ hose variables that are directly influenced by states external to a Markov blanket. If we w
+­ ere to write down the
+dynamics of the real world (i.e., the generative pro­cess), we would have to
+include action (u):
+y = g(x) + ω y
+.
+x = f(x, u) + ω x
+
+(8.2)
+
+Note that the functions g and f (and the precisions of ω) used to define the
+generative model (equation 8.1) are not necessarily the same as ­those used
+to define the generative pro­cess (equation 8.2). As we saw in chapters 2–4,
+actions change sensory data such that f­ree energy is minimized. This means
+we do not need to explic­itly write down the dynamics of action in the generative model—­they emerge from the choices made for the terms in equation 8.1. To gain some intuition for this, we start with a very ­simple sort of
+generative model:
+g( x ) = x
+f ( x, v) = v − x
+
+(8.3)
+
+Equation 8.3 says that the hidden state represents the expected value for
+the data and that it has dynamics consistent with a ­simple (i.e., point)
+attractor. By attractor, we mean that when x is less than v, the expected rate
+of change of x is positive, and vice versa. This means that x ­will always flow
+­toward v (i.e., v is an attracting or fixed point). To generate data, we define a
+­simple generative pro­cess:
+g( x ) = x
+f ( x, u) = u
+
+(8.4)
+
+On minimizing f­ ree energy, this means that action ­will change to fulfill
+the predictions of equation 8.3. If μ is the expected value of x, this means
+the action that minimizes the difference between the predicted data ( g( μ))
+and the observed data ( y) is to set u equal to v − μ. This is an expression of
+the “equilibrium point hypothesis” (Feldman and Levin 2009), which treats
+motor control as enacted by reflex arcs that simply draw limbs ­toward equilibrium points set by descending motor signals. U
+­ nder Active Inference,
+­these signals are predictions—­specifically, proprioceptive predictions about,
+for example, the expected position of limbs or eyes (Adams, Shipp, and
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+155
+
+Friston 2013). Therefore, movement control results from the fulfillment of
+(proprioceptive) predictions by action, as schematically illustrated in figure 8.1. Note that this scheme does not require specification of “inverse
+models” (i.e., mappings from desired consequences to the motor commands to reach them) that are widely used in other formulations of motor
+control (Wolpert and Kawato 1998).
+The expression in equation 8.3 is the simplest sort of attractor system
+we might employ in a generative model. However, it is too ­simple in many
+settings, where more realistic Newtonian dynamics apply. A more sophisticated model recognizes that forces—­generated by muscles—­change the
+velocity (i.e., induce an acceleration), not the position. Equation 8.5 sets
+this out explic­itly with x1 as the position and x2 as the velocity:
+⎡ x2
+⎤
+f (x,v) = ⎢ κ
+⎥
+⎣ m (v − x1 ) ⎦
+
+(8.5)
+
+This expression is equivalent to the dynamics of a spring obeying Hooke’s
+law. The rate of change of the position (first ele­ment) is simply the velocity.
+The rate of change of the velocity (second ele­ment) is proportional to the
+distance between the current position and the point v, with the constant
+of proportionality: a ratio between the mass of the object (m) and a (spring)
+constant (κ ). Multiplying both sides by the mass, we have the force1 generated by a spring (κ (v − x1)) attached to the points v and x1 equal to the mass
+multiplied by the rate of change of the velocity. This is just Newton’s second
+law. In other words, we can write down a generative model that predicts the
+dynamics that would unfold if t­ here w
+­ ere a spring drawing a limb to a desired
+location. By predicting the (proprioceptive) data consequent on this Newtonian mechanics, we can enact the movement that fulfills t­ hese predictions.
+8.3 Dynamical Systems
+As outlined in section 8.2, continuous-­time formulations of Active Inference are well suited to characterization of movements. More generally,
+they are appropriate in specifying generative models of nonlinear dynamical systems wherein discretization of time and space is inefficient. The
+simplest form of dynamical system is the attractor of equation 8.3, but
+much richer be­hav­ior can be developed from more complex systems. In
+the ­limited space of this book, we cannot do justice to the large body of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+156
+
+Generative model
+
+v
+f (x,v)
+
+
+µx = Dµx + ∇µx f  Πxεx + …
+
+x
+
+µx
+
+y
+Generative process
+
+y = g(x) + ωy
+
+u = –∇ y(u) Π ε
+u
+y y
+
+εy
+εy = y – g(µx)
+
+f (x,u)
+x
+
+Figure 8.1
+Spinal reflexes, illustrating the distinction between a generative pro­cess (out ­there
+in the world) and a generative model in the setting of action generation. The model
+assumes that the position ( x ) of a limb (or hand or other body part) is drawn ­toward
+some point (v). The dashed arrow in the upper plot shows this belief. Beliefs about
+x( μx ) may be substituted in place of x and used to update beliefs about its rate of
+change. The resulting μx is then used to predict sensory data ( y) via the g function in
+the generative model. Sensory data are actually generated by the generative pro­cess
+via the function g, which takes the “real” value of x as its argument. The error (εy)
+then drives changes in action (u) such that the error is resolved. This resolution happens through the generative model, as the action determines the rate of change of x
+via f. This ­causes x to move to the location in space that generates data y consistent
+with the prediction (  g(  μx )), setting εy and therefore the rate of change of a to zero.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+157
+
+Box 8.1
+Precision, attention, and sensory attenuation
+We addressed the importance of precision in chapter 7, but it is worth recapping its role in continuous-­time systems. In many ways, this concept is more
+naturally addressed in this setting, as the Π variable appears as a direct consequence of the Laplace approximation. This acts directly as a multiplicative
+gain in the inferential dynamics (see figure 8.1), with dif­fer­ent precisions
+weighting alternative influences over belief updating.
+The interpretation of precision as a synaptic gain connects it to several
+impor­tant aspects of neurobiology. From an empirical point of view, higher
+precision implies more vigorous belief updating of the sort that might be mea­
+sured in electrophysiological research as a large amplitude-­evoked response
+with an early peak or in single-­cell recordings as a multiplicative effect on
+neuronal firing rates in response to a stimulus placed in that cell’s receptive
+field. T
+­ hese findings are often associated with attentional pro­cessing, where
+one sensory channel (or subset of channels) is favored above o
+­ thers. From
+the perspective of active inference, precision and attention are synonyms. The
+former has been used to reproduce a range of attentional phenomena in silico,
+including the Posner paradigm (Feldman and Friston 2010). Specifically, using
+a cue to predict the precision of sensory input from one of two locations
+reproduces the empirical finding that responses to stimuli in the cued location are faster than ­those appearing in the alternative location.
+A second impor­tant aspect of precision control is its role in movement
+generation. To understand this, it is worth thinking about what happens in
+the absence of this control. Imagine, first, that sensory data are predicted with
+high precision. The messages from ­these data are therefore afforded high synaptic gain and lead to veracious inferences about the position of some body
+part. The prob­lem with this is the equivalence between motor commands and
+predictions ­under Active Inference. An accurate belief that “I am not moving” cannot be used to predict the sensory consequences of movement, vital
+for the initiation of that movement. With high precision sensory input, the
+belief that “I am moving” is immediately corrected in the face of evidence to
+the contrary; hence no movement is executed. This tells us something impor­
+tant: In order to generate movement, we must be able to ignore the sensory
+consequences of that movement to form the (initially false) belief that “I am
+moving.” Once this belief is established, the proprioceptive (and other sensory) consequences of that movement may be predicted and enacted through
+the mechanisms outlined in figure 8.1. This pro­cess of ignoring evidence to
+the contrary is known as “sensory attenuation” and represents the decrease in
+precision required for a movement to take place (Brown, Adams et al. 2013;
+Pezzulo 2013; Seth 2013; Pezzulo, Rigoli, and Friston 2015; Seth and Friston
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+158
+
+Box 8.1 (continued)
+2016; Allen et al. 2019). Clearly it is useful between movements to restore this
+precision, to draw the appropriate inferences from sensory input. This implies
+a cyclical pro­cess of attenuating and moving (e.g., the cyclical suppression

@@ -1,0 +1,49 @@
+{
+  "slug": "multimodal-two-channel-frog",
+  "title": "Jumping Frog: Two Channels, One Belief",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 9,
+  "tags": ["multi-modal", "perception", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(frog_pond)",
+    "world": "frog_pond",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Observation combines goal_cue + tile + wall_hit channels into one obs index; posterior concentrates faster than any single channel alone."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=multimodal-two-channel-frog",
+    "labs_url": "/labs?recipe=multimodal-two-channel-frog&world=frog_pond"
+  },
+  "math": {
+    "latex": "P(o_1, o_2, \\ldots \\mid s) = \\prod_k P(o_k \\mid s),\\quad q(s \\mid o_{1:K}) \\propto q(s) \\prod_k P(o_k \\mid s)",
+    "symbols": {
+      "o_k": "observation from channel k",
+      "factorised likelihood": "independence of channels given the state"
+    }
+  },
+  "audiences": {
+    "kid": "You see and hear at the same time. Both senses help you decide what's in front of you, faster than either alone.",
+    "real": "In the frog_pond world the bundle fuses three channels into one obs index via ObsAdapter. The joint posterior is tighter than any single-channel slice.",
+    "equation": "P(o_1:K | s) factorises over channels; log posterior adds log-likelihoods across channels. Multi-modal is multiplicative.",
+    "derivation": "Under conditional independence of channels given state, log posterior = log prior + sum_k log P(o_k | s). This is the factor-graph message-passing (Bishop 2006, Ch 8)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["overview/s2"],
+  "labs": ["frog"],
+  "orchestrate": {
+    "objective": "Show multi-channel observation fusion on the frog_pond world.",
+    "role": "Multi-modal tutor using the canonical Jumping Frog pattern.",
+    "context": "frog_pond 5x3; blanket subscribes goal_cue + tile + wall_hit."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 3.",
+    "Bishop (2006), Pattern Recognition and Machine Learning, Ch 8."
+  ]
+}

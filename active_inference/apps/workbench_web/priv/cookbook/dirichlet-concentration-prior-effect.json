@@ -1,0 +1,50 @@
+{
+  "slug": "dirichlet-concentration-prior-effect",
+  "title": "Prior Concentration: Learning Speed Knob",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 8,
+  "tags": ["dirichlet", "prior", "learning-rate", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive", "plan", "act", "dirichlet_update_a"],
+    "skills_used": ["expected_free_energy"],
+    "horizon": 2,
+    "policy_depth": 2,
+    "preference_strength": 2.0,
+    "expected_outcome": "Small initial concentrations (~1) give fast adaptation; large concentrations (~100) lock the prior in place. Effective learning rate is visible in A-column variance over episodes."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=dirichlet-concentration-prior-effect",
+    "labs_url": "/labs?recipe=dirichlet-concentration-prior-effect&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\text{Var}[\\theta_i] = \\frac{a_i(a_0 - a_i)}{a_0^2(a_0 + 1)},\\quad a_0 = \\sum_i a_i",
+    "symbols": {
+      "a_i": "concentration for category i",
+      "a_0": "total concentration; larger -> sharper prior",
+      "Var[theta]": "uncertainty under the Dirichlet"
+    }
+  },
+  "audiences": {
+    "kid": "A brand-new agent learns quickly from each clue. One with strong beliefs already barely moves.",
+    "real": "The prior concentration a_0 is the agent's 'pseudo-count budget'. a_0=1 is near-uniform; a_0=100 nails the prior down.",
+    "equation": "Posterior variance shrinks as 1/a_0. Fewer counts -> faster learning. Tune by initialisation.",
+    "derivation": "Dirichlet variance decomposes as a_i(a_0 - a_i)/(a_0^2 (a_0 + 1)). Increasing a_0 while keeping proportions fixed shrinks variance. Sets the learning-rate analog in active inference."
+  },
+  "equation_refs": ["eq-7-10"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Quantify how the Dirichlet concentration controls the effective learning rate.",
+    "role": "Learning-rate tutor.",
+    "context": "tiny_open_goal, learning_enabled=true; vary initial concentration in {1, 10, 100}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7.",
+    "Bishop (2006), Pattern Recognition and Machine Learning, Ch 2."
+  ]
+}

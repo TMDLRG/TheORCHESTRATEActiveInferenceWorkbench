@@ -1,0 +1,49 @@
+{
+  "slug": "epistemic-uniform-prior-blind-spot",
+  "title": "Uniform Prior: No Free Lunch in Exploration",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 7,
+  "tags": ["epistemic", "prior", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(hierarchical_maze)",
+    "world": "hierarchical_maze",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "shannon_entropy"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "With a uniform D prior over the 11x11 maze, early exploration is necessary; a peaked D cuts this cost dramatically."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=epistemic-uniform-prior-blind-spot",
+    "labs_url": "/labs?recipe=epistemic-uniform-prior-blind-spot&world=hierarchical_maze"
+  },
+  "math": {
+    "latex": "D_{\\text{uniform}} \\Rightarrow H[q(s_0)] = \\log N,\\quad D_{\\text{peaked}} \\Rightarrow H[q(s_0)] \\approx 0",
+    "symbols": {
+      "D": "prior over the initial state (D vector in the bundle)",
+      "H[q(s_0)]": "initial belief entropy"
+    }
+  },
+  "audiences": {
+    "kid": "If you start with no idea where you are, you have to look around a lot. If you already have a guess, you can go faster.",
+    "real": "The D vector encodes prior belief about the start state. A uniform D forces wide exploration; a peaked D concentrates policy near the informed start.",
+    "equation": "BundleBuilder default: D_i = 1 at start_idx, 0 elsewhere. Override with uniform D to see the epistemic cost.",
+    "derivation": "Initial entropy H[q(s_0)] bounds the total info gain required. Under uniform D, the agent must work log N nats of entropy down; under peaked D, zero."
+  },
+  "equation_refs": ["eq-4-13"],
+  "figure_refs": [],
+  "session_refs": ["generative-models/s1"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Quantify how prior entropy (D) maps to exploration cost.",
+    "role": "Prior-engineering tutor.",
+    "context": "hierarchical_maze 11x11; toggle D between peaked (default) and uniform."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), App B.",
+    "Cover & Thomas (2006), Elements of Information Theory."
+  ]
+}

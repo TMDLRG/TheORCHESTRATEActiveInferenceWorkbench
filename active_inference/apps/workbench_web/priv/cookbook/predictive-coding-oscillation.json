@@ -1,0 +1,50 @@
+{
+  "slug": "predictive-coding-oscillation",
+  "title": "When Predictive Coding Oscillates",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 10,
+  "tags": ["predictive-coding", "stability", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["predictive_coding_pass"],
+    "skills_used": ["variational_free_energy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "eta * (pi_1 + pi_2) > 2 makes the sweep oscillate or diverge; shrinking eta stabilises it."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=predictive-coding-oscillation",
+    "labs_url": "/labs?recipe=predictive-coding-oscillation&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\eta \\cdot L < 2,\\quad L \\approx \\pi_1 + \\pi_2",
+    "symbols": {
+      "eta": "learning rate",
+      "L": "Lipschitz constant of the gradient",
+      "stability bound": "eta < 2/L"
+    }
+  },
+  "audiences": {
+    "kid": "If you change your mind too hard, you overshoot. Slow down, get it right.",
+    "real": "Oscillation in PC is a standard gradient-descent failure: eta * Lipschitz > 2. Lower eta or pi until stability.",
+    "equation": "For quadratic F with gradient Lipschitz L ~ pi_1 + pi_2, eta < 2/L is required for convergence.",
+    "derivation": "Standard result from gradient descent on quadratic functions (Nesterov 2004). Oscillation is an early warning that the system is near its stability boundary."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["message-passing/s2"],
+  "labs": ["tower"],
+  "orchestrate": {
+    "objective": "Diagnose oscillation in predictive-coding sweeps and fix it.",
+    "role": "Stability-tuning tutor.",
+    "context": "PredictiveCodingPass with eta sweeping through {0.05, 0.3, 0.7, 1.2}; pi_1+pi_2=2."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Nesterov (2004), Introductory Lectures on Convex Optimization."
+  ]
+}

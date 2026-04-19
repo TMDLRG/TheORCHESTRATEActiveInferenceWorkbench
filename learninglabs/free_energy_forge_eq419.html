@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Free Energy Forge — Equation 4.19</title>
+<style>
+  :root{
+    --bg:#14110f;
+    --panel:#211d1a;
+    --panel2:#2a2521;
+    --metal:#7c6e5d;
+    --metal2:#b9aa92;
+    --accent:#d2b36d;
+    --accent2:#86c2b8;
+    --warn:#d98e73;
+    --good:#9fcb95;
+    --text:#f2eadf;
+    --muted:#c8bcab;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    background:
+      radial-gradient(circle at 20% 10%, #2c241c 0, transparent 35%),
+      radial-gradient(circle at 80% 5%, #221b15 0, transparent 28%),
+      linear-gradient(180deg, #161210, #0f0d0b 45%, #14110f);
+    color:var(--text);
+  }
+  .wrap{max-width:1450px;margin:0 auto;padding:20px}
+  .title{
+    display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding:18px 22px;margin-bottom:16px;border:1px solid #4b4035;border-radius:24px;
+    background:linear-gradient(180deg,#2b251f,#1d1916); box-shadow:var(--shadow);
+  }
+  h1{margin:0;font-size:28px;letter-spacing:.06em}
+  .subtitle{color:var(--muted);font-size:13px;line-height:1.45;max-width:820px}
+  .badge{
+    padding:8px 12px;border-radius:999px;background:linear-gradient(180deg,#5a4f43,#40362d);
+    border:1px solid #91816e;color:#fff4d9;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .grid{
+    display:grid;grid-template-columns: 390px 1fr; gap:16px;
+  }
+  .left,.right{display:flex;flex-direction:column;gap:16px}
+  .panel{
+    background:linear-gradient(180deg,var(--panel2),var(--panel));
+    border:1px solid #53473b;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);
+    position:relative;overflow:hidden;
+  }
+  .panel:before{
+    content:"";position:absolute;inset:0;background:
+      linear-gradient(180deg,rgba(255,255,255,.04),transparent 26%),
+      repeating-linear-gradient(90deg, transparent, transparent 22px, rgba(255,255,255,.015) 22px, rgba(255,255,255,.015) 23px);
+    pointer-events:none;
+  }
+  .panel h2{margin:0 0 10px 0;font-size:18px;letter-spacing:.04em}
+  .small{font-size:12px;color:var(--muted);line-height:1.45}
+  .controls{display:grid;grid-template-columns:1fr;gap:12px}
+  .group{
+    border:1px solid #5a4f43;border-radius:14px;padding:12px;background:rgba(0,0,0,.12)
+  }
+  .group h3{margin:0 0 10px 0;font-size:14px;color:#ffecbe;letter-spacing:.06em}
+  .row{display:grid;grid-template-columns:64px 1fr 56px;gap:8px;align-items:center;margin:8px 0}
+  .row label{font-size:12px;color:#e5dac8}
+  input[type="range"]{width:100%}
+  input[type="number"]{
+    width:100%; background:#15110e;color:var(--text);border:1px solid #6c5d4c;border-radius:8px;
+    padding:6px 8px; font:inherit;
+  }
+  .btns{display:flex;flex-wrap:wrap;gap:10px}
+  button, select{
+    background:linear-gradient(180deg,#6a5a49,#4f4337); color:var(--text); border:1px solid #a18d73;
+    border-radius:12px;padding:10px 12px; font:inherit; cursor:pointer;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 4px 10px rgba(0,0,0,.2);
+  }
+  button:hover{filter:brightness(1.06)}
+  button:active{transform:translateY(1px)}
+  select{width:100%}
+  .score{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px
+  }
+  .score .card{
+    border:1px solid #5a4f43;border-radius:14px;padding:12px;background:rgba(0,0,0,.14)
+  }
+  .big{font-size:28px;margin-top:6px;color:#fff1cf}
+  .meter{
+    height:16px;background:#120f0d;border:1px solid #6b5d4d;border-radius:999px;overflow:hidden;
+    position:relative
+  }
+  .meter > span{
+    display:block;height:100%;
+    background:linear-gradient(90deg,var(--good),var(--accent),var(--warn));
+    width:0%;
+  }
+  .machine{
+    display:grid;grid-template-columns: 1.1fr .9fr; gap:16px;
+  }
+  .well{
+    border:1px solid #5a4f43;border-radius:16px;padding:14px;background:
+      linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),
+      rgba(0,0,0,.16);
+  }
+  .matrix{
+    display:grid; gap:8px; margin:8px 0 0 0;
+  }
+  .vector{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px;
+  }
+  .cell{
+    border:1px solid #6f604f;border-radius:10px;padding:10px;background:#171310;text-align:center;min-height:62px;
+  }
+  .cell .name{font-size:11px;color:var(--muted)}
+  .cell .val{font-size:22px;margin-top:6px;color:#fff1cf}
+  .eq{
+    white-space:pre-wrap;font-size:13px;line-height:1.5;background:#14110e;border:1px solid #5a4f43;
+    border-radius:14px;padding:12px;color:#eee5d7;
+  }
+  .pipes{
+    display:grid;grid-template-columns: 1fr 56px 1fr 56px 1fr;align-items:center;gap:8px;margin-top:10px
+  }
+  .pipe{
+    height:14px;border-radius:999px;border:1px solid #715f4d;background:linear-gradient(180deg,#41372e,#1b1713);position:relative;overflow:hidden
+  }
+  .pipe > span{
+    position:absolute;left:0;top:0;bottom:0;width:0%;
+    background:repeating-linear-gradient(90deg,#e9c479,#e9c479 8px,#b89149 8px,#b89149 16px);
+  }
+  .gear{
+    width:56px;height:56px;border-radius:50%;border:6px solid #8a755c;
+    display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,#75624f,#3c322a);
+    box-shadow: inset 0 0 0 3px #2a231d;
+    font-weight:bold;color:#fff6e5;
+  }
+  .step-list{display:grid;gap:8px}
+  .step{
+    border:1px solid #5a4f43;border-radius:12px;padding:10px;background:rgba(0,0,0,.12)
+  }
+  .step.active{border-color:#d2b36d;box-shadow:0 0 0 1px rgba(210,179,109,.25) inset}
+  .step .head{font-size:13px;color:#ffedbe;margin-bottom:6px}
+  .mini{font-size:12px;color:#d7cbb9;line-height:1.45}
+  .log{
+    max-height:280px;overflow:auto;border:1px solid #5a4f43;border-radius:12px;padding:10px;background:#13100d
+  }
+  .log-entry{
+    padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.08);font-size:12px;color:#e3d9ca
+  }
+  .pill{
+    display:inline-block;padding:4px 8px;border-radius:999px;background:#3a3129;border:1px solid #7a6855;
+    font-size:11px;color:#fff1c8
+  }
+  .teaching{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px
+  }
+  canvas{
+    width:100%;height:300px;background:
+      linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
+      #171310;border:1px solid #5a4f43;border-radius:16px;
+  }
+  .footer-note{font-size:12px;color:var(--muted)}
+  .mission{
+    border-left:4px solid var(--accent);
+    padding:10px 12px;background:rgba(210,179,109,.08);border-radius:10px;margin:10px 0 0 0
+  }
+  @media (max-width:1100px){
+    .grid{grid-template-columns:1fr}
+    .machine,.teaching{grid-template-columns:1fr}
+    .score{grid-template-columns:1fr 1fr}
+  }
+
+  /* Shared learning-UX components */
+  .stageStrip{
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(118px, 1fr)); gap:8px;
+    margin-bottom:12px; position:sticky; top:8px; z-index:5;
+    background:linear-gradient(180deg, rgba(22,18,15,0.94), rgba(22,18,15,0.82));
+    backdrop-filter:blur(8px);
+    border:1px solid rgba(210,179,109,0.22); border-radius:14px; padding:9px;
+  }
+  .stageStrip .cell{
+    background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06);
+    border-radius:10px; padding:8px 10px; min-width:0;
+  }
+  .stageStrip .lab{font-size:10px; letter-spacing:1px; color:var(--muted); text-transform:uppercase;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stageStrip .val{font-size:18px; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums;
+    margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stageStrip .sub2{font-size:10px; color:var(--muted); margin-top:2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+
+  .stageToolbar{
+    display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; padding:9px;
+    background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px; align-items:center;
+  }
+  .stageToolbar button, .stageToolbar select{padding:9px 12px; font-size:13px; flex:0 0 auto;}
+  .iconBtn{width:34px; padding:9px 0 !important; display:inline-flex; align-items:center;
+    justify-content:center; font-weight:800;}
+
+  .introStrip{
+    background:linear-gradient(180deg, rgba(134,194,184,0.10), rgba(134,194,184,0.04));
+    border:1px solid rgba(134,194,184,0.28); border-radius:14px; padding:12px 14px;
+    margin-bottom:12px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start;
+  }
+  .introStrip .body{display:grid; gap:6px; font-size:13px; line-height:1.4;}
+  .introStrip .row{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap;}
+  .introStrip .tag{font-size:10px; letter-spacing:1px; text-transform:uppercase; padding:3px 7px;
+    border-radius:999px; background:rgba(134,194,184,0.22); color:#d3e9e2; white-space:nowrap;}
+  .introStrip .dismiss{background:transparent; border:1px solid rgba(255,255,255,0.2);
+    color:var(--muted); font-size:12px; padding:6px 10px;}
+  .introStrip.hidden{display:none;}
+
+  .tour-overlay{position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(2px);
+    z-index:9999; display:none; align-items:flex-end; justify-content:center; padding:24px;}
+  .tour-overlay.on{display:flex;}
+  .tour-card{background:linear-gradient(180deg,#2b241f,#1d1916); border:1px solid rgba(210,179,109,0.5);
+    border-radius:14px; box-shadow:var(--shadow); padding:16px 18px; max-width:560px; width:100%;
+    color:var(--text);}
+  .tour-card h4{margin:0 0 8px; font-size:15px; color:var(--accent); letter-spacing:0.5px;}
+  .tour-card .step-line{font-size:13px; line-height:1.45; color:var(--text);}
+  .tour-card .tour-actions{display:flex; justify-content:space-between; gap:10px; margin-top:12px;}
+  .tour-highlight{position:absolute; pointer-events:none; border:2px solid #e0c07a; border-radius:10px;
+    box-shadow:0 0 0 9999px rgba(0,0,0,0.5), 0 0 16px rgba(224,192,122,0.5);
+    transition:top .2s ease, left .2s ease, width .2s ease, height .2s ease; z-index:9998;}
+
+  /* === Learning Shell === */
+  .ls-pathbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px; background: linear-gradient(180deg, rgba(210,179,109,0.08), rgba(210,179,109,0.02)); border: 1px solid rgba(210,179,109,0.22); border-radius: 12px; font-size: 13px; }
+  .ls-pathbar .ls-pathlabel { color: var(--muted); margin-right: 4px; }
+  .ls-pathbar .ls-pathbtn { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--text); cursor: pointer; font-size: 12px; font-weight: 600; }
+  .ls-pathbar .ls-pathbtn:hover { background: rgba(255,255,255,0.10); }
+  .ls-pathbar .ls-pathbtn[aria-pressed="true"] { background: linear-gradient(180deg, rgba(210,179,109,0.32), rgba(210,179,109,0.12)); border-color: rgba(210,179,109,0.5); color: #fff8e6; }
+  .ls-pathbar .ls-spacer { flex: 1 1 auto; }
+  .ls-pathbar .ls-toolbtn { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--muted); cursor: pointer; font-size: 12px; }
+  .ls-pick-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .ls-pick-overlay.on { display: flex; }
+  .ls-pick-card { background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(210,179,109,0.4); border-radius: 16px; padding: 22px 24px; max-width: 720px; width: 100%; color: var(--text); }
+  .ls-pick-card h3 { margin: 0 0 6px; color: var(--accent); font-size: 20px; }
+  .ls-pick-card .ls-pick-sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; line-height: 1.4; }
+  .ls-pick-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .ls-pick-opt { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 12px; padding: 12px 14px; cursor: pointer; text-align: left; color: var(--text); }
+  .ls-pick-opt:hover { background: rgba(255,255,255,0.08); border-color: rgba(210,179,109,0.3); }
+  .ls-pick-opt .ls-pick-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .ls-pick-opt .ls-pick-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .ls-pick-opt .ls-pick-desc { font-size: 12px; color: var(--muted); line-height: 1.35; }
+  .ls-pick-card .ls-pick-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+  .ls-pick-card .ls-pick-actions button { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+  .ls-dock { position: fixed; right: 18px; bottom: 18px; z-index: 200; display: flex; flex-direction: column; gap: 8px; }
+  .ls-dock button { min-width: 44px; height: 44px; border-radius: 22px; background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(210,179,109,0.35); color: var(--text); cursor: pointer; padding: 0 14px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+  .ls-dock button:hover { filter: brightness(1.1); }
+  .ls-dock .ls-dock-ic { font-size: 17px; }
+  .ls-panel-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); display: none; }
+  .ls-panel-overlay.on { display: block; }
+  .ls-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 96vw); background: linear-gradient(180deg, #2b241d, #1d1714); border-left: 1px solid rgba(210,179,109,0.3); box-shadow: -8px 0 24px rgba(0,0,0,0.45); z-index: 310; display: none; flex-direction: column; color: var(--text); }
+  .ls-panel.on { display: flex; }
+  .ls-panel-head { padding: 14px 16px; border-bottom: 1px solid rgba(210,179,109,0.2); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ls-panel-head h4 { margin: 0; font-size: 15px; color: var(--accent); }
+  .ls-panel-close { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); border-radius: 999px; padding: 5px 10px; font-size: 12px; cursor: pointer; }
+  .ls-panel-body { padding: 14px 16px; overflow: auto; flex: 1 1 auto; font-size: 13px; line-height: 1.45; }
+  .ls-term { border-bottom: 1px dotted rgba(210,179,109,0.55); cursor: help; }
+  .ls-tooltip { position: absolute; z-index: 400; background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(210,179,109,0.45); border-radius: 10px; padding: 10px 12px; max-width: 340px; min-width: 220px; color: var(--text); font-size: 12px; line-height: 1.45; box-shadow: 0 8px 22px rgba(0,0,0,0.5); display: none; }
+  .ls-tooltip.on { display: block; }
+  .ls-tooltip .ls-term-name { font-weight: 800; color: var(--accent); font-size: 13px; margin-bottom: 4px; }
+  .ls-tooltip .ls-term-tier { margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 11px; color: var(--muted); }
+  .ls-tooltip .ls-term-tier b { color: var(--text); font-weight: 700; }
+  .ls-eqpanel .ls-eqtabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .ls-eqpanel .ls-eqtab { padding: 5px 10px; border-radius: 999px; font-size: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); cursor: pointer; }
+  .ls-eqpanel .ls-eqtab[aria-pressed="true"] { background: linear-gradient(180deg, rgba(210,179,109,0.32), rgba(210,179,109,0.12)); border-color: rgba(210,179,109,0.5); color: #fff8e6; }
+  .ls-eqpanel .ls-eqbody { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.55; color: var(--text); min-height: 60px; }
+  .ls-eqpanel .ls-eqbody .ls-eqmath { font-family: "Courier New", monospace; white-space: pre-wrap; color: #f1eadc; }
+  .ls-eqpanel .ls-eqbody .ls-eqpic { display: flex; flex-direction: column; gap: 6px; font-family: "Courier New", monospace; font-size: 12px; color: #f1eadc; }
+  .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqrow { display: flex; gap: 10px; align-items: center; }
+  .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqbox { padding: 4px 8px; border: 1px solid rgba(210,179,109,0.4); border-radius: 6px; background: rgba(210,179,109,0.08); }
+  .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqarrow { color: var(--muted); }
+  .ls-analogy { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+  .ls-analogy h6 { margin: 0 0 4px; font-size: 13px; color: var(--accent); }
+  .ls-analogy .ls-analogy-persona { display: inline-block; font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; background: rgba(210,179,109,0.2); color: #fff8e6; border-radius: 999px; padding: 2px 7px; margin-right: 6px; }
+  .ls-analogy .ls-analogy-scenario { color: var(--text); margin: 6px 0; font-size: 12px; }
+  .ls-analogy .ls-analogy-map { font-size: 11px; color: var(--muted); background: rgba(0,0,0,0.2); border-radius: 6px; padding: 6px 8px; margin-top: 6px; }
+  .ls-analogy .ls-analogy-map table { width: 100%; border-collapse: collapse; }
+  .ls-analogy .ls-analogy-map td { padding: 2px 4px; border-bottom: 1px dashed rgba(255,255,255,0.06); font-size: 11px; }
+  .ls-analogy .ls-analogy-map td:first-child { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .ls-analogy .ls-analogy-ex { font-size: 11px; color: var(--muted); margin-top: 6px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 6px; }
+  .ls-analogy .ls-analogy-ex b { color: var(--accent); }
+  .ls-exercise { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .ls-exercise h6 { margin: 0 0 6px; color: var(--accent); font-size: 13px; }
+  .ls-exercise .ls-ex-meta { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .ls-exercise .ls-ex-sect { margin-top: 8px; }
+  .ls-exercise .ls-ex-sect b { color: var(--accent); font-size: 11px; letter-spacing: .6px; text-transform: uppercase; display: block; margin-bottom: 3px; }
+  .ls-exercise ol, .ls-exercise ul { margin: 4px 0 4px 18px; padding: 0; }
+  .ls-exercise li { margin-bottom: 3px; font-size: 12px; }
+  .ls-exercise .ls-ex-print { font-size: 11px; background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 4px 10px; cursor: pointer; margin-top: 8px; }
+  @media print { body > *:not(.ls-print-root) { display: none !important; } .ls-print-root { display: block !important; color: #000 !important; background: #fff !important; padding: 8px !important; font-size: 11pt; max-width: 5.5in; } .ls-print-root * { color: #000 !important; background: transparent !important; border-color: #888 !important; box-shadow: none !important; } @page { size: letter; margin: 0.4in; } }
+  .ls-beat { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 12px; background: linear-gradient(180deg, rgba(159,203,149,0.10), rgba(159,203,149,0.04)); border: 1px solid rgba(159,203,149,0.28); border-radius: 12px; font-size: 13px; }
+  .ls-beat .ls-beat-body { flex: 1 1 200px; line-height: 1.4; }
+  .ls-beat .ls-beat-head { display: block; font-size: 11px; letter-spacing: .8px; color: #9fc59b; text-transform: uppercase; margin-bottom: 3px; }
+  .ls-beat .ls-beat-ctrl { display: inline-flex; gap: 6px; }
+  .ls-beat .ls-beat-ctrl button { padding: 6px 10px; font-size: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); }
+  .ls-beat .ls-beat-ctrl button.primary { background: linear-gradient(180deg, rgba(159,203,149,0.30), rgba(159,203,149,0.10)); border-color: rgba(159,203,149,0.5); }
+  .ls-beat .ls-beat-idx { font-weight: 800; color: #d7e9c9; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .ls-glossary-entry { padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); margin-bottom: 8px; }
+  .ls-glossary-entry .ls-glossary-sym { display: inline-block; font-weight: 800; color: var(--accent); margin-right: 8px; font-family: "Courier New", monospace; }
+  .ls-glossary-entry .ls-glossary-tier { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .ls-glossary-entry .ls-glossary-tier b { color: var(--text); font-weight: 700; }
+  .ls-glossary-search { width: 100%; box-sizing: border-box; padding: 8px 10px; margin-bottom: 10px; background: rgba(0,0,0,0.2); color: var(--text); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 100ms !important; } }
+  body.ls-dys { font-family: "Verdana", "Tahoma", "Trebuchet MS", sans-serif; letter-spacing: 0.03em; word-spacing: 0.08em; }
+  @media (max-width: 820px) { .ls-pathbar { font-size: 12px; } .ls-pathbar .ls-pathbtn { padding: 5px 8px; font-size: 11px; } .ls-dock { right: 10px; bottom: 10px; } .ls-dock button { padding: 0 10px; font-size: 12px; min-width: 40px; height: 40px; } }
+</style>
+<link rel="stylesheet" href="/assets/suite-tokens.css" data-mark="suite-tokens-link-v1">
+</head>
+<body>
+<div class="wrap">
+  <div class="ls-pathbar" role="region" aria-label="Learning path">
+    <a class="ls-pathbtn ls-crumb" href="/learn" target="_top" data-ls-mark="ls-pathbar-breadcrumb-v1">← Learn</a><a class="ls-pathbtn ls-crumb" href="/" target="_top">Workbench ▸</a><span class="ls-pathlabel" style="margin-left:6px;">·</span><span class="ls-pathlabel">Path:</span>
+    <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false">🌱 Story</button>
+    <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true">🧭 Real-world</button>
+    <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false">🛠️ Equation</button>
+    <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false">🎓 Derivation</button>
+    <span class="ls-spacer"></span>
+    <button class="ls-toolbtn" id="lsPickerBtn">♻ Switch audience</button>
+    <button class="ls-toolbtn" id="lsDysBtn" aria-pressed="false">🅰 Font</button>
+  </div>
+  <div class="title">
+    <div>
+      <h1>FREE ENERGY FORGE</h1>
+      <div class="subtitle">
+        A mechanical teaching game for Equation 4.19. You control posterior modes <strong>μ̃x</strong> and <strong>μ̃v</strong>,
+        watch the derivative operator <strong>D</strong> shift generalized coordinates upward, compute the three prediction-error stacks
+        <strong>ε̃y</strong>, <strong>ε̃x</strong>, and <strong>ε̃v</strong>, and minimize
+        <strong>F = ½ ( ε̃yᵀΠyε̃y + ε̃xᵀΠxε̃x + ε̃vᵀΠvε̃v )</strong>.
+        Tildes mark generalized coordinates (stacks over temporal orders).
+      </div>
+    </div>
+    <div class="badge">Standalone HTML</div>
+  </div>
+
+  <div class="grid">
+    <div class="left">
+      <div class="panel">
+        <h2>Mission Console</h2>
+        <div class="small">Win by driving free energy below the target while learning exactly where each term comes from.</div>
+        <div class="mission" id="missionText"></div>
+        <div style="margin-top:12px">
+          <label class="small">Preset world</label>
+          <select id="preset"></select>
+        </div>
+        <div class="btns" style="margin-top:12px">
+          <button id="loadPreset">Load preset</button>
+          <button id="randomize">Random challenge</button>
+          <button id="resetMu">Reset beliefs</button>
+          <button id="autostep">Auto-reduce F</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Control Deck</h2>
+        <div class="controls">
+          <div class="group">
+            <h3>Observation stack ỹ</h3>
+            <div class="row"><label>y[0]</label><input type="range" id="y0" min="-4" max="4" step="0.1"><input type="number" id="y0n" step="0.1"></div>
+            <div class="row"><label>y[1]</label><input type="range" id="y1" min="-4" max="4" step="0.1"><input type="number" id="y1n" step="0.1"></div>
+            <div class="row"><label>y[2]</label><input type="range" id="y2" min="-4" max="4" step="0.1"><input type="number" id="y2n" step="0.1"></div>
+          </div>
+
+          <div class="group">
+            <h3>Posterior mode μ̃x</h3>
+            <div class="row"><label>μx[0]</label><input type="range" id="mx0" min="-4" max="4" step="0.1"><input type="number" id="mx0n" step="0.1"></div>
+            <div class="row"><label>μx[1]</label><input type="range" id="mx1" min="-4" max="4" step="0.1"><input type="number" id="mx1n" step="0.1"></div>
+            <div class="row"><label>μx[2]</label><input type="range" id="mx2" min="-4" max="4" step="0.1"><input type="number" id="mx2n" step="0.1"></div>
+          </div>
+
+          <div class="group">
+            <h3>Posterior mode μ̃v</h3>
+            <div class="row"><label>μv[0]</label><input type="range" id="mv0" min="-4" max="4" step="0.1"><input type="number" id="mv0n" step="0.1"></div>
+            <div class="row"><label>μv[1]</label><input type="range" id="mv1" min="-4" max="4" step="0.1"><input type="number" id="mv1n" step="0.1"></div>
+            <div class="row"><label>μv[2]</label><input type="range" id="mv2" min="-4" max="4" step="0.1"><input type="number" id="mv2n" step="0.1"></div>
+          </div>
+
+          <div class="group">
+            <h3>Prior cause η̃ and diagonal precisions Π</h3>
+            <div class="row"><label>η0</label><input type="range" id="eta0" min="-4" max="4" step="0.1"><input type="number" id="eta0n" step="0.1"></div>
+            <div class="row"><label>η1</label><input type="range" id="eta1" min="-4" max="4" step="0.1"><input type="number" id="eta1n" step="0.1"></div>
+            <div class="row"><label>η2</label><input type="range" id="eta2" min="-4" max="4" step="0.1"><input type="number" id="eta2n" step="0.1"></div>
+            <div class="row"><label>Πy</label><input type="range" id="py" min="0.2" max="8" step="0.1"><input type="number" id="pyn" step="0.1"></div>
+            <div class="row"><label>Πx</label><input type="range" id="px" min="0.2" max="8" step="0.1"><input type="number" id="pxn" step="0.1"></div>
+            <div class="row"><label>Πv</label><input type="range" id="pv" min="0.2" max="8" step="0.1"><input type="number" id="pvn" step="0.1"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Game Controls</h2>
+        <div class="btns">
+          <button id="nudgeXDown">x − gradient step</button>
+          <button id="nudgeVDown">v − gradient step</button>
+          <button id="stepAll">One full descent step</button>
+          <button id="nextMission">Next mission</button>
+        </div>
+        <div class="small" style="margin-top:10px">
+          The simulator uses numerical gradients of the same free-energy expression shown on screen. No hidden scoring trick:
+          the meter falls only when the actual equation falls.
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="stageStrip" role="region" aria-label="Current free-energy readout">
+        <div class="cell"><div class="lab">F total</div><div class="val" id="stripF">0.000</div><div class="sub2" id="stripFTarget">target pending</div></div>
+        <div class="cell"><div class="lab">Fy</div><div class="val" id="stripFy">0.000</div><div class="sub2">½ Πy‖ε̃y‖²</div></div>
+        <div class="cell"><div class="lab">Fx</div><div class="val" id="stripFx">0.000</div><div class="sub2">½ Πx‖ε̃x‖²</div></div>
+        <div class="cell"><div class="lab">Fv</div><div class="val" id="stripFv">0.000</div><div class="sub2">½ Πv‖ε̃v‖²</div></div>
+        <div class="cell"><div class="lab">‖ε̃y‖</div><div class="val" id="stripEy">0.000</div><div class="sub2">observation mismatch</div></div>
+        <div class="cell"><div class="lab">‖ε̃x‖</div><div class="val" id="stripEx">0.000</div><div class="sub2">dynamics mismatch</div></div>
+      </div>
+
+      <div class="introStrip" id="introStrip" role="note">
+        <div class="body">
+          <div class="row"><span class="tag">Goal</span><span>Minimize <strong>F</strong>, the total free energy displayed at the top-left of the status bar.</span></div>
+          <div class="row"><span class="tag">Watch</span><span>The three component cards <strong>Fy, Fx, Fv</strong>. A gradient step should make the dominant one shrink most.</span></div>
+          <div class="row"><span class="tag">First move</span><span>Click <strong>One full descent step</strong> below. Each press applies a numerical gradient on μ̃x and μ̃v.</span></div>
+        </div>
+        <button class="dismiss" id="introDismissBtn" aria-label="Dismiss intro">Got it ✕</button>
+      </div>
+
+      <div class="stageToolbar" role="toolbar" aria-label="Run controls">
+        <select id="toolbarPreset" style="width:auto;"></select>
+        <button id="tbLoadPreset">Load preset</button>
+        <button id="tbRandom">Random challenge</button>
+        <button id="tbReset">Reset beliefs</button>
+        <button id="tbStepX">μx gradient step</button>
+        <button id="tbStepV">μv gradient step</button>
+        <button id="tbStepBoth">Full descent step</button>
+        <button id="tbAuto">Auto-reduce F</button>
+        <button id="tbNext">Next mission</button>
+        <button class="iconBtn" id="tourOpenBtn" title="Open guided tour" aria-label="Open guided tour">?</button>
+      </div>
+
+      <div class="panel">
+        <h2>Engine Status</h2>
+        <div class="score">
+          <div class="card">
+            <div class="small">Total free energy F</div>
+            <div class="big" id="Ftotal">0.000</div>
+            <div class="meter"><span id="meterF"></span></div>
+          </div>
+          <div class="card">
+            <div class="small">Observation term</div>
+            <div class="big" id="Fy">0.000</div>
+            <div class="small">½ εyᵀΠyεy</div>
+          </div>
+          <div class="card">
+            <div class="small">Dynamics term</div>
+            <div class="big" id="Fx">0.000</div>
+            <div class="small">½ εxᵀΠxεx</div>
+          </div>
+          <div class="card">
+            <div class="small">Cause-prior term</div>
+            <div class="big" id="Fv">0.000</div>
+            <div class="small">½ εvᵀΠvεv</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Mechanical Signal Path</h2>
+        <div class="machine">
+          <div class="well">
+            <div class="small">
+              This teaching world keeps the math readable with three generalized coordinates.
+              The observation mapping and flow are linear so every contribution is visible:
+            </div>
+            <div class="eq" id="modelEq"></div>
+            <canvas id="machineCanvas" width="820" height="300"></canvas>
+          </div>
+
+          <div class="well">
+            <div class="small"><span class="pill">Derivative operator D</span></div>
+            <div class="eq" id="Ddisplay"></div>
+            <div class="small">“Ones above the leading diagonal” means the operator shifts each generalized coordinate upward:</div>
+            <div class="vector" id="shiftDisplay"></div>
+            <div class="small" style="margin-top:10px">It behaves like a discrete derivative operator over generalized coordinates.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Equation 4.19 — computed step by step</h2>
+        <div class="teaching">
+          <div class="step-list" id="steps"></div>
+          <div>
+            <div class="eq" id="ledger"></div>
+            <div class="small" style="margin-top:10px">
+              Precision matrices are treated here as diagonal, so each stack is weighted uniformly by its own scalar precision.
+              That keeps the bookkeeping transparent while staying true to the equation’s form.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Session Log</h2>
+        <div class="log" id="log"></div>
+        <div class="footer-note" style="margin-top:8px">
+          Tip: start by making εv small, then use Dμx to line up with f(μx,μv), then finally fit the observation stack.
+          The order helps because the three error sources are coupled.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px;">
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px; color:var(--accent); font-size:14px; letter-spacing:1px; text-transform:uppercase;">Layered Equation Panel</h2>
+      <div class="ls-eqpanel" id="lsEqPanel">
+        <div class="ls-eqtabs" role="tablist"><button class="ls-eqtab" data-ls-tab="story">Story</button><button class="ls-eqtab" data-ls-tab="picture">Picture</button><button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button><button class="ls-eqtab" data-ls-tab="derivation">Derivation</button></div>
+        <div class="ls-eqbody" id="lsEqBody" role="tabpanel"></div>
+      </div>
+      <div class="footer-note" style="margin-top:8px;">Same Eq 4.19 math; four depths.</div>
+    </section>
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px; color:var(--accent); font-size:14px; letter-spacing:1px; text-transform:uppercase;">Beat Script</h2>
+      <div id="lsBeatHost"></div>
+      <div class="footer-note" style="margin-top:8px;">Walks ε̃y→ε̃x→ε̃v→F→gradient step.</div>
+    </section>
+  </div>
+</div>
+
+<div class="ls-dock" role="region" aria-label="Learning shell tools">
+  <button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button>
+  <button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button>
+  <button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button>
+</div>
+<div class="ls-panel-overlay" id="lsPanelOverlay" aria-hidden="true"></div>
+<aside class="ls-panel" id="lsPanel" role="dialog" aria-modal="true" aria-labelledby="lsPanelTitle" aria-hidden="true">
+  <div class="ls-panel-head"><h4 id="lsPanelTitle">Panel</h4><button class="ls-panel-close" id="lsPanelClose">Close ✕</button></div>
+  <div class="ls-panel-body" id="lsPanelBody"></div>
+</aside>
+<div class="ls-pick-overlay" id="lsPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="lsPickerTitle">
+  <div class="ls-pick-card">
+    <h3 id="lsPickerTitle">Pick a learning path</h3>
+    <div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths.</div>
+    <div class="ls-pick-grid">
+      <button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative + physical objects.</div></button>
+      <button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Analogies + missions.</div></button>
+      <button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code.</div></button>
+      <button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches.</div></button>
+    </div>
+    <div class="ls-pick-actions"><button id="lsPickerDismiss">Skip — I'll default to real-world</button></div>
+  </div>
+</div>
+<div class="ls-tooltip" id="lsTooltip" role="tooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>
+
+<script>
+(() => {
+  const ids = [
+    'y0','y1','y2','mx0','mx1','mx2','mv0','mv1','mv2','eta0','eta1','eta2','py','px','pv'
+  ];
+
+  const presets = [
+    {
+      name: 'Calibration Bay',
+      mission: 'Bring F below 0.40. This is the gentle tutorial world: low mismatch, moderate precisions, easy to see how each error stack contributes.',
+      target: 0.40,
+      vals: {y0:1.4,y1:0.5,y2:-0.2,mx0:0,mx1:0,mx2:0,mv0:0,mv1:0,mv2:0,eta0:0.7,eta1:0.2,eta2:0,py:2.0,px:1.4,pv:1.1}
+    },
+    {
+      name: 'Noisy Sensor Chamber',
+      mission: 'Bring F below 0.75. Observation precision is lower, so the machine should care less about fitting y! exactly.',
+      target: 0.75,
+      vals: {y0:2.3,y1:1.1,y2:0.3,mx0:-0.8,mx1:0.1,mx2:0,mv0:0.1,mv1:0,mv2:0,eta0:0.4,eta1:0.1,eta2:0,py:0.7,px:2.1,pv:1.4}
+    },
+    {
+      name: 'Rigid Dynamics Lock',
+      mission: 'Bring F below 1.00. Transition consistency matters a lot here because Πx is high.',
+      target: 1.00,
+      vals: {y0:0.7,y1:0.9,y2:0.8,mx0:1.7,mx1:-0.9,mx2:0.5,mv0:0,mv1:0,mv2:0,eta0:0.2,eta1:0,eta2:0,py:1.0,px:4.2,pv:1.0}
+    },
+    {
+      name: 'Cause Prior Forge',
+      mission: 'Bring F below 0.90. The prior over hidden cause is strong, so keep μv close to η unless the other terms strongly disagree.',
+      target: 0.90,
+      vals: {y0:1.0,y1:-0.2,y2:-0.6,mx0:-0.6,mx1:0.4,mx2:0,mv0:1.8,mv1:-0.8,mv2:0.2,eta0:1.4,eta1:-0.5,eta2:0.1,py:1.8,px:1.2,pv:4.4}
+    }
+  ];
+  let missionIndex = 0;
+  let autoTimer = null;
+
+  function $(id){ return document.getElementById(id); }
+
+  function bindPair(id){
+    const r = $(id), n = $(id+'n');
+    r.addEventListener('input', ()=>{ n.value = r.value; update(); });
+    n.addEventListener('input', ()=>{ r.value = n.value; update(); });
+  }
+  ids.forEach(bindPair);
+
+  function v(id){ return parseFloat($(id).value); }
+  function setVal(id,val){ $(id).value = val; $(id+'n').value = val; }
+
+  function vec3(a,b,c){ return [a,b,c]; }
+  const D = [
+    [0,1,0],
+    [0,0,1],
+    [0,0,0]
+  ];
+
+  function matVec(M, x){
+    return M.map(row => row.reduce((s,v,i)=>s + v*x[i], 0));
+  }
+  function sub(a,b){ return a.map((v,i)=>v-b[i]); }
+  function add(a,b){ return a.map((v,i)=>v+b[i]); }
+  function dot(a,b){ return a.reduce((s,v,i)=>s + v*b[i], 0); }
+  function scale(a,k){ return a.map(v=>v*k); }
+  function fmt(x){ const n = Number(x); const v = Number.isFinite(n) ? n : 0; return (Math.abs(v) < 1e-10 ? 0 : v).toFixed(3); }
+
+  // Teaching-world generative functions:
+  // g(μx,μv) = μx + μv
+  // f(μx,μv) = [ μx1 + μv0,  μx2 + μv1,  μv2 ]
+  function g(mx,mv){
+    return [mx[0]+mv[0], mx[1]+mv[1], mx[2]+mv[2]];
+  }
+  function f(mx,mv){
+    return [mx[1]+mv[0], mx[2]+mv[1], mv[2]];
+  }
+
+  function getState(){
+    return {
+      y: vec3(v('y0'),v('y1'),v('y2')),
+      mx: vec3(v('mx0'),v('mx1'),v('mx2')),
+      mv: vec3(v('mv0'),v('mv1'),v('mv2')),
+      eta: vec3(v('eta0'),v('eta1'),v('eta2')),
+      py: v('py'),
+      px: v('px'),
+      pv: v('pv')
+    };
+  }
+
+  function compute(S){
+    const Dmx = matVec(D, S.mx);
+    const ghat = g(S.mx, S.mv);
+    const fhat = f(S.mx, S.mv);
+
+    const ey = sub(S.y, ghat);
+    const ex = sub(Dmx, fhat);
+    const ev = sub(S.mv, S.eta);
+
+    const Fy = 0.5 * S.py * dot(ey,ey);
+    const Fx = 0.5 * S.px * dot(ex,ex);
+    const Fv = 0.5 * S.pv * dot(ev,ev);
+    const F = Fy + Fx + Fv;
+
+    return {Dmx,ghat,fhat,ey,ex,ev,Fy,Fx,Fv,F};
+  }
+
+  function freeEnergyFromArrays(y,mx,mv,eta,py,px,pv){
+    return compute({y,mx,mv,eta,py,px,pv}).F;
+  }
+
+  function numericalGradient(which, S){
+    const h = 1e-4;
+    const base = freeEnergyFromArrays(S.y,S.mx,S.mv,S.eta,S.py,S.px,S.pv);
+    const arr = which === 'x' ? S.mx.slice() : S.mv.slice();
+    const grad = [0,0,0];
+    for(let i=0;i<3;i++){
+      const p = arr.slice();
+      p[i] += h;
+      const mx = which === 'x' ? p : S.mx.slice();
+      const mv = which === 'v' ? p : S.mv.slice();
+      const f1 = freeEnergyFromArrays(S.y,mx,mv,S.eta,S.py,S.px,S.pv);
+      grad[i] = (f1 - base) / h;
+    }
+    return grad;
+  }
+
+  function applyGradient(which, lr=0.08){
+    const S = getState();
+    const grad = numericalGradient(which, S);
+    const arr = which === 'x' ? S.mx.slice() : S.mv.slice();
+    const ids = which === 'x' ? ['mx0','mx1','mx2'] : ['mv0','mv1','mv2'];
+    for(let i=0;i<3;i++){
+      const nv = Math.max(-4, Math.min(4, arr[i] - lr*grad[i]));
+      setVal(ids[i], nv.toFixed(3));
+    }
+    update();
+    log(`${which === 'x' ? 'μx' : 'μv'} gradient step: grad = [${grad.map(fmt).join(', ')}], lr = ${lr}`);
+  }
+
+  function loadPreset(ix){
+    const p = presets[ix];
+    missionIndex = ix;
+    for(const [k,val] of Object.entries(p.vals)) setVal(k,val);
+    $('missionText').innerHTML = `<strong>${p.name}</strong><br>${p.mission}<br><span class="pill">Target F < ${p.target.toFixed(2)}</span>`;
+    update();
+    log(`Loaded preset: ${p.name}`);
+  }
+
+  function randomChallenge(){
+    const vals = {};
+    ['y0','y1','y2','mx0','mx1','mx2','mv0','mv1','mv2','eta0','eta1','eta2'].forEach(k => vals[k] = (Math.random()*6-3).toFixed(1));
+    vals.py = (0.6 + Math.random()*4.0).toFixed(1);
+    vals.px = (0.6 + Math.random()*4.0).toFixed(1);
+    vals.pv = (0.6 + Math.random()*4.0).toFixed(1);
+    Object.entries(vals).forEach(([k,val])=>setVal(k,val));
+    $('missionText').innerHTML = `<strong>Random Challenge</strong><br>Drive the machine as low as you can. Read the ledger to see which term dominates.<br><span class="pill">Open-ended</span>`;
+    update();
+    log('Loaded random challenge.');
+  }
+
+  function resetBeliefs(){
+    ['mx0','mx1','mx2','mv0','mv1','mv2'].forEach(id => setVal(id, 0));
+    update();
+    log('Reset posterior modes μx and μv to zero.');
+  }
+
+  function vectorCells(id, labels, vals){
+    $(id).innerHTML = vals.map((v,i)=>`
+      <div class="cell">
+        <div class="name">${labels[i]}</div>
+        <div class="val">${fmt(v)}</div>
+      </div>`).join('');
+  }
+
+  function setPipe(id, mag){
+    $(id).style.width = Math.min(100, mag*28) + '%';
+  }
+
+  function stepCard(title, txt, active=false){
+    return `<div class="step ${active ? 'active' : ''}">
+      <div class="head">${title}</div>
+      <div class="mini">${txt}</div>
+    </div>`;
+  }
+
+  function update(){
+    const S = getState();
+    const C = compute(S);
+
+    $('Ftotal').textContent = fmt(C.F);
+    $('Fy').textContent = fmt(C.Fy);
+    $('Fx').textContent = fmt(C.Fx);
+    $('Fv').textContent = fmt(C.Fv);
+    $('meterF').style.width = Math.min(100, C.F*10) + '%';
+
+    // Sticky status strip
+    $('stripF').textContent = fmt(C.F);
+    $('stripFy').textContent = fmt(C.Fy);
+    $('stripFx').textContent = fmt(C.Fx);
+    $('stripFv').textContent = fmt(C.Fv);
+    $('stripEy').textContent = Math.sqrt(dot(C.ey,C.ey)).toFixed(3);
+    $('stripEx').textContent = Math.sqrt(dot(C.ex,C.ex)).toFixed(3);
+    const tgt = presets[missionIndex]?.target;
+    if (tgt != null) {
+      $('stripFTarget').textContent = C.F < tgt
+        ? `✓ under target ${tgt.toFixed(2)}`
+        : `target F < ${tgt.toFixed(2)}`;
+    } else {
+      $('stripFTarget').textContent = 'open-ended';
+    }
+
+    // Pipe row was removed — the canvas now carries the visual flow.
+
+    $('modelEq').textContent =
+`Teaching-world definitions  (tildes mark generalized-coordinate stacks)
+g(μ̃x, μ̃v) = [ μx[0] + μv[0],  μx[1] + μv[1],  μx[2] + μv[2] ]
+f(μ̃x, μ̃v) = [ μx[1] + μv[0],  μx[2] + μv[1],  μv[2] ]
+
+So:
+ε̃y = ỹ − g(μ̃x, μ̃v)
+ε̃x = D μ̃x − f(μ̃x, μ̃v)
+ε̃v = μ̃v − η̃`;
+
+    $('Ddisplay').textContent =
+`D = [ [0,1,0],
+      [0,0,1],
+      [0,0,0] ]`;
+
+    vectorCells('shiftDisplay',
+      ['μ̃x', 'D μ̃x', 'meaning'],
+      [
+        `[${fmt(S.mx[0])}, ${fmt(S.mx[1])}, ${fmt(S.mx[2])}]`,
+        `[${fmt(C.Dmx[0])}, ${fmt(C.Dmx[1])}, ${fmt(C.Dmx[2])}]`,
+        'shift up'
+      ]
+    );
+
+    const steps = [];
+    steps.push(stepCard('1) Compute the observation prediction',
+      `g(μ̃x, μ̃v) = [${C.ghat.map(fmt).join(', ')}]. Then ε̃y = ỹ − g = [${C.ey.map(fmt).join(', ')}].` , true));
+    steps.push(stepCard('2) Apply the derivative operator D to μ̃x',
+      `D μ̃x = [${C.Dmx.map(fmt).join(', ')}]. Because D has ones above the leading diagonal, it shifts the stack upward.`));
+    steps.push(stepCard('3) Compute the flow prediction',
+      `f(μ̃x, μ̃v) = [${C.fhat.map(fmt).join(', ')}]. Then ε̃x = D μ̃x − f = [${C.ex.map(fmt).join(', ')}].`));
+    steps.push(stepCard('4) Compare hidden cause to its prior',
+      `ε̃v = μ̃v − η̃ = [${C.ev.map(fmt).join(', ')}].`));
+    steps.push(stepCard('5) Precision-weight the squared errors',
+      `Fy = ½·Πy·||ε̃y||² = ${fmt(C.Fy)}; Fx = ½·Πx·||ε̃x||² = ${fmt(C.Fx)}; Fv = ½·Πv·||ε̃v||² = ${fmt(C.Fv)}.`));
+    steps.push(stepCard('6) Total free energy',
+      `F = Fy + Fx + Fv = ${fmt(C.F)}.`));
+    $('steps').innerHTML = steps.join('');
+
+    $('ledger').textContent =
+`Inputs
+ỹ    = [${S.y.map(fmt).join(', ')}]
+μ̃x   = [${S.mx.map(fmt).join(', ')}]
+μ̃v   = [${S.mv.map(fmt).join(', ')}]
+η̃    = [${S.eta.map(fmt).join(', ')}]
+Πy = ${fmt(S.py)}    Πx = ${fmt(S.px)}    Πv = ${fmt(S.pv)}
+
+Prediction terms
+g(μ̃x, μ̃v) = [${C.ghat.map(fmt).join(', ')}]
+D μ̃x       = [${C.Dmx.map(fmt).join(', ')}]
+f(μ̃x, μ̃v) = [${C.fhat.map(fmt).join(', ')}]
+
+Prediction errors
+ε̃y = ỹ    − g(μ̃x, μ̃v) = [${C.ey.map(fmt).join(', ')}]
+ε̃x = D μ̃x − f(μ̃x, μ̃v) = [${C.ex.map(fmt).join(', ')}]
+ε̃v = μ̃v   − η̃          = [${C.ev.map(fmt).join(', ')}]
+
+Squared norms
+||ε̃y||² = ${fmt(dot(C.ey,C.ey))}
+||ε̃x||² = ${fmt(dot(C.ex,C.ex))}
+||ε̃v||² = ${fmt(dot(C.ev,C.ev))}
+
+Free-energy contributions
+Fy = ½ · ${fmt(S.py)} · ${fmt(dot(C.ey,C.ey))} = ${fmt(C.Fy)}
+Fx = ½ · ${fmt(S.px)} · ${fmt(dot(C.ex,C.ex))} = ${fmt(C.Fx)}
+Fv = ½ · ${fmt(S.pv)} · ${fmt(dot(C.ev,C.ev))} = ${fmt(C.Fv)}
+
+Total
+F[μ, y] = ½ ε̃ᵀ Π ε̃ = Fy + Fx + Fv = ${fmt(C.F)}`;
+
+    drawMachine(S, C);
+    checkWin(C.F);
+  }
+
+  function checkWin(F){
+    const p = presets[missionIndex];
+    if (p && F < p.target && $('missionText').dataset.won !== '1') {
+      $('missionText').dataset.won = '1';
+      log(`Mission cleared: ${p.name}. Final F = ${fmt(F)}.`);
+      $('missionText').innerHTML += `<br><span class="pill">Mission cleared</span>`;
+    }
+    if (p && F >= p.target) $('missionText').dataset.won = '0';
+  }
+
+  function drawMachine(S, C){
+    const c = $('machineCanvas');
+    const ctx = c.getContext('2d');
+    const W = c.width, H = c.height;
+    ctx.clearRect(0,0,W,H);
+
+    function panel(x,y,w,h,title){
+      ctx.fillStyle = '#1b1612';
+      ctx.strokeStyle = '#6d5d4c';
+      ctx.lineWidth = 2;
+      roundRect(ctx,x,y,w,h,14,true,true);
+      ctx.fillStyle = '#f4e7cf';
+      ctx.font = '13px monospace';
+      ctx.fillText(title, x+12, y+20);
+    }
+    function chip(x,y,val,label,color='#e1ba70'){
+      ctx.fillStyle = '#221c16';
+      ctx.strokeStyle = '#7b6956';
+      roundRect(ctx,x,y,70,56,10,true,true);
+      ctx.fillStyle = color;
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(fmt(val), x+10, y+32);
+      ctx.fillStyle = '#d3c5b1';
+      ctx.font = '11px monospace';
+      ctx.fillText(label, x+10, y+48);
+    }
+    function tube(x1,y1,x2,y2,mag){
+      ctx.strokeStyle = '#665444'; ctx.lineWidth = 12; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+      ctx.strokeStyle = '#d3ae67'; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x1 + (x2-x1)*Math.min(1,mag/4), y1 + (y2-y1)*Math.min(1,mag/4)); ctx.stroke();
+    }
+    function gear(x,y,r,label){
+      ctx.save(); ctx.translate(x,y);
+      const t = Date.now()/550;
+      ctx.rotate((Math.sin(t)*0.2) + (C.F*0.02));
+      for(let i=0;i<10;i++){
+        ctx.save(); ctx.rotate(i*Math.PI/5);
+        ctx.fillStyle = '#8d775e';
+        ctx.fillRect(r-4,-5,12,10);
+        ctx.restore();
+      }
+      ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2);
+      ctx.fillStyle = '#4c4035'; ctx.fill();
+      ctx.lineWidth = 6; ctx.strokeStyle = '#8d775e'; ctx.stroke();
+      ctx.beginPath(); ctx.arc(0,0,r*0.36,0,Math.PI*2);
+      ctx.fillStyle = '#1a1511'; ctx.fill();
+      ctx.fillStyle = '#fff1cf'; ctx.font='bold 15px monospace';
+      ctx.textAlign='center'; ctx.fillText(label,0,5);
+      ctx.restore(); ctx.textAlign='left';
+    }
+
+    panel(20,22,236,250,'SOURCE STACKS');
+    panel(292,22,236,250,'OPERATORS');
+    panel(564,22,236,250,'ERROR OUTPUT');
+
+    chip(38,50,S.y[0],'y0','#8ed6c6'); chip(38,114,S.y[1],'y1','#8ed6c6'); chip(38,178,S.y[2],'y2','#8ed6c6');
+    chip(138,50,S.mx[0],'μx0'); chip(138,114,S.mx[1],'μx1'); chip(138,178,S.mx[2],'μx2');
+    chip(238,50,S.mv[0],'μv0','#d9a7a7'); chip(238,114,S.mv[1],'μv1','#d9a7a7'); chip(238,178,S.mv[2],'μv2','#d9a7a7');
+
+    gear(360,94,24,'D');
+    gear(454,94,24,'g');
+    gear(406,186,24,'f');
+
+    chip(336,130,C.Dmx[0],'Dμx0','#c0d090'); chip(414,130,C.ghat[0],'g0','#9fd3ca');
+    chip(492,130,C.fhat[0],'f0','#d5b5e3');
+
+    chip(592,50,C.ey[0],'εy0','#8ed6c6'); chip(592,114,C.ex[0],'εx0','#d5b5e3'); chip(592,178,C.ev[0],'εv0','#d9a7a7');
+    chip(682,50,Math.sqrt(dot(C.ey,C.ey)),'|εy|','#8ed6c6');
+    chip(682,114,Math.sqrt(dot(C.ex,C.ex)),'|εx|','#d5b5e3');
+    chip(682,178,Math.sqrt(dot(C.ev,C.ev)),'|εv|','#d9a7a7');
+
+    tube(274,78,336,94,Math.sqrt(dot(C.ey,C.ey)));
+    tube(190,142,360,108,Math.sqrt(dot(C.ex,C.ex)));
+    tube(274,142,454,108,Math.sqrt(dot(C.ey,C.ey)));
+    tube(190,206,406,186,Math.sqrt(dot(C.ex,C.ex)));
+    tube(274,206,406,198,Math.sqrt(dot(C.ev,C.ev)));
+    tube(528,94,592,78,Math.sqrt(dot(C.ey,C.ey)));
+    tube(430,186,592,142,Math.sqrt(dot(C.ex,C.ex)));
+    tube(274,206,592,206,Math.sqrt(dot(C.ev,C.ev)));
+
+    ctx.fillStyle = '#d8ccb8';
+    ctx.font = '12px monospace';
+    ctx.fillText(`Πy = ${fmt(S.py)}`, 780, 68);
+    ctx.fillText(`Πx = ${fmt(S.px)}`, 780, 132);
+    ctx.fillText(`Πv = ${fmt(S.pv)}`, 780, 196);
+
+    ctx.fillText('As free energy falls, the pipes shorten and the machine quiets down.', 22, 290);
+  }
+
+  function roundRect(ctx, x, y, w, h, r, fill, stroke) {
+    if (w < 2 * r) r = w / 2;
+    if (h < 2 * r) r = h / 2;
+    ctx.beginPath();
+    ctx.moveTo(x+r, y);
+    ctx.arcTo(x+w, y,   x+w, y+h, r);
+    ctx.arcTo(x+w, y+h, x,   y+h, r);
+    ctx.arcTo(x,   y+h, x,   y,   r);
+    ctx.arcTo(x,   y,   x+w, y,   r);
+    ctx.closePath();
+    if (fill) ctx.fill();
+    if (stroke) ctx.stroke();
+  }
+
+  function log(msg){
+    const el = document.createElement('div');
+    el.className = 'log-entry';
+    const t = new Date();
+    el.textContent = `[${t.toLocaleTimeString()}] ${msg}`;
+    $('log').prepend(el);
+  }
+
+  $('stepAll').addEventListener('click', ()=>{
+    applyGradient('v', 0.06);
+    applyGradient('x', 0.06);
+    log('Ran one full descent cycle on μv then μx.');
+  });
+  $('nudgeXDown').addEventListener('click', ()=> applyGradient('x', 0.08));
+  $('nudgeVDown').addEventListener('click', ()=> applyGradient('v', 0.08));
+  $('resetMu').addEventListener('click', resetBeliefs);
+  $('loadPreset').addEventListener('click', ()=> loadPreset(parseInt($('preset').value,10)));
+  $('randomize').addEventListener('click', randomChallenge);
+  $('nextMission').addEventListener('click', ()=>{
+    missionIndex = (missionIndex + 1) % presets.length;
+    $('preset').value = String(missionIndex);
+    loadPreset(missionIndex);
+  });
+
+  $('autostep').addEventListener('click', ()=>{
+    if (autoTimer) {
+      clearInterval(autoTimer);
+      autoTimer = null;
+      $('autostep').textContent = 'Auto-reduce F';
+      log('Stopped auto-reduction.');
+      return;
+    }
+    autoTimer = setInterval(()=>{
+      const before = compute(getState()).F;
+      applyGradient('v', 0.05);
+      applyGradient('x', 0.05);
+      const after = compute(getState()).F;
+      if (Math.abs(before - after) < 1e-4) {
+        clearInterval(autoTimer);
+        autoTimer = null;
+        $('autostep').textContent = 'Auto-reduce F';
+        log('Auto-reduction converged.');
+      }
+    }, 280);
+    $('autostep').textContent = 'Stop auto';
+    log('Started auto-reduction.');
+  });
+
+  presets.forEach((p,i)=>{
+    const o = document.createElement('option');
+    o.value = i; o.textContent = `${i+1}. ${p.name}`;
+    $('preset').appendChild(o);
+    const o2 = o.cloneNode(true);
+    $('toolbarPreset').appendChild(o2);
+  });
+
+  // Primary-toolbar wiring — reuses the same handlers as the sidebar buttons
+  // so a learner can use whichever is nearest to the canvas.
+  $('tbLoadPreset').addEventListener('click', ()=>{
+    const i = parseInt($('toolbarPreset').value, 10);
+    $('preset').value = $('toolbarPreset').value;
+    loadPreset(i);
+  });
+  $('tbRandom').addEventListener('click', randomChallenge);
+  $('tbReset').addEventListener('click', resetBeliefs);
+  $('tbStepX').addEventListener('click', ()=> applyGradient('x', 0.08));
+  $('tbStepV').addEventListener('click', ()=> applyGradient('v', 0.08));
+  $('tbStepBoth').addEventListener('click', ()=>{
+    applyGradient('v', 0.06);
+    applyGradient('x', 0.06);
+    log('Ran one full descent cycle on μv then μx.');
+  });
+  $('tbAuto').addEventListener('click', ()=> $('autostep').click());
+  $('tbNext').addEventListener('click', ()=> $('nextMission').click());
+
+  // Intro strip with localStorage persistence
+  const INTRO_KEY = 'learninglabs.FreeEnergyForge.introDismissed';
+  const introEl = $('introStrip');
+  if (localStorage.getItem(INTRO_KEY) === '1') introEl.classList.add('hidden');
+  $('introDismissBtn').addEventListener('click', ()=>{
+    introEl.classList.add('hidden');
+    localStorage.setItem(INTRO_KEY, '1');
+  });
+
+  // Guided tour
+  const tourSteps = [
+    { sel:'#toolbarPreset', title:'Pick a teaching world',
+      body:'Each preset gives you a different balance of mismatches and precisions. Start with Calibration Bay — it is the gentle tutorial.' },
+    { sel:'#stripEy', title:'Read the observation error',
+      body:'‖ε̃y‖ is the observation mismatch. If it is large, the current μ̃x + μ̃v does not explain the sensory stack.' },
+    { sel:'#tbStepV', title:'Move μ̃v first',
+      body:'The cause-prior term Fv constrains μ̃v toward η̃. A v-gradient step often helps before touching x.' },
+    { sel:'#tbStepX', title:'Then move μ̃x',
+      body:'The dynamics term Fx couples Dμ̃x to f(μ̃x,μ̃v). An x-gradient step aligns state dynamics.' },
+    { sel:'#stripF', title:'Watch F fall',
+      body:'Every successful step lowers the total F. If F is not falling, either the mission is harder than it looks or you have hit a local minimum — try randomize.' }
+  ];
+  let tourIndex = 0;
+  const tourOverlay = document.createElement('div');
+  tourOverlay.className = 'tour-overlay';
+  tourOverlay.innerHTML = `
+    <div class="tour-card" role="dialog" aria-labelledby="tourTitle">
+      <h4 id="tourTitle"></h4>
+      <div class="step-line" id="tourBody"></div>
+      <div class="tour-actions">
+        <button id="tourSkipBtn">Close</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span id="tourProgress" class="small"></span>
+          <button id="tourNextBtn">Next →</button>
+        </div>
+      </div>
+    </div>`;
+  document.body.appendChild(tourOverlay);
+  const tourHighlight = document.createElement('div');
+  tourHighlight.className = 'tour-highlight';
+  function showTourStep(i){
+    const s = tourSteps[i]; if(!s){ closeTour(); return; }
+    tourOverlay.querySelector('#tourTitle').textContent = s.title;
+    tourOverlay.querySelector('#tourBody').textContent = s.body;
+    tourOverlay.querySelector('#tourProgress').textContent = `${i+1} / ${tourSteps.length}`;
+    tourOverlay.querySelector('#tourNextBtn').textContent = i===tourSteps.length-1 ? 'Finish ✓' : 'Next →';
+    const t = document.querySelector(s.sel);
+    if(t){
+      t.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(()=>{
+        const r = t.getBoundingClientRect();
+        tourHighlight.style.left = (window.scrollX + r.left - 6) + 'px';
+        tourHighlight.style.top = (window.scrollY + r.top - 6) + 'px';
+        tourHighlight.style.width = (r.width + 12) + 'px';
+        tourHighlight.style.height = (r.height + 12) + 'px';
+        if(!tourHighlight.parentNode) document.body.appendChild(tourHighlight);
+      }, 220);
+    }
+  }
+  function openTour(){ tourIndex = 0; tourOverlay.classList.add('on'); showTourStep(0); }
+  function closeTour(){ tourOverlay.classList.remove('on'); if(tourHighlight.parentNode) tourHighlight.parentNode.removeChild(tourHighlight); }
+  $('tourOpenBtn').addEventListener('click', openTour);
+  tourOverlay.querySelector('#tourSkipBtn').addEventListener('click', closeTour);
+  tourOverlay.querySelector('#tourNextBtn').addEventListener('click', ()=>{
+    tourIndex += 1;
+    if(tourIndex >= tourSteps.length){ closeTour(); return; }
+    showTourStep(tourIndex);
+  });
+  tourOverlay.addEventListener('click', (e)=>{ if(e.target === tourOverlay) closeTour(); });
+
+  loadPreset(0);
+
+  // Sync number boxes on load
+  ids.forEach(id => $(id+'n').value = $(id).value);
+
+  // Expose a handful of sim actions so the beat runner can trigger them
+  window.__forge_load = (i) => loadPreset(i);
+})();
+</script>
+
+<script>
+/* ================================================================
+   Learning Shell
+   ================================================================ */
+(function(){
+  const LS = window.LS = {};
+  const state = { path: 'real', cfg: null, eqTab: 'equation', beatIdx: 0 };
+  const pathbar = document.querySelector('.ls-pathbar');
+  const picker = document.getElementById('lsPickerOverlay');
+  const pickerDismiss = document.getElementById('lsPickerDismiss');
+  const pickerBtn = document.getElementById('lsPickerBtn');
+  const dysBtn = document.getElementById('lsDysBtn');
+  const dockG = document.getElementById('lsDockGlossary');
+  const dockA = document.getElementById('lsDockAnalogies');
+  const dockX = document.getElementById('lsDockExercises');
+  const panel = document.getElementById('lsPanel');
+  const panelOv = document.getElementById('lsPanelOverlay');
+  const panelTitle = document.getElementById('lsPanelTitle');
+  const panelBody = document.getElementById('lsPanelBody');
+  const panelClose = document.getElementById('lsPanelClose');
+  const eqBody = document.getElementById('lsEqBody');
+  const eqTabs = [...document.querySelectorAll('[data-ls-tab]')];
+  const beatHost = document.getElementById('lsBeatHost');
+  const tooltip = document.getElementById('lsTooltip');
+  const printRoot = document.getElementById('lsPrintRoot');
+
+  LS.init = function(cfg) {
+    state.cfg = cfg;
+    const key = 'ls.' + cfg.simKey + '.path';
+    // ls-cookie-bridge-v1: prefer suite-wide `suite_path` cookie over localStorage
+    // so a learner who picks a path on /learn sees it applied here without
+    // having to dismiss another picker.
+    (function(){
+      try {
+        var m = document.cookie && document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);
+        if (m && m[1]) {
+          var v = decodeURIComponent(m[1]);
+          if (['kid','real','equation','derivation'].indexOf(v) !== -1) {
+            localStorage.setItem('ls.' + cfg.simKey + '.path', v);
+          }
+        }
+      } catch(_) {}
+    })();
+    // ls-url-params-v1: honor `?path=` and `?beat=` query params for deep-linking from
+    // session pages. Path query wins over the cookie; beat is applied once.
+    (function(){
+      try {
+        var qs = new URLSearchParams(window.location.search);
+        var qpath = qs.get('path');
+        if (qpath && ['kid','real','equation','derivation'].indexOf(qpath) !== -1) {
+          localStorage.setItem('ls.' + cfg.simKey + '.path', qpath);
+        }
+        var qbeat = parseInt(qs.get('beat') || '', 10);
+        if (!isNaN(qbeat) && qbeat > 0) {
+          setTimeout(function(){ if (window.LS && window.LS.setBeat) window.LS.setBeat(qbeat - 1); }, 50);
+        }
+      } catch(_) {}
+    })();
+
+
+    const dysKey = 'ls.' + cfg.simKey + '.dys';
+    const saved = localStorage.getItem(key);
+    if (localStorage.getItem(dysKey) === '1') { document.body.classList.add('ls-dys'); if (dysBtn) dysBtn.setAttribute('aria-pressed', 'true'); }
+    if (!saved) { if (picker) picker.classList.add('on'); state.path = 'real'; } else { state.path = saved; }
+    applyPathButtons(); renderEqPanel(); renderBeat(); wireTooltipTerms(document.body);
+    if (cfg.onPathChange) cfg.onPathChange(state.path);
+  };
+  LS.setPath = function(p) { state.path = p; if (state.cfg) localStorage.setItem('ls.' + state.cfg.simKey + '.path', p); applyPathButtons(); renderEqPanel(); renderBeat(); if (state.cfg && state.cfg.onPathChange) state.cfg.onPathChange(p); };
+  LS.getPath = function() { return state.path; };
+  function applyPathButtons() { document.querySelectorAll('[data-ls-path]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lsPath === state.path ? 'true' : 'false')); }
+  if (pathbar) pathbar.addEventListener('click', e => { const b = e.target.closest('[data-ls-path]'); if (b) LS.setPath(b.dataset.lsPath); });
+  if (picker) picker.addEventListener('click', e => { const b = e.target.closest('[data-ls-path]'); if (b) { picker.classList.remove('on'); LS.setPath(b.dataset.lsPath); } });
+  if (pickerDismiss) pickerDismiss.addEventListener('click', () => { picker.classList.remove('on'); LS.setPath('real'); });
+  if (pickerBtn) pickerBtn.addEventListener('click', () => picker.classList.add('on'));
+  if (dysBtn) dysBtn.addEventListener('click', () => { document.body.classList.toggle('ls-dys'); const on = document.body.classList.contains('ls-dys'); dysBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); if (state.cfg) localStorage.setItem('ls.' + state.cfg.simKey + '.dys', on ? '1' : '0'); });
+  function openPanel(title, bodyHTML) { panelTitle.textContent = title; panelBody.innerHTML = bodyHTML; panel.classList.add('on'); panelOv.classList.add('on'); panel.setAttribute('aria-hidden','false'); panelOv.setAttribute('aria-hidden','false'); wireTooltipTerms(panelBody); }
+  function closePanel() { panel.classList.remove('on'); panelOv.classList.remove('on'); panel.setAttribute('aria-hidden','true'); panelOv.setAttribute('aria-hidden','true'); }
+  if (panelClose) panelClose.addEventListener('click', closePanel);
+  if (panelOv) panelOv.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closePanel(); if (picker) picker.classList.remove('on'); hideTooltip(); } });
+  function escapeHTML(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function tierFor(t) { return (state.cfg && state.cfg.terms && state.cfg.terms[t]) || null; }
+  function showTooltip(el) {
+    const term = el.dataset.term; const entry = tierFor(term);
+    if (!entry) { tooltip.innerHTML = `<div class="ls-term-name">${escapeHTML(term)}</div><div class="ls-term-tier">No glossary entry yet.</div>`; }
+    else {
+      const order = { kid:['kid','adult','phd'], real:['adult','kid','phd'], equation:['adult','phd','kid'], derivation:['phd','adult','kid'] }[state.path] || ['adult','phd','kid'];
+      const labels = { kid:'For a 5th grader', adult:'For a curious adult', phd:'For a PhD' };
+      let html = `<div class="ls-term-name">${escapeHTML(entry.name || term)}</div>`;
+      for (const t of order) if (entry[t]) html += `<div class="ls-term-tier"><b>${labels[t]}:</b> ${escapeHTML(entry[t])}</div>`;
+      tooltip.innerHTML = html;
+    }
+    const r = el.getBoundingClientRect(), tw=320, th=140;
+    let left = window.scrollX + r.left, top = window.scrollY + r.bottom + 6;
+    if (left + tw > window.scrollX + window.innerWidth - 8) left = window.scrollX + window.innerWidth - tw - 8;
+    if (top + th > window.scrollY + window.innerHeight - 8) top = window.scrollY + r.top - th - 6;
+    tooltip.style.left = Math.max(8, left) + 'px'; tooltip.style.top = Math.max(8, top) + 'px'; tooltip.classList.add('on');
+  }
+  function hideTooltip() { if (tooltip) tooltip.classList.remove('on'); }
+  function wireTooltipTerms(root) { if (!root) return; root.querySelectorAll('[data-term]:not([data-ls-wired])').forEach(el => { el.classList.add('ls-term'); el.setAttribute('tabindex','0'); el.setAttribute('data-ls-wired','1'); el.setAttribute('aria-label', 'Definition of ' + el.dataset.term); el.addEventListener('mouseenter', () => showTooltip(el)); el.addEventListener('mouseleave', hideTooltip); el.addEventListener('focus', () => showTooltip(el)); el.addEventListener('blur', hideTooltip); el.addEventListener('click', e => { e.stopPropagation(); showTooltip(el); }); }); }
+  document.addEventListener('click', e => { if (!e.target.closest('[data-term]') && !e.target.closest('.ls-tooltip')) hideTooltip(); });
+  LS.wireTooltipTerms = wireTooltipTerms;
+  if (dockG) dockG.addEventListener('click', () => {
+    const terms = (state.cfg && state.cfg.terms) || {}; const rows = Object.keys(terms).sort();
+    let html = '<input class="ls-glossary-search" id="lsGSearch" placeholder="Search terms…" />';
+    html += '<div id="lsGList">' + rows.map(k => glossaryRow(k, terms[k])).join('') + '</div>';
+    openPanel('Glossary · ' + rows.length + ' terms', html);
+    const input = document.getElementById('lsGSearch'); const list = document.getElementById('lsGList');
+    input.addEventListener('input', () => { const q = input.value.trim().toLowerCase(); list.innerHTML = rows.filter(k => { const e = terms[k]; const hay = (k + ' ' + (e.name||'') + ' ' + (e.kid||'') + ' ' + (e.adult||'') + ' ' + (e.phd||'')).toLowerCase(); return q==='' || hay.includes(q); }).map(k => glossaryRow(k, terms[k])).join(''); });
+  });
+  function glossaryRow(k, e) { return `<div class="ls-glossary-entry"><span class="ls-glossary-sym">${escapeHTML(e.name || k)}</span>
+    <div class="ls-glossary-tier"><b>Kid:</b> ${escapeHTML(e.kid || '—')}</div>
+    <div class="ls-glossary-tier"><b>Adult:</b> ${escapeHTML(e.adult || '—')}</div>
+    <div class="ls-glossary-tier"><b>PhD:</b> ${escapeHTML(e.phd || '—')}</div></div>`; }
+  if (dockA) dockA.addEventListener('click', () => {
+    const an = (state.cfg && state.cfg.analogies) || [];
+    const html = an.map(a => `<div class="ls-analogy">
+      <h6><span class="ls-analogy-persona">${escapeHTML(a.persona || '')}</span>${escapeHTML(a.title || '')}</h6>
+      <div class="ls-analogy-scenario">${a.scenario || ''}</div>
+      ${a.map ? `<div class="ls-analogy-map"><b style="color:var(--accent);font-size:11px;display:block;margin-bottom:2px;">Variable map</b><table>${Object.entries(a.map).map(([k,v])=>`<tr><td>${escapeHTML(k)}</td><td>${escapeHTML(v)}</td></tr>`).join('')}</table></div>` : ''}
+      ${a.exercise ? `<div class="ls-analogy-ex"><b>Micro-exercise:</b> ${escapeHTML(a.exercise)}</div>` : ''}
+    </div>`).join('');
+    openPanel('Analogy library · ' + an.length + ' analogies', html || '<div>No analogies defined.</div>');
+  });
+  if (dockX) dockX.addEventListener('click', () => {
+    const ex = (state.cfg && state.cfg.exercises) || [];
+    const html = ex.map((e, i) => `<div class="ls-exercise">
+      <h6>${escapeHTML(e.title || 'Exercise ' + (i+1))}</h6>
+      <div class="ls-ex-meta">${escapeHTML(e.time || '2–5 minutes')} · ${escapeHTML(e.materials || 'Household objects')}</div>
+      <div class="ls-ex-sect"><b>What you need</b><ul>${(e.need||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul></div>
+      <div class="ls-ex-sect"><b>Do this</b><ol>${(e.steps||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ol></div>
+      <div class="ls-ex-sect"><b>What you should see</b><div style="font-size:12px;color:var(--text)">${escapeHTML(e.outcome || '')}</div></div>
+      <div class="ls-ex-sect"><b>Back to the sim</b><div style="font-size:12px;color:var(--muted)">${escapeHTML(e.back || '')}</div></div>
+      <button class="ls-ex-print" data-ex-print="${i}">Print this card (half-letter)</button>
+    </div>`).join('');
+    openPanel('Physical exercises · ' + ex.length + ' cards', html || '<div>No exercises defined.</div>');
+    panelBody.addEventListener('click', e => { const b = e.target.closest('[data-ex-print]'); if (!b) return; printExercise(ex[parseInt(b.dataset.exPrint,10)]); });
+  });
+  function printExercise(e) { if (!e || !printRoot) return; printRoot.style.display = 'block'; printRoot.innerHTML = `<h3 style="margin:0 0 4px;font-size:14pt;">${escapeHTML(e.title || 'Exercise')}</h3>
+    <div style="font-size:10pt;margin-bottom:8px;">${escapeHTML(e.time || '')} · ${escapeHTML(e.materials || '')}</div>
+    <div style="margin-bottom:8px;"><b>What you need</b><ul style="margin:2px 0 0 18px;">${(e.need||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul></div>
+    <div style="margin-bottom:8px;"><b>Do this</b><ol style="margin:2px 0 0 18px;">${(e.steps||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ol></div>
+    <div style="margin-bottom:8px;"><b>What you should see</b><div>${escapeHTML(e.outcome || '')}</div></div>
+    <div><b>Back to the sim</b><div>${escapeHTML(e.back || '')}</div></div>`; setTimeout(() => { window.print(); printRoot.style.display = 'none'; }, 50); }
+  eqTabs.forEach(t => t.addEventListener('click', () => { state.eqTab = t.dataset.lsTab; renderEqPanel(); }));
+  function renderEqPanel() { eqTabs.forEach(t => t.setAttribute('aria-pressed', t.dataset.lsTab === state.eqTab ? 'true' : 'false')); const ep = (state.cfg && state.cfg.equationPanel) || {}; const body = ep[state.eqTab]; if (!eqBody) return; if (!body) { eqBody.innerHTML = '<div style="color:var(--muted)">(no content)</div>'; return; } if (typeof body === 'string') eqBody.innerHTML = body; else if (body.html) eqBody.innerHTML = body.html; else eqBody.textContent = JSON.stringify(body); wireTooltipTerms(eqBody); }
+  function renderBeat() { if (!beatHost) return; const beats = (state.cfg && state.cfg.beats) || []; if (!beats.length) { beatHost.innerHTML = '<div style="color:var(--muted);font-size:13px;">No beats defined.</div>'; return; } state.beatIdx = Math.max(0, Math.min(beats.length - 1, state.beatIdx)); const b = beats[state.beatIdx]; const text = (b.text && (b.text[state.path] || b.text.adult || b.text.real || b.text.kid)) || b.hero || ''; beatHost.innerHTML = `<div class="ls-beat"><div class="ls-beat-body"><span class="ls-beat-head">Beat <span class="ls-beat-idx">${state.beatIdx+1} / ${beats.length}</span> · ${escapeHTML(b.hero || '')}</span><span>${text}</span></div><div class="ls-beat-ctrl"><button id="lsBeatPrev">◀</button><button class="primary" id="lsBeatDo">${escapeHTML(b.action || 'Do this')}</button><button id="lsBeatNext">▶</button></div></div>`; wireTooltipTerms(beatHost); document.getElementById('lsBeatPrev').addEventListener('click', () => { state.beatIdx--; renderBeat(); }); document.getElementById('lsBeatNext').addEventListener('click', () => { state.beatIdx++; renderBeat(); }); document.getElementById('lsBeatDo').addEventListener('click', () => { if (b.do) { try { b.do(); } catch(_) {} } }); }
+  LS.renderBeat = renderBeat; LS.setBeat = function(i) { state.beatIdx = i; renderBeat(); };
+})();
+
+/* ---- Per-sim content: Free Energy Forge ---- */
+const FORGE_TERMS = {
+  'ỹ': { name:'ỹ', kid:'The sensor readings stacked up from slowest to fastest.', adult:'Sensory stack in generalized coordinates — value, velocity, acceleration, …', phd:'ỹ = [y, y\u2032, y\u2033, …]; the data in generalized coords.' },
+  'μ̃x': { name:'μ̃x', kid:'Your best guess about the hidden state, also in a stack.', adult:'Posterior mode of the hidden state in generalized coordinates.', phd:'μ̃x ≈ arg max q(x̃); Laplace approximation.' },
+  'μ̃v': { name:'μ̃v', kid:'Your guess about the hidden cause driving the state.', adult:'Posterior mode of the hidden cause in generalized coordinates.', phd:'μ̃v for cause variables in a hierarchical PC model.' },
+  'η̃': { name:'η̃', kid:'What you expected the cause to be before seeing anything.', adult:'Prior expectation on the hidden cause.', phd:'Hyper-prior on ṽ, propagated from upper level.' },
+  'ε̃y': { name:'ε̃y', kid:'How wrong the sensor readings feel — how far off your predicted reading is.', adult:'Sensory prediction error stack.', phd:'ε̃y = ỹ − g(μ̃x, μ̃v).' },
+  'ε̃x': { name:'ε̃x', kid:'How wrong the speed looks — flow mismatch.', adult:'Dynamics prediction error stack.', phd:'ε̃x = Dμ̃x − f(μ̃x, μ̃v) with D the derivative operator.' },
+  'ε̃v': { name:'ε̃v', kid:'How wrong your guess about the cause is versus what you expected.', adult:'Cause prediction error stack.', phd:'ε̃v = μ̃v − η̃.' },
+  'Πy': { name:'Πy', kid:'How strict we are about the sensor story.', adult:'Sensory precision (inverse variance).', phd:'Diagonal Πy scaling ε̃y in F.' },
+  'Πx': { name:'Πx', kid:'How strict we are about the flow story.', adult:'State precision (inverse variance).', phd:'Diagonal Πx scaling ε̃x in F.' },
+  'Πv': { name:'Πv', kid:'How strict we are about the cause story.', adult:'Cause precision (inverse variance).', phd:'Diagonal Πv scaling ε̃v in F.' },
+  'D': { name:'D', kid:'A gadget that turns value→velocity→acceleration one step at a time.', adult:'Derivative operator on generalized coordinates — shifts stacks up one level.', phd:'Upper-shift (nilpotent) matrix; Dμ̃x approximates dμx/dt in generalized coords.' },
+  'F': { name:'F', kid:'The total "how wrong am I" score. Lower is better.', adult:'Variational free energy — quadratic weighted sum of three errors.', phd:'F = ½(ε̃yᵀΠyε̃y + ε̃xᵀΠxε̃x + ε̃vᵀΠvε̃v).' },
+  'f': { name:'f', kid:'How fast the hidden thing moves, as a rule.', adult:'Flow function f(x, v) = expected velocity of x.', phd:'Dynamics equation; linear in this teaching sim.' },
+  'g': { name:'g', kid:'How the hidden thing shows up as a sensor reading, as a rule.', adult:'Observation function g(x, v) → y.', phd:'Observation map; linear in this teaching sim.' },
+  'Eq. 4.19': { name:'Eq. 4.19', kid:'The total "how wrong" score you\u2019re balancing.', adult:'F as a weighted sum of three squared prediction errors.', phd:'Friston 2008 quadratic approx to variational free energy in generalized coords.' }
+};
+const FORGE_ANALOGIES = [
+  { persona:'P1 · Kid', title:'Tug-of-war with three ropes', scenario:'μ is the knot. Three ropes pull it: one for what you see, one for how fast things should move, one for what you expected. The stiffest rope wins.', map:{ 'μ̃x':'Knot position', 'ε̃y':'Vision rope', 'ε̃x':'Motion rope', 'ε̃v':'Expectation rope', 'Πy':'Vision rope stiffness' }, exercise:'Tie 3 ribbons to a ring with different tension. Watch the ring settle.' },
+  { persona:'P2 · Pre-algebra', title:'Cost of being wrong', scenario:'Three bills you pay: wrong about what you see costs a little, wrong about speed costs a little, wrong about expectation costs a little. Total cost = F.', map:{ 'F':'Total cost', 'Fy':'Sensor bill', 'Fx':'Speed bill', 'Fv':'Expectation bill' }, exercise:'Compute each of three terms by hand for tiny ε̃ values; sum them.' },
+  { persona:'P3 · Adult', title:'Tuning a guitar string', scenario:'You pluck a string (ỹ). You have a target pitch (prediction). The tuner shows the error. You turn the peg (μ). Turning too little leaves ε̃y big; turning too much overshoots.', map:{ 'ỹ':'Heard pitch', 'g(μ̃x)':'Target pitch from model', 'ε̃y':'Tuner needle', 'μ̃x':'Peg position' }, exercise:'Loose-to-tight string on a shoebox; sing a note, tune, record how F shrinks.' },
+  { persona:'P4 · Quantitative', title:'Gaussian log-evidence lower bound', scenario:'Under a Gaussian generative model with diagonal precisions, the variational free energy reduces to three quadratic forms. Minimization by gradient descent is equivalent to Newton-like updates in ill-conditioned regimes.', map:{ 'F':'½ Σ εᵀΠε', 'gradF':'∂F/∂μ = −JᵀΠε', 'D':'Upper-shift', 'Π':'Diagonal precision' }, exercise:'Hand-derive ∂F/∂μ̃x for a 3-order linear model; match the sim\u2019s gradient step.' },
+  { persona:'P5 · PhD', title:'Friston 2008 free energy in gen. coords', scenario:'Full derivation of Eq. 4.19 from variational inference with the Laplace approximation. Precisions enter via the negative Hessian at the mode; D implements temporal coupling. See Friston, Trujillo-Barreto, Daunizeau (2008).', map:{ 'F':'−ln p(ỹ) upper bound', 'Π':'−H[q] ≈ precision of Laplace', 'D':'d/dt approximation', 'g,f':'Taylor-linearised around mode' }, exercise:'Derive 4.19 from KL(q‖p) + expected log-evidence under Laplace; verify quadratic form.' }
+];
+const FORGE_EXERCISES = [
+  { title:'E1 · Rubber band + 3 weights', time:'5 minutes', materials:'Rubber bands, coins',
+    need:['3 rubber bands of differing tension', 'A small metal washer or ring', '3 different weights (coins)'],
+    steps:['Tie all 3 bands to the ring.','Anchor the other ends at 3 fixed points in a triangle.','Attach one weight to one band.','Let the ring settle. Note its final position.','Swap weights to feel how the "stiffest band" dominates.'],
+    outcome:'The ring sits closer to the stiffest band. Equivalent to μ̃ being pulled by the highest-Π error.',
+    back:'Raise one Π slider in the sim and run a gradient step; watch the corresponding ε̃ shrink first.'
+  },
+  { title:'E2 · Prediction/error tracker by hand',
+    time:'8 minutes', materials:'Paper, pen',
+    need:['Graph paper', 'Pencil', 'Calculator (optional)'],
+    steps:['Set μ̃x = 0 and pick ỹ = 1.4.','Compute ε̃y = ỹ − μ̃x.','Move μ̃x by 0.1 in the direction of ε̃y.','Recompute and repeat 5 times.','Plot F vs iteration.'],
+    outcome:'F drops monotonically toward zero — same as the sim\u2019s Full descent button.',
+    back:'Click "Full descent step" repeatedly; compare your paper plot against the live log.'
+  },
+  { title:'E3 · Spring and scale',
+    time:'3 minutes', materials:'Spring + kitchen scale',
+    need:['A small spring', 'A kitchen scale', 'Something to stretch the spring'],
+    steps:['Stretch the spring and note the scale reading.','Stretch twice as far; observe the reading doubles.','A stiffer spring (Πy larger) reads a larger number for the same stretch.','Map: stretch = ε̃, spring stiffness = Π, scale reading = ΠᵀΠε weight.'],
+    outcome:'Stiffness (precision) amplifies any error into the scale\u2019s F contribution.',
+    back:'Increase Πy in the sim and watch Fy grow for the same ε̃y.'
+  }
+];
+const FORGE_BEATS = [
+  { hero:'Meet ỹ', text:{ kid:'Look at the sensor readings. They are stacked: value on top, velocity, then acceleration.', real:'ỹ is the generalized-coordinate sensor stack. Three numbers fed by the world.', equation:'ỹ = [y, y\u2032, y\u2033].', derivation:'Generalised sensory stack; one component per temporal order.' }, action:'Load Calibration Bay', do:()=>window.__forge_load && window.__forge_load(0) },
+  { hero:'Guess μ̃x, μ̃v', text:{ kid:'Make your best guess about the hidden thing and the hidden cause, one entry per order.', real:'Move the μ̃x and μ̃v sliders to your current estimate of the hidden state and cause.', equation:'μ̃x, μ̃v ∈ ℝ³.', derivation:'Posterior modes under Laplace.' }, action:'Focus μ̃x[0]' },
+  { hero:'ε̃y', text:{ kid:'See how wrong the reading feels: subtract your predicted reading from the real one.', real:'Compute the sensor error stack ε̃y = ỹ − g(μ̃x, μ̃v).', equation:'ε̃y = ỹ − g(μ̃x, μ̃v).', derivation:'Sensory residual in gen. coords.' }, action:'Inspect ε̃y' },
+  { hero:'ε̃x', text:{ kid:'See how wrong the flow feels: D shifts the stack up, then compare to f.', real:'Compute ε̃x = Dμ̃x − f(μ̃x, μ̃v).', equation:'ε̃x = D μ̃x − f.', derivation:'Flow residual.' }, action:'Inspect ε̃x' },
+  { hero:'ε̃v', text:{ kid:'See how far your guess of the cause is from what you expected.', real:'Compute ε̃v = μ̃v − η̃.', equation:'ε̃v = μ̃v − η̃.', derivation:'Cause residual.' }, action:'Inspect ε̃v' },
+  { hero:'Sum F', text:{ kid:'Add the three "how wrong" scores, each weighted by how strict we are.', real:'F = ½(ε̃yᵀΠyε̃y + ε̃xᵀΠxε̃x + ε̃vᵀΠvε̃v).', equation:'F = ½ Σ εᵀΠε.', derivation:'Quadratic log-evidence lower bound under Laplace.' }, action:'Read F' },
+  { hero:'Gradient step', text:{ kid:'Nudge your guesses to shrink F. One step moves the knot toward the stiffest rope.', real:'Click a gradient-step button; μ̃ moves along −∂F/∂μ̃.', equation:'μ̃ ← μ̃ − η · ∂F/∂μ̃.', derivation:'Euler step on gradient flow of F; converges to the local mode.' }, action:'Full descent step', do:()=>{ const btn = [...document.querySelectorAll('button')].find(b => /full descent|descent/i.test(b.textContent)); if (btn) btn.click(); } }
+];
+const FORGE_EQ_PANEL = {
+  story:`<div class="ls-eqmath">Imagine three ropes pulling a knot. One rope is what you SEE, one is how things MOVE, one is what you EXPECTED. Each rope has its own stiffness. The total pull = <span data-term="F">F</span>. Your job: nudge the knot so the ropes relax.</div>`,
+  picture:`<div class="ls-eqpic">
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="ỹ">ỹ</span><span class="ls-eqarrow">−</span><span class="ls-eqbox" data-term="g">g(μ̃x,μ̃v)</span><span class="ls-eqarrow">= ε̃y</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="D">Dμ̃x</span><span class="ls-eqarrow">−</span><span class="ls-eqbox" data-term="f">f(μ̃x,μ̃v)</span><span class="ls-eqarrow">= ε̃x</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="μ̃v">μ̃v</span><span class="ls-eqarrow">−</span><span class="ls-eqbox" data-term="η̃">η̃</span><span class="ls-eqarrow">= ε̃v</span></div>
+    <div class="ls-eqrow"><span class="ls-eqarrow">F =</span><span class="ls-eqbox">½ Σ εᵀ Π ε</span></div>
+  </div>`,
+  equation:`<div class="ls-eqmath"><span data-term="Eq. 4.19">F</span> = ½ ( <span data-term="ε̃y">ε̃y</span>ᵀ <span data-term="Πy">Πy</span> <span data-term="ε̃y">ε̃y</span> + <span data-term="ε̃x">ε̃x</span>ᵀ <span data-term="Πx">Πx</span> <span data-term="ε̃x">ε̃x</span> + <span data-term="ε̃v">ε̃v</span>ᵀ <span data-term="Πv">Πv</span> <span data-term="ε̃v">ε̃v</span> )
+
+<span data-term="ε̃y">ε̃y</span> = <span data-term="ỹ">ỹ</span> − <span data-term="g">g</span>(<span data-term="μ̃x">μ̃x</span>, <span data-term="μ̃v">μ̃v</span>)
+<span data-term="ε̃x">ε̃x</span> = <span data-term="D">D</span> <span data-term="μ̃x">μ̃x</span> − <span data-term="f">f</span>(<span data-term="μ̃x">μ̃x</span>, <span data-term="μ̃v">μ̃v</span>)
+<span data-term="ε̃v">ε̃v</span> = <span data-term="μ̃v">μ̃v</span> − <span data-term="η̃">η̃</span></div>`,
+  derivation:`<div class="ls-eqmath">From variational inference with the Laplace approximation:
+F = KL(q(x̃, ṽ) ‖ p(x̃, ṽ | ỹ)) − ln p(ỹ)
+≈ ½(ỹ − g(μ̃))ᵀ Πy (ỹ − g(μ̃)) + ½ (Dμ̃x − f(μ̃))ᵀ Πx (Dμ̃x − f(μ̃)) + ½ (μ̃v − η̃)ᵀ Πv (μ̃v − η̃)
+
+D is the upper-shift operator implementing d/dt in generalized coords; Π are negative Hessians of the log-joint at the mode. See Friston, Trujillo-Barreto, Daunizeau (2008), Eq. 4.19.</div>`
+};
+LS.init({ simKey:'Forge', terms: FORGE_TERMS, analogies: FORGE_ANALOGIES, exercises: FORGE_EXERCISES, beats: FORGE_BEATS, equationPanel: FORGE_EQ_PANEL, onPathChange:(p)=>LS.renderBeat&&LS.renderBeat() });
+</script>
+</body>
+</html>

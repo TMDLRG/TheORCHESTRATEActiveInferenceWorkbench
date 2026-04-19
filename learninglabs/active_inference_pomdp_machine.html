@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Active Inference POMDP Machine</title>
+  <style>
+    :root {
+      --bg:#120f0d;
+      --panel:#241d18;
+      --panel2:#1a1512;
+      --panel3:#2e261f;
+      --ink:#efe6d8;
+      --muted:#c6b7a0;
+      --brass:#b98b3f;
+      --brass2:#d7b36b;
+      --steel:#717780;
+      --steel2:#4e555f;
+      --good:#7faf72;
+      --warn:#d18d55;
+      --bad:#c46558;
+      --glass:rgba(255,255,255,0.05);
+      --shadow:0 12px 28px rgba(0,0,0,0.35);
+      --r:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      color:var(--ink);
+      font-family:"Trebuchet MS","Segoe UI",Arial,sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(185,139,63,.12), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(113,119,128,.10), transparent 20%),
+        linear-gradient(180deg, #181310, #100d0b 55%, #0d0a09);
+    }
+    .wrap{max-width:1600px;margin:0 auto;padding:18px}
+    h1,h2,h3{margin:0}
+    .title{
+      display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.09));
+      border:1px solid rgba(255,255,255,.08); box-shadow:var(--shadow); border-radius:24px;
+      padding:18px 20px; margin-bottom:16px;
+    }
+    .title small{color:var(--muted);display:block;margin-top:6px;max-width:900px;line-height:1.4}
+    .grid{display:grid;grid-template-columns:340px 1fr 420px;gap:16px}
+    .panel{
+      background:linear-gradient(180deg,var(--panel),var(--panel2));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--r);
+      box-shadow:var(--shadow); padding:16px;
+    }
+    .sub{color:var(--muted);font-size:13px;line-height:1.45}
+    .stack{display:grid;gap:12px}
+    .controls .group{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);padding:12px;border-radius:14px}
+    .btnbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    button,select,input[type="range"]{
+      appearance:none;border:none;outline:none;font:inherit
+    }
+    button{
+      padding:10px 12px;border-radius:12px;cursor:pointer;color:var(--ink);
+      background:linear-gradient(180deg,#4f555b,#383d43); border:1px solid rgba(255,255,255,.12);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 4px 10px rgba(0,0,0,.22);
+    }
+    button.brass{background:linear-gradient(180deg,var(--brass2),var(--brass));color:#21180c}
+    button.good{background:linear-gradient(180deg,#a9c89d,#6d9a61);color:#0f160e}
+    button.warn{background:linear-gradient(180deg,#ebb37d,#b96a3f);color:#1f120a}
+    button:active{transform:translateY(1px)}
+    select,.sliderbox{
+      width:100%;background:rgba(255,255,255,.04);color:var(--ink);border:1px solid rgba(255,255,255,.1);
+      border-radius:12px;padding:10px 12px;
+    }
+    input[type="range"]{width:100%;height:8px;border-radius:999px;background:#4f4538}
+    .readout{display:flex;justify-content:space-between;gap:8px;align-items:center;font-variant-numeric:tabular-nums}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:12px}
+    .board{display:grid;gap:14px}
+    .machine{
+      background:linear-gradient(180deg,#2a221c,#17120f);
+      border:1px solid rgba(255,255,255,.08); border-radius:22px; padding:16px;
+      position:relative; overflow:hidden;
+    }
+    .machine:before,.machine:after{
+      content:""; position:absolute; width:160px;height:160px;border-radius:50%;
+      border:14px solid rgba(185,139,63,.16); top:-60px;
+    }
+    .machine:before{right:-40px}
+    .machine:after{left:-60px;top:auto;bottom:-70px;border-color:rgba(113,119,128,.13)}
+    .topline{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:14px}
+    .windowrow{display:grid;grid-template-columns:1.15fr .9fr .95fr;gap:14px;position:relative;z-index:1}
+    .window{
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.14));
+      border:1px solid rgba(255,255,255,.1); border-radius:18px; padding:14px; min-height:210px;
+    }
+    .stateLamp{
+      height:18px;width:18px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:middle;
+      box-shadow:0 0 12px currentColor;
+    }
+    .lampCalm{color:var(--good);background:var(--good)}
+    .lampFault{color:var(--bad);background:var(--bad)}
+    .gauge{
+      width:210px;height:210px;margin:8px auto 0;border-radius:50%;position:relative;
+      background:radial-gradient(circle at 50% 48%, #2f271f 0 28%, #19140f 29% 56%, #7b6343 57% 59%, #201a15 60% 100%);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .needle{
+      position:absolute; left:50%; top:50%; width:4px; height:84px; background:linear-gradient(180deg,var(--brass2),var(--brass));
+      transform-origin:50% 90%; border-radius:4px; box-shadow:0 0 8px rgba(0,0,0,.4);
+    }
+    .pivot{position:absolute;left:50%;top:50%;width:22px;height:22px;transform:translate(-50%,-50%);background:var(--steel);border-radius:50%;border:3px solid #2f3338}
+    .arcLabel{position:absolute;font-size:12px;color:var(--muted)}
+    .arcL{left:18px;bottom:38px}
+    .arcR{right:16px;bottom:38px}
+    .tokenField{display:flex;gap:8px;flex-wrap:wrap;min-height:56px;align-content:flex-start;margin-top:8px}
+    .token{
+      width:20px;height:20px;border-radius:50%; background:linear-gradient(180deg,var(--brass2),var(--brass));
+      border:1px solid rgba(0,0,0,.3); box-shadow:inset 0 1px 1px rgba(255,255,255,.25), 0 2px 4px rgba(0,0,0,.25);
+    }
+    .token.steel{background:linear-gradient(180deg,#a9afb8,#646b76)}
+    .policyGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .policyCard{
+      border:1px solid rgba(255,255,255,.1); border-radius:16px; padding:12px; background:rgba(255,255,255,.03);
+      min-height:150px; position:relative;
+    }
+    .policyCard.active{outline:2px solid var(--brass2); box-shadow:0 0 0 3px rgba(185,139,63,.15) inset}
+    .policyCard.best{background:linear-gradient(180deg, rgba(185,139,63,.18), rgba(255,255,255,.03))}
+    .mini{font-size:12px;color:var(--muted)}
+    .meter{height:10px;border-radius:999px;background:#3b342c;overflow:hidden;margin:6px 0 10px}
+    .fill{height:100%;background:linear-gradient(90deg,var(--brass),var(--brass2))}
+    .bar2{background:linear-gradient(90deg,var(--steel2),#aeb6c2)}
+    .bar3{background:linear-gradient(90deg,#72502c,#db885f)}
+    .bar4{background:linear-gradient(90deg,#50633e,#9cc288)}
+    .eq{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:10px;border-radius:12px;white-space:pre-wrap;line-height:1.45}
+    .table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+    .table th,.table td{border-bottom:1px solid rgba(255,255,255,.08);padding:7px 6px;text-align:left;font-size:13px}
+    .rightcol{display:grid;gap:14px}
+    .mathSteps{max-height:360px;overflow:auto;padding-right:4px}
+    .step{padding:10px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+    .step:last-child{border-bottom:none}
+    .badge{display:inline-block;padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.07);font-size:11px;color:var(--muted);margin-right:6px}
+    .footergrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+    .tiny{font-size:11px;color:var(--muted)}
+    .score{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+    .dial{padding:10px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08)}
+    .log{max-height:280px;overflow:auto;font-size:13px;line-height:1.5}
+    .log div{padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+    .accent{color:var(--brass2)}
+    .goodtxt{color:#a7cf98}.warntxt{color:#efb884}.badtxt{color:#df8a78}
+    @media (max-width:1280px){.grid{grid-template-columns:1fr}.rightcol{grid-template-columns:1fr}.windowrow{grid-template-columns:1fr}.policyGrid{grid-template-columns:repeat(2,1fr)}}
+
+    /* Shared learning-UX components */
+    .stageStrip{display:grid; grid-template-columns:repeat(auto-fit, minmax(118px,1fr)); gap:8px; margin-bottom:12px; position:sticky; top:8px; z-index:5; background:linear-gradient(180deg, rgba(22,18,15,0.94), rgba(22,18,15,0.82)); backdrop-filter:blur(8px); border:1px solid rgba(185,139,63,0.28); border-radius:14px; padding:9px;}
+    .stageStrip .cell{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:8px 10px; min-width:0;}
+    .stageStrip .lab{font-size:10px; letter-spacing:1px; color:var(--muted); text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .stageStrip .val{font-size:18px; font-weight:800; color:var(--brass2); font-variant-numeric:tabular-nums; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .stageStrip .sub2{font-size:10px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+    .stageToolbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; padding:9px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:12px; align-items:center;}
+    .stageToolbar button, .stageToolbar select{padding:9px 12px; font-size:13px; flex:0 0 auto;}
+    .iconBtn{width:34px; padding:9px 0 !important; display:inline-flex; align-items:center; justify-content:center; font-weight:800;}
+    .introStrip{background:linear-gradient(180deg, rgba(127,175,114,0.10), rgba(127,175,114,0.04)); border:1px solid rgba(127,175,114,0.28); border-radius:14px; padding:12px 14px; margin-bottom:12px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start;}
+    .introStrip .body{display:grid; gap:6px; font-size:13px; line-height:1.4;}
+    .introStrip .row{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap;}
+    .introStrip .tag{font-size:10px; letter-spacing:1px; text-transform:uppercase; padding:3px 7px; border-radius:999px; background:rgba(127,175,114,0.24); color:#d3e5c9; white-space:nowrap;}
+    .introStrip .dismiss{background:transparent; border:1px solid rgba(255,255,255,0.2); color:var(--muted); font-size:12px; padding:6px 10px;}
+    .introStrip.hidden{display:none;}
+    .tour-overlay{position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(2px); z-index:9999; display:none; align-items:flex-end; justify-content:center; padding:24px;}
+    .tour-overlay.on{display:flex;}
+    .tour-card{background:linear-gradient(180deg,#2e261f,#1a1512); border:1px solid rgba(185,139,63,0.5); border-radius:14px; box-shadow:var(--shadow); padding:16px 18px; max-width:560px; width:100%; color:var(--ink);}
+    .tour-card h4{margin:0 0 8px; font-size:15px; color:var(--brass2); letter-spacing:0.5px;}
+    .tour-card .step-line{font-size:13px; line-height:1.45; color:var(--ink);}
+    .tour-card .tour-actions{display:flex; justify-content:space-between; gap:10px; margin-top:12px;}
+    .tour-highlight{position:absolute; pointer-events:none; border:2px solid #e0c07a; border-radius:10px; box-shadow:0 0 0 9999px rgba(0,0,0,0.5), 0 0 16px rgba(224,192,122,0.5); transition:top .2s ease, left .2s ease, width .2s ease, height .2s ease; z-index:9998;}
+
+    /* Collapse the decorative rings under the machine floor */
+    .machine:before, .machine:after { display: none; }
+
+    /* === Learning Shell (shared across all 7 sims) === */
+    .ls-pathbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px; background: linear-gradient(180deg, rgba(216,181,108,0.08), rgba(216,181,108,0.02)); border: 1px solid rgba(216,181,108,0.22); border-radius: 12px; font-size: 13px; }
+    .ls-pathbar .ls-pathlabel { color: var(--muted); margin-right: 4px; }
+    .ls-pathbar .ls-pathbtn { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--ink); cursor: pointer; font-size: 12px; font-weight: 600; transition: background .12s ease, border-color .12s ease; }
+    .ls-pathbar .ls-pathbtn:hover { background: rgba(255,255,255,0.10); }
+    .ls-pathbar .ls-pathbtn[aria-pressed="true"] { background: linear-gradient(180deg, rgba(216,181,108,0.32), rgba(216,181,108,0.12)); border-color: rgba(216,181,108,0.5); color: #fff8e6; }
+    .ls-pathbar .ls-spacer { flex: 1 1 auto; }
+    .ls-pathbar .ls-toolbtn { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--muted); cursor: pointer; font-size: 12px; }
+    .ls-pathbar .ls-toolbtn:hover { color: var(--ink); }
+    .ls-pick-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+    .ls-pick-overlay.on { display: flex; }
+    .ls-pick-card { background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(216,181,108,0.4); border-radius: 16px; padding: 22px 24px; max-width: 720px; width: 100%; color: var(--ink); }
+    .ls-pick-card h3 { margin: 0 0 6px; color: var(--brass2, #d4a859); font-size: 20px; letter-spacing: .5px; }
+    .ls-pick-card .ls-pick-sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; line-height: 1.4; }
+    .ls-pick-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+    .ls-pick-opt { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 12px; padding: 12px 14px; cursor: pointer; text-align: left; color: var(--ink); }
+    .ls-pick-opt:hover { background: rgba(255,255,255,0.08); border-color: rgba(216,181,108,0.3); transform: translateY(-1px); }
+    .ls-pick-opt .ls-pick-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+    .ls-pick-opt .ls-pick-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .ls-pick-opt .ls-pick-desc { font-size: 12px; color: var(--muted); line-height: 1.35; }
+    .ls-pick-card .ls-pick-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+    .ls-pick-card .ls-pick-actions button { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+    .ls-dock { position: fixed; right: 18px; bottom: 18px; z-index: 200; display: flex; flex-direction: column; gap: 8px; }
+    .ls-dock button { min-width: 44px; height: 44px; border-radius: 22px; background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(216,181,108,0.35); color: var(--ink); cursor: pointer; padding: 0 14px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+    .ls-dock button:hover { filter: brightness(1.1); border-color: rgba(216,181,108,0.6); }
+    .ls-dock .ls-dock-ic { font-size: 17px; }
+    .ls-panel-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); display: none; }
+    .ls-panel-overlay.on { display: block; }
+    .ls-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 96vw); background: linear-gradient(180deg, #2b241d, #1d1714); border-left: 1px solid rgba(216,181,108,0.3); box-shadow: -8px 0 24px rgba(0,0,0,0.45); z-index: 310; display: none; flex-direction: column; color: var(--ink); }
+    .ls-panel.on { display: flex; }
+    .ls-panel-head { padding: 14px 16px; border-bottom: 1px solid rgba(216,181,108,0.2); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+    .ls-panel-head h4 { margin: 0; font-size: 15px; color: var(--brass2, #d4a859); letter-spacing: .5px; }
+    .ls-panel-close { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); border-radius: 999px; padding: 5px 10px; font-size: 12px; cursor: pointer; }
+    .ls-panel-body { padding: 14px 16px; overflow: auto; flex: 1 1 auto; font-size: 13px; line-height: 1.45; }
+    .ls-term { border-bottom: 1px dotted rgba(216,181,108,0.55); cursor: help; }
+    .ls-term:hover { color: #fff8e6; }
+    .ls-tooltip { position: absolute; z-index: 400; background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(216,181,108,0.45); border-radius: 10px; padding: 10px 12px; max-width: 340px; min-width: 220px; color: var(--ink); font-size: 12px; line-height: 1.45; box-shadow: 0 8px 22px rgba(0,0,0,0.5); display: none; }
+    .ls-tooltip.on { display: block; }
+    .ls-tooltip .ls-term-name { font-weight: 800; color: var(--brass2, #d4a859); font-size: 13px; margin-bottom: 4px; }
+    .ls-tooltip .ls-term-tier { margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 11px; color: var(--muted); }
+    .ls-tooltip .ls-term-tier b { color: var(--ink); font-weight: 700; }
+    .ls-eqpanel .ls-eqtabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .ls-eqpanel .ls-eqtab { padding: 5px 10px; border-radius: 999px; font-size: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); cursor: pointer; }
+    .ls-eqpanel .ls-eqtab[aria-pressed="true"] { background: linear-gradient(180deg, rgba(216,181,108,0.32), rgba(216,181,108,0.12)); border-color: rgba(216,181,108,0.5); color: #fff8e6; }
+    .ls-eqpanel .ls-eqbody { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.55; color: var(--ink); min-height: 60px; }
+    .ls-eqpanel .ls-eqbody .ls-eqmath { font-family: "Courier New", monospace; white-space: pre-wrap; color: #f1eadc; }
+    .ls-eqpanel .ls-eqbody .ls-eqpic { display: flex; flex-direction: column; gap: 6px; font-family: "Courier New", monospace; font-size: 12px; color: #f1eadc; }
+    .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqrow { display: flex; gap: 10px; align-items: center; }
+    .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqbox { padding: 4px 8px; border: 1px solid rgba(216,181,108,0.4); border-radius: 6px; background: rgba(216,181,108,0.08); }
+    .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqarrow { color: var(--muted); }
+    .ls-analogy { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+    .ls-analogy h6 { margin: 0 0 4px; font-size: 13px; color: var(--brass2, #d4a859); }
+    .ls-analogy .ls-analogy-persona { display: inline-block; font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; background: rgba(216,181,108,0.2); color: #fff8e6; border-radius: 999px; padding: 2px 7px; margin-right: 6px; }
+    .ls-analogy .ls-analogy-scenario { color: var(--ink); margin: 6px 0; font-size: 12px; }
+    .ls-analogy .ls-analogy-map { font-size: 11px; color: var(--muted); background: rgba(0,0,0,0.2); border-radius: 6px; padding: 6px 8px; margin-top: 6px; }
+    .ls-analogy .ls-analogy-map table { width: 100%; border-collapse: collapse; }
+    .ls-analogy .ls-analogy-map td { padding: 2px 4px; border-bottom: 1px dashed rgba(255,255,255,0.06); font-size: 11px; }
+    .ls-analogy .ls-analogy-map td:first-child { color: var(--brass2, #d4a859); font-weight: 700; white-space: nowrap; }
+    .ls-analogy .ls-analogy-ex { font-size: 11px; color: var(--muted); margin-top: 6px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 6px; }
+    .ls-analogy .ls-analogy-ex b { color: var(--brass2, #d4a859); }
+    .ls-exercise { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+    .ls-exercise h6 { margin: 0 0 6px; color: var(--brass2, #d4a859); font-size: 13px; }
+    .ls-exercise .ls-ex-meta { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+    .ls-exercise .ls-ex-sect { margin-top: 8px; }
+    .ls-exercise .ls-ex-sect b { color: var(--brass2, #d4a859); font-size: 11px; letter-spacing: .6px; text-transform: uppercase; display: block; margin-bottom: 3px; }
+    .ls-exercise ol, .ls-exercise ul { margin: 4px 0 4px 18px; padding: 0; }
+    .ls-exercise li { margin-bottom: 3px; font-size: 12px; }
+    .ls-exercise .ls-ex-print { font-size: 11px; background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 4px 10px; cursor: pointer; margin-top: 8px; }
+    @media print { body > *:not(.ls-print-root) { display: none !important; } .ls-print-root { display: block !important; color: #000 !important; background: #fff !important; padding: 8px !important; font-size: 11pt; max-width: 5.5in; } .ls-print-root * { color: #000 !important; background: transparent !important; border-color: #888 !important; box-shadow: none !important; } @page { size: letter; margin: 0.4in; } }
+    .ls-beat { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 12px; background: linear-gradient(180deg, rgba(107,160,104,0.10), rgba(107,160,104,0.04)); border: 1px solid rgba(107,160,104,0.28); border-radius: 12px; font-size: 13px; }
+    .ls-beat .ls-beat-body { flex: 1 1 200px; line-height: 1.4; }
+    .ls-beat .ls-beat-head { display: block; font-size: 11px; letter-spacing: .8px; color: #9fc59b; text-transform: uppercase; margin-bottom: 3px; }
+    .ls-beat .ls-beat-ctrl { display: inline-flex; gap: 6px; }
+    .ls-beat .ls-beat-ctrl button { padding: 6px 10px; font-size: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); }
+    .ls-beat .ls-beat-ctrl button.primary { background: linear-gradient(180deg, rgba(107,160,104,0.30), rgba(107,160,104,0.10)); border-color: rgba(107,160,104,0.5); }
+    .ls-beat .ls-beat-idx { font-weight: 800; color: #d7e9c9; font-size: 13px; font-variant-numeric: tabular-nums; }
+    .ls-glossary-entry { padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); margin-bottom: 8px; }
+    .ls-glossary-entry .ls-glossary-sym { display: inline-block; font-weight: 800; color: var(--brass2, #d4a859); margin-right: 8px; font-family: "Courier New", monospace; }
+    .ls-glossary-entry .ls-glossary-tier { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .ls-glossary-entry .ls-glossary-tier b { color: var(--ink); font-weight: 700; }
+    .ls-glossary-search { width: 100%; box-sizing: border-box; padding: 8px 10px; margin-bottom: 10px; background: rgba(0,0,0,0.2); color: var(--ink); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 100ms !important; } }
+    body.ls-dys { font-family: "Verdana", "Tahoma", "Trebuchet MS", sans-serif; letter-spacing: 0.03em; word-spacing: 0.08em; }
+    @media (max-width: 820px) { .ls-pathbar { font-size: 12px; } .ls-pathbar .ls-pathbtn { padding: 5px 8px; font-size: 11px; } .ls-dock { right: 10px; bottom: 10px; } .ls-dock button { padding: 0 10px; font-size: 12px; min-width: 40px; height: 40px; } }
+  </style>
+<link rel="stylesheet" href="/assets/suite-tokens.css" data-mark="suite-tokens-link-v1">
+</head>
+<body>
+<div class="wrap">
+  <div class="ls-pathbar" role="region" aria-label="Learning path">
+    <a class="ls-pathbtn ls-crumb" href="/learn" target="_top" data-ls-mark="ls-pathbar-breadcrumb-v1">← Learn</a><a class="ls-pathbtn ls-crumb" href="/" target="_top">Workbench ▸</a><span class="ls-pathlabel" style="margin-left:6px;">·</span><span class="ls-pathlabel">Path:</span>
+    <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false">🌱 Story</button>
+    <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true">🧭 Real-world</button>
+    <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false">🛠️ Equation</button>
+    <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false">🎓 Derivation</button>
+    <span class="ls-spacer"></span>
+    <button class="ls-toolbtn" id="lsPickerBtn">♻ Switch audience</button>
+    <button class="ls-toolbtn" id="lsDysBtn" aria-pressed="false">🅰 Font</button>
+  </div>
+  <div class="title">
+    <div>
+      <h1>Clockwork Active Inference — POMDP Machine</h1>
+      <small>
+        A mechanical-feeling teaching game for the equations <span class="accent">s<sub>τ</sub><sup>π</sup> = softmax(v<sub>τ</sub><sup>π</sup>)</span>,
+        <span class="accent">v̇ = ε( messages )</span>, and <span class="accent">π = softmax(−G − F)</span>.
+        The hidden machine mode is never observed directly. You only get noisy gauge readings, transition rules for actions, and preferences over future outcomes.
+      </small>
+    </div>
+    <div class="chips">
+      <div class="chip">State space: 2</div>
+      <div class="chip">Observations: 2</div>
+      <div class="chip">Actions: 2</div>
+      <div class="chip">Policies: 4</div>
+      <div class="chip">Horizon: 3 slices</div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel controls stack">
+      <div class="group">
+        <h3>1) Pick a clockwork world</h3>
+        <div class="sub">Each preset defines the four ingredients: likelihood A, transitions B, preferences C, and start-state belief D.</div>
+        <select id="presetSelect"></select>
+        <div class="btnbar">
+          <button class="brass" id="loadPresetBtn">Load preset</button>
+          <button id="newEpisodeBtn">New episode</button>
+          <button id="revealBtn">Reveal hidden chamber</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>2) Message passing</h3>
+        <div class="sub">One tick applies the negative free-energy gradient update to every policy-specific belief trajectory. Settling repeats it until the beliefs stabilize.</div>
+        <div class="btnbar">
+          <button class="good" id="tickBtn">One message tick</button>
+          <button class="brass" id="settleBtn">Settle beliefs</button>
+          <button id="resetBeliefsBtn">Reset q(s)</button>
+        </div>
+        <div class="score">
+          <div class="dial"><div class="tiny">Ticks</div><div id="tickCount">0</div></div>
+          <div class="dial"><div class="tiny">Time slice</div><div id="timeSlice">1</div></div>
+          <div class="dial"><div class="tiny">Free energy</div><div id="freeEnergyReadout">—</div></div>
+          <div class="dial"><div class="tiny">Policy mass</div><div id="policyMassReadout">—</div></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>3) Policy selection</h3>
+        <div class="sub">Equation 4.14 is evaluated after beliefs are updated: the posterior over plans is proportional to exp(−G − F).</div>
+        <div class="btnbar">
+          <button class="warn" id="scorePoliciesBtn">Score all policies</button>
+          <button class="brass" id="autoActBtn">Take best action</button>
+        </div>
+        <div class="sub" style="margin-top:8px">Or override the machine and test your own move:</div>
+        <div class="btnbar">
+          <button id="manualWaitBtn">Manual: Wait</button>
+          <button id="manualRepairBtn">Manual: Repair</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>4) Explore the equations physically</h3>
+        <div class="sub">Use the lever to change how strongly preferred the quiet outcome is. The policy posterior will re-weight accordingly.</div>
+        <div class="sliderbox">
+          <div class="readout"><span>Future preference for Quiet</span><strong id="prefReadout">0.85</strong></div>
+          <input id="prefSlider" type="range" min="0.55" max="0.98" value="0.85" step="0.01">
+        </div>
+      </div>
+
+      <div class="group">
+        <h3>What this game is doing</h3>
+        <div class="sub">
+          The hidden state at each time slice is a categorical distribution over <strong>Calm</strong> vs <strong>Faulty</strong>. A noisy gauge emits <strong>Quiet</strong> or <strong>Rattle</strong> observations using A. Actions push state beliefs through B. Preferences C score future predicted observations. D is the initial belief before any data arrive.
+        </div>
+      </div>
+    </div>
+
+    <div class="board">
+      <div class="stageStrip" role="region" aria-label="Agent state">
+        <div class="cell"><div class="lab">Time slice</div><div class="val" id="stripTime">1</div><div class="sub2">τ index</div></div>
+        <div class="cell"><div class="lab">Ticks</div><div class="val" id="stripTicks">0</div><div class="sub2">message passes</div></div>
+        <div class="cell"><div class="lab">Best policy</div><div class="val" id="stripBest">—</div><div class="sub2" id="stripBestSub">π posterior</div></div>
+        <div class="cell"><div class="lab">F(best)</div><div class="val" id="stripF">—</div><div class="sub2">variational</div></div>
+        <div class="cell"><div class="lab">G(best)</div><div class="val" id="stripG">—</div><div class="sub2">expected</div></div>
+        <div class="cell"><div class="lab">Quiet streak</div><div class="val" id="stripScore">0</div><div class="sub2">preference wins</div></div>
+      </div>
+
+      <div class="introStrip" id="introStrip" role="note">
+        <div class="body">
+          <div class="row"><span class="tag">Goal</span><span>Learn when <strong>Repair</strong> beats <strong>Wait</strong>. The agent infers a hidden Calm/Faulty state and picks policies by expected free energy.</span></div>
+          <div class="row"><span class="tag">Watch</span><span>The <strong>π</strong> column on policy cards and the policy-posterior ledger. They compute softmax(−G − F).</span></div>
+          <div class="row"><span class="tag">First move</span><span>Click <strong>One message tick</strong> (below) a few times, then <strong>Score policies</strong>. Then <strong>Auto-act</strong> to execute the best plan.</span></div>
+        </div>
+        <button class="dismiss" id="introDismissBtn" aria-label="Dismiss intro">Got it ✕</button>
+      </div>
+
+      <div class="stageToolbar" role="toolbar" aria-label="Agent run controls">
+        <button id="tbLoadPreset" class="brass">Load preset</button>
+        <button id="tbNewEp">New episode</button>
+        <button id="tbTick" class="good">One message tick</button>
+        <button id="tbSettle" class="brass">Settle beliefs</button>
+        <button id="tbScore" class="warn">Score policies</button>
+        <button id="tbAutoAct" class="brass">Auto-act (best plan)</button>
+        <button id="tbWait">Manual: Wait</button>
+        <button id="tbRepair">Manual: Repair</button>
+        <button id="tbReveal">Reveal hidden</button>
+        <button class="iconBtn" id="tourOpenBtn" title="Open guided tour" aria-label="Open guided tour">?</button>
+      </div>
+
+      <div class="machine">
+        <div class="topline">
+          <div>
+            <h2>Machine floor</h2>
+            <div class="sub">The left window is the hidden chamber, the middle window is the sensory gauge, and the right window shows the current belief mass.</div>
+          </div>
+          <div class="chips" id="episodeBadges"></div>
+        </div>
+        <div class="windowrow">
+          <div class="window">
+            <h3>Hidden chamber</h3>
+            <div class="sub" id="hiddenStatus">Hidden until revealed</div>
+            <div style="margin-top:10px;font-size:18px" id="hiddenReveal"></div>
+            <div class="sub" style="margin-top:10px">True state evolves according to the selected action and the transition matrix B.</div>
+            <div class="tokenField" id="stateTokens"></div>
+          </div>
+          <div class="window">
+            <h3>Observed gauge</h3>
+            <div class="sub">Only this reading is directly observed now.</div>
+            <div class="gauge">
+              <div id="needle" class="needle"></div>
+              <div class="pivot"></div>
+              <div class="arcLabel arcL">Quiet</div>
+              <div class="arcLabel arcR">Rattle</div>
+            </div>
+            <div style="text-align:center;margin-top:8px;font-size:18px" id="obsText">—</div>
+          </div>
+          <div class="window">
+            <h3>Current posterior q(s<sub>1</sub>)</h3>
+            <div class="sub">Beliefs shown here are mixed across policies using the policy posterior.</div>
+            <div style="margin-top:12px">
+              <div class="readout"><span>Calm</span><strong id="mixCalm">0.50</strong></div>
+              <div class="meter"><div id="mixCalmBar" class="fill bar4" style="width:50%"></div></div>
+              <div class="readout"><span>Faulty</span><strong id="mixFault">0.50</strong></div>
+              <div class="meter"><div id="mixFaultBar" class="fill bar3" style="width:50%"></div></div>
+            </div>
+            <div class="sub">These are not the hidden state itself. They are the agent's beliefs after the variational updates.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div style="display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:10px">
+          <div>
+            <h2>Policy workshop</h2>
+            <div class="sub">Each policy is a two-action plan over the next two transitions. Step the beliefs, then compute F, G, and π.</div>
+          </div>
+          <div class="tiny">Actions: Wait = hold position, Repair = push toward Calm.</div>
+        </div>
+        <div id="policyGrid" class="policyGrid"></div>
+      </div>
+
+      <div class="footergrid">
+        <div class="panel">
+          <h3>Generative model matrices</h3>
+          <div class="sub">Columns are source states. Rows are outcomes or destination states.</div>
+          <div id="matrixBox"></div>
+        </div>
+        <div class="panel">
+          <h3>Episode log</h3>
+          <div class="sub">You can compare the machine's chosen action with your manual override and watch the hidden process unfold.</div>
+          <div class="log" id="logBox"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rightcol">
+      <div class="panel">
+        <h3>Equation 4.13 ledger</h3>
+        <div class="sub">For the selected policy, the machine updates the auxiliary variable v with likelihood messages, transition messages from the past, transition messages from the future, and an entropy-like correction term −ln s.</div>
+        <select id="focusPolicy"></select>
+        <div class="eq" id="eqBox" style="margin-top:10px"></div>
+        <div class="mathSteps" id="mathSteps"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Equation 4.14 ledger</h3>
+        <div class="sub">After computing policy free energy F and expected free energy G, the posterior over policies is formed by a softmax over −G−F.</div>
+        <div id="policyTableBox"></div>
+      </div>
+
+      <div class="panel">
+        <h3>Teaching notes</h3>
+        <div class="sub">
+          <strong>Why there are multiple state beliefs at once:</strong> each policy carries its own predicted hidden-state trajectory. The agent then compares these policies using F and G.<br><br>
+          <strong>Why future slices can update current slices:</strong> the backward message <span class="accent">ln(B<sup>T</sup>s<sub>τ+1</sub>)</span> lets a future consequence constrain an earlier hidden-state belief.<br><br>
+          <strong>Why preferences matter only in policy selection here:</strong> observations at the current slice are actual data; future slices are not observed yet, so predicted outcomes are evaluated through G using C.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px;">
+    <section class="panel" style="padding:18px;">
+      <h3 style="margin:0 0 10px; color:var(--brass2, #d4a859); font-size:14px; letter-spacing:1px; text-transform:uppercase;">Layered Equation Panel</h3>
+      <div class="ls-eqpanel" id="lsEqPanel">
+        <div class="ls-eqtabs" role="tablist" aria-label="Explanation depth">
+          <button class="ls-eqtab" data-ls-tab="story" aria-pressed="false">Story</button>
+          <button class="ls-eqtab" data-ls-tab="picture" aria-pressed="false">Picture</button>
+          <button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button>
+          <button class="ls-eqtab" data-ls-tab="derivation" aria-pressed="false">Derivation</button>
+        </div>
+        <div class="ls-eqbody" id="lsEqBody" role="tabpanel"></div>
+      </div>
+      <div class="tiny" style="margin-top:10px; font-size:12px; color:var(--muted);">Same F/G/π math, four depths. Switch anytime.</div>
+    </section>
+    <section class="panel" style="padding:18px;">
+      <h3 style="margin:0 0 10px; color:var(--brass2, #d4a859); font-size:14px; letter-spacing:1px; text-transform:uppercase;">Beat Script</h3>
+      <div id="lsBeatHost"></div>
+      <div class="tiny" style="margin-top:10px; font-size:12px; color:var(--muted);">Step one hero quantity at a time; every sim control stays usable.</div>
+    </section>
+  </div>
+</div>
+
+<div class="ls-dock" role="region" aria-label="Learning shell tools">
+  <button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button>
+  <button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button>
+  <button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button>
+</div>
+<div class="ls-panel-overlay" id="lsPanelOverlay" aria-hidden="true"></div>
+<aside class="ls-panel" id="lsPanel" role="dialog" aria-modal="true" aria-labelledby="lsPanelTitle" aria-hidden="true">
+  <div class="ls-panel-head"><h4 id="lsPanelTitle">Panel</h4><button class="ls-panel-close" id="lsPanelClose">Close ✕</button></div>
+  <div class="ls-panel-body" id="lsPanelBody"></div>
+</aside>
+<div class="ls-pick-overlay" id="lsPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="lsPickerTitle">
+  <div class="ls-pick-card">
+    <h3 id="lsPickerTitle">Pick a learning path</h3>
+    <div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths — only the vocabulary, depth, and narration change.</div>
+    <div class="ls-pick-grid">
+      <button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative, physical objects, one hero quantity at a time.</div></button>
+      <button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Everyday analogies, reason-through-it prose, a practical mission.</div></button>
+      <button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code, short derivations, parameter sweeps.</div></button>
+      <button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches + canonical references.</div></button>
+    </div>
+    <div class="ls-pick-actions"><button id="lsPickerDismiss">Skip — I'll default to real-world</button></div>
+  </div>
+</div>
+<div class="ls-tooltip" id="lsTooltip" role="tooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>
+
+<script>
+const EPS = 1e-16;
+const stateNames = ["Calm", "Faulty"];
+const obsNames = ["Quiet", "Rattle"];
+const actionNames = ["Wait", "Repair"];
+const policies = [
+  {id:0, name:"Wait → Wait", acts:[0,0]},
+  {id:1, name:"Wait → Repair", acts:[0,1]},
+  {id:2, name:"Repair → Wait", acts:[1,0]},
+  {id:3, name:"Repair → Repair", acts:[1,1]}
+];
+
+const presets = {
+  standard: {
+    name:"Standard machine",
+    A:[[0.85,0.15],[0.15,0.85]],
+    B:[
+      [[0.85,0.25],[0.15,0.75]],
+      [[0.95,0.70],[0.05,0.30]]
+    ],
+    D:[0.55,0.45],
+    quietPref:0.85,
+    intro:"Balanced world: good sensor, repair strongly moves the hidden state toward Calm."
+  },
+  noisy: {
+    name:"Noisy gauge",
+    A:[[0.65,0.35],[0.35,0.65]],
+    B:[
+      [[0.86,0.30],[0.14,0.70]],
+      [[0.94,0.66],[0.06,0.34]]
+    ],
+    D:[0.50,0.50],
+    quietPref:0.90,
+    intro:"The gauge is ambiguous, so the state posterior relies more heavily on transitions and policy comparison."
+  },
+  sticky: {
+    name:"Sticky fault",
+    A:[[0.87,0.12],[0.13,0.88]],
+    B:[
+      [[0.88,0.12],[0.12,0.88]],
+      [[0.92,0.48],[0.08,0.52]]
+    ],
+    D:[0.35,0.65],
+    quietPref:0.92,
+    intro:"Faults are persistent; repair helps, but not as dramatically. Long-range policy evaluation matters more."
+  }
+};
+
+const ui = {};
+let game = {};
+
+function clone(x){ return JSON.parse(JSON.stringify(x)); }
+function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+function round(x,n=3){ return Number(x).toFixed(n); }
+function logv(x){ return Math.log(Math.max(EPS,x)); }
+function normalize(v){ const s=v.reduce((a,b)=>a+b,0) || 1; return v.map(x=>x/s); }
+function softmax(v){ const m=Math.max(...v); const ex=v.map(x=>Math.exp(x-m)); return normalize(ex); }
+function dot(a,b){ return a.reduce((s,x,i)=>s+x*b[i],0); }
+function matVec(M,v){ return M.map(row=>dot(row,v)); }
+function colMessage(B, prev){ return normalize(matVec(B, prev)); }
+function backMessage(B, next){ // B^T * next
+  const out = Array(B[0].length).fill(0);
+  for(let i=0;i<B.length;i++) for(let j=0;j<B[0].length;j++) out[j]+=B[i][j]*next[i];
+  return normalize(out);
+}
+function entropyCol(A, j){ let s=0; for(let i=0;i<A.length;i++){ const p=Math.max(EPS,A[i][j]); s += -p*Math.log(p);} return s; }
+function sampleCat(p){ const r=Math.random(); let c=0; for(let i=0;i<p.length;i++){ c+=p[i]; if(r<=c) return i; } return p.length-1; }
+function policyById(id){ return policies.find(p=>p.id===id); }
+function mixStateAtTau(tau){ const out=[0,0]; for(const p of policies){ const weight=game.pi[p.id] ?? 0.25; const s=game.q[p.id][tau-1]; out[0]+=weight*s[0]; out[1]+=weight*s[1]; } return normalize(out); }
+function formatVec(v){ return `[${v.map(x=>round(x)).join(", ")}]`; }
+function formatMat(M){ return M.map(r=>`[${r.map(x=>round(x)).join(", ")}]`).join("<br>"); }
+function scoreWidth(x){ return `${clamp(x*100,0,100)}%`; }
+function preferredObsDistribution(){ const q = parseFloat(ui.prefSlider.value); return [q, 1-q]; }
+function Clog(){ return preferredObsDistribution().map(logv); }
+
+function setupUI(){
+  [
+    "presetSelect","loadPresetBtn","newEpisodeBtn","revealBtn","tickBtn","settleBtn","resetBeliefsBtn",
+    "scorePoliciesBtn","autoActBtn","manualWaitBtn","manualRepairBtn","prefSlider","prefReadout",
+    "tickCount","timeSlice","freeEnergyReadout","policyMassReadout","episodeBadges","hiddenStatus",
+    "hiddenReveal","stateTokens","needle","obsText","mixCalm","mixFault","mixCalmBar","mixFaultBar",
+    "policyGrid","matrixBox","logBox","focusPolicy","eqBox","mathSteps","policyTableBox"
+  ].forEach(id => ui[id] = document.getElementById(id));
+
+  Object.entries(presets).forEach(([key,p]) => {
+    const opt=document.createElement("option"); opt.value=key; opt.textContent=p.name; ui.presetSelect.appendChild(opt);
+  });
+  policies.forEach(p => {
+    const opt=document.createElement("option"); opt.value=p.id; opt.textContent=p.name; ui.focusPolicy.appendChild(opt);
+  });
+
+  ui.loadPresetBtn.onclick = () => loadPreset(ui.presetSelect.value);
+  ui.newEpisodeBtn.onclick = () => newEpisode();
+  ui.revealBtn.onclick = () => { game.revealed = !game.revealed; render(); };
+  ui.tickBtn.onclick = () => { messageTick(); render(); };
+  ui.settleBtn.onclick = () => { settleBeliefs(); render(); };
+  ui.resetBeliefsBtn.onclick = () => { resetPolicyBeliefs(); render(); };
+  ui.scorePoliciesBtn.onclick = () => { updatePolicyPosterior(); render(); };
+  ui.autoActBtn.onclick = () => { takeAction(bestPolicy().acts[0], true); };
+  ui.manualWaitBtn.onclick = () => { takeAction(0, false); };
+  ui.manualRepairBtn.onclick = () => { takeAction(1, false); };
+  ui.prefSlider.oninput = () => { ui.prefReadout.textContent = Number(ui.prefSlider.value).toFixed(2); updatePolicyPosterior(); render(); };
+  ui.focusPolicy.onchange = () => render();
+}
+
+function loadPreset(key){
+  const p = clone(presets[key]);
+  game.model = p;
+  ui.prefSlider.value = p.quietPref;
+  ui.prefReadout.textContent = Number(ui.prefSlider.value).toFixed(2);
+  // Explicit reset so preset→preset switches start from a clean belief state,
+  // not carrying q/v from the previous preset's settled values.
+  resetPolicyBeliefs();
+  newEpisode(true);
+  log(`${p.name} loaded. ${p.intro}`);
+  render();
+}
+
+function resetPolicyBeliefs(){
+  game.q = {};
+  game.v = {};
+  for(const p of policies){
+    const init = [clone(game.model.D), clone(game.model.D), clone(game.model.D)];
+    const v0 = init.map(s => s.map(logv));
+    game.q[p.id] = init;
+    game.v[p.id] = v0;
+  }
+  game.tickCount = 0;
+  updatePolicyPosterior();
+}
+
+function newEpisode(first=false){
+  game.revealed = false;
+  game.time = 1;
+  game.score = 0;
+  // On preset load (first=true) use deterministic argmax so preset-to-preset
+  // comparisons are reproducible. On "New episode" clicks we still sample so
+  // the learner sees variability across runs.
+  if(first){
+    game.trueState = game.model.D.indexOf(Math.max(...game.model.D));
+    const obsDist = [game.model.A[0][game.trueState], game.model.A[1][game.trueState]];
+    game.obs = obsDist.indexOf(Math.max(...obsDist));
+  } else {
+    game.trueState = sampleCat(game.model.D);
+    game.obs = sampleCat([game.model.A[0][game.trueState], game.model.A[1][game.trueState]]);
+  }
+  game.log = [];
+  resetPolicyBeliefs();
+  if(!first) log(`New episode. Hidden state resampled from D = ${formatVec(game.model.D)}. Current observation is ${obsNames[game.obs]}.`);
+  updatePolicyPosterior();
+}
+
+function log(text){
+  game.log.unshift({t:new Date().toLocaleTimeString(), text});
+  game.log = game.log.slice(0,80);
+}
+
+function currentObsOneHot(){ return game.obs === 0 ? [1,0] : [0,1]; }
+
+function messageTick(){
+  const A = game.model.A;
+  const D = game.model.D;
+  const o = currentObsOneHot();
+  const eps = 1.0;
+
+  for(const pol of policies){
+    const p = pol.id;
+    const acts = pol.acts;
+    const q = game.q[p].map(v => v.slice());
+    const v = game.v[p].map(vv => vv.slice());
+
+    const lik1 = A.map(row => dot(row, o)); // column selection by one-hot => [P(o|Calm), P(o|Faulty)]
+    const past1 = D.slice();
+    const fut1 = backMessage(game.model.B[acts[0]], q[1]);
+    const msg1 = lik1.map((x,i)=>logv(x)+logv(past1[i])+logv(fut1[i])-logv(q[0][i]));
+    v[0] = v[0].map((x,i)=>x + eps*msg1[i]);
+    q[0] = softmax(v[0]);
+
+    const past2 = colMessage(game.model.B[acts[0]], q[0]);
+    const fut2 = backMessage(game.model.B[acts[1]], q[2]);
+    const msg2 = past2.map((x,i)=>logv(x)+logv(fut2[i])-logv(q[1][i]));
+    v[1] = v[1].map((x,i)=>x + eps*msg2[i]);
+    q[1] = softmax(v[1]);
+
+    const past3 = colMessage(game.model.B[acts[1]], q[1]);
+    const msg3 = past3.map((x,i)=>logv(x)-logv(q[2][i]));
+    v[2] = v[2].map((x,i)=>x + eps*msg3[i]);
+    q[2] = softmax(v[2]);
+
+    game.q[p] = q;
+    game.v[p] = v;
+  }
+  game.tickCount += 1;
+  updatePolicyPosterior();
+  log(`Message tick ${game.tickCount}: policy-specific hidden-state trajectories were updated using Eq. 4.13.`);
+}
+
+function settleBeliefs(){
+  for(let i=0;i<8;i++) messageTick();
+  log(`Beliefs settled by repeated message passing.`);
+}
+
+function policyF(pol){
+  const q = game.q[pol.id];
+  const A = game.model.A;
+  const D = game.model.D;
+  const o = currentObsOneHot();
+  const lik1 = A.map(row => dot(row, o));
+  const pred2 = colMessage(game.model.B[pol.acts[0]], q[0]);
+  const pred3 = colMessage(game.model.B[pol.acts[1]], q[1]);
+
+  const term1 = dot(q[0], q[0].map((s,i)=>logv(s)-logv(lik1[i])-logv(D[i])));
+  const term2 = dot(q[1], q[1].map((s,i)=>logv(s)-logv(pred2[i])));
+  const term3 = dot(q[2], q[2].map((s,i)=>logv(s)-logv(pred3[i])));
+  return term1 + term2 + term3;
+}
+
+function policyG(pol){
+  const q = game.q[pol.id];
+  const A = game.model.A;
+  const C = Clog();
+  const H = [entropyCol(A,0), entropyCol(A,1)];
+  let G = 0;
+  for(const tau of [1,2]){ // future slices: q at tau=2 and 3 in 1-indexing
+    const s = q[tau];
+    const oPred = normalize([
+      A[0][0]*s[0] + A[0][1]*s[1],
+      A[1][0]*s[0] + A[1][1]*s[1]
+    ]);
+    const risk = dot(oPred, oPred.map((x,i)=>logv(x) - C[i]));
+    const ambiguity = dot(s, H);
+    G += risk + ambiguity;
+  }
+  return G;
+}
+
+function updatePolicyPosterior(){
+  const energies = policies.map(pol => {
+    const F = policyF(pol);
+    const G = policyG(pol);
+    return {id:pol.id, F, G, E:-(F+G)};
+  });
+  const probs = softmax(energies.map(e => e.E));
+  game.policyStats = {};
+  game.pi = {};
+  energies.forEach((e,idx) => {
+    game.policyStats[e.id] = {F:e.F, G:e.G, negFG:e.E, pi:probs[idx]};
+    game.pi[e.id] = probs[idx];
+  });
+}
+
+function bestPolicy(){
+  let best=policies[0], bestp=-1;
+  for(const p of policies){ if((game.pi[p.id]??0)>bestp){ bestp=game.pi[p.id]; best=p; } }
+  return best;
+}
+
+function takeAction(actionId, automatic){
+  updatePolicyPosterior();
+  const actionName = actionNames[actionId];
+  const B = game.model.B[actionId];
+  const prev = game.trueState;
+  const nextDist = [B[0][prev], B[1][prev]];
+  game.trueState = sampleCat(nextDist);
+  game.obs = sampleCat([game.model.A[0][game.trueState], game.model.A[1][game.trueState]]);
+  game.time += 1;
+  const quiet = game.obs===0 ? 1 : 0;
+  game.score += quiet;
+  const source = automatic ? `Auto picked ${actionName} from ${bestPolicy().name}.` : `Manual override picked ${actionName}.`;
+  log(`${source} Hidden state moved ${stateNames[prev]} → ${stateNames[game.trueState]}; new observation: ${obsNames[game.obs]}. Quiet score +${quiet}.`);
+  resetPolicyBeliefs();
+  updatePolicyPosterior();
+  render();
+}
+
+function renderEpisodeBadges(){
+  ui.episodeBadges.innerHTML = "";
+  const items = [
+    `Preset: ${game.model.name}`,
+    `Current observation: ${obsNames[game.obs]}`,
+    `Best policy: ${bestPolicy().name}`,
+    `Quiet preference: ${Number(ui.prefSlider.value).toFixed(2)}`
+  ];
+  items.forEach(t=>{ const d=document.createElement('div'); d.className='chip'; d.textContent=t; ui.episodeBadges.appendChild(d); });
+}
+
+function renderHidden(){
+  ui.hiddenStatus.textContent = game.revealed ? "Revealed for teaching" : "Hidden until revealed";
+  if(game.revealed){
+    const klass = game.trueState===0 ? 'lampCalm' : 'lampFault';
+    ui.hiddenReveal.innerHTML = `<span class="stateLamp ${klass}"></span>${stateNames[game.trueState]}`;
+  } else {
+    ui.hiddenReveal.textContent = "???";
+  }
+  // Token field shows the current mixed posterior q(s1) as a 20-token bar:
+  // brass tokens = P(Calm), steel tokens = P(Faulty). This keeps the visual
+  // tied to an actual quantity instead of being decorative.
+  ui.stateTokens.innerHTML = "";
+  const s = mixStateAtTau(1);
+  const total = 20;
+  const nCalm = Math.round(s[0] * total);
+  for(let i=0;i<total;i++){
+    const d=document.createElement('div');
+    d.className='token ' + (i < nCalm ? '' : 'steel');
+    d.title = i < nCalm ? `q(Calm) share` : `q(Faulty) share`;
+    ui.stateTokens.appendChild(d);
+  }
+}
+
+function renderGauge(){
+  ui.obsText.textContent = obsNames[game.obs];
+  const deg = game.obs===0 ? -48 : 48;
+  ui.needle.style.transform = `translate(-50%,-90%) rotate(${deg}deg)`;
+}
+
+function renderMixedBelief(){
+  const s = mixStateAtTau(1);
+  ui.mixCalm.textContent = round(s[0]);
+  ui.mixFault.textContent = round(s[1]);
+  ui.mixCalmBar.style.width = scoreWidth(s[0]);
+  ui.mixFaultBar.style.width = scoreWidth(s[1]);
+}
+
+function renderPolicies(){
+  ui.policyGrid.innerHTML = "";
+  const best = bestPolicy().id;
+  for(const p of policies){
+    const stats = game.policyStats[p.id];
+    const card=document.createElement('div');
+    card.className='policyCard' + (Number(ui.focusPolicy.value)===p.id ? ' active':'') + (best===p.id ? ' best':'');
+    const s1=game.q[p.id][0], s2=game.q[p.id][1], s3=game.q[p.id][2];
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:6px;align-items:center">
+        <strong>${p.name}</strong>
+        <span class="badge">π=${round(stats.pi)}</span>
+      </div>
+      <div class="mini" style="margin-top:4px">q(s1) ${formatVec(s1)}</div>
+      <div class="mini">q(s2) ${formatVec(s2)}</div>
+      <div class="mini">q(s3) ${formatVec(s3)}</div>
+      <div class="mini" style="margin-top:8px">Policy posterior</div>
+      <div class="meter"><div class="fill" style="width:${scoreWidth(stats.pi)}"></div></div>
+      <div class="mini">F = ${round(stats.F)} | G = ${round(stats.G)}</div>
+      <div class="mini">First action: <span class="accent">${actionNames[p.acts[0]]}</span></div>`;
+    card.onclick = ()=>{ ui.focusPolicy.value = p.id; render(); };
+    ui.policyGrid.appendChild(card);
+  }
+}
+
+function renderMatrices(){
+  const A = game.model.A, B0 = game.model.B[0], B1 = game.model.B[1], D = game.model.D, C = preferredObsDistribution();
+  ui.matrixBox.innerHTML = `
+    <table class="table">
+      <tr><th>Object</th><th>Numbers</th><th>Meaning</th></tr>
+      <tr><td>A</td><td>${formatMat(A)}</td><td>P(observation | state)</td></tr>
+      <tr><td>B<sub>Wait</sub></td><td>${formatMat(B0)}</td><td>P(next state | state, Wait)</td></tr>
+      <tr><td>B<sub>Repair</sub></td><td>${formatMat(B1)}</td><td>P(next state | state, Repair)</td></tr>
+      <tr><td>D</td><td>${formatVec(D)}</td><td>Initial state belief</td></tr>
+      <tr><td>C</td><td>${formatVec(C)}</td><td>Preferred future outcomes</td></tr>
+    </table>`;
+}
+
+function renderEquationLedger(){
+  const pid = Number(ui.focusPolicy.value || 0);
+  const pol = policyById(pid);
+  const q = game.q[pid];
+  const v = game.v[pid];
+  const A = game.model.A;
+  const D = game.model.D;
+  const o = currentObsOneHot();
+  const lik1 = A.map(row => dot(row, o));
+  const fut1 = backMessage(game.model.B[pol.acts[0]], q[1]);
+  const past2 = colMessage(game.model.B[pol.acts[0]], q[0]);
+  const fut2 = backMessage(game.model.B[pol.acts[1]], q[2]);
+  const past3 = colMessage(game.model.B[pol.acts[1]], q[1]);
+  const msg1 = lik1.map((x,i)=>logv(x)+logv(D[i])+logv(fut1[i])-logv(q[0][i]));
+  const msg2 = past2.map((x,i)=>logv(x)+logv(fut2[i])-logv(q[1][i]));
+  const msg3 = past3.map((x,i)=>logv(x)-logv(q[2][i]));
+
+  ui.eqBox.textContent =
+`Focused policy: ${pol.name}
+Observed outcome now: o1 = ${obsNames[game.obs]}
+
+s1 = softmax(v1)
+s2 = softmax(v2)
+s3 = softmax(v3)
+
+v1 update = ln A·o1 + ln D + ln(B_${actionNames[pol.acts[0]]}^T s2) - ln s1
+          = ${formatVec(msg1)} added to v1
+
+v2 update = ln(B_${actionNames[pol.acts[0]]} s1) + ln(B_${actionNames[pol.acts[1]]}^T s3) - ln s2
+          = ${formatVec(msg2)} added to v2
+
+v3 update = ln(B_${actionNames[pol.acts[1]]} s2) - ln s3
+          = ${formatVec(msg3)} added to v3`;
+
+  const steps = [
+    {label:"Current sensory message", body:`A·o1 selects the likelihood column for the actual observation ${obsNames[game.obs]}: ${formatVec(lik1)}.`},
+    {label:"Past message into slice 1", body:`The initial-state belief D contributes ${formatVec(D)}.`},
+    {label:"Backward message into slice 1", body:`Future slice 2 sends back ln(B^T s2) = ${formatVec(fut1)}.`},
+    {label:"Forward message into slice 2", body:`From slice 1 under action ${actionNames[pol.acts[0]]}, B s1 = ${formatVec(past2)}.`},
+    {label:"Backward message into slice 2", body:`From slice 3 under action ${actionNames[pol.acts[1]]}, B^T s3 = ${formatVec(fut2)}.`},
+    {label:"Forward message into slice 3", body:`From slice 2 under action ${actionNames[pol.acts[1]]}, B s2 = ${formatVec(past3)}.`},
+    {label:"Softmax normalization", body:`After adding each message vector to vτ, the machine applies softmax to keep q(sτ) a valid categorical distribution.`},
+    {label:"Current values", body:`q(s1)=${formatVec(q[0])}, q(s2)=${formatVec(q[1])}, q(s3)=${formatVec(q[2])}; v1=${formatVec(v[0])}, v2=${formatVec(v[1])}, v3=${formatVec(v[2])}.`}
+  ];
+  ui.mathSteps.innerHTML = steps.map(s => `<div class="step"><span class="badge">${s.label}</span><div>${s.body}</div></div>`).join("");
+}
+
+function renderPolicyTable(){
+  let rows='';
+  for(const p of policies){
+    const st=game.policyStats[p.id];
+    rows += `<tr>
+      <td>${p.name}</td>
+      <td>${round(st.F)}</td>
+      <td>${round(st.G)}</td>
+      <td>${round(-(st.F+st.G))}</td>
+      <td>${round(st.pi)}</td>
+      <td>${actionNames[p.acts[0]]}</td>
+    </tr>`;
+  }
+  ui.policyTableBox.innerHTML = `
+    <table class="table">
+      <tr><th>Policy</th><th>F</th><th>G</th><th>−F−G</th><th>π</th><th>First move</th></tr>
+      ${rows}
+    </table>
+    <div class="sub" style="margin-top:8px">
+      Here, <strong>F</strong> penalizes trajectories whose hidden-state beliefs poorly explain the current observation and transition structure. <strong>G</strong> penalizes futures that are risky relative to preferences C or ambiguous under A. The posterior over plans is the softmax over the combined negative energy.
+    </div>`;
+}
+
+function renderLog(){
+  ui.logBox.innerHTML = game.log.map(item => `<div><span class="badge">${item.t}</span>${item.text}</div>`).join("");
+}
+
+function renderReadouts(){
+  ui.tickCount.textContent = String(game.tickCount);
+  ui.timeSlice.textContent = String(game.time);
+  const best=bestPolicy();
+  ui.freeEnergyReadout.textContent = round(game.policyStats[best.id].F + game.policyStats[best.id].G);
+  ui.policyMassReadout.textContent = `${best.name} @ ${round(game.pi[best.id])}`;
+
+  // Sticky status strip
+  const s = game.policyStats[best.id];
+  document.getElementById('stripTime').textContent = String(game.time);
+  document.getElementById('stripTicks').textContent = String(game.tickCount);
+  document.getElementById('stripBest').textContent = best.name;
+  document.getElementById('stripBestSub').textContent = `π = ${round(game.pi[best.id] || 0)}`;
+  document.getElementById('stripF').textContent = round(s.F);
+  document.getElementById('stripG').textContent = round(s.G);
+  document.getElementById('stripScore').textContent = String(game.score || 0);
+}
+
+function render(){
+  renderEpisodeBadges();
+  renderHidden();
+  renderGauge();
+  renderMixedBelief();
+  renderPolicies();
+  renderMatrices();
+  renderEquationLedger();
+  renderPolicyTable();
+  renderLog();
+  renderReadouts();
+}
+
+setupUI();
+loadPreset('standard');
+log('The machine is ready. Start with a message tick, then compare policies, then let the machine act or override it yourself.');
+render();
+
+// Primary-toolbar wiring (reuses existing sidebar handlers)
+document.getElementById('tbLoadPreset').addEventListener('click', ()=> loadPreset(ui.presetSelect.value));
+document.getElementById('tbNewEp').addEventListener('click', ()=> { newEpisode(); render(); });
+document.getElementById('tbTick').addEventListener('click', ()=> { messageTick(); render(); });
+document.getElementById('tbSettle').addEventListener('click', ()=> { settleBeliefs(); render(); });
+document.getElementById('tbScore').addEventListener('click', ()=> { updatePolicyPosterior(); render(); });
+document.getElementById('tbAutoAct').addEventListener('click', ()=> takeAction(bestPolicy().acts[0], true));
+document.getElementById('tbWait').addEventListener('click', ()=> takeAction(0, false));
+document.getElementById('tbRepair').addEventListener('click', ()=> takeAction(1, false));
+document.getElementById('tbReveal').addEventListener('click', ()=> { game.revealed = !game.revealed; render(); });
+
+// Intro strip persistence
+const INTRO_KEY = 'learninglabs.POMDPMachine.introDismissed';
+const introEl = document.getElementById('introStrip');
+if (localStorage.getItem(INTRO_KEY) === '1') introEl.classList.add('hidden');
+document.getElementById('introDismissBtn').addEventListener('click', ()=>{
+  introEl.classList.add('hidden');
+  localStorage.setItem(INTRO_KEY, '1');
+});
+
+// Guided tour
+const tourSteps = [
+  { sel:'#presetSelect', title:'Pick a clockwork world', body:'Each preset defines A, B, C, D — likelihood, transitions, preferences, and initial state belief.' },
+  { sel:'#tbTick', title:'Message tick', body:'Runs one pass of Eq 4.13 updates on every policy-specific belief trajectory.' },
+  { sel:'#stripBest', title:'Best policy appears', body:'After scoring, the sticky strip shows the current best plan and its π posterior.' },
+  { sel:'#policyGrid', title:'Compare F and G across policies', body:'Each card shows F (explains the present) and G (expected future). π = softmax(−G−F).' },
+  { sel:'#tbScore', title:'Score all policies', body:'Re-computes F, G and the softmax posterior over the four plans.' },
+  { sel:'#tbAutoAct', title:'Execute the best plan', body:'Performs the first action of the best plan, advances one time slice, and resamples.' }
+];
+let tourIndex = 0;
+const tourOverlay = document.createElement('div');
+tourOverlay.className = 'tour-overlay';
+tourOverlay.innerHTML = `<div class="tour-card" role="dialog" aria-labelledby="tourTitle"><h4 id="tourTitle"></h4><div class="step-line" id="tourBody"></div><div class="tour-actions"><button id="tourSkipBtn">Close</button><div style="display:flex;gap:8px;align-items:center;"><span id="tourProgress" class="tiny"></span><button id="tourNextBtn" class="brass">Next →</button></div></div></div>`;
+document.body.appendChild(tourOverlay);
+const tourHighlight = document.createElement('div');
+tourHighlight.className = 'tour-highlight';
+function showTourStep(i){
+  const s = tourSteps[i]; if(!s){ closeTour(); return; }
+  tourOverlay.querySelector('#tourTitle').textContent = s.title;
+  tourOverlay.querySelector('#tourBody').textContent = s.body;
+  tourOverlay.querySelector('#tourProgress').textContent = `${i+1} / ${tourSteps.length}`;
+  tourOverlay.querySelector('#tourNextBtn').textContent = i===tourSteps.length-1 ? 'Finish ✓' : 'Next →';
+  const t = document.querySelector(s.sel);
+  if(t){
+    t.scrollIntoView({behavior:'smooth', block:'center'});
+    setTimeout(()=>{
+      const r = t.getBoundingClientRect();
+      tourHighlight.style.left = (window.scrollX + r.left - 6) + 'px';
+      tourHighlight.style.top = (window.scrollY + r.top - 6) + 'px';
+      tourHighlight.style.width = (r.width + 12) + 'px';
+      tourHighlight.style.height = (r.height + 12) + 'px';
+      if(!tourHighlight.parentNode) document.body.appendChild(tourHighlight);
+    }, 220);
+  }
+}
+function openTour(){ tourIndex=0; tourOverlay.classList.add('on'); showTourStep(0); }
+function closeTour(){ tourOverlay.classList.remove('on'); if(tourHighlight.parentNode) tourHighlight.parentNode.removeChild(tourHighlight); }
+document.getElementById('tourOpenBtn').addEventListener('click', openTour);
+tourOverlay.querySelector('#tourSkipBtn').addEventListener('click', closeTour);
+tourOverlay.querySelector('#tourNextBtn').addEventListener('click', ()=>{
+  tourIndex += 1;
+  if(tourIndex >= tourSteps.length){ closeTour(); return; }
+  showTourStep(tourIndex);
+});
+tourOverlay.addEventListener('click', (e)=>{ if(e.target === tourOverlay) closeTour(); });
+
+/* ================================================================
+   Learning Shell (shared across all 7 sims)
+   ================================================================ */
+(function(){
+  const LS = window.LS = {};
+  const state = { path: 'real', cfg: null, eqTab: 'equation', beatIdx: 0 };
+  const pathbar = document.querySelector('.ls-pathbar');
+  const picker = document.getElementById('lsPickerOverlay');
+  const pickerDismiss = document.getElementById('lsPickerDismiss');
+  const pickerBtn = document.getElementById('lsPickerBtn');
+  const dysBtn = document.getElementById('lsDysBtn');
+  const dockG = document.getElementById('lsDockGlossary');
+  const dockA = document.getElementById('lsDockAnalogies');
+  const dockX = document.getElementById('lsDockExercises');
+  const panel = document.getElementById('lsPanel');
+  const panelOv = document.getElementById('lsPanelOverlay');
+  const panelTitle = document.getElementById('lsPanelTitle');
+  const panelBody = document.getElementById('lsPanelBody');
+  const panelClose = document.getElementById('lsPanelClose');
+  const eqBody = document.getElementById('lsEqBody');
+  const eqTabs = [...document.querySelectorAll('[data-ls-tab]')];
+  const beatHost = document.getElementById('lsBeatHost');
+  const tooltip = document.getElementById('lsTooltip');
+  const printRoot = document.getElementById('lsPrintRoot');
+
+  LS.init = function(cfg) {
+    state.cfg = cfg;
+    const key = 'ls.' + cfg.simKey + '.path';
+    // ls-cookie-bridge-v1: prefer suite-wide `suite_path` cookie over localStorage
+    // so a learner who picks a path on /learn sees it applied here without
+    // having to dismiss another picker.
+    (function(){
+      try {
+        var m = document.cookie && document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);
+        if (m && m[1]) {
+          var v = decodeURIComponent(m[1]);
+          if (['kid','real','equation','derivation'].indexOf(v) !== -1) {
+            localStorage.setItem('ls.' + cfg.simKey + '.path', v);
+          }
+        }
+      } catch(_) {}
+    })();
+    // ls-url-params-v1: honor `?path=` and `?beat=` query params for deep-linking from
+    // session pages. Path query wins over the cookie; beat is applied once.
+    (function(){
+      try {
+        var qs = new URLSearchParams(window.location.search);
+        var qpath = qs.get('path');
+        if (qpath && ['kid','real','equation','derivation'].indexOf(qpath) !== -1) {
+          localStorage.setItem('ls.' + cfg.simKey + '.path', qpath);
+        }
+        var qbeat = parseInt(qs.get('beat') || '', 10);
+        if (!isNaN(qbeat) && qbeat > 0) {
+          setTimeout(function(){ if (window.LS && window.LS.setBeat) window.LS.setBeat(qbeat - 1); }, 50);
+        }
+      } catch(_) {}
+    })();
+
+
+    const dysKey = 'ls.' + cfg.simKey + '.dys';
+    const saved = localStorage.getItem(key);
+    if (localStorage.getItem(dysKey) === '1') { document.body.classList.add('ls-dys'); if (dysBtn) dysBtn.setAttribute('aria-pressed', 'true'); }
+    if (!saved) { if (picker) picker.classList.add('on'); state.path = 'real'; } else { state.path = saved; }
+    applyPathButtons(); renderEqPanel(); renderBeat(); wireTooltipTerms(document.body);
+    if (cfg.onPathChange) cfg.onPathChange(state.path);
+  };
+  LS.setPath = function(p, opts) {
+    opts = opts || {}; state.path = p;
+    if (state.cfg) localStorage.setItem('ls.' + state.cfg.simKey + '.path', p);
+    applyPathButtons(); renderEqPanel(); renderBeat();
+    if (!opts.silent && state.cfg && state.cfg.onPathChange) state.cfg.onPathChange(p);
+  };
+  LS.getPath = function() { return state.path; };
+  function applyPathButtons() {
+    document.querySelectorAll('[data-ls-path]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lsPath === state.path ? 'true' : 'false'));
+  }
+  if (pathbar) pathbar.addEventListener('click', e => { const b = e.target.closest('[data-ls-path]'); if (b) LS.setPath(b.dataset.lsPath); });
+  if (picker) picker.addEventListener('click', e => { const b = e.target.closest('[data-ls-path]'); if (b) { picker.classList.remove('on'); LS.setPath(b.dataset.lsPath); } });
+  if (pickerDismiss) pickerDismiss.addEventListener('click', () => { picker.classList.remove('on'); LS.setPath('real'); });
+  if (pickerBtn) pickerBtn.addEventListener('click', () => picker.classList.add('on'));
+  if (dysBtn) dysBtn.addEventListener('click', () => {
+    document.body.classList.toggle('ls-dys');
+    const on = document.body.classList.contains('ls-dys');
+    dysBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (state.cfg) localStorage.setItem('ls.' + state.cfg.simKey + '.dys', on ? '1' : '0');
+  });
+  function openPanel(title, bodyHTML) {
+    panelTitle.textContent = title; panelBody.innerHTML = bodyHTML;
+    panel.classList.add('on'); panelOv.classList.add('on');
+    panel.setAttribute('aria-hidden', 'false'); panelOv.setAttribute('aria-hidden', 'false');
+    wireTooltipTerms(panelBody);
+  }
+  function closePanel() { panel.classList.remove('on'); panelOv.classList.remove('on'); panel.setAttribute('aria-hidden', 'true'); panelOv.setAttribute('aria-hidden', 'true'); }
+  if (panelClose) panelClose.addEventListener('click', closePanel);
+  if (panelOv) panelOv.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closePanel(); if (picker) picker.classList.remove('on'); hideTooltip(); } });
+  function escapeHTML(s) { return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c])); }
+  function tierFor(t) { return (state.cfg && state.cfg.terms && state.cfg.terms[t]) || null; }
+  function showTooltip(el) {
+    const term = el.dataset.term; const entry = tierFor(term);
+    if (!entry) { tooltip.innerHTML = `<div class="ls-term-name">${escapeHTML(term)}</div><div class="ls-term-tier">No glossary entry yet.</div>`; }
+    else {
+      const order = { kid:['kid','adult','phd'], real:['adult','kid','phd'], equation:['adult','phd','kid'], derivation:['phd','adult','kid'] }[state.path] || ['adult','phd','kid'];
+      const labels = { kid:'For a 5th grader', adult:'For a curious adult', phd:'For a PhD' };
+      let html = `<div class="ls-term-name">${escapeHTML(entry.name || term)}</div>`;
+      for (const t of order) if (entry[t]) html += `<div class="ls-term-tier"><b>${labels[t]}:</b> ${escapeHTML(entry[t])}</div>`;
+      tooltip.innerHTML = html;
+    }
+    const r = el.getBoundingClientRect(), tw = 320, th = 140;
+    let left = window.scrollX + r.left, top = window.scrollY + r.bottom + 6;
+    if (left + tw > window.scrollX + window.innerWidth - 8) left = window.scrollX + window.innerWidth - tw - 8;
+    if (top + th > window.scrollY + window.innerHeight - 8) top = window.scrollY + r.top - th - 6;
+    tooltip.style.left = Math.max(8, left) + 'px'; tooltip.style.top = Math.max(8, top) + 'px'; tooltip.classList.add('on');
+  }
+  function hideTooltip() { if (tooltip) tooltip.classList.remove('on'); }
+  function wireTooltipTerms(root) {
+    if (!root) return;
+    root.querySelectorAll('[data-term]:not([data-ls-wired])').forEach(el => {
+      el.classList.add('ls-term'); el.setAttribute('tabindex', '0'); el.setAttribute('data-ls-wired', '1'); el.setAttribute('aria-label', 'Definition of ' + el.dataset.term);
+      el.addEventListener('mouseenter', () => showTooltip(el)); el.addEventListener('mouseleave', hideTooltip);
+      el.addEventListener('focus', () => showTooltip(el)); el.addEventListener('blur', hideTooltip);
+      el.addEventListener('click', e => { e.stopPropagation(); showTooltip(el); });
+    });
+  }
+  document.addEventListener('click', e => { if (!e.target.closest('[data-term]') && !e.target.closest('.ls-tooltip')) hideTooltip(); });
+  LS.wireTooltipTerms = wireTooltipTerms;
+  if (dockG) dockG.addEventListener('click', () => {
+    const terms = (state.cfg && state.cfg.terms) || {}; const rows = Object.keys(terms).sort();
+    let html = '<input class="ls-glossary-search" id="lsGSearch" placeholder="Search terms…" />';
+    html += '<div id="lsGList">' + rows.map(k => glossaryRow(k, terms[k])).join('') + '</div>';
+    openPanel('Glossary · ' + rows.length + ' terms', html);
+    const input = document.getElementById('lsGSearch'); const list = document.getElementById('lsGList');
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      list.innerHTML = rows.filter(k => { const e = terms[k]; const hay = (k + ' ' + (e.name||'') + ' ' + (e.kid||'') + ' ' + (e.adult||'') + ' ' + (e.phd||'')).toLowerCase(); return q === '' || hay.includes(q); }).map(k => glossaryRow(k, terms[k])).join('');
+    });
+  });
+  function glossaryRow(k, e) {
+    return `<div class="ls-glossary-entry"><span class="ls-glossary-sym">${escapeHTML(e.name || k)}</span>
+      <span style="color:var(--muted);font-size:11px;">${escapeHTML(k === (e.name||k) ? '' : '(' + k + ')')}</span>
+      <div class="ls-glossary-tier"><b>Kid:</b> ${escapeHTML(e.kid || '—')}</div>
+      <div class="ls-glossary-tier"><b>Adult:</b> ${escapeHTML(e.adult || '—')}</div>
+      <div class="ls-glossary-tier"><b>PhD:</b> ${escapeHTML(e.phd || '—')}</div></div>`;
+  }
+  if (dockA) dockA.addEventListener('click', () => {
+    const an = (state.cfg && state.cfg.analogies) || [];
+    const html = an.map(a => `<div class="ls-analogy">
+      <h6><span class="ls-analogy-persona">${escapeHTML(a.persona || '')}</span>${escapeHTML(a.title || '')}</h6>
+      <div class="ls-analogy-scenario">${a.scenario || ''}</div>
+      ${a.map ? `<div class="ls-analogy-map"><b style="color:var(--brass2, #d4a859);font-size:11px;display:block;margin-bottom:2px;">Variable map</b><table>${Object.entries(a.map).map(([k,v])=>`<tr><td>${escapeHTML(k)}</td><td>${escapeHTML(v)}</td></tr>`).join('')}</table></div>` : ''}
+      ${a.exercise ? `<div class="ls-analogy-ex"><b>Micro-exercise:</b> ${escapeHTML(a.exercise)}</div>` : ''}
+    </div>`).join('');
+    openPanel('Analogy library · ' + an.length + ' analogies', html || '<div>No analogies defined.</div>');
+  });
+  if (dockX) dockX.addEventListener('click', () => {
+    const ex = (state.cfg && state.cfg.exercises) || [];
+    const html = ex.map((e, i) => `<div class="ls-exercise">
+      <h6>${escapeHTML(e.title || 'Exercise ' + (i+1))}</h6>
+      <div class="ls-ex-meta">${escapeHTML(e.time || '2–5 minutes')} · ${escapeHTML(e.materials || 'Household objects')}</div>
+      <div class="ls-ex-sect"><b>What you need</b><ul>${(e.need||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul></div>
+      <div class="ls-ex-sect"><b>Do this</b><ol>${(e.steps||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ol></div>
+      <div class="ls-ex-sect"><b>What you should see</b><div style="font-size:12px;color:var(--ink)">${escapeHTML(e.outcome || '')}</div></div>
+      <div class="ls-ex-sect"><b>Back to the sim</b><div style="font-size:12px;color:var(--muted)">${escapeHTML(e.back || '')}</div></div>
+      <button class="ls-ex-print" data-ex-print="${i}">Print this card (half-letter)</button>
+    </div>`).join('');
+    openPanel('Physical exercises · ' + ex.length + ' cards', html || '<div>No exercises defined.</div>');
+    panelBody.addEventListener('click', e => { const b = e.target.closest('[data-ex-print]'); if (!b) return; printExercise(ex[parseInt(b.dataset.exPrint,10)]); });
+  });
+  function printExercise(e) {
+    if (!e || !printRoot) return;
+    printRoot.style.display = 'block';
+    printRoot.innerHTML = `<h3 style="margin:0 0 4px;font-size:14pt;">${escapeHTML(e.title || 'Exercise')}</h3>
+      <div style="font-size:10pt;margin-bottom:8px;">${escapeHTML(e.time || '')} · ${escapeHTML(e.materials || '')}</div>
+      <div style="margin-bottom:8px;"><b>What you need</b><ul style="margin:2px 0 0 18px;">${(e.need||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul></div>
+      <div style="margin-bottom:8px;"><b>Do this</b><ol style="margin:2px 0 0 18px;">${(e.steps||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ol></div>
+      <div style="margin-bottom:8px;"><b>What you should see</b><div>${escapeHTML(e.outcome || '')}</div></div>
+      <div><b>Back to the sim</b><div>${escapeHTML(e.back || '')}</div></div>`;
+    setTimeout(() => { window.print(); printRoot.style.display = 'none'; }, 50);
+  }
+  eqTabs.forEach(t => t.addEventListener('click', () => { state.eqTab = t.dataset.lsTab; renderEqPanel(); }));
+  function renderEqPanel() {
+    eqTabs.forEach(t => t.setAttribute('aria-pressed', t.dataset.lsTab === state.eqTab ? 'true' : 'false'));
+    const ep = (state.cfg && state.cfg.equationPanel) || {}; const body = ep[state.eqTab]; if (!eqBody) return;
+    if (!body) { eqBody.innerHTML = '<div style="color:var(--muted)">(no content)</div>'; return; }
+    if (typeof body === 'string') eqBody.innerHTML = body;
+    else if (body.html) eqBody.innerHTML = body.html;
+    else eqBody.textContent = JSON.stringify(body);
+    wireTooltipTerms(eqBody);
+  }
+  function renderBeat() {
+    if (!beatHost) return;
+    const beats = (state.cfg && state.cfg.beats) || [];
+    if (!beats.length) { beatHost.innerHTML = '<div style="color:var(--muted);font-size:13px;">No beats defined.</div>'; return; }
+    state.beatIdx = Math.max(0, Math.min(beats.length - 1, state.beatIdx));
+    const b = beats[state.beatIdx];
+    const text = (b.text && (b.text[state.path] || b.text.adult || b.text.real || b.text.kid)) || b.hero || '';
+    beatHost.innerHTML = `<div class="ls-beat">
+      <div class="ls-beat-body"><span class="ls-beat-head">Beat <span class="ls-beat-idx">${state.beatIdx+1} / ${beats.length}</span> · ${escapeHTML(b.hero || '')}</span><span>${text}</span></div>
+      <div class="ls-beat-ctrl"><button id="lsBeatPrev">◀</button><button class="primary" id="lsBeatDo">${escapeHTML(b.action || 'Do this')}</button><button id="lsBeatNext">▶</button></div>
+    </div>`;
+    wireTooltipTerms(beatHost);
+    document.getElementById('lsBeatPrev').addEventListener('click', () => { state.beatIdx--; renderBeat(); });
+    document.getElementById('lsBeatNext').addEventListener('click', () => { state.beatIdx++; renderBeat(); });
+    document.getElementById('lsBeatDo').addEventListener('click', () => { if (b.do) { try { b.do(); } catch(_) {} } });
+  }
+  LS.renderBeat = renderBeat;
+  LS.setBeat = function(i) { state.beatIdx = i; renderBeat(); };
+  const strip = document.querySelector('.stageStrip');
+  if (strip) { strip.setAttribute('aria-live', 'polite'); strip.setAttribute('role', 'status'); }
+})();
+
+/* ---- Per-sim content: POMDP Machine ---- */
+const POMDP_TERMS = {
+  'A': { name:'A', kid:'How chips tell on hidden states. The "rattle" chip is more common when faulty.', adult:'Observation likelihood matrix. A[o,s] = P(obs = o | hidden state = s).', phd:'Categorical emission P(o|s); in discrete active inference, a stochastic matrix.' },
+  'B': { name:'B', kid:'How the hidden state changes when you do an action.', adult:'Transition matrix B(u)[s\u2032,s] = P(s_{t+1}=s\u2032 | s_t=s, action=u).', phd:'Controllable transition kernel; one per action u.' },
+  'C': { name:'C', kid:'What outcomes you prefer — high for Quiet, low for Rattle.', adult:'Preference (log-prior over outcomes). Higher C[o] means "I want to see o".', phd:'Log-prior over observations used in risk term of G.' },
+  'D': { name:'D', kid:'Your starting guess about the hidden state before any clue.', adult:'Initial belief over hidden states at the first time slice.', phd:'Prior P(s_1) over initial hidden states; enters F via −ln D at τ=1.' },
+  'F': { name:'F', kid:'How "surprised" your current explanation is. Lower is better.', adult:'Variational free energy per policy: explains current data + transition structure. Sum of per-slice contributions.', phd:'F_π = Σ_τ KL(q(s_τ|π) || p(s_τ,o_τ|π)); Equation 4.13-style update.' },
+  'G': { name:'G', kid:'How good a plan looks for the future — less "bad surprise" expected.', adult:'Expected free energy per policy: risk (mismatch with C) + ambiguity (sensory noise).', phd:'G_π = E_{Q(o,s|π)}[ln Q(s|π) − ln P(o,s)] ≈ risk + ambiguity.' },
+  'π': { name:'π', kid:'Your best plan. Higher π means "more likely to do this plan".', adult:'Posterior over policies: π = softmax(−G − F).', phd:'P(π) ∝ exp(−γ(G_π + F_π)); sampled or marginalized for action.' },
+  'q(s)': { name:'q(s)', kid:'Your current guess about the hidden state.', adult:'Approximate posterior over hidden states; settled via message passing.', phd:'Variational posterior q(s_τ|π) factored per policy in the mean-field scheme.' },
+  'softmax': { name:'softmax', kid:'Turn a list of numbers into a list of probabilities that sum to 1.', adult:'σ(x)_i = exp(x_i) / Σ_j exp(x_j).', phd:'Boltzmann/Gibbs transform; inverse temperature γ controls concentration.' },
+  'risk': { name:'risk', kid:'How far the likely outcomes are from what you want.', adult:'KL divergence between predicted outcomes Q(o|π) and preferences C.', phd:'E_{Q(o|π)}[ln Q(o|π) − ln P(o)].' },
+  'ambiguity': { name:'ambiguity', kid:'How fuzzy your future clues will be — you want less fuzz.', adult:'Expected sensory entropy under the policy-induced belief.', phd:'E_{Q(s|π)}[H[P(o|s)]].' },
+  'γ': { name:'γ', kid:'How decisive you are. High γ = pick the best plan firmly.', adult:'Inverse temperature on the policy softmax.', phd:'Precision parameter γ controlling concentration of P(π); linked to dopaminergic gain.' },
+  'o': { name:'o', kid:'The clue you hear or see.', adult:'Observation variable.', phd:'Realized observation ∈ discrete alphabet.' },
+  's': { name:'s', kid:'The hidden thing inside the machine.', adult:'Hidden state variable.', phd:'Latent state random variable; categorical here.' }
+};
+const POMDP_ANALOGIES = [
+  { persona:'P1 · Kid', title:'The rattle machine', scenario:'A toy machine inside the box. It\u2019s either calm or rattly. You can\u2019t open it. You hear a soft sound or a loud one. You can rest or fix it.', map:{ 's':'Calm vs Rattly', 'o':'Quiet vs Rattle', 'B':'How rest or fix changes it', 'C':'You prefer Quiet', 'π':'Your chosen plan' }, exercise:'Shake a sealed bag of rice (calm) vs a bag with dice (rattly). Only one person listens — decide rest vs fix.' },
+  { persona:'P2 · Pre-algebra', title:'Thermostat that can\u2019t see', scenario:'You feel warmth (the observation) but cannot see the thermostat dial (the hidden state). You choose to turn up the dial or wait. Each action changes the hidden state differently.', map:{ 's':'Dial position', 'o':'Room temperature', 'B':'Dial change from your action', 'C':'Comfort preference' }, exercise:'Stand in a room and guess whether the AC is running; act and record which action makes you more/less sure.' },
+  { persona:'P3 · Adult', title:'Old car, noisy engine', scenario:'Your car is either fine or failing. You hear only the engine. Drive (wait) or take it to the shop (repair)? Each action has a cost and shifts the failure probability.', map:{ 's':'Fine vs Failing', 'o':'Quiet vs Knocking', 'B':'Repair reduces failing; drive may worsen', 'C':'Prefer no breakdown', 'G':'Expected cost of each plan' }, exercise:'Pick a home appliance that sometimes rattles. Before calling service, predict whether waiting or acting is the better expected-cost plan.' },
+  { persona:'P4 · Quantitative', title:'POMDP with softmax policy', scenario:'Finite-state POMDP with discrete actions. Posterior over hidden states updated by message passing; plan scored by F (current fit) plus G (predicted risk + ambiguity); action sampled from softmax(−G−F).', map:{ 'A':'Observation likelihood', 'B(u)':'Transition per action', 'C':'Preferred observations (log-prior)', 'D':'Initial belief', 'F':'Variational free energy', 'G':'Expected free energy' }, exercise:'Compute F and G by hand for a 2×2 POMDP and check softmax(−G−F) against the sim.' },
+  { persona:'P5 · PhD', title:'Eq. 4.13 + EFE decomposition', scenario:'Variational message passing as in Da Costa et al. 2020; EFE split into epistemic (negative expected KL to posterior) and pragmatic (preference) value; link to free energy principle.', map:{ 'v_τ':'Log-unnormalised messages', 's_τ=softmax(v_τ)':'Posterior per slice', 'F_π':'Σ_τ KL + entropy', 'G_π':'risk + ambiguity', 'π':'P(π) ∝ exp(−γ(G+F))' }, exercise:'Derive Eq. 4.13 from the factor graph; verify backward message ln(Bᵀ s_{τ+1}) tightens past belief.' }
+];
+const POMDP_EXERCISES = [
+  { title:'E1 · Opaque cups, colored beads', time:'4 minutes', materials:'Paper cups, beads',
+    need:['Two opaque paper cups', '10 beads (6 blue, 4 red in one; 3 blue, 7 red in other)'],
+    steps:['Shuffle cups behind your back.','Pick one without looking and shake it.','Tap one bead out through a small hole.','Guess which cup you picked from the bead color.','Lift the cup and check.'],
+    outcome:'One draw gives a posterior — not certainty.',
+    back:'Match the 2-state POMDP: cups are s, bead colors are o, A is the color distribution.'
+  },
+  { title:'E2 · Two-coin plan cards', time:'5 minutes', materials:'Paper + two coins',
+    need:['Two coins (one fair, one weighted)', '4 index cards'],
+    steps:['On each card write one 2-step plan (HH, HT, TH, TT).','Pick a cup of coin secretly.','For each plan, read the predicted outcomes you\u2019d prefer.','Guess the plan with best expected preferences.','Flip and compare.'],
+    outcome:'Plans differ by G (how preferred outcomes align with expected coin outcomes).',
+    back:'Edit C in the sim to match your preferences; read G for each policy.'
+  },
+  { title:'E3 · Sticky-note belief track', time:'3 minutes', materials:'Sticky notes',
+    need:['Sticky notes', 'A friend with a card secretly picked (Calm / Faulty)'],
+    steps:['Start at 50/50 on a sticky-note track.','Friend shakes a bag once and calls "Quiet" or "Rattle".','You move the sticky note left (calm) or right (faulty) based on likelihood.','After 3 ticks, name your belief.','Reveal the card.'],
+    outcome:'Bayes on sticky notes matches settled q(s) after 3 ticks.',
+    back:'Use the Tick + Settle buttons; focus one policy and watch v_τ add up.'
+  }
+];
+const POMDP_BEATS = [
+  { hero:'Meet A, B, C, D', text:{ kid:'Four things describe the world: how chips tell on the hidden state, how acting changes it, what you want, and where you started.', real:'Meet the four ingredients: A (likelihood), B (transitions), C (preferences), D (start belief). Each preset sets them.', equation:'A[o,s], B(u)[s\u2032,s], C[o], D[s_1] — the building blocks.', derivation:'Finite categorical POMDP with known parameters; these four matrices fully specify the generative model.' }, action:'Load preset', do:()=>document.getElementById('loadPresetBtn').click() },
+  { hero:'Observe the gauge', text:{ kid:'The machine gives one clue: Quiet or Rattle.', real:'A new episode samples the true hidden state from D and the first observation from A.', equation:'o_1 ~ P(o | s_1), s_1 ~ D.', derivation:'Sample s_1 ~ Cat(D); o_1 ~ Cat(A·s_1).' }, action:'New episode', do:()=>document.getElementById('newEpisodeBtn').click() },
+  { hero:'One message tick', text:{ kid:'Do one round of "tell every part what you think". Beliefs shift.', real:'One tick applies likelihood + forward + backward + entropy-correction messages to every policy.', equation:'v_τ += messages; s_τ = softmax(v_τ).', derivation:'Gradient step on F w.r.t. v; v ← v − η ∂F/∂v.' }, action:'One tick', do:()=>document.getElementById('tickBtn').click() },
+  { hero:'Settle q(s)', text:{ kid:'Keep doing ticks until the guesses stop moving.', real:'Settle repeats ticks until the per-policy q(s) stabilizes.', equation:'Iterate until |Δv| < ε.', derivation:'Fixed point of Eq. 4.13 updates; under mild conditions, unique.' }, action:'Settle', do:()=>document.getElementById('settleBtn').click() },
+  { hero:'Score F, G, π', text:{ kid:'Each plan gets two scores. Then add them up and pick the best with some softness.', real:'For every policy compute F (now) and G (future), then π = softmax(−G − F).', equation:'π = softmax(−G_π − F_π).', derivation:'P(π) ∝ exp(−γ(G+F)); equivalent to softmax under γ=1.' }, action:'Settle beliefs', do:()=>document.getElementById('settleBtn').click() },
+  { hero:'Auto-act', text:{ kid:'Let the machine pick the best plan and do its first action.', real:'Select the MAP plan and execute its first action.', equation:'a_1 ← argmax_π π.acts[0].', derivation:'Greedy action under posterior policy; alternative: sample from π.' }, action:'Auto-act', do:()=>document.getElementById('actBtn')?.click() },
+  { hero:'See the hidden state move', text:{ kid:'The real hidden state changes because of what you did.', real:'The environment transitions s_{t+1} ~ B(u)·s_t.', equation:'s_{t+1} ~ Cat(B(u)·s_t).', derivation:'Action-conditioned Markov transition in the true generative process.' }, action:'Reveal chamber', do:()=>document.getElementById('revealBtn').click() },
+  { hero:'Try a different preset', text:{ kid:'Switch worlds. Noisy or sticky. Watch the plans change.', real:'Change A, B, C, D and rerun. Precision choices matter.', equation:'Edit A, B, C; resettle; compare π.', derivation:'Sensitivity analysis over the generative model.' }, action:'Load preset', do:()=>document.getElementById('loadPresetBtn').click() }
+];
+const POMDP_EQ_PANEL = {
+  story:`<div class="ls-eqmath">Imagine a box that is either <span data-term="s">calm or faulty</span> inside. It makes a <span data-term="o">quiet or rattle</span> sound. You never open the box. You choose to rest (wait) or fix (repair). Good choices balance "what I think is happening" with "what I want to happen".</div>`,
+  picture:`<div class="ls-eqpic">
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="A">A</span><span class="ls-eqarrow">likelihood</span><span class="ls-eqbox" data-term="q(s)">q(s)</span><span class="ls-eqarrow">belief</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="B">B</span><span class="ls-eqarrow">transition</span><span class="ls-eqbox" data-term="F">F</span><span class="ls-eqarrow">now-score</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="C">C</span><span class="ls-eqarrow">preference</span><span class="ls-eqbox" data-term="G">G</span><span class="ls-eqarrow">future-score</span></div>
+    <div class="ls-eqrow"><span class="ls-eqarrow">plan:</span><span class="ls-eqbox" data-term="π">π = softmax(−G − F)</span></div>
+  </div>`,
+  equation:`<div class="ls-eqmath">For each policy π:
+<span data-term="F">F_π</span> = Σ_τ [message-passing contributions at slice τ]
+<span data-term="G">G_π</span> = <span data-term="risk">risk</span> + <span data-term="ambiguity">ambiguity</span>
+       = KL(Q(o|π) || C) + E_Q[H[P(o|s)]]
+
+<span data-term="π">π</span> = <span data-term="softmax">softmax</span>(−G − F)</div>`,
+  derivation:`<div class="ls-eqmath">Variational message passing at each slice τ under the mean-field factorisation q(s_1:T, π) = Π q(s_τ|π) q(π):
+
+v_τ^π ← ln(A\u00b7o_τ) + ln(B\u00b7q(s_{τ−1}|π)) + ln(Bᵀ\u00b7q(s_{τ+1}|π)) − ln q(s_τ|π)
+
+q(s_τ|π) = softmax(v_τ^π)
+
+Eq. 4.13 iterations converge to a fixed point. Then EFE is decomposed:
+G_π = E_{Q(s,o|π)}[ln q(s|π) − ln p(s,o)] ≈ KL(Q(o|π) || P(o)) + E_{Q(s|π)}[H[P(o|s)]].
+
+See Da Costa, Parr, Sajid et al. 2020.</div>`
+};
+LS.init({
+  simKey:'POMDP',
+  terms: POMDP_TERMS,
+  analogies: POMDP_ANALOGIES,
+  exercises: POMDP_EXERCISES,
+  beats: POMDP_BEATS,
+  equationPanel: POMDP_EQ_PANEL,
+  onPathChange: function(p) { LS.renderBeat && LS.renderBeat(); }
+});
+</script>
+</body>
+</html>

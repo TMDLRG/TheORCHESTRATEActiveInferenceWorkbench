@@ -1,0 +1,49 @@
+{
+  "slug": "sophisticated-plan-tree-search",
+  "title": "Sophisticated Planning: Tree Search via Nested EFE",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 13,
+  "tags": ["sophisticated-planning", "tree-search", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(deceptive_dead_end)",
+    "world": "deceptive_dead_end",
+    "actions_used": ["perceive", "sophisticated_plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 6,
+    "policy_depth": 4,
+    "preference_strength": 3.0,
+    "expected_outcome": "SophisticatedPlan solves the deceptive-dead-end maze robustly at shorter nominal policy depths than naive enumeration."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=sophisticated-plan-tree-search",
+    "labs_url": "/labs?recipe=sophisticated-plan-tree-search&world=deceptive_dead_end"
+  },
+  "math": {
+    "latex": "G_{\\text{soph}}(\\pi_t) = G_t(\\pi_t) + \\mathbb{E}_{q(o_t)}[\\min_{\\pi_{t+1}} G_{\\text{soph}}(\\pi_{t+1})]",
+    "symbols": {
+      "G_soph": "sophisticated EFE (recursive lookahead)",
+      "min_{pi_{t+1}}": "best next-step policy given expected observation"
+    }
+  },
+  "audiences": {
+    "kid": "Before moving, the agent imagines what it'll see next and the best next plan from there. Like a chess player thinking two moves ahead.",
+    "real": "Sophisticated planning swaps 'expected G under a fixed roll-out' for 'best G under the best future policy'. More computation, better plans.",
+    "equation": "G_soph(pi_t) = G_t(pi_t) + E[min over pi_{t+1} of G_soph(pi_{t+1})]. Recursive.",
+    "derivation": "Bellman-style backward induction on the expected free energy (Friston et al. 2021). Trades compute for policy quality, especially in adversarial layouts like dead-end mazes."
+  },
+  "equation_refs": ["eq-b-22"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Run SophisticatedPlan on deceptive_dead_end and compare policy quality to naive enumeration.",
+    "role": "Sophisticated-planning tutor.",
+    "context": "deceptive_dead_end; run SophisticatedPlan at policy_depth=4 and compare to Plan at the same depth."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), App B.",
+    "Friston, Da Costa, Hafner, Hesp & Parr (2021), Sophisticated inference."
+  ]
+}

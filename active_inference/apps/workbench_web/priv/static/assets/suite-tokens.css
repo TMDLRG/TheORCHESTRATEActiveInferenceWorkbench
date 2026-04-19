@@ -1,0 +1,90 @@
+/* =================================================================
+   Active Inference Learning Suite — shared design tokens.
+   Loaded by both the Phoenix Workbench layout and the Learning Shell
+   inlined in each /learninglabs/*.html file.
+   Two complementary palettes (cool navy for Workbench, warm brass for
+   labs) live under the same token system so cross-context navigation
+   feels coherent.
+   ================================================================= */
+
+:root {
+  /* Background */
+  --suite-bg-workbench: #0b1020;
+  --suite-bg-lab:       #15120f;
+  --suite-nav-bg:       #111832;
+
+  /* Foreground */
+  --suite-text:         #e8ecf1;
+  --suite-text-lab:     #efe6db;
+  --suite-muted:        #9cb0d6;
+  --suite-muted-lab:    #c9bcad;
+
+  /* Accents */
+  --suite-accent-cool:  #7dd3fc;   /* Workbench hyperlinks */
+  --suite-accent-warm:  #d8b56c;   /* Lab accent / path toggle "on" */
+  --suite-accent-brass: #b3863a;   /* Lab CTA */
+  --suite-h2:           #ffd59e;
+  --suite-h3:           #b1e4ff;
+
+  /* Semantic */
+  --suite-success:      #86efac;
+  --suite-info:         #5eead4;
+  --suite-warn:         #fb923c;
+  --suite-danger:       #fb7185;
+
+  /* Tags */
+  --suite-tag-bg:       #1b263a;
+  --suite-tag-ink:      #93c5fd;
+
+  /* Typography */
+  --suite-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Spacing rhythm (for cross-context consistency) */
+  --suite-r: 8px;
+  --suite-r-lg: 12px;
+  --suite-r-pill: 999px;
+
+  /* Focus */
+  --suite-focus: 0 0 0 2px rgba(216,181,108,0.55);
+}
+
+/* Dyslexia-friendly toggle (lives on <body class="ls-dys">). Works in both
+   Workbench (cool) and labs (warm) because it only changes font metrics. */
+body.ls-dys {
+  font-family: "Verdana", "Tahoma", "Trebuchet MS", sans-serif;
+  letter-spacing: 0.03em;
+  word-spacing: 0.08em;
+}
+
+/* Shared focus ring — keyboard accessibility across the whole suite. */
+:is(a, button, [role="button"], input, select, textarea):focus-visible {
+  outline: none;
+  box-shadow: var(--suite-focus);
+  border-radius: 6px;
+}
+
+/* Persona chip used in the Workbench top bar and on lab-card meta rows. */
+.persona-chip {
+  display: inline-block;
+  font-size: 9px;
+  padding: 2px 5px;
+  border-radius: 3px;
+  margin-right: 2px;
+  background: var(--suite-tag-bg);
+  color: var(--suite-tag-ink);
+  font-family: var(--suite-mono);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+/* Breadcrumb link inside .ls-pathbar (on labs served by Phoenix). */
+.ls-pathbar .ls-crumb {
+  background: rgba(125, 211, 252, 0.10);
+  border-color: rgba(125, 211, 252, 0.35);
+  color: var(--suite-accent-cool);
+  text-decoration: none;
+}
+.ls-pathbar .ls-crumb:hover {
+  background: rgba(125, 211, 252, 0.20);
+  color: #e3f2ff;
+}

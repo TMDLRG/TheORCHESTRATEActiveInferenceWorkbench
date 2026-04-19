@@ -1,0 +1,241 @@
+s2
+
+s3
+
+s4
+
+s5
+
+1
+
+2
+
+3
+4
+Time step
+
+5
+
+o1
+
+o2
+
+o3
+
+o4
+
+o5
+
+0.15
+
+ετ
+
+0.1
+0.05
+0
+–0.05
+
+Figure 7.2
+­These simulated perceptual inference plots illustrate the belief-­updating pro­cess in
+an example trial based on the generative model outlined in the main text. Upper-­
+left: Beliefs (posterior probabilities) about each note in the sequence at each time
+step. Upper-­right: As the numerical values of ­these beliefs are difficult to track the
+beliefs at the end of the sequence, having heard each note (i.e., retrospective beliefs)
+are shown. Each column shows (retrospective) beliefs about the hidden states at a
+given time step. Each row represents an alternative hypothesis for that hidden state.
+The darker the shading, the more probable that note is considered to have been
+(with black indicating a probability of one and white a probability of zero). Lower-­
+left: (Negative) f­ree energy gradients (i.e., prediction errors) over time. The rate of
+change of the beliefs in the upper-­left plot is determined by the value of ­these errors
+at each time step. Lower-­right: Sequence of musical notes presented to our synthetic
+agent (i.e., the observations he receives during time steps 1 to 5). Note that while
+at the third time step (o3) the listener heard the second note (third column of the
+lower-­right plot), he infers the third note with higher probability (third column of
+the upper-­right plot).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+129
+
+7.3 Decision-­Making and Planning as Inference
+The HMM used above illustrates a very ­simple form of categorical inference
+based on a sequence of outcomes. However, the sort of (sessile) creature
+that this describes is rather uninteresting. Autonomous creatures are clearly
+more than passive recipients of sensory data. Instead, they actively change
+their environment and engage in a bidirectional exchange with their sensorium. This speaks to the importance of converting an HMM into a POMDP,
+whereby we must infer not only how our environment is changing but also
+how our chosen course of action changes it and which course of action to
+choose.
+Figure 7.3 shows a POMDP generative model. This is the same as that
+introduced in chapter 4, where the details of inference in this sort of model
+are unpacked. Note the similarity of this structure to the HMM in figure 7.1
+
+G
+
+m
+
+
+
+D
+
+sτ–1
+
+B
+
+sτ
+
+1
+
+2
+
+n
+
+A P(oτ | sτ , sτ ,…,sτ ,…)
+B P(snτ+1 | sτn, )
+B
+
+sτ+1
+
+m
+C P(oτ )
+
+A
+
+A
+
+A
+
+D P(s1n)
+
+oτ–1
+
+oτ
+
+oτ+1
+
+G P( | C, E)
+
+Figure 7.3
+POMDP from figure 4.3, unpacking the probability distributions in terms of hidden
+state f­actors and outcome modalities. (Figure 7.1 is a special case of this structure.)
+Three points of note: First, the factorization of the hidden states now means that the
+distribution encoded by A has (potentially) many state f­actors in its conditioning
+set and can no longer be encoded by a matrix. Instead, this becomes a tensor object,
+in which each index corresponds to a state f­actor. Second, the separation of the
+outcomes into dif­fer­ent modalities means ­there ­will be a separate A tensor for each
+modality. Third, while C and E appear in the panel on the right, they do not appear
+in the f­actor graph on the left ­because they only get into the generative model via
+prior beliefs about policies. For an alternative perspective on this, see Parr and Friston
+(2018d) and van de Laar and de Vries (2019).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+130
+
+and the addition of an extra variable (π ), on which the transition probabilities (B) are conditioned. This means we can entertain alternative hypotheses
+about the dynamics of states. ­These hypotheses may be interpreted as plans
+that a creature may select between. This perspective equates policy evaluation with model comparison and says that a policy is simply an explanatory
+variable for an observed sequence of (self-­generated) sensations.
+The model in figure 7.3 differs subtly from that introduced in chapter 4: it
+allows factorization of states (superscript n) and of outcomes (superscript m).
+The utility of this is obvious when we consider the factorization of the visual
+world into where an object is and what it is. Clearly, it would be extremely
+inefficient (and incur a high complexity cost) to represent ­every pos­si­ble
+combination of location and identity, when identity is (normally) invariant
+to location and vice versa. A similar argument may be used for factorization
+of time from identity and location (Friston and Buzsaki 2016). The benefit
+of introducing this factorization at this stage is that we can separate t­hose
+states of the world over which a creature has control from ­those that it does
+not. While the transition probabilities governing the former w
+­ ill be dif­fer­ent
+­under each policy, the latter w
+­ ill be invariant to this.
+With t­hese preliminaries in place, we now outline a ­simple example of
+a task (Friston, FitzGerald et al. 2017) that requires planning and illustrates
+some of the key aspects of active inference using POMDPs. This involves a
+rat in a T-­maze containing an aversive stimulus in one arm, an attractive
+stimulus in another, and a cue that indicates the location of the two stimuli
+in the final arm. This setup means that the rat can behave in (broadly) two
+ways. It could choose to go straight to one of the two arms that might contain the attractive stimulus, risking the aversive stimulus. Alternatively, it
+could choose to seek out the informative cue and then go to the arm most
+likely to contain the attractive stimulus.
+This choice speaks to the classical exploration-­exploitation dilemma in
+psy­chol­ogy: a dilemma that is resolved ­under Active Inference. The resolution stems from the minimization of expected ­free energy mandated by
+prior beliefs about policies. To review this briefly (see chapter 4 for details),
+the most probable policies (for a creature who minimizes its variational f­ ree
+energy) are ­those that lead to the lowest expected ­free energy. The expected
+­free energy has the following form:
+G(π ) = EQ ( s! |π )[ H[ P( o! | s! )]] − H[Q( o! |π )] − EQ ( o! |π )[ln P( o! |C)]
+!######"######
+$ "$$$#$$$
+%
+Negative epistemic value (−I ( π ))
+
+(7.4)
+
+Pragmatic value
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+131
+
+This decomposition of the expected f­ ree energy into epistemic and pragmatic value highlights the (epistemic) drive t­ oward information gathering
+and the (pragmatic) drive t­ oward realizing prior beliefs (C in figure 7.3). We
+­will attempt to provide a deeper intuition for the epistemic value in the next
+section, but it can be thought of simply as the amount of information we
+stand to gain ­under a specific policy. The form of the pragmatic value effectively treats the probability of outcomes, averaged over all policies, as if it
+­were a prior. In d
+­ oing so, t­ hose policies with consequences consistent with
+this prior become more probable, as they are associated with lower expected
+­free energy. To put this in more intuitive terms, if we consider a certain sort
+of observation to be very probable, we w
+­ ill act to fulfill our belief that we
+­will encounter t­hese. Therefore, the log probability of outcomes may be
+thought of as equivalent to a utility function in other formalisms, such as
+optimal control theory and reinforcement learning. The fact that utility
+and the value of information emerge as two components of the expected
+­free energy means that we do not need to worry about balancing exploration and exploitation. Both are in ser­vice of optimizing the same function.
+To see how this unfolds in the T-­maze example, we need to formalize the
+generative model in the same way as with the HMM above. Figures 7.4–7.6
+illustrate the likelihood and transition probabilities that comprise the generative model for the T-­maze. We ­will go through this in some detail, as this
+minimal example provides the building blocks from which readers can construct their own generative models. The first t­ hing to do is to decide on the
+number of outcome modalities that represent the (sensory) data our model is
+supposed to explain. This tells us the number of A-­matrices we must specify.
+­Here, we have two modalities that represent exteroceptive data pertaining to
+where the rat is in the maze (A1) and a what modality that may be the interoceptive data the rat experiences when it has found the attractive (edible) stimulus (A2). The levels in ­these modalities (i.e., the alternative observations that
+could be made in each) determine the rows of each A-­matrix. The next decision is the number of hidden state f­ actors that may be used to explain t­ hese
+data; this is the number of B-­matrices we require. We consider two f­actors
+­here: the position of the rat in the maze, and the context (attractive stimulus on left or right). ­These have four and two levels, respectively. We now
+must specify, for each combination of hidden states, the probability of each
+outcome. Context 1 is shown in figure 7.4; context 2 is shown in figure 7.5.
+For the first modality, our A1 associates each location with an outcome with
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+132
+
+A1
+
+R
+
+A2
+
+1
+
+O
+
+O
+
+O
+
+O
+
+O
+
+O
+
+O

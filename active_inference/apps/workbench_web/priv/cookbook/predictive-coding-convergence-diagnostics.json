@@ -1,0 +1,49 @@
+{
+  "slug": "predictive-coding-convergence-diagnostics",
+  "title": "Reading PC Convergence: When Are Beliefs Stable?",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 9,
+  "tags": ["predictive-coding", "convergence", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["predictive_coding_pass"],
+    "skills_used": ["variational_free_energy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "F total drops monotonically. When Delta-F < tol, beliefs are stable. Diverging errors indicate precision imbalance."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=predictive-coding-convergence-diagnostics",
+    "labs_url": "/labs?recipe=predictive-coding-convergence-diagnostics&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "|F^{(k)} - F^{(k-1)}| < \\text{tol}",
+    "symbols": {
+      "F^(k)": "free energy at iteration k",
+      "tol": "convergence tolerance"
+    }
+  },
+  "audiences": {
+    "kid": "When the score stops changing, you're done thinking. If the score bounces around, something's off.",
+    "real": "Monitor F across PredictiveCodingPass iterations. Convergence means Delta-F under tol; oscillation means precision/learning-rate is too high.",
+    "equation": "Delta-F = F^(k) - F^(k-1). Converged when |Delta-F| < tol. Divergence when |Delta-F| grows -> lower eta or lower pi.",
+    "derivation": "Gradient descent on F under Lipschitz gradient converges for learning rate eta <= 1/L. Higher pi grows L, so eta must shrink proportionally."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["message-passing/s2"],
+  "labs": ["tower"],
+  "orchestrate": {
+    "objective": "Add a simple convergence diagnostic on top of the predictive-coding sweep.",
+    "role": "Convergence-monitoring tutor.",
+    "context": "Run sweep with varying eta; plot F(k) and |Delta-F(k)|."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Bogacz (2017), A tutorial on the free-energy framework for modelling perception and learning."
+  ]
+}

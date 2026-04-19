@@ -1,0 +1,48 @@
+{
+  "slug": "epistemic-info-gain-vs-reward",
+  "title": "Info Gain vs. Reward: Tuning the Knob",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 9,
+  "tags": ["epistemic", "exploration", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "kl_divergence"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 1.0,
+    "expected_outcome": "Low preference_strength drives the agent to the longer info-rich path; high strength collapses it to the shortcut. Crossover is visible."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=epistemic-info-gain-vs-reward",
+    "labs_url": "/labs?recipe=epistemic-info-gain-vs-reward&world=forked_paths"
+  },
+  "math": {
+    "latex": "\\arg\\min_\\pi G(\\pi) = \\arg\\min_\\pi \\big[ \\alpha \\cdot \\text{epistemic}(\\pi) + \\beta \\cdot \\text{pragmatic}(\\pi) \\big]",
+    "symbols": {
+      "alpha, beta": "implicit weights set by the scale of p(o) (C vector) and the agent's precision",
+      "preference_strength": "the C scale; larger -> heavier pragmatic term"
+    }
+  },
+  "audiences": {
+    "kid": "If you're really hungry, you take the shortcut. If you're curious, you take the tour.",
+    "real": "EFE's two terms compete. preference_strength is the main knob controlling the crossover between explore-and-exploit.",
+    "equation": "G = epistemic + pragmatic; raise preference_strength to raise the pragmatic term's absolute scale.",
+    "derivation": "Under softmax over -G at fixed precision, increasing the range of the pragmatic term reshapes the policy posterior toward preference-aligned options (Friston 2015)."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Find the preference_strength crossover between exploration and exploitation.",
+    "role": "Exploration-exploitation knob tutor.",
+    "context": "forked_paths with preference_strength swept through {0.5, 1.0, 2.0, 4.0, 8.0}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4."
+  ]
+}

@@ -1,0 +1,473 @@
+groups:
+- name: Ch 0 - Preface
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 0 - Preface catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 0 - Preface big-idea in the {{path:kid|real|equation|derivation}} voice -- the single
+      concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      from Ch 0 - Preface in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_orientation}} of Ch 0 - Preface at the {{path:kid|real|equation|derivation}}
+      level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 0 - Preface with {{count:3|5|8|12}} short questions, one per core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 0 - Preface where I named {{stuck:the math notation|the intuition|a worked example|why
+      it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 1 - Overview
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 1 - Overview catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 1 - Overview big-idea in the {{path:kid|real|equation|derivation}} voice -- the single
+      concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      from Ch 1 - Overview in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_what_is_ai|s2_perception_and_action|s3_why_one_theory}} of Ch 1 - Overview
+      at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 1 - Overview with {{count:3|5|8|12}} short questions, one per core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 1 - Overview where I named {{stuck:the math notation|the intuition|a worked example|why
+      it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 2 - The Low Road to Active Inference
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 2 - The Low Road to Active Inference catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 2 - The Low Road to Active Inference big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy}}
+      from Ch 2 - The Low Road to Active Inference in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_inference_as_bayes|s2_why_free_energy|s3_cost_of_being_wrong|s4_action_as_inference}}
+      of Ch 2 - The Low Road to Active Inference at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 2 - The Low Road to Active Inference with {{count:3|5|8|12}} short questions, one per
+      core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 2 - The Low Road to Active Inference where I named {{stuck:the math notation|the
+      intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 3 - The High Road to Active Inference
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 3 - The High Road to Active Inference catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 3 - The High Road to Active Inference big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence}} from Ch 3 - The High Road
+      to Active Inference in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_expected_free_energy|s2_epistemic_pragmatic|s3_softmax_policy|s4_what_makes_an_agent_active}}
+      of Ch 3 - The High Road to Active Inference at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 3 - The High Road to Active Inference with {{count:3|5|8|12}} short questions, one per
+      core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 3 - The High Road to Active Inference where I named {{stuck:the math notation|the
+      intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 4 - The Generative Models of Active Inference
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 4 - The Generative Models of Active Inference catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 4 - The Generative Models of Active Inference big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior}}
+      from Ch 4 - The Generative Models of Active Inference in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_setup|s2_a_matrix|s3_efe_intro|s4_mdp_world|s5_practice}} of Ch 4 - The
+      Generative Models of Active Inference at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 4 - The Generative Models of Active Inference with {{count:3|5|8|12}} short questions,
+      one per core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 4 - The Generative Models of Active Inference where I named {{stuck:the math notation|the
+      intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 5 - Message Passing and Neurobiology
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 5 - Message Passing and Neurobiology catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 5 - Message Passing and Neurobiology big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      from Ch 5 - Message Passing and Neurobiology in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_factor_graphs|s2_predictive_coding|s3_neuromodulation|s4_brain_map}} of
+      Ch 5 - Message Passing and Neurobiology at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 5 - Message Passing and Neurobiology with {{count:3|5|8|12}} short questions, one per
+      core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 5 - Message Passing and Neurobiology where I named {{stuck:the math notation|the
+      intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 6 - A Recipe for Designing Active Inference Models
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 6 - A Recipe for Designing Active Inference Models catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 6 - A Recipe for Designing Active Inference Models big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      from Ch 6 - A Recipe for Designing Active Inference Models in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_states_obs_actions|s2_ab_c_d|s3_run_and_inspect}} of Ch 6 - A Recipe for
+      Designing Active Inference Models at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 6 - A Recipe for Designing Active Inference Models with {{count:3|5|8|12}} short questions,
+      one per core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 6 - A Recipe for Designing Active Inference Models where I named {{stuck:the math
+      notation|the intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}}
+      level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 7 - Active Inference in Discrete Time
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 7 - Active Inference in Discrete Time catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 7 - Active Inference in Discrete Time big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update}} from
+      Ch 7 - Active Inference in Discrete Time in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_discrete_refresher|s2_message_passing_4_13|s3_learning_a_b|s4_hierarchical|s5_worked_example}}
+      of Ch 7 - Active Inference in Discrete Time at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 7 - Active Inference in Discrete Time with {{count:3|5|8|12}} short questions, one per
+      core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 7 - Active Inference in Discrete Time where I named {{stuck:the math notation|the
+      intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 8 - Active Inference in Continuous Time
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 8 - Active Inference in Continuous Time catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 8 - Active Inference in Continuous Time big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra}}
+      from Ch 8 - Active Inference in Continuous Time in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_generalized_coords|s2_eq_4_19|s3_action_on_sensors|s4_continuous_play}}
+      of Ch 8 - Active Inference in Continuous Time at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 8 - Active Inference in Continuous Time with {{count:3|5|8|12}} short questions, one
+      per core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 8 - Active Inference in Continuous Time where I named {{stuck:the math notation|the
+      intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 9 - Model-Based Data Analysis
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 9 - Model-Based Data Analysis catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 9 - Model-Based Data Analysis big-idea in the {{path:kid|real|equation|derivation}} voice
+      -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      from Ch 9 - Model-Based Data Analysis in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_fit_to_data|s2_comparing_models|s3_case_study}} of Ch 9 - Model-Based Data
+      Analysis at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 9 - Model-Based Data Analysis with {{count:3|5|8|12}} short questions, one per core
+      idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 9 - Model-Based Data Analysis where I named {{stuck:the math notation|the intuition|a
+      worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Ch 10 - Active Inference as a Unified Theory of Sentient Behavior
+  category: chapter
+  oneliner: Chapter-scoped prompts with dropdowns from the Ch 10 - Active Inference as a Unified Theory of Sentient Behavior
+    catalogue.
+  prompts:
+  - type: chat
+    prompt: 'Objective: state the Ch 10 - Active Inference as a Unified Theory of Sentient Behavior big-idea in the {{path:kid|real|equation|derivation}}
+      voice -- the single concept that differentiates this chapter from its neighbours.
+
+      Structure: one-sentence idea -> one cited equation ID from the chapter -> one concrete example the book uses.'
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      from Ch 10 - Active Inference as a Unified Theory of Sentient Behavior in the {{path:kid|real|equation|derivation}}
+      voice.
+
+      Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every symbol.'
+  - type: chat
+    prompt: 'Objective: walk session {{session:s1_perception_action_learning|s2_limitations|s3_where_next}} of Ch 10 - Active
+      Inference as a Unified Theory of Sentient Behavior at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one concrete anchor (lab or figure) -> the next session to open and why.'
+  - type: chat
+    prompt: 'Objective: quiz me on Ch 10 - Active Inference as a Unified Theory of Sentient Behavior with {{count:3|5|8|12}}
+      short questions, one per core idea.
+
+      Handoff: ask one question at a time; wait for my answer; reveal a one-line correction; then move to the next.'
+  - type: chat
+    prompt: 'Objective: unstick me on Ch 10 - Active Inference as a Unified Theory of Sentient Behavior where I named {{stuck:the
+      math notation|the intuition|a worked example|why it matters|what to read next}}, at the {{path:kid|real|equation|derivation}}
+      level.
+
+      Structure: exactly one next step (no menu) -> a 1-line reason that step will help.'
+- name: Equations (all 31)
+  category: equations
+  oneliner: Every equation in the registry, selectable from a dropdown with provenance.
+  prompts:
+  - type: chat
+    prompt: 'Objective: explain equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      in the {{path:kid|real|equation|derivation}} voice.
+
+      Structure: symbolic form -> intuitive meaning -> units per symbol -> one numeric worked example -> chapter that introduces
+      it.'
+  - type: chat
+    prompt: 'Objective: compare equations {{eq_a:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      and {{eq_b:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}.
+
+      Structure: shared symbols -> which (if either) is a special case -> chapter each sits in -> 1-line takeaway.'
+  - type: chat
+    prompt: 'Objective: suggest a numerical recipe that implements equation {{eq:eq_2_1_bayes_rule|eq_2_2_marginal_likelihood|eq_2_3_kl_divergence|eq_2_5_variational_free_energy|eq_2_6_expected_free_energy|eq_3_1_entropy_surprise|eq_3_2_fe_surprise_evidence|eq_4_5_pomdp_likelihood|eq_4_6_pomdp_prior_over_states|eq_4_7_policy_prior_and_efe|eq_4_10_efe_linear_algebra|eq_4_11_vfe_linear_algebra|eq_4_12_mean_field|eq_4_13_state_belief_update|eq_4_14_policy_posterior|eq_7_4_efe_epistemic_pragmatic|eq_7_8_info_gain|eq_7_10_dirichlet_update|eq_8_1_continuous_generative_model|eq_8_2_continuous_generative_process|eq_8_5_newtonian_attractor|eq_8_6_lotka_volterra|eq_B_2_free_energy_per_policy|eq_B_5_gradient_descent_states|eq_B_7_policy_prior_with_habit|eq_B_9_policy_posterior_update|eq_B_29_info_gain_linear_algebra|eq_B_30_efe_per_time|eq_B_42_laplace_free_energy_continuous|eq_B_47_predictive_coding_hierarchy|eq_B_48_continuous_action}}
+      in {{lang:python|elixir|pseudocode|whiteboard}}.
+
+      Structure: shape annotations per tensor -> step-by-step recipe -> edge cases to guard -> 1-line numerical-stability
+      note.'
+- name: Concepts (glossary)
+  category: concepts
+  oneliner: Every glossary term, explained at the depth you pick.
+  prompts:
+  - type: chat
+    prompt: 'Objective: define {{term:epoch (epoch / time-slice)|policy (policy)|posterior (posterior)|laplace (Laplace approximation)|cortical-hierarchy
+      (cortical hierarchy)|DA (dopamine (DA))|log-evidence (log-evidence)|softmax (softmax)|dirichlet-learning (Dirichlet
+      learning)|kl-divergence (KL divergence)|pragmatic-value (pragmatic value)|information-gain (information gain)|open-problems
+      (open problems)|B-matrix (B matrix)|policy-hierarchy (policy hierarchy)|perception (perception)|predictive-coding (predictive
+      coding)|ambiguity (ambiguity)|episode (episode)|prior-preferences (prior preferences (C))|A-matrix (A matrix)|t-maze
+      (T-maze)|epistemic-value (epistemic value)|transition-matrix (transition matrix)|derivative-operator (derivative operator
+      (D))|policy-precision (policy precision (γ))|softmax-policy (softmax policy)|precision (precision (Π))|markov-blanket
+      (Markov blanket)|cue (cue)|free-energy-4.19 (Eq. 4.19 — quadratic F)|further-reading (further reading)|bayes-factor
+      (Bayes factor)|prediction-error (prediction error (ε))|ACh (acetylcholine (ACh))|policy-selection (policy selection)|expected-free-energy
+      (expected free energy (G))|active-inference (active inference)|generative-process (generative process)|risk (risk)|likelihood
+      (likelihood)|surprise (surprise)|belief-propagation (belief propagation)|prior (prior)|basal-ganglia (basal ganglia)|trace
+      (trace)|generative-model (generative model)|observation (observation (o))|hidden-state (hidden state (s))|sentient-behaviour
+      (sentient behaviour)|precision-weighting (precision weighting)|D-vector (D vector)|neuromodulation (neuromodulation)|gamma
+      (γ (gamma))|NA (noradrenaline (NA))|mdp (MDP)|generalized-coordinates (generalised coordinates)|temporal-abstraction
+      (temporal abstraction)|learning-path (learning path)|categorical (categorical distribution)|horizon (horizon)|serotonin
+      (serotonin (5-HT))|variational-update (variational update)|action (action)|action-as-inference (action as inference)|factor-graph
+      (factor graph)|variational-free-energy (variational free energy (F))|reflex-arc (reflex arc)|policy-prior (policy prior
+      (E))|signal-provenance (signal provenance)|action-on-sensors (action on sensors)|parameter-inference (parameter inference)|C-vector
+      (C vector)|model-comparison (model comparison)|bayes-rule (Bayes'' rule)|pomdp (POMDP)|message-passing (message passing)|model-fitting
+      (model fitting)|hierarchy (hierarchy)}} at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: one-sentence plain-English definition -> one concrete example -> one common misconception -> chapter that
+      introduces it.'
+  - type: chat
+    prompt: 'Objective: compare {{term_a:epoch (epoch / time-slice)|policy (policy)|posterior (posterior)|laplace (Laplace
+      approximation)|cortical-hierarchy (cortical hierarchy)|DA (dopamine (DA))|log-evidence (log-evidence)|softmax (softmax)|dirichlet-learning
+      (Dirichlet learning)|kl-divergence (KL divergence)|pragmatic-value (pragmatic value)|information-gain (information gain)|open-problems
+      (open problems)|B-matrix (B matrix)|policy-hierarchy (policy hierarchy)|perception (perception)|predictive-coding (predictive
+      coding)|ambiguity (ambiguity)|episode (episode)|prior-preferences (prior preferences (C))|A-matrix (A matrix)|t-maze
+      (T-maze)|epistemic-value (epistemic value)|transition-matrix (transition matrix)|derivative-operator (derivative operator
+      (D))|policy-precision (policy precision (γ))|softmax-policy (softmax policy)|precision (precision (Π))|markov-blanket
+      (Markov blanket)|cue (cue)|free-energy-4.19 (Eq. 4.19 — quadratic F)|further-reading (further reading)|bayes-factor
+      (Bayes factor)|prediction-error (prediction error (ε))|ACh (acetylcholine (ACh))|policy-selection (policy selection)|expected-free-energy
+      (expected free energy (G))|active-inference (active inference)|generative-process (generative process)|risk (risk)|likelihood
+      (likelihood)|surprise (surprise)|belief-propagation (belief propagation)|prior (prior)|basal-ganglia (basal ganglia)|trace
+      (trace)|generative-model (generative model)|observation (observation (o))|hidden-state (hidden state (s))|sentient-behaviour
+      (sentient behaviour)|precision-weighting (precision weighting)|D-vector (D vector)|neuromodulation (neuromodulation)|gamma
+      (γ (gamma))|NA (noradrenaline (NA))|mdp (MDP)|generalized-coordinates (generalised coordinates)|temporal-abstraction
+      (temporal abstraction)|learning-path (learning path)|categorical (categorical distribution)|horizon (horizon)|serotonin
+      (serotonin (5-HT))|variational-update (variational update)|action (action)|action-as-inference (action as inference)|factor-graph
+      (factor graph)|variational-free-energy (variational free energy (F))|reflex-arc (reflex arc)|policy-prior (policy prior
+      (E))|signal-provenance (signal provenance)|action-on-sensors (action on sensors)|parameter-inference (parameter inference)|C-vector
+      (C vector)|model-comparison (model comparison)|bayes-rule (Bayes'' rule)|pomdp (POMDP)|message-passing (message passing)|model-fitting
+      (model fitting)|hierarchy (hierarchy)}} and {{term_b:epoch (epoch / time-slice)|policy (policy)|posterior (posterior)|laplace
+      (Laplace approximation)|cortical-hierarchy (cortical hierarchy)|DA (dopamine (DA))|log-evidence (log-evidence)|softmax
+      (softmax)|dirichlet-learning (Dirichlet learning)|kl-divergence (KL divergence)|pragmatic-value (pragmatic value)|information-gain
+      (information gain)|open-problems (open problems)|B-matrix (B matrix)|policy-hierarchy (policy hierarchy)|perception
+      (perception)|predictive-coding (predictive coding)|ambiguity (ambiguity)|episode (episode)|prior-preferences (prior
+      preferences (C))|A-matrix (A matrix)|t-maze (T-maze)|epistemic-value (epistemic value)|transition-matrix (transition
+      matrix)|derivative-operator (derivative operator (D))|policy-precision (policy precision (γ))|softmax-policy (softmax
+      policy)|precision (precision (Π))|markov-blanket (Markov blanket)|cue (cue)|free-energy-4.19 (Eq. 4.19 — quadratic F)|further-reading
+      (further reading)|bayes-factor (Bayes factor)|prediction-error (prediction error (ε))|ACh (acetylcholine (ACh))|policy-selection
+      (policy selection)|expected-free-energy (expected free energy (G))|active-inference (active inference)|generative-process
+      (generative process)|risk (risk)|likelihood (likelihood)|surprise (surprise)|belief-propagation (belief propagation)|prior
+      (prior)|basal-ganglia (basal ganglia)|trace (trace)|generative-model (generative model)|observation (observation (o))|hidden-state
+      (hidden state (s))|sentient-behaviour (sentient behaviour)|precision-weighting (precision weighting)|D-vector (D vector)|neuromodulation
+      (neuromodulation)|gamma (γ (gamma))|NA (noradrenaline (NA))|mdp (MDP)|generalized-coordinates (generalised coordinates)|temporal-abstraction
+      (temporal abstraction)|learning-path (learning path)|categorical (categorical distribution)|horizon (horizon)|serotonin
+      (serotonin (5-HT))|variational-update (variational update)|action (action)|action-as-inference (action as inference)|factor-graph
+      (factor graph)|variational-free-energy (variational free energy (F))|reflex-arc (reflex arc)|policy-prior (policy prior
+      (E))|signal-provenance (signal provenance)|action-on-sensors (action on sensors)|parameter-inference (parameter inference)|C-vector
+      (C vector)|model-comparison (model comparison)|bayes-rule (Bayes'' rule)|pomdp (POMDP)|message-passing (message passing)|model-fitting
+      (model fitting)|hierarchy (hierarchy)}} at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: which appears first in the book -> dependency direction -> 1-line takeaway.'
+- name: Lab Coaches (dropdown)
+  category: labs
+  oneliner: Coach prompts that route to the right lab and preset.
+  prompts:
+  - type: chat
+    prompt: 'Objective: coach me in the {{lab:bayeschips|pomdp|forge|tower|anatomy|atlas|frog}} lab given I am {{state:just-opened|after-one-step|stuck-on-a-concept|wrapping-up}},
+      at the {{path:kid|real|equation|derivation}} level.
+
+      Handoff: open with exactly one clarifying question -> wait for my answer -> then give one concrete next action.'
+  - type: chat
+    prompt: 'Objective: in {{lab:bayeschips|pomdp|forge|tower|anatomy|atlas|frog}} I observed {{observation:posterior|free-energy|prediction-error|belief-shift|surprise|none-of-these}}
+      change unexpectedly -- diagnose it.
+
+      Structure: where to look next (specific UI element) -> the equation that explains the swing -> 1-line sanity-check I
+      can run.'
+  - type: chat
+    prompt: 'Objective: give me a bite-sized challenge for {{lab:bayeschips|pomdp|forge|tower|anatomy|atlas|frog}} at {{level:novice|intermediate|advanced}}
+      difficulty.
+
+      Structure: the challenge -> a clear success criterion -> one hint to use only if stuck.'
+- name: Session pathfinder
+  category: meta
+  oneliner: Pick any session in the 39-session catalogue and get a tailored intro.
+  prompts:
+  - type: chat
+    prompt: 'Objective: open session {{session:Ch0 · s1_orientation (6min)|Ch1 · s1_what_is_ai (10min)|Ch1 · s2_perception_and_action
+      (10min)|Ch1 · s3_why_one_theory (6min)|Ch2 · s1_inference_as_bayes (12min)|Ch2 · s2_why_free_energy (12min)|Ch2 · s3_cost_of_being_wrong
+      (10min)|Ch2 · s4_action_as_inference (12min)|Ch3 · s1_expected_free_energy (12min)|Ch3 · s2_epistemic_pragmatic (12min)|Ch3
+      · s3_softmax_policy (8min)|Ch3 · s4_what_makes_an_agent_active (10min)|Ch4 · s1_setup (10min)|Ch4 · s2_a_matrix (8min)|Ch4
+      · s3_efe_intro (12min)|Ch4 · s4_mdp_world (12min)|Ch4 · s5_practice (15min)|Ch5 · s1_factor_graphs (12min)|Ch5 · s2_predictive_coding
+      (12min)|Ch5 · s3_neuromodulation (12min)|Ch5 · s4_brain_map (12min)|Ch6 · s1_states_obs_actions (10min)|Ch6 · s2_ab_c_d
+      (12min)|Ch6 · s3_run_and_inspect (10min)|Ch7 · s1_discrete_refresher (8min)|Ch7 · s2_message_passing_4_13 (14min)|Ch7
+      · s3_learning_a_b (12min)|Ch7 · s4_hierarchical (12min)|Ch7 · s5_worked_example (15min)|Ch8 · s1_generalized_coords
+      (12min)|Ch8 · s2_eq_4_19 (14min)|Ch8 · s3_action_on_sensors (10min)|Ch8 · s4_continuous_play (15min)|Ch9 · s1_fit_to_data
+      (12min)|Ch9 · s2_comparing_models (12min)|Ch9 · s3_case_study (12min)|Ch10 · s1_perception_action_learning (12min)|Ch10
+      · s2_limitations (10min)|Ch10 · s3_where_next (8min)}} at the {{path:kid|real|equation|derivation}} level.
+
+      Structure: hero idea -> one equation to keep in mind -> one concrete thing to try in the linked lab.'
+- name: Study Workflow
+  category: meta
+  oneliner: Daily flow builders that span the full suite.
+  prompts:
+  - type: chat
+    prompt: 'Objective: design a {{minutes:15|30|45|60|90|120}}-minute plan covering {{topic:Ch 0 - Preface|Ch 1 - Overview|Ch
+      2 - The Low Road to Active Inference|Ch 3 - The High Road to Active Inference|Ch 4 - The Generative Models of Active
+      Inference|Ch 5 - Message Passing and Neurobiology|Ch 6 - A Recipe for Designing Active Inference Models|Ch 7 - Active
+      Inference in Discrete Time|Ch 8 - Active Inference in Continuous Time|Ch 9 - Model-Based Data Analysis|Ch 10 - Active
+      Inference as a Unified Theory of Sentient Behavior}} at the {{path:kid|real|equation|derivation}} level, mixing one
+      lab and one quiz.
+
+      Review: before replying, check that every block has a labelled time cost, totals match the budget within +/-5 minutes,
+      and each surface has a deep-link URL (Phoenix chat-bridge or LibreChat prompt).'
+  - type: chat
+    prompt: 'Objective: check my understanding of {{topic:Ch 0 - Preface|Ch 1 - Overview|Ch 2 - The Low Road to Active Inference|Ch
+      3 - The High Road to Active Inference|Ch 4 - The Generative Models of Active Inference|Ch 5 - Message Passing and Neurobiology|Ch
+      6 - A Recipe for Designing Active Inference Models|Ch 7 - Active Inference in Discrete Time|Ch 8 - Active Inference
+      in Continuous Time|Ch 9 - Model-Based Data Analysis|Ch 10 - Active Inference as a Unified Theory of Sentient Behavior}}
+      with one Socratic question per core concept.
+
+      Handoff: never reveal the answer until I have taken a swing; after my answer give a 1-line correction and move on.'

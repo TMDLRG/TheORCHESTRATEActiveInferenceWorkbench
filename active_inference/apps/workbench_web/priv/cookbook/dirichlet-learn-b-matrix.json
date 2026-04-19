@@ -1,0 +1,48 @@
+{
+  "slug": "dirichlet-learn-b-matrix",
+  "title": "Learning the Transition Model B",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 12,
+  "tags": ["dirichlet", "learning", "b-matrix", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act", "dirichlet_update_b"],
+    "skills_used": ["expected_free_energy"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Over episodes, per-action B-matrix columns concentrate on the observed (s_{t-1}, a_t -> s_t) transitions, even when the initial B was diffuse."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=dirichlet-learn-b-matrix",
+    "labs_url": "/labs?recipe=dirichlet-learn-b-matrix&world=corridor_turns"
+  },
+  "math": {
+    "latex": "b^{(a)}_{j,k}{}' = b^{(a)}_{j,k} + q(s_t=j, s_{t-1}=k, a_{t-1}=a)",
+    "symbols": {
+      "b^(a)": "Dirichlet counts for the action-conditioned transition matrix",
+      "(j, k)": "next/current state pair"
+    }
+  },
+  "audiences": {
+    "kid": "After enough walks, you learn which door leads where. The agent builds its own map.",
+    "real": "DirichletUpdateB updates per-action transition counts from the agent's belief chain. Over episodes B converges to the real transition dynamics.",
+    "equation": "b^(a)_{j,k} += q(s_t=j) q(s_{t-1}=k) q(a_{t-1}=a). Normalise columns to recover B^(a).",
+    "derivation": "Per-action Dirichlet-categorical update under mean-field factorisation. Converges at rate 1/n under standard mixing assumptions (Friston et al. 2016, App B)."
+  },
+  "equation_refs": ["eq-7-10"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Train the B matrix across episodes so the agent learns its own dynamics model.",
+    "role": "Transition-learning tutor paralleling the A-matrix recipe.",
+    "context": "corridor_turns, learning_enabled=true, start with a uniform per-action B and watch it concentrate."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7."
+  ]
+}

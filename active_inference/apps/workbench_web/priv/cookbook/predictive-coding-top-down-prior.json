@@ -1,0 +1,50 @@
+{
+  "slug": "predictive-coding-top-down-prior",
+  "title": "Top-Down Prior Overrides Weak Evidence",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 10,
+  "tags": ["predictive-coding", "prior", "illusion", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["predictive_coding_pass"],
+    "skills_used": ["variational_free_energy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "When mu_2 starts far from y and pi_2 is high, mu_1 ends up closer to mu_2 than to y -- the predictive-coding analog of perceptual illusion."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=predictive-coding-top-down-prior",
+    "labs_url": "/labs?recipe=predictive-coding-top-down-prior&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\mu_1^* = \\frac{\\pi_1 y + \\pi_2 \\mu_2}{\\pi_1 + \\pi_2}",
+    "symbols": {
+      "mu_1*": "equilibrium level-1 belief",
+      "y": "observation",
+      "mu_2": "top-down prior"
+    }
+  },
+  "audiences": {
+    "kid": "If you're expecting one thing and the world whispers another, you might still 'see' what you expected.",
+    "real": "At equilibrium, mu_1 is the precision-weighted average of y and mu_2. Strong priors can override noisy evidence.",
+    "equation": "mu_1* = (pi_1 y + pi_2 mu_2)/(pi_1 + pi_2). When pi_2 >> pi_1, mu_1* ~ mu_2.",
+    "derivation": "Set gradient = 0 in the Gaussian-PC update: pi_1 (y - mu_1) - pi_2 (mu_1 - mu_2) = 0 -> mu_1 = (pi_1 y + pi_2 mu_2)/(pi_1 + pi_2). Precision-weighted average (Bogacz 2017)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": ["fig_5.5"],
+  "session_refs": ["message-passing/s2"],
+  "labs": ["tower"],
+  "orchestrate": {
+    "objective": "Exhibit how a strong top-down prior overrides noisy bottom-up evidence.",
+    "role": "Priors-and-illusions tutor.",
+    "context": "y=1.0, mu_2=-1.0, pi_1 in {0.5, 2.0}, pi_2 in {0.5, 5.0}; record equilibrium mu_1."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Clark (2013), Whatever next? Predictive brains, situated agents."
+  ]
+}

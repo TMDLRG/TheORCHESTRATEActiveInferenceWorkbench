@@ -1,0 +1,48 @@
+{
+  "slug": "sophisticated-plan-prune",
+  "title": "Pruning the Policy Tree",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 11,
+  "tags": ["sophisticated-planning", "compute", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(hierarchical_maze)",
+    "world": "hierarchical_maze",
+    "actions_used": ["perceive", "sophisticated_plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 3.0,
+    "expected_outcome": "Pruning away tiny-probability branches in the softmax policy posterior preserves nearly all quality at a fraction of the compute."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=sophisticated-plan-prune",
+    "labs_url": "/labs?recipe=sophisticated-plan-prune&world=hierarchical_maze"
+  },
+  "math": {
+    "latex": "\\text{prune}(\\pi) \\text{ if } q(\\pi) < \\epsilon",
+    "symbols": {
+      "epsilon": "policy-probability cutoff",
+      "q(pi)": "softmax over -G at inverse temperature beta"
+    }
+  },
+  "audiences": {
+    "kid": "You don't have to think through every possible move -- just the ones that might actually happen.",
+    "real": "Prune low-probability branches before expanding them in the tree-search. Most of the probability mass lives on a few policies.",
+    "equation": "Skip expansion when q(pi) < epsilon. Quality degradation is O(epsilon * n_pruned).",
+    "derivation": "Branch pruning is equivalent to a variational approximation where pruned branches are assigned 0 probability. The O(epsilon) error bound follows from the softmax Lipschitz constant."
+  },
+  "equation_refs": ["eq-b-22"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Get sophisticated-plan quality at naive-plan cost via pruning.",
+    "role": "Compute-efficiency tutor.",
+    "context": "hierarchical_maze 11x11; prune policies with q(pi) < 1e-3 and compare quality and compute."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), App B."
+  ]
+}

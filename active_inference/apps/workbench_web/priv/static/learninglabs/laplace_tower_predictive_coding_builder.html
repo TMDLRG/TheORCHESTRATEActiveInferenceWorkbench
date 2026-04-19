@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Laplace Tower — Predictive Coding Builder</title>
+<style>
+  :root{
+    --bg:#120f0d;
+    --panel:#201a16;
+    --panel2:#2a221d;
+    --edge:#5f5246;
+    --edge2:#8c7a67;
+    --text:#efe7dc;
+    --muted:#c9bcad;
+    --accent:#d4b36a;
+    --accent2:#9ed0c7;
+    --danger:#d68d78;
+    --good:#98c88f;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --r:18px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;color:var(--text);
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    background:
+      radial-gradient(circle at 15% 0%, #31281f 0, transparent 25%),
+      radial-gradient(circle at 90% 10%, #241d17 0, transparent 22%),
+      linear-gradient(180deg, #171310, #0f0d0b 45%, #15110f);
+  }
+  .wrap{max-width:1600px;margin:0 auto;padding:18px}
+  .title{
+    display:flex;justify-content:space-between;gap:12px;align-items:start;
+    background:linear-gradient(180deg,#2c241e,#1c1815);
+    border:1px solid #4f4338;border-radius:22px;padding:18px 22px;box-shadow:var(--shadow)
+  }
+  h1{margin:0;font-size:28px;letter-spacing:.06em}
+  .sub{color:var(--muted);font-size:13px;line-height:1.5;max-width:980px}
+  .badge{padding:8px 12px;border-radius:999px;background:#4c4136;border:1px solid #8f7c66;font-size:12px;text-transform:uppercase}
+  .grid{display:grid;grid-template-columns:430px 1fr;gap:16px;margin-top:16px}
+  .col{display:flex;flex-direction:column;gap:16px}
+  .panel{
+    background:linear-gradient(180deg,var(--panel2),var(--panel));
+    border:1px solid #52463a;border-radius:var(--r);padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden
+  }
+  .panel:before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(255,255,255,.03), transparent 26%);
+    pointer-events:none
+  }
+  .panel h2{margin:0 0 10px 0;font-size:18px}
+  .small{font-size:12px;color:var(--muted);line-height:1.45}
+  .btns{display:flex;flex-wrap:wrap;gap:8px}
+  button,select,input[type="number"]{
+    font:inherit;color:var(--text);background:linear-gradient(180deg,#655544,#4d4034);
+    border:1px solid #9b876f;border-radius:12px;padding:9px 11px
+  }
+  button{cursor:pointer}
+  button:hover{filter:brightness(1.05)}
+  button:active{transform:translateY(1px)}
+  select,input[type="number"]{width:100%;background:#17120f}
+  input[type="range"]{width:100%}
+  .score{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+  .card{border:1px solid #5a4d41;border-radius:14px;padding:12px;background:rgba(0,0,0,.14)}
+  .big{font-size:26px;color:#fff0cb;margin-top:6px}
+  .meter{height:14px;border-radius:999px;border:1px solid #6e5d4c;background:#120f0d;overflow:hidden}
+  .meter > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--good),var(--accent),var(--danger))}
+  .builder-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .group{border:1px solid #5a4d41;border-radius:14px;padding:10px;background:rgba(0,0,0,.12)}
+  .group h3{margin:0 0 8px 0;font-size:14px;color:#ffeab9}
+  .line{display:grid;grid-template-columns:70px 1fr 58px;gap:8px;align-items:center;margin:8px 0}
+  .line span{font-size:12px}
+  .line2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+  .levels{display:flex;flex-direction:column;gap:10px;max-height:430px;overflow:auto;padding-right:4px}
+  details.level{border:1px solid #5a4d41;border-radius:14px;background:rgba(0,0,0,.12)}
+  details.level summary{cursor:pointer;list-style:none;padding:10px 12px;font-size:13px;color:#ffedbe}
+  details.level summary::-webkit-details-marker{display:none}
+  .level-body{padding:0 12px 12px 12px}
+  .order-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .chip{border:1px solid #6d5d4d;border-radius:10px;padding:8px;background:#17120f}
+  .chip .name{font-size:11px;color:var(--muted)}
+  .chip .val{font-size:18px;margin-top:4px;color:#fff1cb}
+  .machine{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+  canvas{width:100%;height:auto;min-height:480px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),#17120f;border:1px solid #594c40;border-radius:16px;display:block}
+  .eq{
+    white-space:pre-wrap;font-size:12px;line-height:1.48;background:#14100d;border:1px solid #5b4d41;border-radius:14px;padding:12px
+  }
+  .ledger{max-height:480px;overflow:auto}
+  .log{max-height:250px;overflow:auto;border:1px solid #594c40;border-radius:12px;padding:10px;background:#13100d}
+  .entry{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.07);font-size:12px}
+  .pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#3a3129;border:1px solid #7a6855;font-size:11px;color:#fff1c8}
+  .footer-note{font-size:12px;color:var(--muted)}
+  .matrix-table{width:100%;border-collapse:collapse;font-size:12px}
+  .matrix-table td,.matrix-table th{border:1px solid #5f5144;padding:6px 7px;text-align:center}
+  .matrix-table th{color:#ffedbe;background:#231d18}
+  @media (max-width:1180px){
+    .grid{grid-template-columns:1fr}
+    .machine{grid-template-columns:1fr}
+    .score{grid-template-columns:1fr 1fr}
+  }
+
+  /* Shared learning-UX components */
+  .stageStrip{display:grid; grid-template-columns:repeat(auto-fit, minmax(118px,1fr)); gap:8px; margin-bottom:12px; position:sticky; top:8px; z-index:5; background:linear-gradient(180deg, rgba(22,18,15,0.94), rgba(22,18,15,0.82)); backdrop-filter:blur(8px); border:1px solid rgba(212,179,106,0.22); border-radius:14px; padding:9px;}
+  .stageStrip .cell{background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:8px 10px; min-width:0;}
+  .stageStrip .lab{font-size:10px; letter-spacing:1px; color:var(--muted); text-transform:uppercase; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stageStrip .val{font-size:18px; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums; margin-top:3px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stageStrip .sub2{font-size:10px; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .stageToolbar{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; padding:9px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.08); border-radius:12px; align-items:center;}
+  .stageToolbar button, .stageToolbar select{padding:9px 12px; font-size:13px; flex:0 0 auto;}
+  .iconBtn{width:34px; padding:9px 0 !important; display:inline-flex; align-items:center; justify-content:center; font-weight:800;}
+  .introStrip{background:linear-gradient(180deg, rgba(158,208,199,0.10), rgba(158,208,199,0.04)); border:1px solid rgba(158,208,199,0.28); border-radius:14px; padding:12px 14px; margin-bottom:12px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start;}
+  .introStrip .body{display:grid; gap:6px; font-size:13px; line-height:1.4;}
+  .introStrip .row{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap;}
+  .introStrip .tag{font-size:10px; letter-spacing:1px; text-transform:uppercase; padding:3px 7px; border-radius:999px; background:rgba(158,208,199,0.22); color:#d6ece6; white-space:nowrap;}
+  .introStrip .dismiss{background:transparent; border:1px solid rgba(255,255,255,0.2); color:var(--muted); font-size:12px; padding:6px 10px;}
+  .introStrip.hidden{display:none;}
+  .tour-overlay{position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(2px); z-index:9999; display:none; align-items:flex-end; justify-content:center; padding:24px;}
+  .tour-overlay.on{display:flex;}
+  .tour-card{background:linear-gradient(180deg,#2b241f,#1d1916); border:1px solid rgba(212,179,106,0.5); border-radius:14px; box-shadow:var(--shadow); padding:16px 18px; max-width:560px; width:100%; color:var(--text);}
+  .tour-card h4{margin:0 0 8px; font-size:15px; color:var(--accent); letter-spacing:0.5px;}
+  .tour-card .step-line{font-size:13px; line-height:1.45; color:var(--text);}
+  .tour-card .tour-actions{display:flex; justify-content:space-between; gap:10px; margin-top:12px;}
+  .tour-highlight{position:absolute; pointer-events:none; border:2px solid #e0c07a; border-radius:10px; box-shadow:0 0 0 9999px rgba(0,0,0,0.5), 0 0 16px rgba(224,192,122,0.5); transition:top .2s ease, left .2s ease, width .2s ease, height .2s ease; z-index:9998;}
+
+  /* === Learning Shell === */
+  .ls-pathbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px; background: linear-gradient(180deg, rgba(212,179,106,0.08), rgba(212,179,106,0.02)); border: 1px solid rgba(212,179,106,0.22); border-radius: 12px; font-size: 13px; }
+  .ls-pathbar .ls-pathlabel { color: var(--muted); margin-right: 4px; }
+  .ls-pathbar .ls-pathbtn { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--text); cursor: pointer; font-size: 12px; font-weight: 600; }
+  .ls-pathbar .ls-pathbtn:hover { background: rgba(255,255,255,0.10); }
+  .ls-pathbar .ls-pathbtn[aria-pressed="true"] { background: linear-gradient(180deg, rgba(212,179,106,0.32), rgba(212,179,106,0.12)); border-color: rgba(212,179,106,0.5); color: #fff8e6; }
+  .ls-pathbar .ls-spacer { flex: 1 1 auto; }
+  .ls-pathbar .ls-toolbtn { padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); color: var(--muted); cursor: pointer; font-size: 12px; }
+  .ls-pick-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); z-index: 10000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .ls-pick-overlay.on { display: flex; }
+  .ls-pick-card { background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(212,179,106,0.4); border-radius: 16px; padding: 22px 24px; max-width: 720px; width: 100%; color: var(--text); }
+  .ls-pick-card h3 { margin: 0 0 6px; color: var(--accent); font-size: 20px; }
+  .ls-pick-card .ls-pick-sub { color: var(--muted); font-size: 13px; margin-bottom: 14px; line-height: 1.4; }
+  .ls-pick-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .ls-pick-opt { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 12px; padding: 12px 14px; cursor: pointer; text-align: left; color: var(--text); }
+  .ls-pick-opt:hover { background: rgba(255,255,255,0.08); }
+  .ls-pick-opt .ls-pick-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .ls-pick-opt .ls-pick-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .ls-pick-opt .ls-pick-desc { font-size: 12px; color: var(--muted); line-height: 1.35; }
+  .ls-pick-card .ls-pick-actions { margin-top: 14px; display: flex; justify-content: flex-end; }
+  .ls-pick-card .ls-pick-actions button { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+  .ls-dock { position: fixed; right: 18px; bottom: 18px; z-index: 200; display: flex; flex-direction: column; gap: 8px; }
+  .ls-dock button { min-width: 44px; height: 44px; border-radius: 22px; background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(212,179,106,0.35); color: var(--text); cursor: pointer; padding: 0 14px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 6px 18px rgba(0,0,0,0.45); }
+  .ls-dock button:hover { filter: brightness(1.1); }
+  .ls-dock .ls-dock-ic { font-size: 17px; }
+  .ls-panel-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.5); display: none; }
+  .ls-panel-overlay.on { display: block; }
+  .ls-panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(460px, 96vw); background: linear-gradient(180deg, #2b241d, #1d1714); border-left: 1px solid rgba(212,179,106,0.3); box-shadow: -8px 0 24px rgba(0,0,0,0.45); z-index: 310; display: none; flex-direction: column; color: var(--text); }
+  .ls-panel.on { display: flex; }
+  .ls-panel-head { padding: 14px 16px; border-bottom: 1px solid rgba(212,179,106,0.2); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .ls-panel-head h4 { margin: 0; font-size: 15px; color: var(--accent); }
+  .ls-panel-close { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--muted); border-radius: 999px; padding: 5px 10px; font-size: 12px; cursor: pointer; }
+  .ls-panel-body { padding: 14px 16px; overflow: auto; flex: 1 1 auto; font-size: 13px; line-height: 1.45; }
+  .ls-term { border-bottom: 1px dotted rgba(212,179,106,0.55); cursor: help; }
+  .ls-tooltip { position: absolute; z-index: 400; background: linear-gradient(180deg, #2b241d, #1d1714); border: 1px solid rgba(212,179,106,0.45); border-radius: 10px; padding: 10px 12px; max-width: 340px; min-width: 220px; color: var(--text); font-size: 12px; line-height: 1.45; box-shadow: 0 8px 22px rgba(0,0,0,0.5); display: none; }
+  .ls-tooltip.on { display: block; }
+  .ls-tooltip .ls-term-name { font-weight: 800; color: var(--accent); font-size: 13px; margin-bottom: 4px; }
+  .ls-tooltip .ls-term-tier { margin-top: 6px; padding-top: 6px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 11px; color: var(--muted); }
+  .ls-tooltip .ls-term-tier b { color: var(--text); font-weight: 700; }
+  .ls-eqpanel .ls-eqtabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .ls-eqpanel .ls-eqtab { padding: 5px 10px; border-radius: 999px; font-size: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--muted); cursor: pointer; }
+  .ls-eqpanel .ls-eqtab[aria-pressed="true"] { background: linear-gradient(180deg, rgba(212,179,106,0.32), rgba(212,179,106,0.12)); border-color: rgba(212,179,106,0.5); color: #fff8e6; }
+  .ls-eqpanel .ls-eqbody { background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px; font-size: 13px; line-height: 1.55; color: var(--text); min-height: 60px; }
+  .ls-eqpanel .ls-eqbody .ls-eqmath { font-family: "Courier New", monospace; white-space: pre-wrap; color: #f1eadc; }
+  .ls-eqpanel .ls-eqbody .ls-eqpic { display: flex; flex-direction: column; gap: 6px; font-family: "Courier New", monospace; font-size: 12px; color: #f1eadc; }
+  .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqrow { display: flex; gap: 10px; align-items: center; }
+  .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqbox { padding: 4px 8px; border: 1px solid rgba(212,179,106,0.4); border-radius: 6px; background: rgba(212,179,106,0.08); }
+  .ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqarrow { color: var(--muted); }
+  .ls-analogy { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 10px 12px; margin-bottom: 10px; }
+  .ls-analogy h6 { margin: 0 0 4px; font-size: 13px; color: var(--accent); }
+  .ls-analogy .ls-analogy-persona { display: inline-block; font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase; background: rgba(212,179,106,0.2); color: #fff8e6; border-radius: 999px; padding: 2px 7px; margin-right: 6px; }
+  .ls-analogy .ls-analogy-scenario { color: var(--text); margin: 6px 0; font-size: 12px; }
+  .ls-analogy .ls-analogy-map { font-size: 11px; color: var(--muted); background: rgba(0,0,0,0.2); border-radius: 6px; padding: 6px 8px; margin-top: 6px; }
+  .ls-analogy .ls-analogy-map table { width: 100%; border-collapse: collapse; }
+  .ls-analogy .ls-analogy-map td { padding: 2px 4px; border-bottom: 1px dashed rgba(255,255,255,0.06); font-size: 11px; }
+  .ls-analogy .ls-analogy-map td:first-child { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .ls-analogy .ls-analogy-ex { font-size: 11px; color: var(--muted); margin-top: 6px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 6px; }
+  .ls-analogy .ls-analogy-ex b { color: var(--accent); }
+  .ls-exercise { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+  .ls-exercise h6 { margin: 0 0 6px; color: var(--accent); font-size: 13px; }
+  .ls-exercise .ls-ex-meta { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .ls-exercise .ls-ex-sect { margin-top: 8px; }
+  .ls-exercise .ls-ex-sect b { color: var(--accent); font-size: 11px; letter-spacing: .6px; text-transform: uppercase; display: block; margin-bottom: 3px; }
+  .ls-exercise ol, .ls-exercise ul { margin: 4px 0 4px 18px; padding: 0; }
+  .ls-exercise li { margin-bottom: 3px; font-size: 12px; }
+  .ls-exercise .ls-ex-print { font-size: 11px; background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 4px 10px; cursor: pointer; margin-top: 8px; }
+  @media print { body > *:not(.ls-print-root) { display: none !important; } .ls-print-root { display: block !important; color: #000 !important; background: #fff !important; padding: 8px !important; font-size: 11pt; max-width: 5.5in; } .ls-print-root * { color: #000 !important; background: transparent !important; border-color: #888 !important; box-shadow: none !important; } @page { size: letter; margin: 0.4in; } }
+  .ls-beat { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 12px; margin-bottom: 12px; background: linear-gradient(180deg, rgba(152,200,143,0.10), rgba(152,200,143,0.04)); border: 1px solid rgba(152,200,143,0.28); border-radius: 12px; font-size: 13px; }
+  .ls-beat .ls-beat-body { flex: 1 1 200px; line-height: 1.4; }
+  .ls-beat .ls-beat-head { display: block; font-size: 11px; letter-spacing: .8px; color: #9fc59b; text-transform: uppercase; margin-bottom: 3px; }
+  .ls-beat .ls-beat-ctrl { display: inline-flex; gap: 6px; }
+  .ls-beat .ls-beat-ctrl button { padding: 6px 10px; font-size: 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); }
+  .ls-beat .ls-beat-ctrl button.primary { background: linear-gradient(180deg, rgba(152,200,143,0.30), rgba(152,200,143,0.10)); border-color: rgba(152,200,143,0.5); }
+  .ls-beat .ls-beat-idx { font-weight: 800; color: #d7e9c9; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .ls-glossary-entry { padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); margin-bottom: 8px; }
+  .ls-glossary-entry .ls-glossary-sym { display: inline-block; font-weight: 800; color: var(--accent); margin-right: 8px; font-family: "Courier New", monospace; }
+  .ls-glossary-entry .ls-glossary-tier { display: block; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .ls-glossary-entry .ls-glossary-tier b { color: var(--text); font-weight: 700; }
+  .ls-glossary-search { width: 100%; box-sizing: border-box; padding: 8px 10px; margin-bottom: 10px; background: rgba(0,0,0,0.2); color: var(--text); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 100ms !important; } }
+  body.ls-dys { font-family: "Verdana", "Tahoma", "Trebuchet MS", sans-serif; letter-spacing: 0.03em; word-spacing: 0.08em; }
+  @media (max-width: 820px) { .ls-pathbar { font-size: 12px; } .ls-pathbar .ls-pathbtn { padding: 5px 8px; font-size: 11px; } .ls-dock { right: 10px; bottom: 10px; } .ls-dock button { padding: 0 10px; font-size: 12px; min-width: 40px; height: 40px; } }
+</style>
+<link rel="stylesheet" href="/assets/suite-tokens.css" data-mark="suite-tokens-link-v1">
+</head>
+<body>
+<div class="wrap">
+  <div class="ls-pathbar" role="region" aria-label="Learning path">
+    <a class="ls-pathbtn ls-crumb" href="/learn" target="_top" data-ls-mark="ls-pathbar-breadcrumb-v1">← Learn</a><a class="ls-pathbtn ls-crumb" href="/" target="_top">Workbench ▸</a><span class="ls-pathlabel" style="margin-left:6px;">·</span><span class="ls-pathlabel">Path:</span>
+    <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false">🌱 Story</button>
+    <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true">🧭 Real-world</button>
+    <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false">🛠️ Equation</button>
+    <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false">🎓 Derivation</button>
+    <span class="ls-spacer"></span>
+    <button class="ls-toolbtn" id="lsPickerBtn">♻ Switch audience</button>
+    <button class="ls-toolbtn" id="lsDysBtn" aria-pressed="false">🅰 Font</button>
+  </div>
+  <div class="title">
+    <div>
+      <h1>LAPLACE TOWER</h1>
+      <div class="sub">
+        A mechanical sandbox for <strong>Box 4.3</strong>, generalized predictive coding, hierarchy coupling, and action.
+        It uses a quadratic free-energy objective with precision-weighted prediction errors, a Laplace-style local Gaussian approximation,
+        generalized-coordinate shift operator <strong>D</strong>, and continuous-time style belief updates. You can start simple,
+        then add levels and orders to build your own hierarchy and keep extending it.
+      </div>
+    </div>
+    <div class="badge">Standalone HTML</div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="panel">
+        <h2>Preset Bay</h2>
+        <div class="small">Load a teaching world, then alter the hierarchy. Presets range from one-layer intuition to multi-level predictive coding with action.</div>
+        <div style="margin-top:10px">
+          <select id="presetSelect"></select>
+        </div>
+        <div class="btns" style="margin-top:10px">
+          <button id="loadPresetBtn">Load preset</button>
+          <button id="randomizeBtn">Randomize beliefs</button>
+          <button id="resetBtn">Reset μ and action</button>
+        </div>
+        <div id="mission" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Hierarchy Builder</h2>
+        <div class="builder-row">
+          <div class="group">
+            <h3>Structure</h3>
+            <div class="btns">
+              <button id="addLevelBtn">Add level</button>
+              <button id="removeLevelBtn">Remove top</button>
+              <button id="addOrderBtn">Add order</button>
+              <button id="removeOrderBtn">Remove order</button>
+            </div>
+            <div class="small" style="margin-top:8px">
+              Levels represent the vertical hierarchy. Orders are generalized coordinates within each level.
+            </div>
+          </div>
+          <div class="group">
+            <h3>Engine</h3>
+            <div class="btns">
+              <button id="stepBeliefsBtn">Belief step</button>
+              <button id="stepActionBtn">Action step</button>
+              <button id="stepBothBtn">Belief + action</button>
+              <button id="autoBtn">Auto-run</button>
+            </div>
+            <div class="small" style="margin-top:8px">
+              Belief updates descend the numerical gradient of the same free energy displayed on screen.
+            </div>
+          </div>
+        </div>
+        <div class="group" style="margin-top:10px">
+          <h3>Global parameters</h3>
+          <div class="line"><span>lr μ</span><input type="range" id="lrMu" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrMuN" step="0.005" value="0.05"></div>
+          <div class="line"><span>lr u</span><input type="range" id="lrU" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrUN" step="0.005" value="0.05"></div>
+          <div class="line"><span>sensory target</span><input type="range" id="yTarget" min="-4" max="4" step="0.1" value="1.5"><input type="number" id="yTargetN" step="0.1" value="1.5"></div>
+          <div class="line"><span>base input</span><input type="range" id="yBase" min="-4" max="4" step="0.1" value="0.0"><input type="number" id="yBaseN" step="0.1" value="0.0"></div>
+          <div class="line"><span>act gain</span><input type="range" id="actGain" min="-3" max="3" step="0.1" value="1.0"><input type="number" id="actGainN" step="0.1" value="1.0"></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Editable Levels</h2>
+        <div class="small">Each level has linear generative maps so the message passing stays readable. Higher levels predict the hidden causes of the level below.</div>
+        <div id="levelsEditor" class="levels" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Session Log</h2>
+        <div class="log" id="log"></div>
+        <div class="footer-note" style="margin-top:8px">
+          Box 4.3 says the local posterior is approximated as Gaussian near its mode. Here that shows up as a quadratic energy surface and precision-weighted error terms.
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="stageStrip" role="region" aria-label="Machine state">
+        <div class="cell"><div class="lab">F total</div><div class="val" id="stripF">0.000</div><div class="sub2" id="stripFTarget">target pending</div></div>
+        <div class="cell"><div class="lab">Fy</div><div class="val" id="stripFy">0.000</div><div class="sub2">½ Πy εy²</div></div>
+        <div class="cell"><div class="lab">Fx</div><div class="val" id="stripFx">0.000</div><div class="sub2">dynamics</div></div>
+        <div class="cell"><div class="lab">Fv</div><div class="val" id="stripFv">0.000</div><div class="sub2">hierarchy</div></div>
+        <div class="cell"><div class="lab">action u</div><div class="val" id="stripU">0.000</div><div class="sub2">y=base+gain·u</div></div>
+        <div class="cell"><div class="lab">shape</div><div class="val" id="stripShape">1×2</div><div class="sub2">levels × orders</div></div>
+      </div>
+
+      <div class="introStrip" id="introStrip" role="note">
+        <div class="body">
+          <div class="row"><span class="tag">Goal</span><span>Build a predictive-coding hierarchy and drive <strong>F</strong> below the preset's target.</span></div>
+          <div class="row"><span class="tag">Watch</span><span>The <strong>tower canvas</strong> — μ and ε nodes stack by order on each level.</span></div>
+          <div class="row"><span class="tag">First move</span><span>Click <strong>Belief step</strong> repeatedly. When beliefs settle, try <strong>Action step</strong>. Only then <strong>Add level</strong>.</span></div>
+        </div>
+        <button class="dismiss" id="introDismissBtn" aria-label="Dismiss intro">Got it ✕</button>
+      </div>
+
+      <div class="stageToolbar" role="toolbar" aria-label="Run controls">
+        <select id="toolbarPreset" style="width:auto;"></select>
+        <button id="tbLoadPreset">Load preset</button>
+        <button id="tbBelief">Belief step</button>
+        <button id="tbAction">Action step</button>
+        <button id="tbBoth">Belief + action</button>
+        <button id="tbAuto">Auto-run</button>
+        <button id="tbReset">Reset μ and u</button>
+        <button id="tbRandomize">Randomize</button>
+        <button class="iconBtn" id="tourOpenBtn" title="Open guided tour" aria-label="Open guided tour">?</button>
+      </div>
+
+      <div class="panel">
+        <h2>Machine Status</h2>
+        <div class="score">
+          <div class="card"><div class="small">Total F</div><div class="big" id="Ftot">0.000</div><div class="meter"><span id="meterF"></span></div></div>
+          <div class="card"><div class="small">Observation term</div><div class="big" id="Fy">0.000</div><div class="small">½ Πy εy²</div></div>
+          <div class="card"><div class="small">Dynamics term</div><div class="big" id="Fx">0.000</div><div class="small">Σ ½ Πx ||εx||²</div></div>
+          <div class="card"><div class="small">Hierarchy term</div><div class="big" id="Fv">0.000</div><div class="small">Σ ½ Πv ||εv||²</div></div>
+          <div class="card"><div class="small">Action</div><div class="big" id="uVal">0.000</div><div class="small">y(u)=base+gain·u</div></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Hierarchy Machine</h2>
+        <div class="machine">
+          <div>
+            <canvas id="towerCanvas" width="920" height="480"></canvas>
+          </div>
+          <div class="ledger">
+            <div class="eq" id="summaryEq"></div>
+            <div class="eq" id="ledger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Builder Notes</h2>
+        <div class="eq" id="notes"></div>
+        <table class="matrix-table" style="margin-top:12px">
+          <tr><th>Concept</th><th>Here in the simulator</th></tr>
+          <tr><td>Laplace approximation</td><td>Quadratic free energy around current posterior mode μ, with Gaussian-form local approximation.</td></tr>
+          <tr><td>Precision</td><td>Scales how costly each prediction error is.</td></tr>
+          <tr><td>D operator</td><td>Shifts generalized coordinates upward: Dμ[k] = μ[k+1].</td></tr>
+          <tr><td>εx</td><td>Within-level temporal/dynamical mismatch: Dμx − f(μx,μv).</td></tr>
+          <tr><td>εv</td><td>Between-level mismatch: μv(lower) − g(upper).</td></tr>
+          <tr><td>εy</td><td>Lowest-level sensory mismatch y(u) − g(lower).</td></tr>
+          <tr><td>Action</td><td>Moves only sensory data, following equation 4.22’s logic.</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px;">
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px; color:var(--accent); font-size:14px; letter-spacing:1px; text-transform:uppercase;">Layered Equation Panel</h2>
+      <div class="ls-eqpanel" id="lsEqPanel">
+        <div class="ls-eqtabs" role="tablist"><button class="ls-eqtab" data-ls-tab="story">Story</button><button class="ls-eqtab" data-ls-tab="picture">Picture</button><button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button><button class="ls-eqtab" data-ls-tab="derivation">Derivation</button></div>
+        <div class="ls-eqbody" id="lsEqBody" role="tabpanel"></div>
+      </div>
+    </section>
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px; color:var(--accent); font-size:14px; letter-spacing:1px; text-transform:uppercase;">Beat Script</h2>
+      <div id="lsBeatHost"></div>
+    </section>
+  </div>
+</div>
+
+<div class="ls-dock" role="region" aria-label="Learning shell tools">
+  <button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button>
+  <button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button>
+  <button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button>
+</div>
+<div class="ls-panel-overlay" id="lsPanelOverlay" aria-hidden="true"></div>
+<aside class="ls-panel" id="lsPanel" role="dialog" aria-modal="true" aria-labelledby="lsPanelTitle" aria-hidden="true">
+  <div class="ls-panel-head"><h4 id="lsPanelTitle">Panel</h4><button class="ls-panel-close" id="lsPanelClose">Close ✕</button></div>
+  <div class="ls-panel-body" id="lsPanelBody"></div>
+</aside>
+<div class="ls-pick-overlay" id="lsPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="lsPickerTitle">
+  <div class="ls-pick-card">
+    <h3 id="lsPickerTitle">Pick a learning path</h3>
+    <div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths.</div>
+    <div class="ls-pick-grid">
+      <button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative + physical objects.</div></button>
+      <button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Analogies + missions.</div></button>
+      <button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code.</div></button>
+      <button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches.</div></button>
+    </div>
+    <div class="ls-pick-actions"><button id="lsPickerDismiss">Skip — I'll default to real-world</button></div>
+  </div>
+</div>
+<div class="ls-tooltip" id="lsTooltip" role="tooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>
+
+<script>
+(()=>{
+  const $ = id => document.getElementById(id);
+  const logEl = $('log');
+  let autoTimer = null;
+
+  function bindPair(a,b){
+    $(a).addEventListener('input',()=>{$(b).value=$(a).value; update();});
+    $(b).addEventListener('input',()=>{$(a).value=$(b).value; update();});
+  }
+  bindPair('lrMu','lrMuN'); bindPair('lrU','lrUN');
+  bindPair('yTarget','yTargetN'); bindPair('yBase','yBaseN'); bindPair('actGain','actGainN');
+
+  const presets = [
+    {
+      name:'1 level / 2 orders — sensory intuition',
+      mission:'Bring F below 0.20. Start with a single level and see how action can reduce the lowest-level sensory error.',
+      build:()=>makeModel(1,2,{
+        yBase:0, yTarget:1.6, actGain:1.0,
+        levels:[
+          {px:1.3,pv:0.9, aObsX:1.0,aObsV:0.5, alpha:0.8,beta:0.4, predX:0.0,predV:0.0,
+           mux:[-0.6,0.1], muv:[0.2,0.0], eta:[0.0,0.0]}
+        ]
+      }),
+      target:0.2
+    },
+    {
+      name:'2 levels / 2 orders — predictive coding hierarchy',
+      mission:'Bring F below 0.50. The upper level predicts lower-level hidden causes.',
+      build:()=>makeModel(2,2,{
+        yBase:0.0, yTarget:1.8, actGain:0.9,
+        levels:[
+          {px:2.0,pv:1.8,aObsX:1.1,aObsV:0.6,alpha:0.9,beta:0.5,predX:0.7,predV:0.8,mux:[-0.5,0.3],muv:[0.1,-0.1],eta:[0,0]},
+          {px:1.0,pv:0.9,aObsX:0.0,aObsV:0.0,alpha:0.7,beta:0.4,predX:0.0,predV:0.0,mux:[0.8,-0.2],muv:[0.3,0.0],eta:[0,0]}
+        ]
+      }),
+      target:0.5
+    },
+    {
+      name:'3 levels / 3 orders — generalized motion',
+      mission:'Bring F below 1.50. Try belief steps first, then action once the hierarchy is coherent.',
+      build:()=>makeModel(3,3,{
+        yBase:-0.3, yTarget:2.2, actGain:1.2,
+        levels:[
+          {px:2.2,pv:2.0,aObsX:1.2,aObsV:0.7,alpha:0.9,beta:0.5,predX:0.8,predV:0.8,mux:[-1.0,0.6,0.2],muv:[0.3,0.0,0.0],eta:[0,0,0]},
+          {px:1.5,pv:1.1,aObsX:0,aObsV:0,alpha:0.8,beta:0.45,predX:0.7,predV:0.7,mux:[0.7,-0.2,0.2],muv:[0.4,0.1,0.0],eta:[0,0,0]},
+          {px:0.9,pv:0.8,aObsX:0,aObsV:0,alpha:0.6,beta:0.35,predX:0,predV:0,mux:[0.4,0.1,0.0],muv:[0.2,0.0,0.0],eta:[0,0,0]}
+        ]
+      }),
+      target:1.5
+    }
+  ];
+
+  function fmt(x){ x = Math.abs(x)<1e-10?0:x; return Number(x).toFixed(3); }
+  // Compact 2-decimal formatter for on-canvas node labels that must fit inside small circles.
+  function fmtC(x){ x = Math.abs(x)<1e-10?0:x; return Number(x).toFixed(2); }
+  function clamp(x,a,b){ return Math.max(a, Math.min(b, x)); }
+  function vec(n, fill=0){ return Array.from({length:n}, ()=>fill); }
+
+  function makeModel(L,O, cfg={}){
+    const model = {
+      orders: O,
+      levels: [],
+      yBase: cfg.yBase ?? 0,
+      yTarget: cfg.yTarget ?? 1.5,
+      actGain: cfg.actGain ?? 1.0,
+      py: 2.0,
+      u: 0.0
+    };
+    for(let i=0;i<L;i++){
+      const base = cfg.levels?.[i] || {};
+      model.levels.push({
+        name: `Level ${i+1}`,
+        px: base.px ?? 1.5,
+        pv: base.pv ?? 1.2,
+        aObsX: base.aObsX ?? (i===0 ? 1.0 : 0.0),
+        aObsV: base.aObsV ?? (i===0 ? 0.5 : 0.0),
+        alpha: base.alpha ?? 0.8,
+        beta: base.beta ?? 0.4,
+        predX: base.predX ?? (i < L-1 ? 0.8 : 0.0),
+        predV: base.predV ?? (i < L-1 ? 0.8 : 0.0),
+        mux: (base.mux ? base.mux.slice() : vec(O,0)).concat(vec(Math.max(0,O-(base.mux?.length||0)),0)).slice(0,O),
+        muv: (base.muv ? base.muv.slice() : vec(O,0)).concat(vec(Math.max(0,O-(base.muv?.length||0)),0)).slice(0,O),
+        eta: (base.eta ? base.eta.slice() : vec(O,0)).concat(vec(Math.max(0,O-(base.eta?.length||0)),0)).slice(0,O)
+      });
+    }
+    return model;
+  }
+
+  let model = presets[0].build();
+  let currentPreset = 0;
+
+  function log(msg){
+    const d = document.createElement('div');
+    d.className = 'entry';
+    d.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    logEl.prepend(d);
+  }
+
+  function yFromAction(m){ return m.yBase + m.actGain * m.u; }
+
+  function Dshift(arr){
+    return arr.map((_,k)=> k < arr.length-1 ? arr[k+1] : 0);
+  }
+
+  // Linear teaching maps
+  function obsPred(level){
+    return level.aObsX*level.mux[0] + level.aObsV*level.muv[0];
+  }
+  function dynPred(level){
+    return level.mux.map((_,k)=>{
+      const nextx = (k < level.mux.length-1 ? level.mux[k+1] : 0);
+      return level.alpha*nextx + level.beta*level.muv[k];
+    });
+  }
+  function downPred(upper, O){
+    return Array.from({length:O}, (_,k)=>{
+      return upper.predX*upper.mux[k] + upper.predV*upper.muv[k];
+    });
+  }
+
+  function compute(m){
+    const y = yFromAction(m);
+    const out = {
+      y,
+      ey: y - obsPred(m.levels[0]),
+      levels: [],
+      Fy:0, Fx:0, Fv:0, F:0
+    };
+    out.Fy = 0.5 * m.py * out.ey*out.ey;
+    for(let i=0;i<m.levels.length;i++){
+      const L = m.levels[i];
+      const Dmx = Dshift(L.mux);
+      const Dmv = Dshift(L.muv);
+      const f = dynPred(L);
+      const ex = Dmx.map((v,k)=> v - f[k]);
+
+      let ev;
+      let predFromAbove = null;
+      if(i===m.levels.length-1){
+        ev = L.muv.map((v,k)=> v - L.eta[k]);
+      } else {
+        predFromAbove = downPred(m.levels[i+1], m.orders);
+        ev = L.muv.map((v,k)=> v - predFromAbove[k]);
+      }
+      const Fx_i = 0.5 * L.px * ex.reduce((s,v)=>s+v*v,0);
+      const Fv_i = 0.5 * L.pv * ev.reduce((s,v)=>s+v*v,0);
+      out.Fx += Fx_i; out.Fv += Fv_i;
+      out.levels.push({Dmx,Dmv,f,ex,ev,predFromAbove,Fx_i,Fv_i});
+    }
+    out.F = out.Fy + out.Fx + out.Fv;
+    return out;
+  }
+
+  function flattenMu(m){
+    const arr = [];
+    m.levels.forEach(L=>{ L.mux.forEach(v=>arr.push(v)); L.muv.forEach(v=>arr.push(v)); });
+    return arr;
+  }
+  function unflattenMu(m, arr){
+    let c=0;
+    m.levels.forEach(L=>{
+      for(let k=0;k<m.orders;k++) L.mux[k]=arr[c++];
+      for(let k=0;k<m.orders;k++) L.muv[k]=arr[c++];
+    });
+  }
+  function cloneModel(m){ return JSON.parse(JSON.stringify(m)); }
+
+  function freeEnergyOf(m){ return compute(m).F; }
+  function muGradient(m){
+    const base = freeEnergyOf(m);
+    const x = flattenMu(m);
+    const grad = Array(x.length).fill(0);
+    const h = 1e-4;
+    for(let i=0;i<x.length;i++){
+      const cp = cloneModel(m);
+      const vecx = flattenMu(cp);
+      vecx[i] += h;
+      unflattenMu(cp, vecx);
+      grad[i] = (freeEnergyOf(cp) - base) / h;
+    }
+    return grad;
+  }
+  function uGradient(m){
+    const h = 1e-4;
+    const base = freeEnergyOf(m);
+    const cp = cloneModel(m);
+    cp.u += h;
+    return (freeEnergyOf(cp)-base)/h;
+  }
+
+  function beliefStep(){
+    const lr = parseFloat($('lrMu').value);
+    const grad = muGradient(model);
+    const vals = flattenMu(model);
+    for(let i=0;i<vals.length;i++) vals[i] = clamp(vals[i] - lr*grad[i], -5, 5);
+    unflattenMu(model, vals);
+    renderEditors();
+    update();
+    log(`Belief step: ||∇μF|| ≈ ${fmt(Math.sqrt(grad.reduce((s,v)=>s+v*v,0)))}, lr=${fmt(lr)}.`);
+  }
+  function actionStep(){
+    const lr = parseFloat($('lrU').value);
+    const g = uGradient(model);
+    model.u = clamp(model.u - lr*g, -5, 5);
+    update();
+    log(`Action step: ∂F/∂u ≈ ${fmt(g)}, lr=${fmt(lr)}.`);
+  }
+
+  function addLevel(){
+    const O = model.orders;
+    model.levels.push({
+      name:`Level ${model.levels.length+1}`,
+      px:1.0,pv:0.9,aObsX:0,aObsV:0,alpha:0.7,beta:0.35,predX:0,predV:0,mux:vec(O,0),muv:vec(O,0),eta:vec(O,0)
+    });
+    if(model.levels.length>1){
+      model.levels[model.levels.length-2].predX ||= 0.8;
+      model.levels[model.levels.length-2].predV ||= 0.8;
+    }
+    renderEditors(); update(); log('Added a hierarchical level.');
+  }
+  function removeLevel(){
+    if(model.levels.length<=1) return;
+    model.levels.pop();
+    model.levels[model.levels.length-1].predX = 0;
+    model.levels[model.levels.length-1].predV = 0;
+    renderEditors(); update(); log('Removed the highest level.');
+  }
+  function addOrder(){
+    if(model.orders>=4) return;
+    model.orders += 1;
+    model.levels.forEach(L=>{L.mux.push(0);L.muv.push(0);L.eta.push(0);});
+    renderEditors(); update(); log('Added one generalized order.');
+  }
+  function removeOrder(){
+    if(model.orders<=1) return;
+    model.orders -= 1;
+    model.levels.forEach(L=>{L.mux.pop();L.muv.pop();L.eta.pop();});
+    renderEditors(); update(); log('Removed the highest generalized order.');
+  }
+  function randomizeBeliefs(){
+    model.levels.forEach(L=>{
+      L.mux = L.mux.map(()=> (Math.random()*3-1.5));
+      L.muv = L.muv.map(()=> (Math.random()*3-1.5));
+    });
+    model.u = Math.random()*2-1;
+    renderEditors(); update(); log('Randomized beliefs and action.');
+  }
+  function resetBeliefs(){
+    model.levels.forEach(L=>{L.mux=L.mux.map(()=>0);L.muv=L.muv.map(()=>0);});
+    model.u = 0;
+    renderEditors(); update(); log('Reset μ and action.');
+  }
+
+  function inputNum(value, min, max, step, onchange){
+    return `<input type="number" value="${value}" min="${min}" max="${max}" step="${step}" data-hook="${onchange}">`;
+  }
+
+  function renderEditors(){
+    const wrap = $('levelsEditor');
+    wrap.innerHTML = '';
+    model.levels.forEach((L, i)=>{
+      const det = document.createElement('details');
+      det.className='level';
+      det.open = i===0 || i===model.levels.length-1;
+      det.innerHTML = `
+        <summary>${L.name} <span class="pill">level ${i+1}/${model.levels.length}</span></summary>
+        <div class="level-body">
+          <div class="line2">
+            <div class="chip"><div class="name">Πx</div><div class="val">${inputNum(L.px,0.1,8,0.1,`px|${i}`)}</div></div>
+            <div class="chip"><div class="name">Πv</div><div class="val">${inputNum(L.pv,0.1,8,0.1,`pv|${i}`)}</div></div>
+          </div>
+          <div class="line2">
+            <div class="chip"><div class="name">alpha in f</div><div class="val">${inputNum(L.alpha,-2,2,0.1,`alpha|${i}`)}</div></div>
+            <div class="chip"><div class="name">beta in f</div><div class="val">${inputNum(L.beta,-2,2,0.1,`beta|${i}`)}</div></div>
+          </div>
+          <div class="line2">
+            <div class="chip"><div class="name">predX from above</div><div class="val">${inputNum(L.predX,-2,2,0.1,`predX|${i}`)}</div></div>
+            <div class="chip"><div class="name">predV from above</div><div class="val">${inputNum(L.predV,-2,2,0.1,`predV|${i}`)}</div></div>
+          </div>
+          ${i===0 ? `
+          <div class="line2">
+            <div class="chip"><div class="name">aObsX</div><div class="val">${inputNum(L.aObsX,-3,3,0.1,`aObsX|${i}`)}</div></div>
+            <div class="chip"><div class="name">aObsV</div><div class="val">${inputNum(L.aObsV,-3,3,0.1,`aObsV|${i}`)}</div></div>
+          </div>` : ''}
+          <div class="small" style="margin:8px 0 6px 0">Generalized coordinates</div>
+          <div class="order-grid">
+            ${Array.from({length:model.orders}, (_,k)=>`
+              <div class="chip"><div class="name">μx[${k+1}]</div><div class="val">${inputNum(L.mux[k],-5,5,0.1,`mux|${i}|${k}`)}</div></div>
+            `).join('')}
+            ${Array.from({length:model.orders}, (_,k)=>`
+              <div class="chip"><div class="name">μv[${k+1}]</div><div class="val">${inputNum(L.muv[k],-5,5,0.1,`muv|${i}|${k}`)}</div></div>
+            `).join('')}
+            ${Array.from({length:model.orders}, (_,k)=>`
+              <div class="chip"><div class="name">η[${k+1}] (top prior)</div><div class="val">${inputNum(L.eta[k],-5,5,0.1,`eta|${i}|${k}`)}</div></div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      wrap.appendChild(det);
+    });
+    wrap.querySelectorAll('input[data-hook]').forEach(inp=>{
+      inp.addEventListener('input', e=>{
+        const parts = e.target.dataset.hook.split('|');
+        const val = parseFloat(e.target.value);
+        const key = parts[0], i = parseInt(parts[1],10);
+        if(key==='px'||key==='pv'||key==='alpha'||key==='beta'||key==='predX'||key==='predV'||key==='aObsX'||key==='aObsV'){
+          model.levels[i][key] = val;
+        } else {
+          const k = parseInt(parts[2],10);
+          if(key==='mux') model.levels[i].mux[k]=val;
+          if(key==='muv') model.levels[i].muv[k]=val;
+          if(key==='eta') model.levels[i].eta[k]=val;
+        }
+        update();
+      });
+    });
+  }
+
+  function setMission(text, target=null){
+    $('mission').innerHTML = `<div class="small">${text}${target!=null?`<br><span class="pill">Target F < ${fmt(target)}</span>`:''}</div>`;
+  }
+
+  function loadPreset(ix){
+    currentPreset = ix;
+    model = presets[ix].build();
+    $('yBase').value = $('yBaseN').value = model.yBase;
+    $('yTarget').value = $('yTargetN').value = model.yTarget;
+    $('actGain').value = $('actGainN').value = model.actGain;
+    setMission(presets[ix].mission, presets[ix].target);
+    renderEditors(); update(); log(`Loaded preset: ${presets[ix].name}.`);
+  }
+
+  function updateGlobalFromUI(){
+    model.yBase = parseFloat($('yBase').value);
+    model.yTarget = parseFloat($('yTarget').value);
+    model.actGain = parseFloat($('actGain').value);
+  }
+
+  function update(){
+    updateGlobalFromUI();
+    const C = compute(model);
+    $('Ftot').textContent = fmt(C.F);
+    $('Fy').textContent = fmt(C.Fy);
+    $('Fx').textContent = fmt(C.Fx);
+    $('Fv').textContent = fmt(C.Fv);
+    $('uVal').textContent = fmt(model.u);
+    $('meterF').style.width = Math.min(100, C.F*8)+'%';
+
+    // Sticky status strip
+    $('stripF').textContent = fmt(C.F);
+    $('stripFy').textContent = fmt(C.Fy);
+    $('stripFx').textContent = fmt(C.Fx);
+    $('stripFv').textContent = fmt(C.Fv);
+    $('stripU').textContent = fmt(model.u);
+    $('stripShape').textContent = `${model.levels.length}×${model.orders}`;
+    const tgt = presets[currentPreset]?.target;
+    $('stripFTarget').textContent = tgt != null
+      ? (C.F < tgt ? `✓ under ${tgt.toFixed(2)}` : `target F < ${tgt.toFixed(2)}`)
+      : 'open-ended';
+
+    $('summaryEq').textContent =
+`Core teaching equations
+
+q(x) ≈ N(μ, Σ⁻¹)
+Σ⁻¹ = - ∂² ln p(x,y) / ∂x² |_(x=μ)
+
+Free energy (quadratic local form)
+F ≈ 1/2 Πy εy² + Σ_i 1/2 Πx^(i) ||εx^(i)||² + Σ_i 1/2 Πv^(i) ||εv^(i)||²
+
+Lowest level sensory error
+εy = y(u) - g₀(μx^(1), μv^(1))
+y(u) = base + gain · u
+
+Within-level temporal error
+εx^(i) = Dμx^(i) - f^(i)(μx^(i), μv^(i))
+
+Between-level hierarchical error
+εv^(i) = μv^(i) - g^(i+1)(μx^(i+1), μv^(i+1))
+Top level uses η instead of an upper predictor.
+
+Action rule
+u_dot = -∂F/∂u`;
+
+    const lines = [];
+    lines.push(`Current sensory stream: y(u) = ${fmt(model.yBase)} + ${fmt(model.actGain)}·${fmt(model.u)} = ${fmt(C.y)}`);
+    lines.push(`Desired sensory target (for experimentation): ${fmt(model.yTarget)}  (not directly used in F unless you shape the model to predict it)`);
+    lines.push(`Lowest-level observation prediction g0 = ${fmt(obsPred(model.levels[0]))}`);
+    lines.push(`εy = ${fmt(C.ey)} ; Fy = 1/2·${fmt(model.py)}·εy² = ${fmt(C.Fy)}`);
+    model.levels.forEach((L,i)=>{
+      const R = C.levels[i];
+      lines.push('');
+      lines.push(`LEVEL ${i+1}`);
+      lines.push(`μx = [${L.mux.map(fmt).join(', ')}]`);
+      lines.push(`μv = [${L.muv.map(fmt).join(', ')}]`);
+      lines.push(`Dμx = [${R.Dmx.map(fmt).join(', ')}]`);
+      lines.push(`f = [${R.f.map(fmt).join(', ')}]`);
+      lines.push(`εx = Dμx - f = [${R.ex.map(fmt).join(', ')}]`);
+      if(i < model.levels.length-1){
+        lines.push(`prediction from above = [${R.predFromAbove.map(fmt).join(', ')}]`);
+        lines.push(`εv = μv - g_above = [${R.ev.map(fmt).join(', ')}]`);
+      } else {
+        lines.push(`top prior η = [${L.eta.map(fmt).join(', ')}]`);
+        lines.push(`εv = μv - η = [${R.ev.map(fmt).join(', ')}]`);
+      }
+      lines.push(`Fx(level) = 1/2·${fmt(L.px)}·||εx||² = ${fmt(R.Fx_i)}`);
+      lines.push(`Fv(level) = 1/2·${fmt(L.pv)}·||εv||² = ${fmt(R.Fv_i)}`);
+    });
+    lines.push('');
+    lines.push(`TOTAL F = Fy + ΣFx + ΣFv = ${fmt(C.F)}`);
+    $('ledger').textContent = lines.join('\n');
+
+    $('notes').textContent =
+`How to build from simple to complex
+
+1) Start with one level and one or two orders.
+   Watch Dμx shift the generalized coordinates upward.
+
+2) Add a second level.
+   Now upper states generate predictions for lower hidden causes.
+   That makes εv the hierarchy-linking message.
+
+3) Add more orders.
+   This lets "the motion of the mode be the mode of the motion":
+   μ_dot[k] should align with μ[k+1] when free energy is minimized.
+
+4) Tune precisions Πx and Πv.
+   High precision makes an error channel dominate updates.
+
+5) Use action after beliefs are coherent.
+   Action changes only sensory data, which is why it directly touches εy.
+
+The simulator uses linear g and f maps so you can keep expanding the structure without losing interpretability.`;
+
+    drawTower(model, C);
+    checkMission(C.F);
+  }
+
+  function checkMission(F){
+    const target = presets[currentPreset]?.target;
+    if(target!=null && F < target){
+      $('mission').innerHTML = `<div class="small">${presets[currentPreset].mission}<br><span class="pill">Mission cleared</span></div>`;
+    }
+  }
+
+  function drawTower(m, C){
+    const canvas = $('towerCanvas');
+    const ctx = canvas.getContext('2d');
+    // Dynamically scale canvas height to fit all levels × orders without overlap.
+    // Each row of nodes needs ~72px (30 radius + 12 label gap + 30 next radius).
+    const levelsN = (m.levels && m.levels.length) || 1;
+    const ordersN = m.orders || 1;
+    const PER_ORDER = 72;           // vertical px per order row
+    const LEVEL_HEAD = 60;          // vertical px at top of each level for gears+label
+    const LEVEL_PAD = 30;           // vertical padding between levels
+    const wantH = 100 + levelsN * (LEVEL_HEAD + ordersN * PER_ORDER + LEVEL_PAD);
+    if (canvas.height !== wantH) canvas.height = wantH;
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    function roundRect(x,y,w,h,r,fill,stroke){
+      ctx.beginPath();
+      ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+      ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+      if(fill) ctx.fill(); if(stroke) ctx.stroke();
+    }
+    // Node with label to the LEFT of the circle (stable; no row collisions).
+    // Value sits inside the circle in large type; the tag (e.g. "μx[1]") sits
+    // immediately left so rows can be spaced tightly without label overlap.
+    function node(x,y,r,main,sub,fill='#211b16',stroke='#86735e'){
+      ctx.fillStyle = fill; ctx.strokeStyle = stroke; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = '#fff1ce'; ctx.font = 'bold 13px ui-monospace, monospace'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(main,x,y);
+      ctx.fillStyle = '#d2c4b0'; ctx.font = '11px ui-monospace, monospace'; ctx.textAlign='right'; ctx.fillText(sub, x - r - 4, y);
+      ctx.textAlign='left'; ctx.textBaseline='alphabetic';
+    }
+    function wire(x1,y1,x2,y2,strength,label=''){
+      ctx.strokeStyle = '#655545'; ctx.lineWidth = 9; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+      ctx.strokeStyle = '#d1ae69'; ctx.lineWidth = 4;
+      const t = Math.min(1, strength/3.5);
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x1 + (x2-x1)*t, y1 + (y2-y1)*t); ctx.stroke();
+      if(label){
+        ctx.fillStyle = '#e6dccb'; ctx.font='12px monospace'; ctx.fillText(label,(x1+x2)/2,(y1+y2)/2-6);
+      }
+    }
+    function gear(x,y,r,label,spin=0){
+      ctx.save(); ctx.translate(x,y); ctx.rotate(spin);
+      for(let i=0;i<10;i++){ ctx.save(); ctx.rotate(i*Math.PI/5); ctx.fillStyle='#8f775d'; ctx.fillRect(r-4,-5,12,10); ctx.restore(); }
+      ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fillStyle='#473b31'; ctx.fill(); ctx.lineWidth=6; ctx.strokeStyle='#8f775d'; ctx.stroke();
+      ctx.beginPath(); ctx.arc(0,0,r*0.35,0,Math.PI*2); ctx.fillStyle='#1a1511'; ctx.fill();
+      ctx.fillStyle='#fff1cd'; ctx.font='bold 14px monospace'; ctx.textAlign='center'; ctx.fillText(label,0,5);
+      ctx.restore(); ctx.textAlign='left';
+    }
+
+    ctx.fillStyle = '#15110e'; ctx.strokeStyle='#5e5145'; ctx.lineWidth=2;
+    roundRect(18,18,W-36,H-36,18,true,true);
+    ctx.fillStyle='#cfc1af'; ctx.font='13px monospace';
+    ctx.fillText('Hierarchy', 24, 36);
+    ctx.fillText('Dynamics / generalized orders', W-250, 36);
+
+    const levels = m.levels.length, orders = m.orders;
+    // Each level owns a vertical slab of (LEVEL_HEAD + orders*PER_ORDER + LEVEL_PAD).
+    const slab = LEVEL_HEAD + orders * PER_ORDER + LEVEL_PAD;
+    const left = 130, top = 60;
+    const orderGap = PER_ORDER;
+    const levelGap = slab;
+    const xMuX = left + 190, xMuV = left + 370, xErrX = left + 90, xErrV = left + 470;
+
+    // Sensory source
+    node(60, H-60, 26, fmt(C.y), 'y(u)', '#1c1914', '#8a7762');
+    wire(60,H-86, xErrV, top + (levels-1)*levelGap + orders*0, Math.abs(C.ey), 'εy');
+
+    // Draw hierarchy from bottom to top visually: level 1 at bottom
+    for(let i=0;i<levels;i++){
+      const levelIndex = i;
+      const drawLevel = levels-1-i;
+      const yBase = top + drawLevel*levelGap;
+      const L = m.levels[levelIndex], R = C.levels[levelIndex];
+
+      ctx.fillStyle='#e9ddc9'; ctx.font='12px monospace';
+      ctx.fillText(`L${levelIndex+1}`, 34, yBase+6);
+
+      gear(left+275, yBase + 18, 18, 'D', Date.now()/800 + i*0.3);
+      if(levelIndex<levels-1) gear(left+525, yBase + 18, 18, 'g', Date.now()/900 - i*0.25);
+      gear(left+275, yBase + 118, 18, 'f', Date.now()/700 + i*0.2);
+
+      for(let k=0;k<orders;k++){
+        const yk = yBase + 50 + k*orderGap;
+        node(xErrX, yk, 26, fmtC(R.ex[k]), `εx[${k+1}]`, '#1f1b16', '#8c7b66');
+        node(xMuX, yk, 30, fmtC(L.mux[k]), `μx[${k+1}]`, '#231d17', '#8e7a63');
+        node(xMuV, yk, 30, fmtC(L.muv[k]), `μv[${k+1}]`, '#251d18', '#8e7a63');
+        node(xErrV, yk, 26, fmtC(levelIndex===0 && k===0 ? C.ey : R.ev[k]), levelIndex===0&&k===0?'εy':`εv[${k+1}]`, '#201916', '#8c7b66');
+
+        if(k<orders-1){
+          wire(xMuX, yk, xMuX, yk+orderGap-28, Math.abs(L.mux[k+1]), '');
+          wire(xMuV, yk, xMuV, yk+orderGap-28, Math.abs(L.muv[k+1]), '');
+        }
+        wire(xMuX-28, yk, xErrX+24, yk, Math.abs(R.ex[k]));
+        wire(xMuV+28, yk, xErrV-24, yk, Math.abs(R.ev[k]));
+      }
+
+      wire(xMuX, yBase+50, left+257, yBase+18, Math.sqrt(R.ex.reduce((s,v)=>s+v*v,0)), '');
+      wire(left+293, yBase+118, xErrX+22, yBase+50, Math.sqrt(R.ex.reduce((s,v)=>s+v*v,0)), '');
+      wire(xMuV, yBase+50, left+293, yBase+118, Math.sqrt(R.ex.reduce((s,v)=>s+v*v,0)), '');
+
+      if(levelIndex<levels-1){
+        wire(xMuX+28, yBase+50, left+507, yBase+18, Math.sqrt(R.ev.reduce((s,v)=>s+v*v,0)), '');
+        wire(xMuV+28, yBase+50, left+543, yBase+18, Math.sqrt(R.ev.reduce((s,v)=>s+v*v,0)), '');
+        wire(left+543, yBase+18, xErrV-24, yBase+50, Math.sqrt(R.ev.reduce((s,v)=>s+v*v,0)), '');
+      }
+    }
+
+    ctx.strokeStyle='#b8a38a'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(80,H-90); ctx.lineTo(80,50); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(72,58); ctx.lineTo(80,50); ctx.lineTo(88,58); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(72,H-98); ctx.lineTo(80,H-90); ctx.lineTo(88,H-98); ctx.stroke();
+    ctx.fillStyle='#d7cab8'; ctx.font='14px monospace'; ctx.save(); ctx.translate(56,H/2+30); ctx.rotate(-Math.PI/2); ctx.fillText('Hierarchy',0,0); ctx.restore();
+
+    ctx.beginPath(); ctx.moveTo(W-220,56); ctx.lineTo(W-70,56); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W-78,48); ctx.lineTo(W-70,56); ctx.lineTo(W-78,64); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(W-212,48); ctx.lineTo(W-220,56); ctx.lineTo(W-212,64); ctx.stroke();
+  }
+
+  // UI hooks
+  presets.forEach((p,i)=>{
+    const o = document.createElement('option'); o.value=i; o.textContent=p.name; $('presetSelect').appendChild(o);
+  });
+  $('loadPresetBtn').addEventListener('click', ()=> loadPreset(parseInt($('presetSelect').value,10)));
+  $('randomizeBtn').addEventListener('click', randomizeBeliefs);
+  $('resetBtn').addEventListener('click', resetBeliefs);
+  $('addLevelBtn').addEventListener('click', addLevel);
+  $('removeLevelBtn').addEventListener('click', removeLevel);
+  $('addOrderBtn').addEventListener('click', addOrder);
+  $('removeOrderBtn').addEventListener('click', removeOrder);
+  $('stepBeliefsBtn').addEventListener('click', beliefStep);
+  $('stepActionBtn').addEventListener('click', actionStep);
+  $('stepBothBtn').addEventListener('click', ()=>{ beliefStep(); actionStep(); log('Ran combined belief + action step.'); });
+  $('autoBtn').addEventListener('click', ()=>{
+    if(autoTimer){
+      clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Stopped auto-run.'); return;
+    }
+    autoTimer = setInterval(()=>{
+      const before = freeEnergyOf(model);
+      beliefStep();
+      actionStep();
+      const after = freeEnergyOf(model);
+      if(Math.abs(before-after) < 1e-4){
+        clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Auto-run converged.');
+      }
+    }, 280);
+    $('autoBtn').textContent='Stop auto';
+    log('Started auto-run.');
+  });
+
+  // Populate the toolbar preset dropdown (shares options with the sidebar select).
+  presets.forEach((p,i)=>{
+    const o = document.createElement('option'); o.value=i; o.textContent=p.name;
+    $('toolbarPreset').appendChild(o);
+  });
+
+  // Primary-toolbar wiring
+  $('tbLoadPreset').addEventListener('click', ()=>{
+    const i = parseInt($('toolbarPreset').value, 10);
+    $('presetSelect').value = $('toolbarPreset').value;
+    loadPreset(i);
+  });
+  $('tbBelief').addEventListener('click', beliefStep);
+  $('tbAction').addEventListener('click', actionStep);
+  $('tbBoth').addEventListener('click', ()=>{ beliefStep(); actionStep(); log('Toolbar: belief + action.'); });
+  $('tbAuto').addEventListener('click', ()=> $('autoBtn').click());
+  $('tbReset').addEventListener('click', resetBeliefs);
+  $('tbRandomize').addEventListener('click', randomizeBeliefs);
+
+  // Intro strip persistence
+  const INTRO_KEY = 'learninglabs.LaplaceTower.introDismissed';
+  const introEl = $('introStrip');
+  if (localStorage.getItem(INTRO_KEY) === '1') introEl.classList.add('hidden');
+  $('introDismissBtn').addEventListener('click', ()=>{
+    introEl.classList.add('hidden');
+    localStorage.setItem(INTRO_KEY, '1');
+  });
+
+  // Guided tour
+  const tourSteps = [
+    { sel:'#toolbarPreset', title:'Pick a preset', body:'Start with "1 level / 2 orders — sensory intuition". It is the simplest teaching world.' },
+    { sel:'#stripF', title:'Watch F shrink', body:'Total free energy. Your job is to lower this below the preset target (shown in the same cell).' },
+    { sel:'#tbBelief', title:'Belief step', body:'Updates μ (the posterior modes) by numerical gradient of F. Click this repeatedly until F stops falling.' },
+    { sel:'#tbAction', title:'Action step', body:'Action only changes sensory input y(u). Click after beliefs are coherent — now action can reduce ey directly.' },
+    { sel:'#addLevelBtn', title:'Add a level', body:'Once the 1-level preset feels stable, add a hierarchical level. An upper level predicts lower-level causes.' },
+    { sel:'#tbAuto', title:'Auto-run', body:'Alternates belief and action steps until F stops changing. Good for the multi-level presets.' }
+  ];
+  let tourIndex = 0;
+  const tourOverlay = document.createElement('div');
+  tourOverlay.className = 'tour-overlay';
+  tourOverlay.innerHTML = `<div class="tour-card" role="dialog" aria-labelledby="tourTitle"><h4 id="tourTitle"></h4><div class="step-line" id="tourBody"></div><div class="tour-actions"><button id="tourSkipBtn">Close</button><div style="display:flex;gap:8px;align-items:center;"><span id="tourProgress" class="small"></span><button id="tourNextBtn">Next →</button></div></div></div>`;
+  document.body.appendChild(tourOverlay);
+  const tourHighlight = document.createElement('div');
+  tourHighlight.className = 'tour-highlight';
+  function showTourStep(i){
+    const s = tourSteps[i]; if(!s){ closeTour(); return; }
+    tourOverlay.querySelector('#tourTitle').textContent = s.title;
+    tourOverlay.querySelector('#tourBody').textContent = s.body;
+    tourOverlay.querySelector('#tourProgress').textContent = `${i+1} / ${tourSteps.length}`;
+    tourOverlay.querySelector('#tourNextBtn').textContent = i===tourSteps.length-1 ? 'Finish ✓' : 'Next →';
+    const t = document.querySelector(s.sel);
+    if(t){
+      t.scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(()=>{
+        const r = t.getBoundingClientRect();
+        tourHighlight.style.left = (window.scrollX + r.left - 6) + 'px';
+        tourHighlight.style.top = (window.scrollY + r.top - 6) + 'px';
+        tourHighlight.style.width = (r.width + 12) + 'px';
+        tourHighlight.style.height = (r.height + 12) + 'px';
+        if(!tourHighlight.parentNode) document.body.appendChild(tourHighlight);
+      }, 220);
+    }
+  }
+  function openTour(){ tourIndex=0; tourOverlay.classList.add('on'); showTourStep(0); }
+  function closeTour(){ tourOverlay.classList.remove('on'); if(tourHighlight.parentNode) tourHighlight.parentNode.removeChild(tourHighlight); }
+  $('tourOpenBtn').addEventListener('click', openTour);
+  tourOverlay.querySelector('#tourSkipBtn').addEventListener('click', closeTour);
+  tourOverlay.querySelector('#tourNextBtn').addEventListener('click', ()=>{
+    tourIndex += 1;
+    if(tourIndex >= tourSteps.length){ closeTour(); return; }
+    showTourStep(tourIndex);
+  });
+  tourOverlay.addEventListener('click', (e)=>{ if(e.target === tourOverlay) closeTour(); });
+
+  loadPreset(0);
+  renderEditors();
+  update();
+  window.__laplace_load = (i) => { loadPreset(i); };
+  window.__laplace_step = () => { const b = [...document.querySelectorAll('button')].find(x => /belief step$/i.test(x.textContent)); if (b) b.click(); };
+})();
+</script>
+
+<script>
+/* ================================================================
+   Learning Shell — isolated from the sim's IIFE
+   ================================================================ */
+(function(){
+  const LS = window.LS = {};
+  const state = { path: 'real', cfg: null, eqTab: 'equation', beatIdx: 0 };
+  const pathbar = document.querySelector('.ls-pathbar');
+  const picker = document.getElementById('lsPickerOverlay');
+  const pickerDismiss = document.getElementById('lsPickerDismiss');
+  const pickerBtn = document.getElementById('lsPickerBtn');
+  const dysBtn = document.getElementById('lsDysBtn');
+  const dockG = document.getElementById('lsDockGlossary');
+  const dockA = document.getElementById('lsDockAnalogies');
+  const dockX = document.getElementById('lsDockExercises');
+  const panel = document.getElementById('lsPanel');
+  const panelOv = document.getElementById('lsPanelOverlay');
+  const panelTitle = document.getElementById('lsPanelTitle');
+  const panelBody = document.getElementById('lsPanelBody');
+  const panelClose = document.getElementById('lsPanelClose');
+  const eqBody = document.getElementById('lsEqBody');
+  const eqTabs = [...document.querySelectorAll('[data-ls-tab]')];
+  const beatHost = document.getElementById('lsBeatHost');
+  const tooltip = document.getElementById('lsTooltip');
+  const printRoot = document.getElementById('lsPrintRoot');
+  LS.init = function(cfg) {
+    state.cfg = cfg;
+    const key = 'ls.' + cfg.simKey + '.path';
+    // ls-cookie-bridge-v1: prefer suite-wide `suite_path` cookie over localStorage
+    // so a learner who picks a path on /learn sees it applied here without
+    // having to dismiss another picker.
+    (function(){
+      try {
+        var m = document.cookie && document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);
+        if (m && m[1]) {
+          var v = decodeURIComponent(m[1]);
+          if (['kid','real','equation','derivation'].indexOf(v) !== -1) {
+            localStorage.setItem('ls.' + cfg.simKey + '.path', v);
+          }
+        }
+      } catch(_) {}
+    })();
+    // ls-url-params-v1: honor `?path=` and `?beat=` query params for deep-linking from
+    // session pages. Path query wins over the cookie; beat is applied once.
+    (function(){
+      try {
+        var qs = new URLSearchParams(window.location.search);
+        var qpath = qs.get('path');
+        if (qpath && ['kid','real','equation','derivation'].indexOf(qpath) !== -1) {
+          localStorage.setItem('ls.' + cfg.simKey + '.path', qpath);
+        }
+        var qbeat = parseInt(qs.get('beat') || '', 10);
+        if (!isNaN(qbeat) && qbeat > 0) {
+          setTimeout(function(){ if (window.LS && window.LS.setBeat) window.LS.setBeat(qbeat - 1); }, 50);
+        }
+      } catch(_) {}
+    })();
+
+
+    const dysKey = 'ls.' + cfg.simKey + '.dys';
+    const saved = localStorage.getItem(key);
+    if (localStorage.getItem(dysKey) === '1') { document.body.classList.add('ls-dys'); if (dysBtn) dysBtn.setAttribute('aria-pressed', 'true'); }
+    if (!saved) { if (picker) picker.classList.add('on'); state.path = 'real'; } else { state.path = saved; }
+    applyPathButtons(); renderEqPanel(); renderBeat(); wireTooltipTerms(document.body);
+    if (cfg.onPathChange) cfg.onPathChange(state.path);
+  };
+  LS.setPath = function(p) { state.path = p; if (state.cfg) localStorage.setItem('ls.' + state.cfg.simKey + '.path', p); applyPathButtons(); renderEqPanel(); renderBeat(); if (state.cfg && state.cfg.onPathChange) state.cfg.onPathChange(p); };
+  LS.getPath = function() { return state.path; };
+  function applyPathButtons() { document.querySelectorAll('[data-ls-path]').forEach(b => b.setAttribute('aria-pressed', b.dataset.lsPath === state.path ? 'true' : 'false')); }
+  if (pathbar) pathbar.addEventListener('click', e => { const b = e.target.closest('[data-ls-path]'); if (b) LS.setPath(b.dataset.lsPath); });
+  if (picker) picker.addEventListener('click', e => { const b = e.target.closest('[data-ls-path]'); if (b) { picker.classList.remove('on'); LS.setPath(b.dataset.lsPath); } });
+  if (pickerDismiss) pickerDismiss.addEventListener('click', () => { picker.classList.remove('on'); LS.setPath('real'); });
+  if (pickerBtn) pickerBtn.addEventListener('click', () => picker.classList.add('on'));
+  if (dysBtn) dysBtn.addEventListener('click', () => { document.body.classList.toggle('ls-dys'); const on = document.body.classList.contains('ls-dys'); dysBtn.setAttribute('aria-pressed', on ? 'true' : 'false'); if (state.cfg) localStorage.setItem('ls.' + state.cfg.simKey + '.dys', on ? '1' : '0'); });
+  function openPanel(title, bodyHTML) { panelTitle.textContent = title; panelBody.innerHTML = bodyHTML; panel.classList.add('on'); panelOv.classList.add('on'); panel.setAttribute('aria-hidden','false'); panelOv.setAttribute('aria-hidden','false'); wireTooltipTerms(panelBody); }
+  function closePanel() { panel.classList.remove('on'); panelOv.classList.remove('on'); panel.setAttribute('aria-hidden','true'); panelOv.setAttribute('aria-hidden','true'); }
+  if (panelClose) panelClose.addEventListener('click', closePanel);
+  if (panelOv) panelOv.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closePanel(); if (picker) picker.classList.remove('on'); hideTooltip(); } });
+  function escapeHTML(s) { return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function tierFor(t) { return (state.cfg && state.cfg.terms && state.cfg.terms[t]) || null; }
+  function showTooltip(el) {
+    const term = el.dataset.term; const entry = tierFor(term);
+    if (!entry) { tooltip.innerHTML = `<div class="ls-term-name">${escapeHTML(term)}</div><div class="ls-term-tier">No glossary entry yet.</div>`; }
+    else { const order = { kid:['kid','adult','phd'], real:['adult','kid','phd'], equation:['adult','phd','kid'], derivation:['phd','adult','kid'] }[state.path] || ['adult','phd','kid']; const labels = { kid:'For a 5th grader', adult:'For a curious adult', phd:'For a PhD' }; let html = `<div class="ls-term-name">${escapeHTML(entry.name || term)}</div>`; for (const t of order) if (entry[t]) html += `<div class="ls-term-tier"><b>${labels[t]}:</b> ${escapeHTML(entry[t])}</div>`; tooltip.innerHTML = html; }
+    const r = el.getBoundingClientRect(), tw=320, th=140; let left = window.scrollX + r.left, top = window.scrollY + r.bottom + 6; if (left + tw > window.scrollX + window.innerWidth - 8) left = window.scrollX + window.innerWidth - tw - 8; if (top + th > window.scrollY + window.innerHeight - 8) top = window.scrollY + r.top - th - 6; tooltip.style.left = Math.max(8, left) + 'px'; tooltip.style.top = Math.max(8, top) + 'px'; tooltip.classList.add('on');
+  }
+  function hideTooltip() { if (tooltip) tooltip.classList.remove('on'); }
+  function wireTooltipTerms(root) { if (!root) return; root.querySelectorAll('[data-term]:not([data-ls-wired])').forEach(el => { el.classList.add('ls-term'); el.setAttribute('tabindex','0'); el.setAttribute('data-ls-wired','1'); el.setAttribute('aria-label', 'Definition of ' + el.dataset.term); el.addEventListener('mouseenter', () => showTooltip(el)); el.addEventListener('mouseleave', hideTooltip); el.addEventListener('focus', () => showTooltip(el)); el.addEventListener('blur', hideTooltip); el.addEventListener('click', e => { e.stopPropagation(); showTooltip(el); }); }); }
+  document.addEventListener('click', e => { if (!e.target.closest('[data-term]') && !e.target.closest('.ls-tooltip')) hideTooltip(); });
+  LS.wireTooltipTerms = wireTooltipTerms;
+  if (dockG) dockG.addEventListener('click', () => {
+    const terms = (state.cfg && state.cfg.terms) || {}; const rows = Object.keys(terms).sort();
+    let html = '<input class="ls-glossary-search" id="lsGSearch" placeholder="Search terms…" />';
+    html += '<div id="lsGList">' + rows.map(k => glossaryRow(k, terms[k])).join('') + '</div>';
+    openPanel('Glossary · ' + rows.length + ' terms', html);
+    const input = document.getElementById('lsGSearch'); const list = document.getElementById('lsGList');
+    input.addEventListener('input', () => { const q = input.value.trim().toLowerCase(); list.innerHTML = rows.filter(k => { const e = terms[k]; const hay = (k + ' ' + (e.name||'') + ' ' + (e.kid||'') + ' ' + (e.adult||'') + ' ' + (e.phd||'')).toLowerCase(); return q==='' || hay.includes(q); }).map(k => glossaryRow(k, terms[k])).join(''); });
+  });
+  function glossaryRow(k, e) { return `<div class="ls-glossary-entry"><span class="ls-glossary-sym">${escapeHTML(e.name || k)}</span>
+    <div class="ls-glossary-tier"><b>Kid:</b> ${escapeHTML(e.kid || '—')}</div>
+    <div class="ls-glossary-tier"><b>Adult:</b> ${escapeHTML(e.adult || '—')}</div>
+    <div class="ls-glossary-tier"><b>PhD:</b> ${escapeHTML(e.phd || '—')}</div></div>`; }
+  if (dockA) dockA.addEventListener('click', () => {
+    const an = (state.cfg && state.cfg.analogies) || [];
+    const html = an.map(a => `<div class="ls-analogy">
+      <h6><span class="ls-analogy-persona">${escapeHTML(a.persona || '')}</span>${escapeHTML(a.title || '')}</h6>
+      <div class="ls-analogy-scenario">${a.scenario || ''}</div>
+      ${a.map ? `<div class="ls-analogy-map"><b style="color:var(--accent);font-size:11px;display:block;margin-bottom:2px;">Variable map</b><table>${Object.entries(a.map).map(([k,v])=>`<tr><td>${escapeHTML(k)}</td><td>${escapeHTML(v)}</td></tr>`).join('')}</table></div>` : ''}
+      ${a.exercise ? `<div class="ls-analogy-ex"><b>Micro-exercise:</b> ${escapeHTML(a.exercise)}</div>` : ''}
+    </div>`).join('');
+    openPanel('Analogy library · ' + an.length + ' analogies', html || '<div>No analogies defined.</div>');
+  });
+  if (dockX) dockX.addEventListener('click', () => {
+    const ex = (state.cfg && state.cfg.exercises) || [];
+    const html = ex.map((e, i) => `<div class="ls-exercise">
+      <h6>${escapeHTML(e.title || 'Exercise ' + (i+1))}</h6>
+      <div class="ls-ex-meta">${escapeHTML(e.time || '2–5 minutes')} · ${escapeHTML(e.materials || 'Household objects')}</div>
+      <div class="ls-ex-sect"><b>What you need</b><ul>${(e.need||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul></div>
+      <div class="ls-ex-sect"><b>Do this</b><ol>${(e.steps||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ol></div>
+      <div class="ls-ex-sect"><b>What you should see</b><div style="font-size:12px;color:var(--text)">${escapeHTML(e.outcome || '')}</div></div>
+      <div class="ls-ex-sect"><b>Back to the sim</b><div style="font-size:12px;color:var(--muted)">${escapeHTML(e.back || '')}</div></div>
+      <button class="ls-ex-print" data-ex-print="${i}">Print this card (half-letter)</button>
+    </div>`).join('');
+    openPanel('Physical exercises · ' + ex.length + ' cards', html || '<div>No exercises defined.</div>');
+    panelBody.addEventListener('click', e => { const b = e.target.closest('[data-ex-print]'); if (!b) return; printExercise(ex[parseInt(b.dataset.exPrint,10)]); });
+  });
+  function printExercise(e) { if (!e || !printRoot) return; printRoot.style.display = 'block'; printRoot.innerHTML = `<h3 style="margin:0 0 4px;font-size:14pt;">${escapeHTML(e.title || 'Exercise')}</h3><div style="font-size:10pt;margin-bottom:8px;">${escapeHTML(e.time || '')} · ${escapeHTML(e.materials || '')}</div><div style="margin-bottom:8px;"><b>What you need</b><ul style="margin:2px 0 0 18px;">${(e.need||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ul></div><div style="margin-bottom:8px;"><b>Do this</b><ol style="margin:2px 0 0 18px;">${(e.steps||[]).map(x=>`<li>${escapeHTML(x)}</li>`).join('')}</ol></div><div style="margin-bottom:8px;"><b>What you should see</b><div>${escapeHTML(e.outcome || '')}</div></div><div><b>Back to the sim</b><div>${escapeHTML(e.back || '')}</div></div>`; setTimeout(() => { window.print(); printRoot.style.display = 'none'; }, 50); }
+  eqTabs.forEach(t => t.addEventListener('click', () => { state.eqTab = t.dataset.lsTab; renderEqPanel(); }));
+  function renderEqPanel() { eqTabs.forEach(t => t.setAttribute('aria-pressed', t.dataset.lsTab === state.eqTab ? 'true' : 'false')); const ep = (state.cfg && state.cfg.equationPanel) || {}; const body = ep[state.eqTab]; if (!eqBody) return; if (!body) { eqBody.innerHTML = '<div style="color:var(--muted)">(no content)</div>'; return; } if (typeof body === 'string') eqBody.innerHTML = body; else if (body.html) eqBody.innerHTML = body.html; wireTooltipTerms(eqBody); }
+  function renderBeat() { if (!beatHost) return; const beats = (state.cfg && state.cfg.beats) || []; if (!beats.length) { beatHost.innerHTML = '<div style="color:var(--muted);font-size:13px;">No beats defined.</div>'; return; } state.beatIdx = Math.max(0, Math.min(beats.length - 1, state.beatIdx)); const b = beats[state.beatIdx]; const text = (b.text && (b.text[state.path] || b.text.adult || b.text.real || b.text.kid)) || b.hero || ''; beatHost.innerHTML = `<div class="ls-beat"><div class="ls-beat-body"><span class="ls-beat-head">Beat <span class="ls-beat-idx">${state.beatIdx+1} / ${beats.length}</span> · ${escapeHTML(b.hero || '')}</span><span>${text}</span></div><div class="ls-beat-ctrl"><button id="lsBeatPrev">◀</button><button class="primary" id="lsBeatDo">${escapeHTML(b.action || 'Do this')}</button><button id="lsBeatNext">▶</button></div></div>`; wireTooltipTerms(beatHost); document.getElementById('lsBeatPrev').addEventListener('click', () => { state.beatIdx--; renderBeat(); }); document.getElementById('lsBeatNext').addEventListener('click', () => { state.beatIdx++; renderBeat(); }); document.getElementById('lsBeatDo').addEventListener('click', () => { if (b.do) { try { b.do(); } catch(_) {} } }); }
+  LS.renderBeat = renderBeat; LS.setBeat = function(i) { state.beatIdx = i; renderBeat(); };
+})();
+
+/* ---- Per-sim content: Laplace Tower ---- */
+const LAPLACE_TERMS = {
+  'μ': { name:'μ', kid:'Your best guess about a hidden thing.', adult:'Posterior mode under the Laplace approximation.', phd:'μ ≈ arg max q(x); centre of Gaussian Laplace approx.' },
+  'Σ': { name:'Σ', kid:'How uncertain you are — fatter = more fuzzy.', adult:'Posterior covariance ≈ negative inverse Hessian of log p at μ.', phd:'Σ = (−∂² ln p / ∂x²)⁻¹ at x = μ (Laplace).' },
+  'εy': { name:'εy', kid:'How far off your explanation is from what the world shows.', adult:'Sensory prediction error at the lowest level.', phd:'εy = y − g₀(μ¹).' },
+  'εx': { name:'εx', kid:'How wrong your flow story is — stuff should be moving right, did it?', adult:'State-dynamics residual: Dμx − f(μx, μv).', phd:'εxⁱ = D μxⁱ − fⁱ(μxⁱ, μvⁱ).' },
+  'εv': { name:'εv', kid:'Mismatch between this floor\u2019s guess and the next floor\u2019s prediction.', adult:'Between-level cause residual.', phd:'εvⁱ = μvⁱ − gⁱ⁺¹(μx^{i+1}, μv^{i+1}); top uses η.' },
+  'Πy': { name:'Πy', kid:'Strictness about the bottom sensor story.', adult:'Sensory precision (inverse variance).', phd:'Diagonal Πy scaling εy.' },
+  'Πx': { name:'Πx', kid:'Strictness about flow at each floor.', adult:'State precision per level.', phd:'Πxⁱ diagonal per level.' },
+  'Πv': { name:'Πv', kid:'Strictness about between-floor cause.', adult:'Cause precision per level.', phd:'Πvⁱ diagonal per level.' },
+  'D': { name:'D', kid:'A shifter that turns value→velocity→… one step up.', adult:'Derivative operator in generalized coordinates.', phd:'Upper-shift (nilpotent) matrix acting on stacks.' },
+  'u': { name:'u', kid:'Your action — only changes what the sensors see.', adult:'Action variable; updates sensory input via u̇ = −∂F/∂u.', phd:'Action couples only through y(u); keeps equations of motion in belief updates.' },
+  'F': { name:'F', kid:'Total "how wrong am I" across all floors.', adult:'Variational free energy, summed across levels.', phd:'F = ½ Πy εy² + Σᵢ ½ Πxⁱ ‖εxⁱ‖² + Σᵢ ½ Πvⁱ ‖εvⁱ‖².' },
+  'η': { name:'η', kid:'What you expected the very top cause to be.', adult:'Empirical prior on the topmost cause.', phd:'Hyper-prior η for the top level.' },
+  'level': { name:'level', kid:'One floor of the tower.', adult:'A layer of the hierarchy with its own μx, μv, η.', phd:'Hierarchical level; each consumes lower level\u2019s error and predicts it.' },
+  'Laplace': { name:'Laplace', kid:'Approximating a bell-shaped belief with a centre and a width.', adult:'Laplace approximation: Gaussian centred at the mode with covariance = −H⁻¹.', phd:'q(x) ≈ N(μ, Σ); Σ from −∂² ln p/∂x² at the mode.' }
+};
+const LAPLACE_ANALOGIES = [
+  { persona:'P1 · Kid', title:'Telephone game', scenario:'Kids in a line whisper a sentence. Each whisper is a prediction for the kid below. When a whisper matches, nobody complains. When it doesn\u2019t, a correction goes back up the line.', map:{ 'εy':'Bottom kid\u2019s surprise', 'εv':'Between-kid correction', 'μ':'Each kid\u2019s current sentence', 'Π':'How loud they whisper' }, exercise:'4 people; whisper a sentence. Make the 2nd person lie; watch where the corrections flow.' },
+  { persona:'P2 · Pre-algebra', title:'Assembly line', scenario:'Managers predict the line below them. Workers report mistakes upward. The whole line stops when nobody has a mistake to report.', map:{ 'level':'One management tier', 'εv':'Report up', 'μv':'Manager expectation' }, exercise:'Act out a 3-tier line; one person intentionally drops ε sometimes and watch corrections converge.' },
+  { persona:'P3 · Adult', title:'Org chart: sales vs VP', scenario:'VP expects weekly sales (a prediction). Sales report gaps (errors). VP updates forecast (μ). A strict VP (high Π) is hard to change; a flexible VP updates quickly.', map:{ 'μ':'VP forecast', 'εv':'Sales minus forecast', 'Π':'VP strictness', 'η':'Board-level forecast' }, exercise:'Simulate with a friend as VP; call out numbers, update with η and noise.' },
+  { persona:'P4 · Quantitative', title:'Linear-Gaussian hierarchical PC', scenario:'Each level computes prediction errors weighted by precisions, sends errors upward, predictions downward. Gradient descent on F minimises all three error families jointly.', map:{ 'F':'Σ ½εᵀΠε', 'μ̇':'−∂F/∂μ', 'D':'Upper-shift', 'u̇':'−∂F/∂u' }, exercise:'Derive ∂F/∂μxⁱ for 2 levels; match the sim\u2019s belief-step direction.' },
+  { persona:'P5 · PhD', title:'"Motion of the mode is the mode of the motion"', scenario:'In generalized coords, Dμ = mean of motion. Full predictive-coding update implements Laplace-approximated variational inference in a nonlinear hierarchy. See Friston (2008) and Box 4.3 of Parr, Pezzulo & Friston.', map:{ 'D':'Generalized motion', 'Laplace':'q(x) Gaussian at mode', 'εy':'Innovation signal', 'u̇':'Action closes sensory loop' }, exercise:'Relate the sim\u2019s numerical gradient to the theoretical prediction-error form; verify signs match.' }
+];
+const LAPLACE_EXERCISES = [
+  { title:'E1 · Three stacked paper cups', time:'5 minutes', materials:'Paper cups, marbles',
+    need:['3 paper cups','9 marbles','A table'],
+    steps:['Label cups Level 1, 2, 3.','Put some marbles under each, hidden.','Level 3 predicts Level 2 count; Level 2 predicts Level 1.','Reveal bottom-up; compute errors.','Update predictions upward.'],
+    outcome:'Each level\u2019s prediction should agree with the level below at equilibrium.',
+    back:'Click Belief step repeatedly; watch Fy, Fx, Fv drop.'
+  },
+  { title:'E2 · Three-person whisper with a lie',
+    time:'5 minutes', materials:'Just people',
+    need:['3 people','A sentence'],
+    steps:['Person A whispers a true sentence to B.','B intentionally lies to C.','C shouts back "That can\u2019t be right".','B updates what it whispers.','A updates what it sent next.'],
+    outcome:'Errors propagate up; predictions align after a few rounds.',
+    back:'Add a level in the sim; observe the new row of μ/ε propagate.'
+  },
+  { title:'E3 · "Who corrects whom?" diagram',
+    time:'3 minutes', materials:'Sticky notes',
+    need:['Sticky notes','A pen'],
+    steps:['Draw boxes for μ¹, μ², μ³.','Draw arrows: εv goes up, predictions go down.','Pin one μ to a wrong value.','Trace which ε activates; where the correction flows.','Repeat with a top-level perturbation.'],
+    outcome:'Bottom-up errors travel up; top-down predictions travel down.',
+    back:'Use the sim\u2019s Action step: action only changes y; watch εy drive the whole stack.'
+  }
+];
+const LAPLACE_BEATS = [
+  { hero:'Start with 1 level', text:{ kid:'Build the simplest tower. One floor only.', real:'Load the default preset: 1 level, 2 orders.', equation:'L=1, N=2.', derivation:'Single-level linear Gaussian generative model.' }, action:'Load preset', do:()=>window.__laplace_load && window.__laplace_load(0) },
+  { hero:'Belief step', text:{ kid:'Let the floor update its guess to shrink the error.', real:'One belief step: μ ← μ − η ∂F/∂μ.', equation:'μ̇ = −∂F/∂μ.', derivation:'Euler step on gradient flow of F under Laplace.' }, action:'Belief step', do:()=>window.__laplace_step && window.__laplace_step() },
+  { hero:'Add a level', text:{ kid:'Build a second floor. Now there are two levels talking.', real:'Click Add level. A new row of μx, μv appears.', equation:'L=2 with coupling via εv.', derivation:'Hierarchical coupling; top uses η, lower uses upper\u2019s prediction.' }, action:'Add level', do:()=>{ const b = [...document.querySelectorAll('button')].find(x => /add level/i.test(x.textContent)); if (b) b.click(); } },
+  { hero:'Top-down predictions', text:{ kid:'The top floor says what the one below should be.', real:'Upper-level predictions flow down as εv targets.', equation:'pred_v^i = g^{i+1}(μx^{i+1}, μv^{i+1}).', derivation:'Downward generative predictions.' }, action:'Belief step' },
+  { hero:'Bottom-up errors', text:{ kid:'When guesses don\u2019t match, an error goes up.', real:'εv from each level flows upward to update the level above.', equation:'εv^i = μv^i − pred_v^i.', derivation:'Upward residuals drive the mode update above.' }, action:'Belief step' },
+  { hero:'Add an order', text:{ kid:'Think faster. Now the floor tracks speed, not just value.', real:'Click Add order to extend μ into generalized coordinates.', equation:'Stack μ → (μ, μ\u2032, …).', derivation:'Generalised coords via D.' }, action:'Add order', do:()=>{ const b = [...document.querySelectorAll('button')].find(x => /add order/i.test(x.textContent)); if (b) b.click(); } },
+  { hero:'Action step', text:{ kid:'Do something. Only the sensor reading changes.', real:'u̇ = −∂F/∂u; action shrinks εy through the world.', equation:'u̇ = −∂F/∂u.', derivation:'Active inference closes the loop via sensory data, not beliefs.' }, action:'Action step', do:()=>{ const b = [...document.querySelectorAll('button')].find(x => /action step$/i.test(x.textContent)); if (b) b.click(); } },
+  { hero:'Auto-run', text:{ kid:'Let belief and action run until things stop moving.', real:'Auto-run iterates belief + action until equilibrium.', equation:'Fixed point of joint μ/u dynamics.', derivation:'Free-energy minimum with belief–action equilibrium.' }, action:'Auto-run', do:()=>{ const b = [...document.querySelectorAll('button')].find(x => /auto-run|auto run/i.test(x.textContent)); if (b) b.click(); } }
+];
+const LAPLACE_EQ_PANEL = {
+  story:`<div class="ls-eqmath">Imagine a tower of floors. Each floor whispers a guess to the floor below. If the whisper matches what the lower floor sees, everyone is happy. If not, a correction travels UP. Act on the world (only the sensors) to shrink the complaint from the bottom floor.</div>`,
+  picture:`<div class="ls-eqpic">
+    <div class="ls-eqrow"><span class="ls-eqbox">Level i+1</span><span class="ls-eqarrow">↓ predicts</span><span class="ls-eqbox">Level i</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="εv">εv</span><span class="ls-eqarrow">↑ reports</span><span class="ls-eqbox">Level i+1</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="εy">εy</span><span class="ls-eqarrow">↑ (bottom)</span><span class="ls-eqbox">sensor</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="u">u</span><span class="ls-eqarrow">action → changes y only</span></div>
+  </div>`,
+  equation:`<div class="ls-eqmath"><span data-term="F">F</span> = ½ <span data-term="Πy">Πy</span> <span data-term="εy">εy</span>² + Σᵢ ½ <span data-term="Πx">Πxⁱ</span> ‖<span data-term="εx">εxⁱ</span>‖² + Σᵢ ½ <span data-term="Πv">Πvⁱ</span> ‖<span data-term="εv">εvⁱ</span>‖²
+
+<span data-term="εy">εy</span> = y(<span data-term="u">u</span>) − g₀(<span data-term="μ">μ¹</span>)
+<span data-term="εx">εxⁱ</span> = <span data-term="D">D</span> <span data-term="μ">μxⁱ</span> − fⁱ
+<span data-term="εv">εvⁱ</span> = <span data-term="μ">μvⁱ</span> − gⁱ⁺¹   (top uses <span data-term="η">η</span>)
+
+<span data-term="μ">μ̇</span> = −∂F/∂μ,  <span data-term="u">u̇</span> = −∂F/∂u</div>`,
+  derivation:`<div class="ls-eqmath">Under the <span data-term="Laplace">Laplace approximation</span> q(x) = N(μ, Σ) with Σ = (−∂² ln p/∂x²)⁻¹ at x=μ, the variational free energy becomes a quadratic in the errors. In generalized coords, D implements d/dt and predictions propagate down the hierarchy while weighted errors propagate up. Action couples only through the sensory channel (y(u)), so u̇ = −∂F/∂u shapes the world to reduce εy. See Box 4.3 and Friston 2008.</div>`
+};
+LS.init({ simKey:'LaplaceTower', terms: LAPLACE_TERMS, analogies: LAPLACE_ANALOGIES, exercises: LAPLACE_EXERCISES, beats: LAPLACE_BEATS, equationPanel: LAPLACE_EQ_PANEL, onPathChange:(p)=>LS.renderBeat&&LS.renderBeat() });
+</script>
+</body>
+</html>

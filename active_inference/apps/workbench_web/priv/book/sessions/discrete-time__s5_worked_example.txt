@@ -1,0 +1,359 @@
+the first few time steps (over the fast scale, τ (1)). This inference is propagated back up to the higher level, where it provides evidence for the first
+and fourth sentences (each of which start with this word). Over subsequent
+time steps the evidence accumulated at the lower level is consistent with
+both sentences. At the fourth step (at the slow scale, τ (2)), we would predict
+wait ­under the first sentence and flee ­under the second. On inferring wait
+at the fast timescale, the first sentence is inferred at the slow scale. At the
+final step, the simulation selects the correct sentence and is rewarded with
+correct feedback. The resulting belief updating is seen in the LFP plot in the
+lower part of figure 7.12.
+Deep temporal models of this sort have been used to simulate reading
+(Friston, Rosch et al. 2017), delay-­period working memory tasks (Parr and
+Friston 2017c), and computation of empirical priors for visual inference (Parr,
+Benrimoh et al. 2018). In addition, they have been leveraged in theoretical
+accounts of motivation and control (Pezzulo, Rigoli, and Friston 2018). In
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+150
+
+“flee,
+“wait,
+“wait,
+“flee,
+“wait,
+“wait,
+
+sτ(2)
+
+wait,
+wait,
+flee,
+wait,
+wait,
+flee,
+
+feed,
+wait,
+wait,
+feed,
+wait,
+wait,
+
+wait”
+feed”
+feed”
+flee”
+flee”
+flee”
+
+“flee”
+sτ(1)
+
+“feed”
+“wait”
+
+“wait”
+
+.
+Vτ
+
+τ (2) =
+
+1,
+
+τ (1) =
+
+1,
+
+2,
+2,
+
+3,
+
+1,
+
+3,
+2,
+
+3,
+
+1,
+
+4,
+2,
+
+3,
+
+1,
+
+5
+2,
+
+3,
+
+1,
+
+2,
+
+3
+
+Figure 7.13
+Belief updating occurs over multiple timescales by inverting a simulated hierarchical
+inference model. This relies on a generative model with a separation of timescales
+(shown as a slow timescale—­τ    (2)—­and a fast timescale—­τ (1)). Belief updating at the
+higher level (s(2) ), representing sentences, is slower than at the lower level (s(1)), representing words. Lower panel: LFPs, i.e., the rate of change of the log expectations—­
+which is proportional to the prediction errors (ε ) shown in previous figures.
+
+princi­ple, ­these models can be extended to an arbitrary number of levels,
+accounting for a deeply structured world with dynamics that play out over
+many dif­fer­ent temporal scales.
+We can draw an in­
+ter­
+est­
+ing parallel between hierarchical models of
+the sort in figures 7.12 and 7.13 and learning models of the sort in figure 7.10. Learning models can be considered hierarchical generative models, which highlight a separation of timescales between faster inferential
+dynamics (updates of beliefs about states) and slower learning dynamics
+(updates of beliefs about par­ameters). The models shown in figures 7.10
+and 7.12 may be also combined to arbitrary levels of complexity, wherein
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+151
+
+the relationships between variables on dif­fer­ent levels may themselves be
+learned. This permits designing increasingly sophisticated generative models that address systems-­level cognitive and neurobiological questions.
+7.7 Summary
+In this chapter, we saw some of the ways that discrete-­time generative models
+may be constructed to address a range of cognitive and neurobiological prob­
+lems, such as perceptual inference, decision-­making and planning, balancing
+exploration and exploitation, parametric and structure learning, and novelty
+seeking. This is far from an exhaustive summary of applications of discrete
+models in Active Inference, but it serves to illustrate the key princi­ples of
+this sort of modeling. The models outlined above may be combined hierarchically, with added priors over par­ameters, and with context-­sensitive priors for policies or preferences. Importantly, inference using both s­ imple and
+more complex generative models can always proceed through f­ree energy
+minimization, which illustrates the generality of the approach. The fact that
+dif­fer­ent aspects of Active Inference become apparent ­under distinct generative models (e.g., novelty seeking with priors over model par­ameters) opens
+up the possibility of exploring an open-­ended set of cognitive and biological
+prob­lems by designing the appropriate generative models.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+8
+
+Active Inference in Continuous Time
+
+Every­thing flows, nothing stands still.
+—­Heraclitus, 501 BC
+
+8.1 Introduction
+This chapter complements chapter 7 by continuing our discussion of how to
+build a generative model. Our focus ­here is on continuous state-­space models, which are well suited for modeling the physical fluctuations impinging
+on sensory receptors and for the continuous motion of the effectors (e.g.,
+muscles) we use to change the world around us. T
+­ here are many applications of ­these models. In this chapter, we set out the princi­ples ­behind
+their use. We highlight the kinds of model used in motor control and the
+dynamical systems that play a role in such models, and we touch on the
+concept of generalized synchrony. Fi­nally, we discuss the reconciliation of
+discrete and continuous generative models.
+8.2 Movement Control
+As we saw in chapter 4, the generative model that underwrites active inference in continuous time may be written as a pair of stochastic equations
+that determine how states ( x ) generate data ( y) and how states evolve over
+time depending on some static variable (v):
+y = g(x) + ω y
+.
+x = f (x,v) + ω x
+
+(8.1)
+
+­These equations and the precision associated with the fluctuations (ω ) determine the model used to draw inferences about the c­ auses of sensations.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+154
+
+Note that action is absent from equation 8.1. This is ­because (as outlined in
+chapter 6), action is part of the generative pro­cess, not the generative model.
+The generative model only deals with t­ hose variables that are directly influenced by states external to a Markov blanket. If we w
+­ ere to write down the
+dynamics of the real world (i.e., the generative pro­cess), we would have to
+include action (u):
+y = g(x) + ω y
+.
+x = f(x, u) + ω x
+
+(8.2)
+
+Note that the functions g and f (and the precisions of ω) used to define the
+generative model (equation 8.1) are not necessarily the same as ­those used
+to define the generative pro­cess (equation 8.2). As we saw in chapters 2–4,
+actions change sensory data such that f­ree energy is minimized. This means
+we do not need to explic­itly write down the dynamics of action in the generative model—­they emerge from the choices made for the terms in equation 8.1. To gain some intuition for this, we start with a very ­simple sort of
+generative model:
+g( x ) = x
+f ( x, v) = v − x
+
+(8.3)
+
+Equation 8.3 says that the hidden state represents the expected value for
+the data and that it has dynamics consistent with a ­simple (i.e., point)
+attractor. By attractor, we mean that when x is less than v, the expected rate
+of change of x is positive, and vice versa. This means that x ­will always flow
+­toward v (i.e., v is an attracting or fixed point). To generate data, we define a
+­simple generative pro­cess:
+g( x ) = x
+f ( x, u) = u
+
+(8.4)
+
+On minimizing f­ ree energy, this means that action ­will change to fulfill
+the predictions of equation 8.3. If μ is the expected value of x, this means
+the action that minimizes the difference between the predicted data ( g( μ))
+and the observed data ( y) is to set u equal to v − μ. This is an expression of
+the “equilibrium point hypothesis” (Feldman and Levin 2009), which treats
+motor control as enacted by reflex arcs that simply draw limbs ­toward equilibrium points set by descending motor signals. U
+­ nder Active Inference,
+­these signals are predictions—­specifically, proprioceptive predictions about,
+for example, the expected position of limbs or eyes (Adams, Shipp, and
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+155
+
+Friston 2013). Therefore, movement control results from the fulfillment of
+(proprioceptive) predictions by action, as schematically illustrated in figure 8.1. Note that this scheme does not require specification of “inverse
+models” (i.e., mappings from desired consequences to the motor commands to reach them) that are widely used in other formulations of motor
+control (Wolpert and Kawato 1998).
+The expression in equation 8.3 is the simplest sort of attractor system
+we might employ in a generative model. However, it is too ­simple in many
+settings, where more realistic Newtonian dynamics apply. A more sophisticated model recognizes that forces—­generated by muscles—­change the
+velocity (i.e., induce an acceleration), not the position. Equation 8.5 sets
+this out explic­itly with x1 as the position and x2 as the velocity:
+⎡ x2
+⎤
+f (x,v) = ⎢ κ
+⎥
+⎣ m (v − x1 ) ⎦
+
+(8.5)
+
+This expression is equivalent to the dynamics of a spring obeying Hooke’s
+law. The rate of change of the position (first ele­ment) is simply the velocity.
+The rate of change of the velocity (second ele­ment) is proportional to the
+distance between the current position and the point v, with the constant
+of proportionality: a ratio between the mass of the object (m) and a (spring)
+constant (κ ). Multiplying both sides by the mass, we have the force1 generated by a spring (κ (v − x1)) attached to the points v and x1 equal to the mass
+multiplied by the rate of change of the velocity. This is just Newton’s second
+law. In other words, we can write down a generative model that predicts the
+dynamics that would unfold if t­ here w
+­ ere a spring drawing a limb to a desired
+location. By predicting the (proprioceptive) data consequent on this Newtonian mechanics, we can enact the movement that fulfills t­ hese predictions.
+8.3 Dynamical Systems
+As outlined in section 8.2, continuous-­time formulations of Active Inference are well suited to characterization of movements. More generally,
+they are appropriate in specifying generative models of nonlinear dynamical systems wherein discretization of time and space is inefficient. The
+simplest form of dynamical system is the attractor of equation 8.3, but
+much richer be­hav­ior can be developed from more complex systems. In
+the ­limited space of this book, we cannot do justice to the large body of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+156
+
+Generative model
+
+v
+f (x,v)
+
+
+µx = Dµx + ∇µx f  Πxεx + …
+
+x
+
+µx
+
+y
+Generative process
+
+y = g(x) + ωy
+
+u = –∇ y(u) Π ε
+u
+y y
+
+εy
+εy = y – g(µx)
+
+f (x,u)
+x
+
+Figure 8.1
+Spinal reflexes, illustrating the distinction between a generative pro­cess (out ­there
+in the world) and a generative model in the setting of action generation. The model
+assumes that the position ( x ) of a limb (or hand or other body part) is drawn ­toward
+some point (v). The dashed arrow in the upper plot shows this belief. Beliefs about
+x( μx ) may be substituted in place of x and used to update beliefs about its rate of
+change. The resulting μx is then used to predict sensory data ( y) via the g function in
+the generative model. Sensory data are actually generated by the generative pro­cess
+via the function g, which takes the “real” value of x as its argument. The error (εy)
+then drives changes in action (u) such that the error is resolved. This resolution happens through the generative model, as the action determines the rate of change of x
+via f. This ­causes x to move to the location in space that generates data y consistent
+with the prediction (  g(  μx )), setting εy and therefore the rate of change of a to zero.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+157
+
+Box 8.1
+Precision, attention, and sensory attenuation
+We addressed the importance of precision in chapter 7, but it is worth recapping its role in continuous-­time systems. In many ways, this concept is more
+naturally addressed in this setting, as the Π variable appears as a direct consequence of the Laplace approximation. This acts directly as a multiplicative
+gain in the inferential dynamics (see figure 8.1), with dif­fer­ent precisions
+weighting alternative influences over belief updating.
+The interpretation of precision as a synaptic gain connects it to several
+impor­tant aspects of neurobiology. From an empirical point of view, higher
+precision implies more vigorous belief updating of the sort that might be mea­
+sured in electrophysiological research as a large amplitude-­evoked response
+with an early peak or in single-­cell recordings as a multiplicative effect on
+neuronal firing rates in response to a stimulus placed in that cell’s receptive
+field. T
+­ hese findings are often associated with attentional pro­cessing, where
+one sensory channel (or subset of channels) is favored above o
+­ thers. From
+the perspective of active inference, precision and attention are synonyms. The
+former has been used to reproduce a range of attentional phenomena in silico,
+including the Posner paradigm (Feldman and Friston 2010). Specifically, using
+a cue to predict the precision of sensory input from one of two locations
+reproduces the empirical finding that responses to stimuli in the cued location are faster than ­those appearing in the alternative location.
+A second impor­tant aspect of precision control is its role in movement
+generation. To understand this, it is worth thinking about what happens in
+the absence of this control. Imagine, first, that sensory data are predicted with
+high precision. The messages from ­these data are therefore afforded high synaptic gain and lead to veracious inferences about the position of some body
+part. The prob­lem with this is the equivalence between motor commands and
+predictions ­under Active Inference. An accurate belief that “I am not moving” cannot be used to predict the sensory consequences of movement, vital
+for the initiation of that movement. With high precision sensory input, the
+belief that “I am moving” is immediately corrected in the face of evidence to
+the contrary; hence no movement is executed. This tells us something impor­
+tant: In order to generate movement, we must be able to ignore the sensory
+consequences of that movement to form the (initially false) belief that “I am
+moving.” Once this belief is established, the proprioceptive (and other sensory) consequences of that movement may be predicted and enacted through
+the mechanisms outlined in figure 8.1. This pro­cess of ignoring evidence to
+the contrary is known as “sensory attenuation” and represents the decrease in
+precision required for a movement to take place (Brown, Adams et al. 2013;
+Pezzulo 2013; Seth 2013; Pezzulo, Rigoli, and Friston 2015; Seth and Friston
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+158
+
+Box 8.1 (continued)
+2016; Allen et al. 2019). Clearly it is useful between movements to restore this
+precision, to draw the appropriate inferences from sensory input. This implies
+a cyclical pro­cess of attenuating and moving (e.g., the cyclical suppression

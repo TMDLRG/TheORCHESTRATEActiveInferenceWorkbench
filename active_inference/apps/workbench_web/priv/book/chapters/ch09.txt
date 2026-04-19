@@ -1,0 +1,981 @@
+the most likely option. This softmax pa­ram­e­ter can itself be estimated.
+The result is the probability of the actions u
+­ nder the model, given a
+sequence of stimuli and par­ameters—­that is, a likelihood of behavioral
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+178
+
+data given a model. Equipping the objective par­ameters with Gaussian pri-
+
+ors1 (θ ∼ N (η , Π(1) )) , we can use the Laplace assumption to express a (­free
+energy) approximation to model evidence:
+
+(
+
+! ≈ L( µ ) + 21 ε i Π(1)ε + ln ∇µµ L( µ ) − Π(1)
+ln P(u! |m, o)
+
+ε = η− µ
+µ = arg max
+µ
+
+{
+
+L( µ ) − 21
+
+)
+
+(ε Π ε + ln ∇ L( µ ) − Π )}
+i
+
+(1)
+
+µµ
+
+(9.3)
+
+(1)
+
+Equation 9.3 is the same as that unpacked in box 4.3 (generalized to a
+multidimensional pa­
+ram­
+e­
+ter space), but ­
+here we have substituted an
+explicit form for the posterior covariance and assumed a normally distributed prior. In chapter 4 and in the applications in chapter 8, we ignored
+the terms in equation 9.3 that did not depend on the mode. However, it
+is impor­tant to include ­these ­here when we consider model comparison
+prob­lems.
+To find the value of μ that maximizes the last line of equation 9.3, we
+perform a gradient ascent. U
+­ nder quadratic assumptions, this reduces to
+the following:
+.
+µ = ∇µ L( µ ) + Π(1)ε
+
+(9.4)
+
+While an explicit form for the gradient of the log likelihood used ­here
+may not be available, finite difference methods2 may be used to calculate
+a reasonable numerical approximation. ­These may also be used to find the
+posterior precision, which is the second derivative (or Hessian) of the negative log likelihood plus the prior precision. Equation 9.4 is the simplest
+form of update, but often more sophisticated methods based on the local
+curvature are used.
+9.4 Parametric Empirical Bayes (PEB)
+The variational Laplace procedure in the previous section lets us draw inferences about, and quantify the evidence for a model of, choice be­hav­ior.
+This enables us to computationally phenotype an individual and to compare alternative hypotheses about that individual. However, the in­ter­est­ing
+questions often lie at a group level. For example, we might be interested in
+how a parameter—­such as the precision of prior preferences—­varies with
+age. To answer this question, we can use the approach of section 9.3 to fit
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+179
+
+models to the be­hav­ior of individual participants with a range of ages. We
+then formulate a general linear model that generates the pa­ram­et­ er of interest, taking age into account:
+P(θ | β , X) = N (Xβ , Π(2) )
+
+(9.5)
+
+­Here, X is a matrix whose columns are alternative explanatory variables and
+whose rows indicate each participant. The first column of X typically comprises a matrix of ones (to indicate the effect of the mean pa­ram­e­ter over
+subjects). The second column, in our example, might be the age of each
+participant. The β vector indicates the size of effect of each of the explanatory variables in X. The first ele­ment of β is then the average value of the
+precision (or any other pa­ram­e­ter), while the second is the effect of age on
+precision. This value is the slope of the line in a plot of age ( x-­axis) against
+predicted precision ( y-­axis). ­There may be an arbitrary number of columns
+of X, with an arbitrary number of ele­ments in β.
+Once we have fit the model expressed in equation 9.5, supplemented
+with priors for the β values, we can ask questions about the role of the
+explanatory variables. For example, we can ask w
+­ hether age has an effect on
+the precision of prior preferences by comparing the evidence for a model
+in which the second ele­ment of β is allowed to deviate from zero with the
+evidence for a model with a precise belief that it is zero. Practically speaking, this can be done without multiple model inversions through use of
+Bayesian model reduction (Friston, Parr, and Zeidman 2018).
+9.5 Instructions for Model-­Based Analy­sis
+In practice, we follow the steps outlined below to analyze empirical choice
+be­hav­ior using active inference (Schwartenbeck and Friston 2016). T
+­ hese
+refer to the relevant routines available in the SPM12 Matlab package.
+1. Collect behavioral data, including the choices made and the sensory
+input available to the person making that choice. In addition, collect
+data of interest for second-­level, between-­subject analy­sis (e.g., ­whether
+the subject is a patient or a control subject, relevant demographic information, and so on).
+2. Formulate a POMDP model as in chapter 7. This should be a function
+that takes par­ameters as inputs and outputs a fully specified (but not yet
+solved) POMDP.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+180
+
+3. Specify a likelihood function (i.e., equation 9.2). This tells us how the
+model should be used to calculate a likelihood. This typically calls a
+POMDP solver (like the spm_MDP_VB_X.m routine) to simulate be­hav­ior
+and quantifies the likelihood of observed actions.
+4. Specify prior beliefs about the par­ameters in terms of expectations and
+precisions. Often ­these ­will be centered on zero, with precisions reflecting plausible ranges.
+5. Solve for posterior probability and model evidence. This uses a standard inference scheme such as the variational Laplace procedure outlined above (equation 9.4). The spm_nlsi_Newton.m routine ­will do
+this automatically.
+6. Perform group-­level analy­sis. This typically makes use of PEB, which
+treats the estimated par­ameters for each individual as if they ­were generated by a second-­level model. This allows us to test hypotheses about the
+­causes of ­those par­ameters. Practically, this may be performed using the
+spm_dcm_peb.m routine. Alternative analyses include standard statistical tests of association between the inferred par­ameters for each subject
+and other subject-­specific mea­sures. For example, a canonical variates
+analy­sis may be used to assess the relationship between questionnaire
+scores and inferred par­ameters.
+Figure 9.2’s summary of t­hese instructions are based on the be­hav­ior
+of the rat in the T-­maze task described in chapter 7. First, we place a rat in
+a T-­maze with a rewarding stimulus in ­either the left or right arm and an
+informative cue in the central arm. We then rec­ord the sequence of actions
+taken by the rat. This procedure may be repeated over multiple ­trials to
+rec­ord learned be­hav­ior, and it may be repeated for multiple dif­fer­ent rats
+­under dif­fer­ent interventions (e.g., pharmacological or optoge­ne­tic).
+Once ­these behavioral data have been obtained, we need a likelihood
+function that lets us quantify the probability of be­hav­ior (for a given rat
+in a given condition) u
+­ nder specific pa­ram­et­ er settings. We can do this by
+formulating the POMDP model we considered in chapter 7. This must be
+pa­ram­e­terized in terms of the par­ameters whose likelihood we seek to find.
+For example, if we wanted to assess the precision associated with preferences, we might include a log scale pa­ram­et­er that makes the preference
+distribution more or less peaky.
+Having set up the generative model (from the perspective of the rat),
+we can automatically solve the POMDP using the belief-­update equations
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+1
+
+181
+
+2
+
+Data collection
+
+3
+
+POMDP model
+
+Likelihood function
+
+G
+
+τ=1
+
+τ=2
+
+τ=3
+
+
+
+R
+
+D
+R
+
+Sτ-1
+
+B
+
+Sτ
+
+στ─1
+B
+
+A
+
+A
+
+A
+
+Oτ-1
+
+Oτ
+
+Oτ+1
+
+sτ─1
+
+PEB analysis
+θ=Xβ+ω
+
+sτ+1
+
+sτ
+
+ετ─1
+
+ετ
+
+ετ+1
+
+Oτ-1
+
+Oτ
+
+Oτ+1
+
+P(ũ | θ, õ, m)
+
+ũ
+
+6
+
+στ+1
+sτ+1
+
+sτ
+
+sτ─1
+
+Sτ+1
+
+στ
+
+R
+R
+
+
+
+5
+
+Invert model
+P(θ | m, õ, ũ)
+∞ P(θ | m) P(ũ | θ, õ, m)
+
+4
+
+Prior beliefs
+P(θ | m)
+
+Figure 9.2
+Roadmap of the six-­step inversion procedure for model-­based data analy­sis, as outlined in the main text (with reference to the chapters where more detail may be
+found). The arrows indicate the dependencies between each part of the pro­cess. The
+POMDP model must be defined for the likelihood to be evaluated. The model inversion requires collected data and the likelihood and priors; the PEB analy­sis cannot
+take place ­until ­after model inversion for each subject. Steps 4 and 5 schematize the
+update from a prior distribution over par­ameters ­under a model to a posterior distribution. The evidence and posterior from each model can then be combined using
+PEB to find posterior densities (shown as expectations with accompanying credible
+intervals) for the β coefficients of a linear model predicting ­these par­ameters.
+
+in chapter 4. This lets us calculate the probability of the data (i.e., the
+sequence of arms visited) conditioned on the model with the (preferences)
+scale pa­
+ram­
+e­
+ter at a par­
+tic­
+u­
+lar value. Combining this likelihood with
+our prior completes the specification of a generative model for be­hav­ior
+(from the perspective of the scientist). This may be solved using variational
+Laplace to find a posterior probability distribution over the scale pa­ram­e­ter
+for each rat.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+182
+
+In practice, before analyzing a
+­ctual data, we may want to check the
+face validity of the POMDP model by using it to generate fictive data—­
+and considering ­whether they are qualitatively plausible given the prob­lem
+at hand. A second sensible test for the model is pa­ram­e­ter recovery. This
+entails generating fictive data ­under some (known) pa­ram­e­terization to see
+­whether ­these par­ameters can be recovered on inverting the model. This is
+useful to verify w
+­ hether some par­ameters (or their combinations) are pos­si­
+ble to recover (i.e., identifiable).
+Fi­nally, we can construct a design matrix for a linear model, each row of
+which represents a computational phenotype (e.g., a posterior density over
+each subject’s preferences), with columns representing dif­fer­ent attributes
+of ­those subjects. ­These attributes are variables that could explain differences in a rat’s preferences. In addition to a column of ones indicating
+the average preferences over all rats, ­these ­will include ­things like their
+age, ­whether a drug has been administered, and so on. With this model of
+between-­subject effects, we now perform a PEB analy­sis to assess the contribution of t­ hese explanatory variables to prior preferences.
+9.6 Examples of Generative Models
+In this section, we leverage two examples in the lit­er­a­ture illustrating the
+use of continuous and discrete generative models. First, we briefly overview
+the methods used by Adams, Aponte et al. (2015) and Adams, Bauer et al.
+(2016) (hereafter in this section, Adams et al.) to model smooth pursuit
+eye movements as a way of quantifying the precision par­ameters of each
+subject’s generative models. An impor­tant aspect of this design was the
+simultaneous collection of electrophysiological data (via magnetoencephalography) that enabled the authors to ask questions about the neurobiological substrates of precision or confidence encoding. We then turn to an
+analy­sis of saccadic eye movements by Mirza et al. (2018; hereafter in this
+section, Mirza et al.) formulated as a POMDP model. Each of the associated
+experiments is cartooned in figure 9.3. Our hope is that ­these examples ­will
+help readers understand how the generic methods outlined above can be
+used empirically to answer scientific questions.
+In terms of the sequence of steps outlined in figure 9.2, Adams et al.
+collected data (step 1) from a task in which subjects had to maintain fixation on a moving visual target. The details are not impor­tant, but this task
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+183
+
+Time
+Target
+Eyes
+
+Target
+
+Eye-tracking
+Location
+
+Location
+
+Eye-tracking
+
+Time
+Eyes vertical
+Eyes horizontal
+
+Foveation
+Cat
+Bird
+
+Figure 9.3
+Two experiments outlined in section 9.5. The details are not impor­tant but highlight where meta-­Bayesian inference has been successfully exploited and the kinds of
+behavioral data it can be applied to. Left: Experiment of Adams et al., who mea­sured
+smooth pursuit eye movements as subjects tracked a moving target. Right: Experiment from Mirza et al., who mea­sured saccadic eye movements during an exploration task. The visual display was divided into four quadrants, two of which included
+stimuli (cat and bird). Dif­fer­ent scene categories involved dif­fer­ent configurations of
+stimuli, meaning participants had to select which quadrants to foveate to gain sufficient information to categorize the scene. The Adams task (left ) generates continuous
+eye-­tracking data, while the Mirza task (right ) leads to a sequence of fixations and
+may be discretized. ­These are the behavioral data (u) from step 1 in figure 9.2.
+
+comprised two conditions. In the first, the target moved according to a
+predictable sinusoid. In the second, it followed the same trajectory with
+additive Gaussian noise. The data collected included the eye-­movement
+trajectories. The authors formulated a subjective model (step 2). Unlike the
+POMDP model shown in figure 9.2, they opted for a continuous model of
+the sort described in chapter 8. In brief, the model predicted proprioceptive and visual input from the eyes, where the fixation point was assumed
+to be attracted to the target location. The likelihood (step 3) is constructed
+using the (active) predictive coding schemes outlined in chapter 4. This
+quantifies the probability of the actions (eye movements) u
+­ nder a set of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+184
+
+log precision par­ameters and the model set out in step 2. Moving on to
+step 4, the authors specified prior beliefs as normal distributions over the
+log precisions. They inverted the model (step 5) to find posterior distributions over t­hese precision par­ameters. Step 6 did not use a PEB analy­sis
+but used the neuroimaging data collected concurrently with the behavioral
+task. The authors used dynamic causal modeling to estimate the gain of
+superficial pyramidal cells in the primary visual cortex. This means they
+had estimates of precision and synaptic gain for each subject. This allowed
+the authors to perform a group-­level analy­sis by assessing the correlation
+between par­ameters of the subjective model and their biological substrates.
+Their demonstration of this correlation provides an impor­tant example of
+how Active Inference formulations of be­hav­ior let us ask (and answer) questions about the relationship between belief updating and neurobiology.
+In our second example, Mirza et al. used the POMDP formulation of
+Active Inference to address the role of information gain in driving ­human
+be­hav­ior. Again, we unpack this in terms of figure 9.2’s steps. Mirza et al.
+collected behavioral data (step 1) while subjects performed a visual foraging
+task. ­Here, the aim was to classify a visual scene into one of several groups.
+Each ele­ment of the scene was only revealed once subjects fixated t­hose
+locations; this meant multiple fixations w
+­ ere required to acquire enough
+evidence for a given scene category. The data collected by the authors
+included the sequence of saccades (fast eye movements) performed. The
+model (step 2) used was a POMDP model described in Mirza et al. (2016)
+that predicted discretized proprioceptive, visual, and feedback outcomes,
+conditioned on the current fixation location and the scene category. Preferences (see chapter 7) ­were placed over the feedback outcome such that
+the model anticipates (and thus prefers) being correct in the categorization. The likelihood function (step 3) was obtained by solving the model
+using the scheme outlined in chapter 4 ­under dif­fer­ent pa­ram­et­ er settings.
+The par­ameters in question included (among ­others) a log scaling pa­ram­
+e­ter for the precision of the preference distribution. The authors specified
+prior distributions (step 4) over the log scaling (and other par­ameters) and
+inverted the model for each subject (step 5). They used the log evidence
+estimated for each subject to assess the evidence for models that did or did
+not motivate be­hav­ior using the epistemic component of the expected ­free
+energy, finding greater evidence for ­those models that included epistemic
+affordance in all subjects. They then employed a PEB analy­sis (step 6) to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+185
+
+assess changes in prior beliefs for subjects over the course of multiple ­trials,
+finding evidence in f­ avor of changes in belief par­ameters (i.e., active learning). Fi­nally, they used a canonical covariates analy­sis to assess the relationship between linear combinations of the phenotypic variables estimated
+for each subject (e.g., precision of preferences) and linear combinations of
+per­for­mance mea­sures (e.g., percentage correct and reaction time).
+9.7 Models of False Inference
+Men in general are quick to believe that which they wish to be true.
+—­Julius Caesar
+
+Given the relevance of ­these methods for fields like computational psychiatry (Friston, Stephan et al. 2014), we end with an overview of false inference,
+which is central to the notion of psychopathology as a failure of belief
+updating. One benefit of using an inferential framework like Active Inference is that it si­mul­ta­neously addresses multiple dimensions of psychiatric disorders, linking together maladaptive be­hav­ior (e.g., compulsions or
+addictions) and psychological-­level (e.g., false beliefs) and biological-­level
+phenomena (e.g., abnormalities of neuromodulators).
+As we cannot do justice h
+­ ere to the extensive lit­er­a­ture that uses Active
+Inference in the modeling of disease pro­cesses, this section provides the
+briefest of overviews to suggest a framework in which to think about computational pathologies. See ­table 9.1 for a nonexhaustive sampling of illustrative examples, which include models specified in discrete and continuous
+time (based on ­those in chapters 7 and 8, respectively). In our discussion,
+we w
+­ ill appeal to the structure of POMDP-­like models; the princi­ples that
+underwrite false inference in ­these settings are largely the same.
+The hypothesis under­lying inferential approaches (like Active Inference)
+is that psychopathological conditions may be conceptualized as disorders of
+inference. The term disorder does not necessarily imply that the inferential
+mechanism is flawed (e.g., generates incorrect posterior probabilities). In
+most of the studies reviewed in t­ able 9.1, the inferential mechanism operates normally, but based on a flawed generative model (i.e., a generative
+model endowed with aberrant prior beliefs). This means that, ultimately,
+pathology is a consequence of aberrant prior beliefs—­and one can recover
+­these priors using the model-­based data analy­sis outlined in this chapter.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+186
+
+­Table 9.1
+Computational pathology
+Pathology
+
+Sources
+
+Notes
+
+Addiction,
+impulsivity, and
+compulsivity
+
+FitzGerald, Schwartenbeck
+et al. 2015
+Schwartenbeck, FitzGerald,
+Mathys, Dolan, Wurst et al.
+2015
+Mirza et al. 2019
+Fradkin et al. 2020
+
+Addiction is an impor­tant example
+of be­hav­ior that appears aberrant but
+can be framed as optimal inference
+­under the right sort of generative
+model. Work by Schwartenbeck et al.
+illustrated this using a l­imited offer
+task wherein participants are more or
+less confident about ­whether they w
+­ ill
+receive a reward on waiting. Low confidence leads to compulsive be­hav­ior
+of the sort associated with addiction.
+Subsequent work on this theme looks
+at the prior beliefs associated with
+more or less impulsive be­hav­ior, using
+the patch-­leaving paradigm, and
+examines the role of attenuated prior
+precision in obsessive compulsive
+disorder.
+
+Delusions
+
+Brown et al. 2013
+Friston, Parr et al. 2020
+
+Delusions, characterized by fixed,
+false beliefs, are simply articulated in
+Active Inference as precise posterior probability distributions in the
+absence of supportive evidence. If
+sufficiently precise, they ­will be fixed
+even in the face of (subsequent)
+contradictory evidence. The mechanisms under­lying each delusion may
+be dif­fer­ent. For example, failures of
+sensory attenuation may be central
+to delusions of agency. Recent work
+provides an example of a shared delusion (folie à deux), which depends on
+two agents—­with no information—­
+reaching a confident consensus about
+the state of the world.
+
+Hallucinations
+
+Adams, Stephan et al. 2013
+Benrimoh et al. 2018
+Parr, Benrimoh et al. 2018
+Corlett et al. 2019
+
+­These simulations rest on imbalances
+between prior and likelihood precisions. Overinterpretation of spurious sensory data due to a failure of
+attenuation of likelihood precision,
+or a failure to correct prior beliefs
+due to excessive attenuation, each
+offer mechanisms for false perceptual
+inference.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+187
+
+­Table 9.1
+(continued)
+Pathology
+
+Sources
+
+Notes
+
+Interpersonal
+and personality
+disorders
+
+Moutoussis et al. 2014
+Prosser et al. 2018
+
+Interpersonal inference depends on
+having models about other p
+­ eople and
+how they may react to our decisions.
+This has prompted the development
+of models of trust games, which rely
+on interactions between two (or more)
+parties, and charity games. The latter
+have been used to reproduce the
+self-­aggrandizing and remorselessness
+associated with psychopathy. T
+­ hese
+traits are simulated by modulating
+the degree to which beliefs about
+self-­worth depend on decisions to be
+charitable versus selfish and sensitivity
+to the approval of o
+­ thers.
+
+Oculomotor
+syndromes
+
+Adams, Perrinet, and Friston
+2012
+Parr and Friston 2018a
+
+In ­these papers, continuous-­time
+generative models are employed
+to predict dynamic evolution of
+Newtonian systems. By rendering
+vari­ous aspects of the generative
+model conditionally in­de­pen­dent of
+­others, oculomotor syndromes such
+as internuclear ophthalmoplegias may
+be induced.
+
+Pharmacotherapy
+
+Parr and Friston 2019b
+
+Given the associations we proposed
+between precision par­ameters and neurochemicals in chapter 5, it should be
+pos­si­ble to simulate the consequences
+of pharmacological manipulation of
+­these systems. This work illustrates
+the consequences of several synthetic pharmacological interventions
+on per­for­mance of an oculomotor
+delay-­period task, providing a proof of
+princi­ple that ­these methods can be
+used to simulate not only pathology
+but also the influence of therapeutics.
+
+Prefrontal
+syndromes
+
+Parr, Rikhye et al. 2019
+
+­These simulations set out a difference
+between medial and lateral prefrontal
+syndromes by attenuating the
+precision of transitions to impair the
+per­for­mance of a memory guided task
+(lateral) versus the precision of an
+interoceptive likelihood that determines motivation to engage in the
+task (medial).
+(continued)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+188
+
+­Table 9.1
+(continued)
+Pathology
+
+Sources
+
+Notes
+
+Visual neglect
+
+Parr and Friston 2017a
+
+Inattention to the left side of space
+may be induced by several alternative lesioned priors. Among ­these,
+an increase in Dirichlet par­ameters
+for this side of space reduces the
+novelty associated with saccades to
+the left, increasing visual sampling
+of the right instead. Alternatively,
+setting preferences consistent with
+right-­sided proprioceptive or visual
+outcomes or increasing habitual
+engagement in right-­sided saccades
+reproduces qualitatively similar
+be­hav­ior.
+
+Disorders of
+interoceptive
+inference
+
+Barrett et al. 2016
+Allen et al. 2019
+Maisto, Barca et al. 2019
+Pezzulo, Maisto et al. 2019
+Barca and Pezzulo 2020
+Tschantz et al. 2021
+
+Simulations of interoceptive inference
+(or active inference in the interoceptive domain) suggest that imbalances
+between prior and likelihood precisions about (for example) cardiac or
+gastric signals can cause false beliefs
+about the internal state of the body,
+misperceptions of bodily symptoms,
+and psychosomatic hallucinations.
+Furthermore, they can have cascading effects on autonomic regulation
+and action se­lection, causing vari­ous
+types of maladaptive be­hav­ior, such
+as hypervigilance, excessive medicine
+use, and excessive food restrictions.
+
+Aberrant priors may be about states or precisions, or they may be structural priors about the form of the generative model. A useful way of thinking
+about the ­causes of pathological be­hav­ior is to think about the prior belief
+used for policies and about how each part of this may be disrupted to give
+rise to abnormal policy se­lection. Policy priors depend on the expected ­free
+energy, which itself depends on posterior beliefs, the potential for information gain, and prior preferences (C). Priors over policies may additionally be
+equipped with a fixed form term (E ), representing habitual biases.
+Taking each of ­these in turn: Posterior beliefs depend on priors and likelihoods. To form an aberrant posterior belief, one or both must be disrupted.
+Typically, this disruption takes the form of under-­or overestimation of the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+189
+
+balance of precisions. Excessively high likelihood, compared to prior, precision leads to overinterpretation of (potentially noisy) sensory input. This
+leads to overfitting in the sense that unwarranted conclusions may be drawn
+from spurious data. If the balance is disrupted in the opposite direction,
+favoring confidence in the prior, internally generated percepts become resistant to conflicting sensory input. Both mechanisms have been associated
+with the development of hallucinations, and the two can coexist when hierarchical models are employed. Given the association of vari­ous precisions
+with neuromodulatory chemicals (see chapter 5), it seems sensible that conditions such as Lewy body dementia, where cholinergic signaling is impaired,
+and schizo­phre­nia, with abnormalities of the dopaminergic system, pre­sent
+with hallucinatory phenomena—­that is, false perceptual inference.
+Next, we consider the role of information gain. H
+­ ere, the precision of
+the likelihood and the precision of prior beliefs tell us the degree to which
+uncertainty is resolvable and the amount of uncertainty t­ here is to resolve,
+respectively. The precision of the prior beliefs applies to ­either par­ameters
+of the generative model (i.e., influences novelty) or to the states (i.e., influences salience). Interpreting the par­ameters of conditional probabilities as
+synaptic efficacies or the precisions as synaptic gains suggests that synaptic
+disconnection syndromes may be thought of as disruption of one or both
+of ­these. Absent synapses cannot be modulated, so this is very much like
+having extremely confident prior beliefs about a conditional probability, as
+new data cannot update the associated efficacy. This has impor­tant implications for the potential information gain of dif­fer­ent policies, as has been
+exploited in modeling sensory neglect syndromes.
+Fi­nally, the preferences and policy priors provide a clear influence over
+be­hav­ior. ­These could underwrite the development of addictive habits or
+the apathy associated with vari­ous psychiatric and neurological syndromes
+(Hezemans, Wolpe, and Rowe 2020). In summary, defective prior beliefs
+at vari­ous places in the generative models described above provide a functional or teleological explanation for pathological be­hav­ior.
+9.8 Summary
+In this chapter, we outlined an approach that uses the theoretical models
+described in previous chapters to pose questions to empirical data. This lets
+us use Active Inference as a noninvasive tool to probe the computational
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+190
+
+pro­cesses that individuals use to make decisions. We have focused on a few
+­simple examples. However, Active Inference–­based models have been developed for more realistic and complicated tasks (Cullen et al. 2018) designed
+to evoke richer be­hav­ior for computational phenotyping. In addition to
+setting out a six-­step pro­cess for model-­based analy­sis, we highlighted two
+examples of the use of ­these methods. T
+­ hese bring out key variations in
+how this may proceed, including the kinds of be­hav­ior mea­sured (smooth
+trajectories or discrete choices), the choice of model (continuous or discrete), and the dif­fer­ent scientific questions being asked. The last of t­hese
+is the most impor­tant, as it determines the preceding choices. We saw the
+use of computational phenotyping in combination with neuroimaging
+(Adams, Bauer et al. 2016) to ask questions about the relationship between
+synaptic gain and precision. In addition, we saw how model inversion may
+be used to assess the contributions of alternative behavioral drives and
+predictors of per­for­mance (Mirza et al. 2018). Ultimately, the six steps in
+figure 9.1 provide a generic method for designing experiments to noninvasively interrogate the implicit generative models ­people (or other animals)
+use to drive be­hav­ior. This offers an opportunity to answer questions about
+the function of the ner­vous system in health and disease.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+10
+
+ Active Inference as a Unified Theory
+of Sentient Be­hav­ior
+
+In general we are least aware of what our minds do best.
+—­Marvin Minsky
+
+10.1 Introduction
+In this chapter, we wrap up Active Inference’s main theoretical points (from
+the first part of the book) and its practical implementations (from the second part). Then, we connect the dots: we abstract away from the specific
+Active Inference models discussed in previous chapters to focus on integrative
+aspects of the framework. One benefit of Active Inference is that it provides
+a complete solution to the adaptive prob­lems that sentient organisms have
+to solve. It therefore offers a unified perspective on prob­lems like perception,
+action se­lection, attention, and emotion regulation, which are usually treated
+in isolation in psy­chol­ogy and neuroscience—­and addressed using distinct
+computational approaches in artificial intelligence. We ­will discuss the Active
+Inference perspective on each of ­these prob­lems (and more) in the context
+of established theories, such as cybernetics, ideomotor theory of action, reinforcement learning, and optimal control. Fi­nally, we briefly discuss how the
+scope of Active Inference can be extended to cover other biological, social,
+and technological topics that are not discussed in depth in this book.
+10.2 Wrapping Up
+This book offers a systematic account of the theoretical under­pinnings and
+practical implementations of Active Inference. ­Here, we briefly summarize
+the discussion of the first nine chapters. This offers an opportunity to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+192
+
+rehearse the key constructs of Active Inference that w
+­ ill be useful in the
+remainder of this chapter.
+In chapter 1, we introduced Active Inference as a normative approach
+to understanding sentient creatures that form part of action-­perception
+loops with their environment (Fuster 2004). We explained that normative
+approaches start from first princi­ples to derive and test empirical predictions about the phenomenon of interest—­here, the ways living organisms
+persist while engaging in adaptive exchanges (action-­perception loops) with
+their environment. We also considered that one could arrive at Active Inference by following a low road or a high road.
+In chapter 2, we illustrated the low road to Active Inference. This road
+starts from the idea that the brain is a prediction machine, endowed with a
+generative model: a probabilistic repre­sen­ta­tion of how hidden c­ auses in the
+world generate sensations (e.g., how light reflected off an apple stimulates
+the ret­ina). By inverting this model, it infers the c­ auses of its sensations
+(e.g., ­whether I am seeing an apple, given that my ret­ina is stimulated in a
+certain way). This view of perception (aka perception-­as-­inference) has its
+historical roots in the Helmholtzian notion of unconscious inference and,
+more recently, in the Bayesian brain hypothesis. Active Inference extends
+this view by bringing action control and planning within the compass of
+inference (aka control-­
+as-­
+inference, planning-­
+as-­
+inference). Most importantly, it shows that perception and action are not quintessentially separable pro­cesses but fulfill the same objective. We first described this objective
+more informally, as the minimization of a discrepancy between one’s model
+and the world (which generally reduces to surprise or prediction error minimization). Put simply, one can minimize the discrepancy between a model
+and the world in two ways: by changing one’s mind to fit the world (perception) or by changing the world to fit the model (action). ­These can be
+described in terms of Bayesian inference. However, exact inference is often
+intractable, so Active Inference uses a (variational) approximation (noticing
+that exact inference may be seen as a special case of approximate inference).
+This leads to the second, more formal description of the common objective
+of perception and action, as variational ­free energy minimization. This is the
+core quantity used in Active Inference and may be unpacked in terms of
+its constituent parts (e.g., energy and entropy, complexity and accuracy,
+or surprise and divergence). Fi­nally, we introduced a second kind of f­ree
+energy: expected f­ree energy. This is particularly impor­tant during planning,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+193
+
+as it affords a way to score alternative policies by considering the ­future
+outcome that they are expected to generate. This too may be unpacked in
+terms of its constituent parts (e.g., information gain and pragmatic value,
+expected ambiguity and risk).
+In chapter 3, we illustrated the high road to Active Inference. This alternative road starts from the deflationary imperative for biological organisms
+to preserve their integrity and avoid dissipation, which can be described
+as avoiding surprising states. We then introduced the notion of a Markov
+blanket: a formalization of the statistical separation between the organism’s
+internal states and the world’s external states. Crucially, internal and external states can only influence each other vicariously via intermediate (active
+and sensory) variables, called blanket states. This statistical separation—­
+mediated by the Markov blanket—is crucial to endowing an organism with
+some degree of autonomy from the external world. To understand why this
+is a useful perspective, consider the following three consequences.
+First, an organism with a Markov blanket appears to model the external environment in a Bayesian sense: its internal states correspond—on
+­average—to an approximate posterior belief about external states of the
+world. Second, the autonomy is guaranteed by the fact that the organism’s
+model (its internal states) is not unbiased but prescribes some existential
+preconditions (or prior preferences) that must be maintained—­for example,
+for a fish, being in the w
+­ ater. Third, equipped with this formalism, it is pos­
+si­ble to describe optimal be­hav­ior (with re­spect to prior preferences) as the
+maximization of (Bayesian) model evidence by perception and action. By
+maximizing model evidence (i.e., self-­evidencing) an organism ensures that
+it realizes its prior preferences (e.g., a fish stays in the ­water) and avoids
+surprising states. In turn, the maximization of model evidence is (approximately) mathematically equivalent to the minimization of variational ­free
+energy—­hence we arrive again (in another way) at the same central construct of Active Inference discussed in chapter 2. Fi­nally, we detailed the
+relationship between minimizing surprise and Hamilton’s princi­ple of least
+Action. This evinces the formal relationship between Active Inference and
+first princi­ples in statistical physics.
+In chapter 4, we outlined the formal aspects of Active Inference. We focused
+on the passage from Bayesian inference to a tractable approximation—­
+variational inference—­and the resulting objective for organisms to minimize variational ­free energy via perception and action. The insight from this
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+194
+
+treatment is the importance of the generative model that creatures use to
+make sense of their world. We introduced two kinds of generative models
+that express our beliefs about how data are generated, using discrete or continuous variables. We explained that both afford the same Active Inference,
+but they apply when states of affairs are formulated in discrete time (as partially observed Markov decision prob­lems) or continuous time (as stochastic
+differential equations), respectively.
+In chapter 5, we remarked on the difference between the normative
+princi­ple of ­free energy minimization and a pro­cess theory about how this
+princi­ple may be implemented by the brain—­and explained that the latter generates testable predictions. We then outlined aspects of the pro­cess
+theories accompanying Active Inference, which encompass domains such
+as neuronal message passing, including neuroanatomical circuitry (e.g.,
+cortico-­subcortical loops) and neuromodulation. For example, at an anatomical level, message passing maps nicely to a canonical cortical microcircuit, with predictions that stem from deep cortical layers at one level and
+target superficial cortical layers at the level below (Bastos et al. 2012). At a
+more systemic level, we discussed how Bayesian inference, learning, and
+precision weighting correspond to neuronal dynamics, synaptic plasticity,
+and neuromodulation, respectively, and how the top-­down and bottom-up
+neural message passing of predictive coding maps to slower (e.g., alpha or
+beta) and faster (e.g., gamma) brain rhythms. T
+­ hese and other examples
+illustrate that ­after designing a specific Active Inference model, one can
+draw neurobiological implications from the form of its generative model.
+In chapter 6, we provided a ­recipe to design Active Inference models.
+We saw that while all creatures minimize their variational ­free energy, they
+behave in dif­fer­ent, sometimes opposite ways ­because they are endowed
+with dif­fer­ent generative models. Therefore, what distinguishes dif­fer­ent
+(e.g., simpler from more complex) creatures is just their generative model.
+­There is a rich repertoire of pos­si­ble generative models, which correspond to
+dif­fer­ent biological (e.g., neuronal) implementations and produce dif­fer­ent
+adaptive—or maladaptive—­be­hav­iors in dif­fer­ent contexts and ecological
+niches. This renders Active Inference equally appropriate for characterizing
+­simple creatures like bacteria that sense and seek nutrient gradients, complex creatures like us that pursue sophisticated goals and engage in rich
+cultural practices, or even dif­fer­ent individuals—to the extent that ones
+appropriately characterizes their respective generative models. Evolution
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+195
+
+appears to have discovered increasingly sophisticated design structures for
+brains and bodies that made organisms able to deal with (and shape) rich
+ecological niches. Modelers can reverse-­engineer this pro­cess and specify
+the designs for brains and bodies of creatures of interest, in terms of generative models, based on the kinds of niche they occupy. This corresponds to a
+series of design choices (e.g., models using discrete or categorical variables,
+shallow or hierarchical models)—­which we unpacked in the chapter.
+In chapters 7 and 8, we provided numerous examples of Active Inference models in discrete and continuous time, which address prob­lems of
+perceptual inference, goal-­directed navigation, model learning, action control, and more. T
+­ hese examples w
+­ ere designed to showcase the variety of
+emergent be­hav­iors ­under ­these models and to detail the princi­ples of how
+they are specified practically.
+In chapter 9, we discussed how to use Active Inference for model-­based
+data analy­sis and to recover the par­ameters of an individual’s generative
+model, which better explain the subject’s be­hav­ior in a task. This computational phenotyping uses the same form of Bayesian inference discussed in the
+rest of the book, but in a dif­fer­ent way: it helps design and evaluate (objective) models of ­others’ (subjective) models.
+10.3 Connecting the Dots: The Integrative Perspective
+of Active Inference
+Some de­cades ago, the phi­los­o­pher Dennett lamented that cognitive scientists devoted too much effort to modeling isolated subsystems (e.g., perception, language understanding) whose bound­aries are often arbitrary. He
+suggested to try instead modeling “the ­whole iguana”: a complete cognitive
+creature (perhaps a ­simple one) and an environmental niche for it to cope
+with (Dennett 1978).
+One benefit of Active Inference is that it offers a first princi­ple account of
+the ways in which organisms solve their adaptive prob­lems. The normative
+approach pursued in this book assumes that it is pos­si­ble to start from the
+princi­ple of variational ­free energy minimization and derive implications
+about specific cognitive pro­
+cesses, such as perception, action se­
+lection,
+attention and emotion regulation, and their neuronal under­pinnings.
+Imagine a ­simple creature that must solve prob­lems like finding food
+or shelter. When cast as Active Inference, the creature’s prob­lems can be
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+196
+
+described in enactive terms, as acting to solicit preferred sensations (e.g.,
+food-­related sensations). To the extent that t­hese preferred sensations are
+included (as prior beliefs) in its generative model, the organism is effectively
+gathering evidence for its model—or, more allegorically, for its existence
+(i.e., maximizing model evidence or self-­evidencing). This ­simple princi­
+ple has ramifications for psychological functions traditionally considered
+in isolation, such as perception, action control, memory, attention, intention, emotion, and more. For example, perception and action are both self-­
+evidencing, in the sense that a creature can align what it expects, given its
+generative model, with what it senses e­ ither by changing its beliefs (about
+the presence of food) or by changing the world (soliciting food-­related sensations). Memory and attention can also be thought of as optimizing the
+same objective. Long-­
+term memory develops through learning the par­
+ameters of a generative model. Working memory is belief updating when
+beliefs are about external states in the past and f­ uture. Attention is the optimization of beliefs about the precision of sensory input. Forms of planning
+(and intentionality) can be conceptualized by appealing to the capacity of
+(some) creatures to select among alternative ­futures, which in turn requires
+temporally deep generative models. T
+­ hese predict the outcomes that would
+result from a course of action and are optimistic about ­these outcomes. This
+optimism manifests as the belief that f­ uture outcomes w
+­ ill lead to preferred
+outcomes. Deep temporal models can also help us understand sophisticated
+forms of prospection (where beliefs about the pre­sent are used to derive
+beliefs about the f­uture) and retrospection (where beliefs about the pre­sent
+are used to update beliefs about the past). Forms of interoceptive regulation
+and emotion can be conceptualized by appealing to generative models of
+internal physiology that predict the allostatic consequences of f­ uture events.
+As the above examples illustrate, t­here is an impor­tant consequence
+of studying cognition and be­hav­ior from the perspective of a normative
+theory of sentient be­hav­ior. Such theory does not start by assembling separate cognitive functions, such as perception, decision-­making, and planning. Rather, it starts by providing a complete solution to the prob­lems
+that organisms have to solve and then analyzing the solution to derive
+implications about cognitive functions. For example, which mechanisms
+permit a living organism or artificial creature (e.g., a robot) to perceive the
+world, remember it, or plan (Verschure et al. 2003, 2014; Verschure 2012;
+Pezzulo, Barsalou et al. 2013; Krakauer et al. 2017)? This is an impor­tant
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+197
+
+move as the taxonomies of cognitive functions—­used in psy­chol­ogy and
+neuroscience textbooks—­largely inherit from early philosophical and psychological theories (sometimes called Jamesian categories). Despite their
+­great heuristic value, they may be quite arbitrary—or they may not correspond to separate cognitive and neural pro­cesses (Pezzulo and Cisek 2016,
+Buzsaki 2019, Cisek 2019). Indeed, t­hese Jamesian categories may be candidates for how our generative models explain our engagement with the
+sensorium—as opposed to explaining that engagement. For example, the
+solipsistic hypothesis that “I am perceiving” is just my explanation for current states of affairs that include my belief updating.
+Adopting a normative perspective may also help in identifying formal
+analogies between cognitive phenomena studied in dif­fer­ent domains.
+One example is the trade-­off between exploration and exploitation, which
+appears in vari­ous guises (Hills et al. 2015). This trade-­off is often studied
+during foraging, when creatures must choose between exploiting previous
+successful plans and exploring novel (potentially better) ones. However, the
+same trade-­off occurs during memory search and deliberation with l­imited
+resources (e.g., time limitations or search effort), when creatures have the
+choice between exploiting their current best plan versus investing more time
+and cognitive effort to explore additional possibilities. Characterizing ­these
+apparently disconnected phenomena in terms of ­free energy can potentially
+reveal deep similarities (Friston, Rigoli et al. 2015; Pezzulo, Cartoni et al. 2016;
+Gottwald and Braun 2020).
+Fi­nally, in addition to a unified perspective on psychological phenomena, Active Inference offers a principled means of understanding the corresponding neural computations. In other words, it offers a pro­cess theory
+that connects cognitive pro­cessing to (expected) neuronal dynamics. Active
+Inference assumes that every­thing that m
+­ atters about brains, minds, and

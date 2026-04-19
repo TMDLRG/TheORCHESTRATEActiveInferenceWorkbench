@@ -1,0 +1,49 @@
+{
+  "slug": "pomdp-deceptive-plan-depth",
+  "title": "Deceptive Dead End: Plan Depth Matters",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 12,
+  "tags": ["pomdp", "planning", "plan-depth", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(deceptive_dead_end)",
+    "world": "deceptive_dead_end",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 6,
+    "policy_depth": 4,
+    "preference_strength": 3.0,
+    "expected_outcome": "With policy_depth=1 the greedy agent gets stuck in the dead end; at depth=4 it backs out and reaches the goal."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=pomdp-deceptive-plan-depth",
+    "labs_url": "/labs?recipe=pomdp-deceptive-plan-depth&world=deceptive_dead_end"
+  },
+  "math": {
+    "latex": "\\pi = (a_1, a_2, \\ldots, a_D),\\quad G(\\pi) = \\sum_{\\tau=1}^{D} G_\\tau(\\pi)",
+    "symbols": {
+      "pi": "policy = ordered sequence of D actions",
+      "D": "policy depth (lookahead horizon)",
+      "G_tau": "per-step EFE contribution"
+    }
+  },
+  "audiences": {
+    "kid": "A short-sighted agent walks into a dead end because it can't see around the corner. A farther-sighted one backs out and finds the goal.",
+    "real": "Greedy policies fail here: the goal is only reachable via a detour. Policy depth controls how far ahead the agent rolls out before committing.",
+    "equation": "G(pi) sums per-step EFE over the policy's D actions. Short D can be blind to reversible costs; longer D reveals the detour as net-negative-G.",
+    "derivation": "Under a factorised policy q(a_1, ..., a_D) = prod q(a_t), depth-D planning enumerates sequences of length D. Policy posterior pi* = softmax(-G) over the enumerated set."
+  },
+  "equation_refs": ["eq-4-14", "eq-b-9", "eq-b-22"],
+  "figure_refs": ["fig_4.5"],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Demonstrate that plan depth determines whether the agent escapes a deceptive dead end.",
+    "role": "Plan-depth tutor anchored in the deceptive_dead_end maze.",
+    "context": "deceptive_dead_end 7x6 maze; vary policy_depth between 1 (fails) and 4 (succeeds)."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4 & App B."
+  ]
+}

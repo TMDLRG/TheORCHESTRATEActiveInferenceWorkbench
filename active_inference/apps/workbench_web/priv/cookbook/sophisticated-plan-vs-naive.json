@@ -1,0 +1,49 @@
+{
+  "slug": "sophisticated-plan-vs-naive",
+  "title": "Sophisticated vs. Naive: When the Extra Depth Pays",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 10,
+  "tags": ["sophisticated-planning", "comparison", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "sophisticated_plan", "act"],
+    "skills_used": ["expected_free_energy"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "On open mazes (forked_paths) naive enumeration and sophisticated plan match. On adversarial mazes (deceptive) sophisticated wins."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=sophisticated-plan-vs-naive",
+    "labs_url": "/labs?recipe=sophisticated-plan-vs-naive&world=forked_paths"
+  },
+  "math": {
+    "latex": "\\text{Policy quality}_{\\text{soph}} \\ge \\text{Policy quality}_{\\text{naive}} \\text{ at equal depth}",
+    "symbols": {
+      "naive plan": "expectation under a fixed future policy",
+      "sophisticated plan": "min under the best future policy"
+    }
+  },
+  "audiences": {
+    "kid": "Thinking harder about what you'll do next means you pick a better move now -- but only in tricky situations.",
+    "real": "Sophisticated inference is a policy-quality improvement in adversarial or sparse-reward settings; on easy layouts the extra compute is wasted.",
+    "equation": "Sophisticated >= naive in the min-at-each-step sense; equality when the agent's best future plan equals its average future plan.",
+    "derivation": "The min operator lower-bounds the expectation, so sophisticated EFE <= naive EFE, making the sophisticated policy at least as good (Friston et al. 2021)."
+  },
+  "equation_refs": ["eq-b-22"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Quantify when sophisticated planning pays off vs. the extra compute cost.",
+    "role": "Planner-comparison tutor.",
+    "context": "Run both Plan and SophisticatedPlan on forked_paths and deceptive_dead_end; log compute + episode length."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), App B.",
+    "Friston, Da Costa, Hafner, Hesp & Parr (2021), Sophisticated inference."
+  ]
+}

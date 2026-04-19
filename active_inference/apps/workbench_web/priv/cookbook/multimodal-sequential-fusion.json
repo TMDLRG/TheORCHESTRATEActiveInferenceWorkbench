@@ -1,0 +1,49 @@
+{
+  "slug": "multimodal-sequential-fusion",
+  "title": "Sequential Multi-Modal Fusion",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 11,
+  "tags": ["multi-modal", "sequential", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(frog_pond)",
+    "world": "frog_pond",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["softmax", "variational_free_energy"],
+    "horizon": 3,
+    "policy_depth": 2,
+    "preference_strength": 2.0,
+    "expected_outcome": "Across a 3-step trajectory, the agent integrates multi-channel evidence step by step. Posterior entropy curve shows compounding information gain."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=multimodal-sequential-fusion",
+    "labs_url": "/labs?recipe=multimodal-sequential-fusion&world=frog_pond"
+  },
+  "math": {
+    "latex": "q(s_t \\mid o^{1}_{1:t}, o^{2}_{1:t}, \\ldots) \\propto q(s_t \\mid o^{1}_{1:t}) \\cdot \\prod_{k \\ge 2} \\frac{q(s_t \\mid o^k_{1:t})}{q(s_t)}",
+    "symbols": {
+      "o^k_{1:t}": "history of channel k",
+      "factorisation": "posterior is the prior times per-channel likelihood ratios"
+    }
+  },
+  "audiences": {
+    "kid": "Every step you see and hear something new. Over time the clues pile up and you become very sure.",
+    "real": "Across a trajectory, each channel contributes its own compounding likelihood. The total information gain = sum of per-channel mutual informations.",
+    "equation": "Log posterior accumulates log-likelihood ratios across both channels and time. Observation-time factorisation is the key enabler.",
+    "derivation": "Under conditional independence across channels and time, the log posterior decomposes into independent contributions. Standard factor-graph belief propagation applies (Bishop 2006, Ch 8)."
+  },
+  "equation_refs": ["eq-4-11", "eq-4-13"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s2"],
+  "labs": ["frog", "pomdp"],
+  "orchestrate": {
+    "objective": "Trace compounding multi-channel information gain over a trajectory.",
+    "role": "Sequential-fusion tutor.",
+    "context": "frog_pond; run a 3-step trajectory and log per-step posterior entropy."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Bishop (2006), Pattern Recognition and Machine Learning."
+  ]
+}

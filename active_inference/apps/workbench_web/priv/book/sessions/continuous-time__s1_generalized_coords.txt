@@ -1,0 +1,332 @@
+of visual input during saccades, then a suppression of saccades). Predicating
+movement on the suspension of attention has close relationships with an ideomotor theory that originated in the nineteenth ­century to explain movements
+induced u
+­ nder hypnosis.
+
+work developing models with more complex dynamical systems (but see
+­table 8.1 for some of the key advances). Instead, we focus on a few of the
+princi­ples needed to understand t­hese systems. In this section, we briefly
+overview two dynamical systems used in formulating generative models
+of this sort: Lotka-­Volterra dynamics and Lorenz systems. The former may
+be used in characterizations of systems with a sequential aspect to their
+dynamics, while the latter represent chaotic systems.
+Lotka-­Volterra dynamics inherit from characterizations of predator-­prey
+dynamics in ecol­ogy. While they have since found application in numerous
+disciplines, predator-­prey systems remain a useful example to provide some
+intuition about their workings. When the predator population is small, the
+prey may increase their numbers to become a relatively large population.
+This provides additional food for the predators, whose population size then
+grows. Increased predation ­causes a decrease in the number of prey species
+and therefore a decrease in the number of predators. From h
+­ ere, the cycle
+continues. This gives an oscillatory pattern whereby the prey population
+size peaks, then the predators’, then the preys’ again, and so on. By generalizing this to more than two populations (e.g., carnivore, herbivore, and
+plant populations), we can generate a sequence of peaks. Figure 8.2 illustrates generalized Lotka-­Volterra dynamics with three populations, which
+obey dynamics of the following form:
+f ( x, v) = x ° (v + Ax )
+
+(8.6)
+
+­Here, x is a vector as before. The ° symbol means an elementwise product.
+Intrinsic birth and death rates are given by the vector v, and A is a matrix
+whose ele­ments are positive if the species indexed by the column prey on
+­those indexed by the row and negative if the relationship is inverted.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+159
+
+Population size (a.u.)
+
+Generalized Lotka-Volterra dynamics
+6
+
+c
+
+p
+
+4
+
+c
+
+p
+h
+
+p
+
+p
+
+c
+
+h
+
+p
+
+c
+h
+
+h
+
+p
+h
+
+c
+
+Plant
+Herbivore
+Carnivore
+p
+
+p
+h c
+
+h
+
+2
+
+c
+
+h
+c
+
+0
+0
+
+100
+
+50
+
+200
+
+150
+
+250
+
+300
+
+2
+
+4
+
+Time
+4
+
+6
+Carnivore
+
+Herbivore
+
+3
+2
+1
+0
+
+4
+2
+0
+
+0
+
+2
+Plant
+
+4
+
+6
+
+0
+
+Herbivore
+
+Figure 8.2
+Generalized sequential dynamics emerging from Lotka-­Volterra systems provide an
+impor­tant point of connection with the discrete sequential dynamics assumed in
+chapter 7. ­These dynamics can be applied to a range of systems but are framed h
+­ ere
+in terms of predator-­prey relationships for ease of interpretation. Top: Population
+changes over time. The population size is expressed in terms of arbitrary units (a.u.).
+The peaks are labeled on the basis of which species has the greatest population at
+that point. The repeated pattern of p, h, c can be seen as a sequence of three (not
+necessarily evenly spaced) discrete time steps. Bottom: Trajectories emphasizing the
+(approximately) periodic pattern that each follows.
+
+Figure 8.2 makes clear that having a generative model that incorporates
+Lotka-­Volterra dynamics allows for temporal sequencing (Huerta and Ra­bino­
+vich 2004)—­depending on the current highest peak. Each line can be thought
+of as representing a hidden state, in place of a species. F
+­ igure 8.3 highlights
+two impor­tant examples in which t­hese dynamics have been exploited to
+generate be­hav­ior One is a hierarchical model that uses the sequential
+dynamics afforded by a Lotka-­Volterra system to time the response of an
+eye blink relative to a conditioned stimulus (Friston and Herreros 2016). The
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+5
+
+Expectations (µ(2)
+x )
+
+Expectations (µx)
+
+4
+2
+
+0
+
+0
+–2
+
+–5
+–8
+
+–4
+20 40 60 80 100 120
+Time
+Expectations (µv(1))
+
+–6
+–8
+
+50
+
+100 150
+
+200 250
+
+Time
+
+1
+0.8
+0.6
+0.4
+0
+
+1
+
+0.2
+20 40 60 80 100 120
+Time
+Expectations (µ(1)
+x )
+
+0
+–0.2
+
+0.8
+0.6
+
+Action (u)
+
+0.4
+
+0.2
+
+CS
+US
+
+0.4
+
+–0.4
+
+50
+
+100 150
+Time
+
+200 250
+
+0.2
+0
+
+1
+
+20 40 60 80 100 120
+Time
+
+Writing
+
+Action (u)
+
+0.8
+0.6
+0.4
+
+Blink
+
+0.2
+0
+
+20 40 60 80 100 120
+Time
+
+Figure 8.3
+Two applications of generalized sequential Lotka-­Volterra dynamics in Active Inference. Left: Eyeblink conditioning used to empirically investigate cerebellar function
+(Friston and Herreros 2016). Starting at the highest level of the column, the expected
+states show the same kind of sequential pattern as in figure 8.2. This passes down
+to the next level to predict sequential hidden ­causes; the vari­ous peaks h
+­ ere predict
+states at the next level down, where the first peak is the conditioned stimulus (CS)
+and the second is the unconditioned stimulus (US). Fi­nally, the predicted US induces
+action—­a blink. Right: Sequential peaks using an attracting point as in equation 8.5 but
+selecting the specific attractor on the basis of which population of a Lotka-­Volterra
+system is currently highest; this leads to a sequential visiting of each point, giving
+rise to a form of handwriting (Friston, Mattout, and Kilner 2011).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+161
+
+paradigm is based on t­hose used in the investigation of cerebellar function.
+An unconditioned stimulus (a puff of air directed t­oward an animal’s eye)
+elicits a response (blinking). A conditioned stimulus (an auditory tone) may
+be played prior to the unconditioned stimulus on multiple occasions. By
+learning (see box 8.2) the number of peaks in the Lotka-­Volterra dynamics
+that separate the conditioned stimulus from the unconditioned stimulus,
+the animal learns to preempt the air puff and time the appropriate blink.
+This is a form of temporal learning, since the number of peaks provides an
+implicit estimate of the length of the temporal interval from the conditioned to the unconditioned stimuli. In the second example in figure 8.3,
+each sequential peak is associated with an alternative attracting point that
+drives movements to a series of attracting points arranged to suggest handwriting (Friston, Mattout, and Kilner 2011). As the two examples illustrate,
+Box 8.2
+Learning in continuous models
+As discussed in chapter 7, learning is the pro­cess of optimizing beliefs about
+the par­ameters (θ ) of a generative model. In the continuous-­time domain,
+this means accumulating evidence over time. This works as if we treat data in
+a series of infinitesimally small time-­intervals as obeying i.i.d. (in­de­pen­dent
+and identically distributed) assumptions and formulate a generative model
+that generates observations from (time-­invariant) par­ameters:
+
+∫
+≈ ln p(θ ) − ∫ F[ y(t ) | θ ]dt
+
+! θ ) = ln p(θ ) + ln p(y(t ) | θ )dt
+ln p( y,
+
+This may be used to formulate a functional (S ) that plays the role of a ­free
+energy for par­ameters using the time integral of the f­ree energy conditioned
+on par­ameters. Using a Laplace approximation, we get the following, wherein
+α acts to accumulate ­free energy gradients (i.e., evidence gradients):
+S(θ ) = Eq(θ )[ ln q(θ ) +
+
+∫ F[ y(t ) | θ ]dt − ln p(θ )]
+
+∫
+
+≈ F[ y(t ) | µθ ]dt − ln p( µθ )
+.
+µθ = ∂µθ S( µθ )
+
+∫
+
+= ∂µθ ln p( µθ ) − ∂µθ F[y(t ) | µθ ]dt
+= ∂µθ ln p( µθ ) − α
+
+.
+α = ∂µθ F[ y(t ) | µθ ]
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026

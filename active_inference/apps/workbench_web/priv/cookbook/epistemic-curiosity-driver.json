@@ -1,0 +1,49 @@
+{
+  "slug": "epistemic-curiosity-driver",
+  "title": "Pure Curiosity: Zero Preference, Only Exploration",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 8,
+  "tags": ["epistemic", "curiosity", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "shannon_entropy"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 0.0,
+    "expected_outcome": "With preference_strength=0.0 and flat C, the agent picks the action with the highest expected info gain. Trajectory visits the richest branch before any goal bias kicks in."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=epistemic-curiosity-driver",
+    "labs_url": "/labs?recipe=epistemic-curiosity-driver&world=forked_paths"
+  },
+  "math": {
+    "latex": "G_{\\text{epistemic}}(\\pi) = -\\mathbb{E}_{q(o|\\pi)}[D_{KL}[q(s|o,\\pi) \\| q(s|\\pi)]]",
+    "symbols": {
+      "epistemic value": "negative KL between posterior and prior predictive beliefs",
+      "curiosity": "zero-preference special case"
+    }
+  },
+  "audiences": {
+    "kid": "No snacks anywhere; the agent just wanders toward whichever path teaches it the most.",
+    "real": "Setting preference_strength=0 makes the pragmatic term flat. All remaining signal comes from info-gain; the agent becomes pure curious.",
+    "equation": "min G reduces to max expected info gain. The policy posterior concentrates on the most informative action sequence.",
+    "derivation": "Under flat C, -ln p(o) is constant, so the pragmatic term is policy-invariant. Minimising G reduces to maximising expected KL (Schmidhuber 1991; Schwartenbeck et al. 2019)."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Demonstrate curiosity-only policy selection under flat preferences.",
+    "role": "Intrinsic-motivation tutor.",
+    "context": "forked_paths with C-preference-override set to a zero vector (flat C)."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Schmidhuber (1991), Curious model-building control systems."
+  ]
+}

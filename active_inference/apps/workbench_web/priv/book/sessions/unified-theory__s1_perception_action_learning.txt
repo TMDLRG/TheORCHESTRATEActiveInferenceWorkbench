@@ -1,0 +1,339 @@
+be­hav­ior can be described in terms of the minimization of variational ­free
+energy. In turn, this minimization has specific neural signatures (in terms of,
+e.g., message passing or brain anatomy) that can be empirically validated.
+In the rest of this chapter, we explore some implications of Active Inference for psychological functions—as if we w
+­ ere sketching a psy­chol­ogy
+textbook. For each of ­these functions, we also highlight some points of
+contact (or divergence) between Active Inference and other popu­lar theories in the lit­er­a­ture.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+198
+
+10.4 Predictive Brains, Predictive Minds, and Predictive Pro­cessing
+I have this picture of pure joy
+it’s of a child with a gun
+he’s aiming straight in front of himself,
+shooting at something that i­sn’t ­there.
+—­Afterhours, “Quello che non c’è” (Something that ­isn’t ­there)
+
+Traditional theories of brain and cognition emphasize feedforward transductions from external stimuli to internal repre­sen­ta­tions and then motor
+actions. This has been called a “sandwich model,” as every­thing that is
+in between stimuli and responses is assigned the label “cognitive” (Hurley
+2008). In this perspective, the main function of the brain is to transform
+incoming stimuli into contextually appropriate responses.
+Active Inference departs significantly from this view by emphasizing
+predictive and goal-­
+directed aspects of brain and cognition. In psychological terms, Active Inference creatures (or their brains) are probabilistic
+inference machines, which continuously generate predictions based on their
+generative models.
+Self-­evidencing creatures use their predictions in two fundamental ways.
+First, they compare predictions with incoming data to validate their hypotheses (predictive coding) and—at a slower timescale—­
+revise their models
+(learning). Second, they enact predictions to guide the ways they gather
+data (Active Inference). By d
+­ oing so, Active Inference creatures fulfill two
+imperatives: epistemic (e.g., visually exploring places where salient information is pre­sent that can resolve uncertainty about hypotheses or models)
+and pragmatic (e.g., moving to locations where preferred observations such
+as rewards can be secured). The epistemic imperative renders both perception and learning active pro­cesses, whereas the pragmatic imperative renders
+be­hav­ior goal directed.
+10.4.1 Predictive Pro­cessing
+This predictive-­and goal-­centric view of brain—­and cognition—is closely
+related to (and provided inspiration for) predictive pro­cessing (PP): an emerging framework in philosophy of mind and epistemology, which sees prediction as central to brain and cognition and appeals to concepts of
+“predictive brains” or “predictive minds” (Clark 2013, 2015; Hohwy 2013).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+199
+
+Sometimes PP theories appeal to the specific functioning of Active Inference and some of its constructs, such as generative models, predictive
+coding, ­
+free energy, precision control, and Markov blankets, but they
+sometimes appeal to other constructs, such as coupled inverse and forward models, which are not part of Active Inference. Therefore, the term
+predictive pro­cessing is used in a broader (and less constrained) sense compared to Active Inference.
+Predictive pro­cessing theories have attracted considerable attention in
+philosophy, given their potential for unification in many senses: across multiple domains of cognition, including perception, action, learning, and psychopathology; from lower (e.g., sensorimotor) to higher levels of cognitive
+pro­cessing (e.g., psychological constructs); from ­simple biological organisms
+to brains, individuals, and social and cultural constructs. Another appeal
+of PP theories is that they make use of conceptual terms, such as beliefs
+and surprise, which speak to a psychological level of analy­sis familiar to phi­
+los­o­phers (with the caveat that sometimes t­hese terms may have technical
+meanings that differ from common usage).
+Yet, as the interest in PP grows, it has become apparent that phi­los­o­phers
+have dif­fer­ent opinions on its theoretical and epistemological implications.
+For example, it has been interpreted in internalist (Hohwy 2013), embodied or action-­based (Clark 2015), and enactivist and nonrepre­sen­ta­tional
+terms (Bruineberg et al. 2016, Ramstead et al. 2019). The debate around
+­these conceptual interpretations goes beyond the scope of this book.
+10.5 Perception
+You ­can’t depend on your eyes when your imagination is out of focus.
+—­Mark Twain
+
+Active Inference considers perception as an inferential pro­cess based on a
+generative model of how sensory observations are generated. Bayes’ rule
+essentially inverts the model to compute a belief about the hidden state of
+the environment, given the observations. This idea of perception-­as-­inference
+dates back to Helmholtz (1866) and was often reproposed in psy­chol­ogy, computational neuroscience, and machine learning (e.g., analysis-­by-­synthesis)
+(Gregory 1980, Dayan et al. 1995, Mesulam 1998, Yuille and Kersten 2006).
+This generative modeling approach has been demonstrated to be effective in
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+200
+
+facing challenging perceptual prob­lems, such as breaking text-­based CAPTCHAs (George et al. 2017).
+10.5.1 Bayesian Brain Hypothesis
+The most prominent con­temporary expression of this idea is the Bayesian brain hypothesis, which has been applied to several domains such as
+decision-­making, sensory pro­cessing, and learning (Doya 2007). Active Inference provides a normative foundation to ­these inferential ideas by deriving them from the imperative of minimizing variational f­ree energy. As
+the same imperative extends to action dynamics, Active Inference naturally
+models active perception and the ways in which organisms actively sample
+observations to test their hypotheses (Gregory 1980). U
+­ nder the Bayesian
+brain agenda, instead, perception and action are modeled in terms of dif­
+fer­
+ent imperatives (where action requires Bayesian decision theory; see
+section 10.7.1).
+More broadly, the Bayesian brain hypothesis refers to a ­family of approa­
+ch­­es that are not necessarily integrated and often make dif­fer­ent empirical
+predictions. T
+­ hese include, for example, the computational-­level proposal
+that the brain performs Bayes-­optimal sensorimotor and multisensory integration (Kording and Wolpert 2006), the algorithmic-­level proposal that
+the brain implements specific approximations of Bayesian inference, such
+as decision-­by-­sampling (Stewart et al. 2006), and the neural-­level proposals
+about the specific ways in which neural populations may perform probabilistic computations or encode probability distributions—­for example, as
+samples or probabilistic population codes (Fiser et al. 2010, Pouget et al.
+2013). At each level of explanation, ­there are competing theories on the
+field. For example, it is common to appeal to approximations of exact
+Bayesian inference to explain deviations from optimal be­hav­ior, but dif­fer­
+ent works consider dif­fer­ent (and not always compatible) approximations,
+such as dif­fer­ent sampling approaches. More broadly, the relations between
+proposals at dif­fer­ent levels are not always straightforward. This is ­because
+Bayesian computations can be realized (or approximated) in multiple algorithmic ways, even without explic­itly representing probability distributions
+(Aitchison and Lengyel 2017).
+Active Inference provides a more integrated perspective that connects
+normative princi­ples and pro­cess theories. At the normative level, its central
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+201
+
+assumption is that all pro­cesses minimize variational ­free energy. The corresponding pro­cess theory for inference uses a gradient descent on ­free energy,
+which has clear neurophysiological implications, explored in chapter 5
+(Friston, FitzGerald et al. 2016). More broadly, one can start from the
+princi­ple of ­free energy minimization to derive implications about brain
+architectures.
+For example, the canonical pro­cess model of perceptual inference (in
+continuous time) is predictive coding. Predictive coding was initially proposed as a theory of hierarchical perceptual pro­cessing by Rao and Ballard
+(1999) to explain a range of documented top-­down effects, which ­were difficult to reconcile with feedforward architectures as well as known physiological facts (e.g., the existence of forward, or bottom-up, and backward, or
+top-­down, connections in sensory hierarchies). However, predictive coding
+can be derived from the princi­ple of f­ ree energy minimization, u
+­ nder some
+assumptions, such as the Laplace approximation (Friston 2005). Furthermore, Active Inference in continuous time can be constructed as a directed
+extension of predictive coding into the domain of action—by endowing a
+predictive coding agent with motor reflexes (Shipp et al. 2013). This leads
+us to the next point.
+10.6 Action Control
+If you ­can’t fly then run, if you ­can’t run then walk, if you c­ an’t walk then crawl,
+but what­ever you do you have to keep moving forward.
+—­Martin Luther King
+
+In Active Inference, action pro­
+cessing is analogous to perceptual pro­
+cessing, as both are guided by forward predictions—­
+exteroceptive and
+proprioceptive, respectively. It is the (proprioceptive) prediction that “my
+hand grasps the cup” that induces a grasping movement. The equivalence
+between action and perception exists also at the neurobiological level: the
+architecture of the motor cortex is or­ga­nized in the same way as the sensory
+cortex—as a predictive coding architecture, with the exceptions that it can
+influence motor reflexes in the brain stem and spine (Shipp et al. 2013)
+and that it receives relatively ­little ascending input. Motor reflexes permit controlling movement by setting “equilibrium points” along a desired
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+202
+
+trajectory—an idea that corresponds to the equilibrium point hypothesis
+(Feldman 2009).
+Importantly, initiating an action—­like grasping a cup—­requires regulation of the precision (inverse variance) of prior beliefs and sensory streams
+appropriately. This is b
+­ ecause the relative values of t­hese precisions determine the way in which a creature manages the conflict between its prior
+belief (that it holds the cup) and its sensory input (signaling that it does
+not). An imprecise prior belief about grasping a cup can be easily revised in
+the light of conflicting sensory evidence—­producing a change of mind and
+no action. Rather, when the prior belief dominates (i.e., has higher precision), it is maintained even in the face of conflicting sensory evidence—­and
+it induces a grasping action to resolve the conflict. To ensure that this is the
+case, action initiation induces a transient sensory attenuation (or down-­
+weighting sensory prediction errors). Failure of this sensory attenuation can
+have maladaptive consequences, such as the failure to initiate or control
+movements (Brown et al. 2013).
+10.6.1 Ideomotor Theory
+In Active Inference, action stems from (proprioceptive) predictions and
+not motor commands (Adams, Shipp, and Friston 2013). This idea connects
+Active Inference to ideomotor theory of action: a framework to understand
+action control that dates back to William James (1890) and the l­ater theories of “event coding” and “anticipatory behavioural control” (Hommel
+et al. 2001, Hoffmann 2003). Ideomotor theory suggests that action-­effect
+links (similar to forward models) are key mechanisms in the architecture
+of cognition. Importantly, t­hese links can be used bidirectionally. When
+they are used in the action-­effect direction, they permit generating sensory
+predictions; when they are used in the effect-­action direction, they permit
+selecting actions that achieve desired perceptual consequences—­implying
+that actions are selected and controlled on the basis of their predicted consequences (hence the term ideo + motor). This anticipatory view of action
+control is supported by a body of lit­er­a­ture that documents the effects
+of (anticipated) action consequences on action se­lection and execution
+(Kunde et al. 2004). Active Inference provides a mathematical characterization of this idea that also includes additional mechanisms, such as the
+importance of precision control and sensory attenuation, which are not
+fully investigated in (but are compatible with) ideomotor theory.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+203
+
+10.6.2 Cybernetics
+Active Inference is closely related to cybernetic ideas about the purposeful,
+goal-­directed nature of be­hav­ior and the importance of (feedback-­based)
+agent-­environment interactions, as exemplified by the TOTE (Test, Operate, Test, Exit) and related models (Miller et al. 1960; Pezzulo, Baldassarre
+et al. 2006). In both TOTE and Active Inference, the se­lection of actions
+is determined by the discrepancy between a preferred (goal) state and the
+current state. T
+­ hese approaches diverge from s­ imple stimulus-­response relationships, as more commonly assumed in behaviorist theory and computational frameworks like reinforcement learning (Sutton and Barto 1998).
+The notion of action control in Active Inference is particularly akin to
+perceptual control theory (Powers 1973). Central to perceptual control theory
+was the notion that what is controlled is a perceptual state, not a motor
+output or action. For example, while driving, what we control—­and keep
+stable over time in the face of disturbances—is our reference or desired
+velocity (e.g., 90 mph), as signaled by the speedometer, whereas the actions
+we select for this (e.g., accelerating or decelerating) are more variable and
+context dependent. For example, depending on the disturbance (e.g., wind,
+a steep road, or other cars), we would need to ­either accelerate or decelerate
+to maintain the reference velocity. This view implements William James’s
+(1890) suggestion that “­humans achieve stable goals via flexible means.”
+While in both Active Inference and perceptual control theory it is a perceptual (and specifically a proprioceptive) prediction that controls action,
+the two theories differ in how control is operated. In Active Inference but
+not perceptual control theory, action control has anticipatory or feedforward aspects, based on generative models. In contrast, perceptual control
+theory assumes that feedback mechanisms are largely sufficient to control
+be­hav­ior, whereas trying to predict a disturbance, or exerting feedforward
+(or open-­loop) control, is worthless. However, this objection was mainly
+intended to address the limitations of control theories that use inverse-­
+forward models (see next section). U
+­ nder Active Inference, generative or
+forward models are not used to predict a disturbance but to predict ­future
+(desired) states and trajectories to be fulfilled by acting—­and to infer the
+latent cause of perceptual events.
+Fi­nally, another impor­tant point of contact between Active Inference and
+perceptual control theory is the way they conceptualize control hierarchies.
+Perceptual control theory proposes that higher hierarchical levels control
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+204
+
+lower hierarchical levels by setting their reference points or set-­points (i.e.,
+what they have to achieve) by leaving them f­ree to select the means to
+achieve them rather than by setting or biasing the actions that the lower
+levels have to perform (i.e., how to operate). This stands in contrast with
+most theories of hierarchical and top-­down control, in which higher levels
+­either directly select plans (Botvinick 2008) or bias the se­lection of actions
+or motor commands at lower hierarchical levels (Miller and Cohen 2001).
+Similar to perceptual control theory, in Active Inference one can decompose
+hierarchical control in terms of a (top-­down) cascade of goals and subgoals,
+which can be autonomously achieved at the appropriate (lower) levels. Furthermore, in Active Inference, the contribution of goals represented at dif­
+fer­ent levels of the control hierarchy can be modulated (precision weighted)
+by motivational pro­cesses, in such a way that the more salient or urgent
+goals are prioritized (Pezzulo, Rigoli, and Friston 2015, 2018).
+10.6.3 Optimal Control Theory
+The way Active Inference accounts for action control is significantly dif­fer­
+ent from other models of control in neuroscience, such as optimal control
+theory (Todorov 2004, Shadmehr et al. 2010). This framework assumes that
+the brain’s motor cortex selects actions using a (reactive) control policy
+that maps stimuli to responses. Active Inference, instead, assumes that the
+motor cortex conveys predictions, not commands.
+Furthermore, while both optimal control theory and Active Inference
+appeal to internal models, they describe internal modeling in dif­
+fer­
+ent
+ways (Friston 2011). In optimal control, t­ here is a distinction between two
+kinds of internal models: inverse models encode stimulus-­response contingencies and select motor commands (according to some cost function),
+whereas forward models encode action-­outcome contingencies and provide
+inverse models with simulated inputs to replace noisy or delayed feedback,
+hence ­going beyond a pure feedback control scheme. Inverse and forward
+models can also operate in a loop that is detached from external action-­
+perception (i.e., when inputs and outputs are suppressed) to support internal, “what if” simulations of action sequences. Such internal simulations of
+action have been linked to vari­ous cognitive functions, such as planning,
+action perception, and imitation in social domains ( Jeannerod 2001, Wolpert
+et al. 2003) as well as vari­ous disorders of movement and psychopathologies (Frith et al. 2000).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+205
+
+In contrast to the forward-­inverse modeling scheme, in Active Inference
+forward (generative) models do the heavy lifting of action control, whereas
+inverse models are minimalistic and often reduce to s­ imple reflexes resolved
+at the peripheral level (i.e., in the brain stem or spinal cord). Action is initiated when ­there is a difference between anticipated and observed states
+(e.g., desired, current arm positions)—­that is, a sensory prediction error.
+This means a motor command is equivalent to a prediction made by the
+forward model as opposed to something computed by an inverse model as
+in optimal control. The sensory (more precisely, proprioceptive) prediction
+error is resolved by an action (i.e., arm movement). The gap to be filled by
+action is considered so small that it does not require a sophisticated inverse
+model but a much simpler motor reflex (Adams, Shipp, and Friston 2013).1
+What renders a motor reflex simpler than an inverse model is that it does
+not encode a mapping from inferred states of the world to action but a
+much simpler mapping between action and sensory consequences. See
+Friston, Daunizeau et al. (2010) for further discussion.
+Another crucial difference between optimal motor control and Active
+Inference is that the former uses a notion of cost or value function to motivate action, whereas the latter replaces it with the Bayesian notion of prior
+(or prior preference, implicit in expected ­free energy)—as we discuss in the
+next section.
+10.7 Utility and Decision-­Making
+Action expresses priorities.
+—­Mahatma Gandhi
+
+The notion of a cost or value function of states is central in many fields, such
+as optimal motor control, economic theories of utility maximization, and
+reinforcement learning. For example, in optimal control theory, the optimal
+control policy for a reaching task is often defined as the one that minimizes
+a specific cost function (e.g., is smoother or has minimum jerk). In reinforcement learning prob­lems, such as navigating in a maze that includes
+one or more rewards, the optimal policy is the one that permits maximizing
+(discounted) reward while also minimizing movement costs. ­These prob­
+lems are often solved using the Bellman equation (or the Hamilton-­Jacobi-­
+Bellman equation in continuous time), whose general idea is that the value
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+206
+
+of a decision can be decomposed in two parts: the immediate reward and
+the value of the remaining part of the decision prob­lem. This decomposition
+affords the iterative procedure of dynamic programming, which is at the core
+of control theory and reinforcement learning (RL) (Bellman 1954).
+Active Inference differs from the above approach in two main ways. First,
+Active Inference does not consider utility maximization alone but the broader
+objective of (expected) f­ree energy minimization, which also includes additional (epistemic) imperatives, such as the disambiguation of current state
+and novelty seeking (see figure 2.5). T
+­ hese additional objectives are sometimes added on to classical rewards—­
+for example, as a “novelty bonus”
+(Kakade and Dayan 2002) or “intrinsic reward” (Schmidhuber 1991, Oudeyer
+et al. 2007, Baldassarre and Mirolli 2013, Gottlieb et al. 2013)—­but they
+arise automatically in Active Inference, enabling it to resolve exploration-­
+exploitation trade-­offs implicit in many decisions. The reason for this is that
+­free energies are functionals of beliefs, which means we are in the realm of
+belief optimization as opposed to external reward functions. This is essential in explorative prob­lems, wherein success depends on resolving as much
+uncertainty as pos­si­ble.
+Second, in Active Inference, the notion of cost is absorbed into the prior.
+The prior (or prior preference) specifies an objective for control—­for example, a trajectory to follow or an endpoint to reach. Using priors to encode
+preferred observations (or sequences) may be more expressive than using
+utilities (Friston, Daunizeau, and Kiebel 2009). Using this method, finding the optimal policy is recast as a prob­lem of inference (of a sequence of
+control states that realize the preferred trajectory) and does not require a
+value function or the Bellman equation—­although can appeal to a similar recursive logic (Friston, Da Costa et al. 2020). ­There are at least two
+fundamental differences between the ways priors and value functions are
+normally used in Active Inference and RL, respectively. First, RL methods
+use value functions of states or of state-­action pairs—­whereas Active Inference uses priors over observations. Second, value functions are defined in

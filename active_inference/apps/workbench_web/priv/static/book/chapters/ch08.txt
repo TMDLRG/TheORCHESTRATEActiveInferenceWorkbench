@@ -1,0 +1,1363 @@
+of visual input during saccades, then a suppression of saccades). Predicating
+movement on the suspension of attention has close relationships with an ideomotor theory that originated in the nineteenth ­century to explain movements
+induced u
+­ nder hypnosis.
+
+work developing models with more complex dynamical systems (but see
+­table 8.1 for some of the key advances). Instead, we focus on a few of the
+princi­ples needed to understand t­hese systems. In this section, we briefly
+overview two dynamical systems used in formulating generative models
+of this sort: Lotka-­Volterra dynamics and Lorenz systems. The former may
+be used in characterizations of systems with a sequential aspect to their
+dynamics, while the latter represent chaotic systems.
+Lotka-­Volterra dynamics inherit from characterizations of predator-­prey
+dynamics in ecol­ogy. While they have since found application in numerous
+disciplines, predator-­prey systems remain a useful example to provide some
+intuition about their workings. When the predator population is small, the
+prey may increase their numbers to become a relatively large population.
+This provides additional food for the predators, whose population size then
+grows. Increased predation ­causes a decrease in the number of prey species
+and therefore a decrease in the number of predators. From h
+­ ere, the cycle
+continues. This gives an oscillatory pattern whereby the prey population
+size peaks, then the predators’, then the preys’ again, and so on. By generalizing this to more than two populations (e.g., carnivore, herbivore, and
+plant populations), we can generate a sequence of peaks. Figure 8.2 illustrates generalized Lotka-­Volterra dynamics with three populations, which
+obey dynamics of the following form:
+f ( x, v) = x ° (v + Ax )
+
+(8.6)
+
+­Here, x is a vector as before. The ° symbol means an elementwise product.
+Intrinsic birth and death rates are given by the vector v, and A is a matrix
+whose ele­ments are positive if the species indexed by the column prey on
+­those indexed by the row and negative if the relationship is inverted.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+159
+
+Population size (a.u.)
+
+Generalized Lotka-Volterra dynamics
+6
+
+c
+
+p
+
+4
+
+c
+
+p
+h
+
+p
+
+p
+
+c
+
+h
+
+p
+
+c
+h
+
+h
+
+p
+h
+
+c
+
+Plant
+Herbivore
+Carnivore
+p
+
+p
+h c
+
+h
+
+2
+
+c
+
+h
+c
+
+0
+0
+
+100
+
+50
+
+200
+
+150
+
+250
+
+300
+
+2
+
+4
+
+Time
+4
+
+6
+Carnivore
+
+Herbivore
+
+3
+2
+1
+0
+
+4
+2
+0
+
+0
+
+2
+Plant
+
+4
+
+6
+
+0
+
+Herbivore
+
+Figure 8.2
+Generalized sequential dynamics emerging from Lotka-­Volterra systems provide an
+impor­tant point of connection with the discrete sequential dynamics assumed in
+chapter 7. ­These dynamics can be applied to a range of systems but are framed h
+­ ere
+in terms of predator-­prey relationships for ease of interpretation. Top: Population
+changes over time. The population size is expressed in terms of arbitrary units (a.u.).
+The peaks are labeled on the basis of which species has the greatest population at
+that point. The repeated pattern of p, h, c can be seen as a sequence of three (not
+necessarily evenly spaced) discrete time steps. Bottom: Trajectories emphasizing the
+(approximately) periodic pattern that each follows.
+
+Figure 8.2 makes clear that having a generative model that incorporates
+Lotka-­Volterra dynamics allows for temporal sequencing (Huerta and Ra­bino­
+vich 2004)—­depending on the current highest peak. Each line can be thought
+of as representing a hidden state, in place of a species. F
+­ igure 8.3 highlights
+two impor­tant examples in which t­hese dynamics have been exploited to
+generate be­hav­ior One is a hierarchical model that uses the sequential
+dynamics afforded by a Lotka-­Volterra system to time the response of an
+eye blink relative to a conditioned stimulus (Friston and Herreros 2016). The
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+5
+
+Expectations (µ(2)
+x )
+
+Expectations (µx)
+
+4
+2
+
+0
+
+0
+–2
+
+–5
+–8
+
+–4
+20 40 60 80 100 120
+Time
+Expectations (µv(1))
+
+–6
+–8
+
+50
+
+100 150
+
+200 250
+
+Time
+
+1
+0.8
+0.6
+0.4
+0
+
+1
+
+0.2
+20 40 60 80 100 120
+Time
+Expectations (µ(1)
+x )
+
+0
+–0.2
+
+0.8
+0.6
+
+Action (u)
+
+0.4
+
+0.2
+
+CS
+US
+
+0.4
+
+–0.4
+
+50
+
+100 150
+Time
+
+200 250
+
+0.2
+0
+
+1
+
+20 40 60 80 100 120
+Time
+
+Writing
+
+Action (u)
+
+0.8
+0.6
+0.4
+
+Blink
+
+0.2
+0
+
+20 40 60 80 100 120
+Time
+
+Figure 8.3
+Two applications of generalized sequential Lotka-­Volterra dynamics in Active Inference. Left: Eyeblink conditioning used to empirically investigate cerebellar function
+(Friston and Herreros 2016). Starting at the highest level of the column, the expected
+states show the same kind of sequential pattern as in figure 8.2. This passes down
+to the next level to predict sequential hidden ­causes; the vari­ous peaks h
+­ ere predict
+states at the next level down, where the first peak is the conditioned stimulus (CS)
+and the second is the unconditioned stimulus (US). Fi­nally, the predicted US induces
+action—­a blink. Right: Sequential peaks using an attracting point as in equation 8.5 but
+selecting the specific attractor on the basis of which population of a Lotka-­Volterra
+system is currently highest; this leads to a sequential visiting of each point, giving
+rise to a form of handwriting (Friston, Mattout, and Kilner 2011).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+161
+
+paradigm is based on t­hose used in the investigation of cerebellar function.
+An unconditioned stimulus (a puff of air directed t­oward an animal’s eye)
+elicits a response (blinking). A conditioned stimulus (an auditory tone) may
+be played prior to the unconditioned stimulus on multiple occasions. By
+learning (see box 8.2) the number of peaks in the Lotka-­Volterra dynamics
+that separate the conditioned stimulus from the unconditioned stimulus,
+the animal learns to preempt the air puff and time the appropriate blink.
+This is a form of temporal learning, since the number of peaks provides an
+implicit estimate of the length of the temporal interval from the conditioned to the unconditioned stimuli. In the second example in figure 8.3,
+each sequential peak is associated with an alternative attracting point that
+drives movements to a series of attracting points arranged to suggest handwriting (Friston, Mattout, and Kilner 2011). As the two examples illustrate,
+Box 8.2
+Learning in continuous models
+As discussed in chapter 7, learning is the pro­cess of optimizing beliefs about
+the par­ameters (θ ) of a generative model. In the continuous-­time domain,
+this means accumulating evidence over time. This works as if we treat data in
+a series of infinitesimally small time-­intervals as obeying i.i.d. (in­de­pen­dent
+and identically distributed) assumptions and formulate a generative model
+that generates observations from (time-­invariant) par­ameters:
+
+∫
+≈ ln p(θ ) − ∫ F[ y(t ) | θ ]dt
+
+! θ ) = ln p(θ ) + ln p(y(t ) | θ )dt
+ln p( y,
+
+This may be used to formulate a functional (S ) that plays the role of a ­free
+energy for par­ameters using the time integral of the f­ree energy conditioned
+on par­ameters. Using a Laplace approximation, we get the following, wherein
+α acts to accumulate ­free energy gradients (i.e., evidence gradients):
+S(θ ) = Eq(θ )[ ln q(θ ) +
+
+∫ F[ y(t ) | θ ]dt − ln p(θ )]
+
+∫
+
+≈ F[ y(t ) | µθ ]dt − ln p( µθ )
+.
+µθ = ∂µθ S( µθ )
+
+∫
+
+= ∂µθ ln p( µθ ) − ∂µθ F[y(t ) | µθ ]dt
+= ∂µθ ln p( µθ ) − α
+
+.
+α = ∂µθ F[ y(t ) | µθ ]
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+162
+
+generalized Lotka-­Volterra systems afford useful models of sequential dynamics using a continuous dynamical system.
+The POMDP formulation of chapter 7 has largely superseded the use of
+generalized Lotka-­Volterra systems in Active Inference applications. However, it is useful to bear this kind of dynamic in mind as a plausible continuous system that might underwrite the discrete sequential dynamics of
+chapter 7. In addition, Lotka-­Volterra systems make explicit the distinction
+between repre­sen­ta­tions of sequences involved in temporally deep planning
+and repre­sen­ta­tions of rates of change in generalized coordinates of motion
+(see chapter 4). Each has its place but deals with dif­fer­ent sorts of prob­lems.
+The second sort of dynamical system that has found widespread application in active inference research is the Lorenz system:
+⎤
+⎡σ (x2 − x1 )
+. ⎢
+⎥
+x = ⎢ x1 ( ρ − x3 ) − x2 ⎥
+⎢ x1x2 − β x3
+⎥
+⎣
+⎦
+
+(8.7)
+
+The par­ameters are known as the Prandtl number (σ ), the Rayleigh number ( ρ), and a constant ( β ) that relates to the physics of the system. Depending on the values t­ hese take, the system may behave in very dif­fer­ent ways.
+Lorenz attractors ­
+were initially formulated to account for atmospheric
+convection dynamics. Their itinerant (wandering) be­hav­ior has prompted
+their use in generative models to simulate challenging inference prob­lems.
+An impor­tant example of this is in the simulation of birdsong, which we
+unpack in the next section. T
+­ hese systems have also been used to simulate ­simple physical systems and to investigate the conditions ­under which
+their be­hav­ior starts to appear sentient. Figure 8.4 shows how the Lorenz
+system behaves ­under example pa­ram­e­ter settings.
+8.4 Generalized Synchrony
+As mentioned above, a key example application of continuous state-­space
+models is in a series of studies based on synthetic birdsong (Friston and
+Frith 2015b). An impor­tant aspect of ­these studies looks at communication
+and multi-­agent inference prob­lems. The idea ­here rests on the capacity
+of a creature to synchronize its internal states with something out ­there
+in the world (i.e., inference). When what is out t­here is another creature
+with a similar model, this synchronization means the internal states of one
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+163
+
+Lorenz system
+40
+20
+0
+–20
+500
+
+1000
+
+1500
+
+2000
+
+20
+
+40
+
+10
+
+30
+
+0
+
+2500
+
+z
+
+y
+
+0
+
+20
+
+–10
+
+10
+
+–20
+–10
+
+0
+x
+
+10
+
+20
+
+0
+
+–20
+
+0
+y
+
+20
+
+Figure 8.4
+Be­hav­ior of a Lorenz system attractor (using the same format as figure 8.2), showing
+how this 3-­dimensional system evolves. Characteristically, it appears chaotic and
+unpredictable, spending some of its time orbiting one part of space before switching to another orbit. This itinerancy and apparent autonomy make this in­ter­est­ing
+system well suited to inclusion in models of biological phenomena.
+
+creature should come to resemble the internal states of the other: a primitive kind of theory of mind.
+Figure 8.5 shows the kind of generative model used to simulate songbirds. In this hierarchical model, high-­level states (level 2) evolve according to a slow Lorenz system. One dimension of this system is then used to
+pa­ram­et­erize the Rayleigh number of a faster Lorenz system at the lower
+level (level 1). The lower-­level variables then map to sensory (sonographic)
+data. Analogous to figure 8.1, the generative pro­cess additionally includes
+action; ­here, instead of moving a limb, actions influence the larynx, such
+that the sonographic data may be influenced by the bird. As before, action
+is generated to resolve prediction error. This means that if a bird hears the
+song it is predicting, t­here is no need to generate it itself. However, if it
+predicts a song that is not heard, it must start singing to resolve any error.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+164
+
+(2)
+(2)
+10(x2 – x1 )
+(2)
+(2)
+(2)
+1
+(32 – x3 )x1 – x2
+f (2) = –—
+128
+(2) (2)
+(2)
+x1 x2 – 8–3 x3
+(2)
+g (2) = x1
+(1)
+
+1
+f (1) = ––
+16
+
+Level 1
+
+g (1) =
+Sensory data
+
+y
+
+(1)
+
+x3
+
+–20 0 20 40
+Second-level
+expectations (first bird)
+
+(1)
+(1) (1)
+(1)
+θ((v1 – 8) – x3 )x1 – x2
+(1) (1) 8 (1)
+x1 x2 – –3 x3
+
+x2(1)
+
+20
+0
+–20
+–40
+
+(1)
+
+10(x2 – x1 )
+
+Expectations
+(second bird)
+
+Level 2
+
+Synchronization manifold
+Before learning
+60
+40
+
+Expectations
+(second bird)
+
+Generative model
+
+80
+60
+40
+20
+0
+–20
+–40
+–50
+
+After learning
+
+0
+50 100
+Second-level
+expectations (first bird)
+
+Figure 8.5
+Synchronization and communication. Left: Generative model underwriting the birdsong simulations described in the main text. This is a hierarchical model, with Lorenz
+attractors at each level. Right: Synchronization manifolds of expectations at the second level for two birds before and a
+­ fter they have learned about one another. A
+­ fter
+learning the par­ameters of each other’s generative models, the two bird’s joint trajectory is confined to an (almost) 1-­dimensional subspace, indicating synchronization.
+
+This dynamic becomes more in­ter­est­ing when t­ here are two birds in play,
+with similarly structured generative models. As long as one bird is singing,
+the other does not need to, as ­there is no error to resolve. However, if one
+bird stops singing, the other needs to continue the same song. This leads to
+a form of turn taking, sometimes phrased as “singing from the same hymn
+sheet,” with each bird contributing sections of the same song. What leads
+to this turn taking? Why ­doesn’t one bird continue singing the ­whole song
+to its conspecific? The answer relates to the issue of sensory attenuation (see
+box 8.1), as acting to generate birdsong requires a reduction in the precision of predictions about the consequences of action. Just as in saccadic eye
+movements, this implies alternation between attention to sensory (visual or
+auditory) data and attenuation during (saccadic or vocal) action designed
+to change ­those data. When ­there are two agents involved, this leads to an
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+165
+
+alternation between listening to the other and singing—­a ­simple form of
+conversation.
+For this synthetic conversation to work, it is essential that the two birds
+synchronize with one another and know where they are in the song (or
+conversational trajectory). This implies that the inferences about hidden
+states in the generative model should be aligned between the birds. On
+the upper right of figure 8.5, we show a synchronization manifold of two
+birds who have not yet optimized their generative models in relation to one
+another; this plots a trajectory of the beliefs each bird has about the higher-­
+level hidden states. Synchronization implies that when one bird infers a
+specific hidden state value, the other bird should infer the same; therefore, we would expect the trajectory to stay fixed to the x = y line (technically called identical synchronization of chaos). Fluctuations around this
+line imply imperfect synchronization, as this plot shows. ­After exposure to
+one another and learning the par­ameters of each other’s generative models
+(see box 8.2), the synchronization is nearly perfect (lower-­right plot). The
+implication is that each bird has learned about the other and is able to infer
+what is ­going on in the other’s head. In short, they have learned to share
+the same narrative and “sing from the same hymn sheet.”
+A more general form of synchronization does not require synchronization
+along the x = y line. In generalized synchronization, the joint be­hav­ior occupies a lower, 1-­dimensional space than the higher, 2-­dimensional space that
+could be occupied by this be­hav­ior. However, this low-­dimensional space
+(the synchronization manifold) may be curved or have some other shape;
+this is analogous to the 2-­dimensional space we occupy on the surface of
+the planet, despite the surface being curved into a 3-­dimensional sphere. In
+addition to its central role in social be­hav­ior, generalized synchronization—­
+occupancy of a low-­dimensional region of a high-­dimensional joint space—
+is very impor­tant in characterizations of biological systems as engaging in
+inference (generalized synchrony between internal and external states).
+While we do not have the space to unpack this extensive subject h
+­ ere, the
+inferential perspective speaks to the failure of generalized synchrony associated with neuropsychiatric syndromes like autism. This kind of synchrony
+is impor­tant not only in continuous-­time models but also in POMDP
+models of linguistic communication between multiple agents (Friston, Parr
+et al. 2020).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+166
+
+8.5 Hybrid (Discrete and Continuous) Models
+As we have seen in this and the previous chapter, discrete and continuous
+models both have impor­tant applications in Active Inference. While many
+settings call for one or the other, a more holistic perspective acknowledges
+that both are likely in play. This means we need a way to combine ­these
+generative models so that a single model includes both continuous and
+discrete variables (Friston, Parr, and de Vries 2017). Such hybrid or mixed
+models allow inferences about sequential action plans and translations of
+­these decisions into movements through a continuous model. Figure 8.6
+shows the form of ­these models, with a POMDP at the higher level, behaving as described in chapter 7, which generates a continuous model of the
+
+G
+
+sτ–1
+
+D
+
+x
+
+f
+
+sτ
+
+B
+
+sτ+1
+
+B
+
+A
+
+A
+
+A
+
+oτ–1
+
+oτ
+
+oτ+1
+
+η
+
+η
+
+η
+
+v
+
+v
+
+v
+
+xʹ
+
+f
+
+xʺ
+
+x
+
+f
+
+xʹ
+
+f
+
+xʺ
+
+x
+
+f
+
+xʹ
+
+f
+
+xʺ
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+y
+
+yʹ
+
+yʺ
+
+y
+
+yʹ
+
+yʺ
+
+y
+
+yʹ
+
+yʺ
+
+Figure 8.6
+Mixed generative models in the form of a hierarchical model much like that in figure 7.12. However, ­there is an impor­tant difference between the form of the model
+at the higher level and that at the lower level. While the lower-­level model (one
+example is highlighted by the dashed box) is the same form as the other models
+considered in this chapter—­i.e., it is framed in terms of continuous states and continuous time and uses generalized coordinates of motion—­the higher-­level model is
+a POMDP model of the sort we saw throughout chapter 7—­i.e., it is framed in terms
+of discrete states and times. Effectively, this means we can select (at regular time
+intervals) between alternative segments of a continuous trajectory.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+167
+
+sort addressed in this chapter at each discrete time step. This decomposes
+continuous time into a discrete sequence of short continuous trajectories.
+To translate from the outcomes of the discrete level to the continuous
+level, we need to associate each alternative outcome with a point in some
+continuous space. To develop intuition for this idea, we consider the example of a delay-­period oculomotor task—­often used in primate research; see
+figure 8.7. This task involves three stages. First, a target appears in one of (for
+example) four pos­si­ble locations, while a monkey maintains fixation on a
+central fixation cross. Next, the target dis­appears and must be remembered
+during a delay period. Fi­nally, a signal is given for the monkey to make
+a saccade, at which point it must look at the location where the original
+target appeared. To complete this task, the monkey must be able to draw
+inferences about sequences (which stage of the task is currently in play) and
+to infer which of four locations to aim for. ­These are categorical inference
+prob­lems suited to a POMDP formulation. However, once the appropriate
+location has been selected, the monkey must perform the eye movement
+that brings its fovea to the (continuous) coordinates of the target location.
+Figure 8.7 illustrates the functioning of a mixed generative model that
+solves this prob­lem. In the top panel, the model’s higher level makes categorical decisions: it computes the posterior beliefs about four discrete target
+locations at four time periods. In the m
+­ iddle and bottom plots, the model’s
+lower level computes continuous behavioral trajectories (eye movements)
+resulting from discrete inferences at the higher level.
+Transforming decisions about discrete target locations into continuous
+eye movements requires each discrete target location (o) to be associated
+with a distribution over continuous hidden c­ auses (v), which identifies the
+target coordinates. The prior over target coordinates can then be computed
+by taking the Bayesian model average over t­ hese locations, weighted by the
+inferences at the POMDP level:
+! v)
+P ( v! |oτ ) = N (η! oτ , Π
+! v)
+!, Π
+! ≈ N (η
+P( v)
+
+(8.8)
+
+! = EQ (o ) [η! ] = oτ i η!
+η
+τ
+
+To infer which discrete target best explains continuous data, we need to
+be able to compute the evidence associated with each hy­po­thet­i­cal target—­
+which is a function of observed continuous data. This exemplifies the fact
+that mixed models require reciprocal interactions between higher and lower
+hierarchical levels. As we see in figure 8.7, this facilitates the formation of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+168
+
+1
+0.8
+0.6
+
+Saccade up (τ = 3)
+Fixate up (τ = 4)
+
+Fixate center (τ = 2)
+
+0.4
+0.2
+0
+
+Delay
+
+Cue
+25
+
+Firing rates (discrete)
+
+Saccade
+Speed
+
+Behavior (continuous)
+
+Distance
+
+0.5
+0.4
+
+15
+
+0.3
+
+10
+
+0.2
+
+5
+0
+
+0.6
+
+m/s
+
+Distance
+cm
+
+20
+
+Fixate
+
+Speed
+
+Probability
+
+Fixate center (τ = 1)
+
+0.1
+0
+
+200
+
+400
+
+ms
+Time
+
+600
+
+800
+
+0
+
+Figure 8.7
+Transforming decisions into movement using mixed or hybrid models (Parr and Friston 2019b). This ­simple example uses the oculomotor delay-­period paradigm outlined in the main text. Top: Neuronal firing rates representing posterior beliefs about
+the target location. The target may be in four dif­fer­ent locations, and ­there are four
+time steps in this synthetic experiment, so t­ here are 16 neural populations representing each of ­these combinations. The lines corresponding to the final inferred state of
+affairs are annotated explic­itly. Note the belief updating at the first time step (from 0
+to 250 ms), when the target initially appears, and at the third time step (from 500 to
+750 ms), when the agent observes itself performing a saccade to that location. ­Middle:
+Be­hav­ior (i.e., a saccade from the center location to the target location). During the
+first quarter of the experiment, the target is vis­i­ble in the upper location. Next, ­there
+is a delay period, during which fixation is maintained. Then a saccade is performed
+to the correct location. Fi­nally, ­there is a period during which fixation is maintained
+at the target location. Bottom: Continuous behavioral trajectories that result from the
+discrete inferences of the top plot.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+169
+
+Box 8.3
+Mixture models and clustering
+The issue of combining categorical and continuous generative models outside
+of Active Inference has primarily been framed through the lens of clustering.
+­Here, the aim is to assign each (continuous) data point to a (discrete) cluster.
+A range of algorithms have been employed to solve this prob­lem, but most of
+them implicitly rely on a generative model similar to that used ­here. This is a
+mixture of Gaussians (aka a Gaussian mixture model):
+
+∏ P(s | D)P(y | s ,η,Π)
+
+! s! , D, η , Π) = P(D)P(η )P(Π)
+P( y,
+
+i
+
+i
+
+i
+
+i
+
+P(D) = Dir(d)
+P(si |D) = Cat(D)
+P(yi | si , η , Π) = N (ηsi , Πsi )
+The prob­lem in clustering approaches is to infer the mean and precision
+(η and Π, respectively) of each cluster and the posterior probability that each
+data-­point ( yi) belongs to a given cluster P(si | yi). For our purposes (as described
+in section 8.5), we assume precise (delta-­function) priors for η and Π and calculate Q(si) ≈ P(si | yi) via Bayesian model reduction (see box 7.3).
+
+beliefs about where to perform saccades and the execution of ­those saccades
+at the appropriate times. At the first discrete time step (up to 250 ms on the
+continuous scale), the monkey is able to infer with some confidence that
+its eyes are centered on the fixation cross during the first time step, that it
+­will maintain this fixation at the second time step (up to 500 ms), and that
+the most likely course of action a
+­ fter this ­will result in foveating the upper
+location. This can be seen in the discrete firing rates (top plot). This translates into the continuous be­hav­ior which, when implemented, increases the
+confidence in beliefs about the discrete states (note the increase in probability for an upward saccade at the third time step once the continuous data
+become available between 500 and 750 ms). This s­ imple example, based on
+experimental cognitive research, illustrates the basic princi­ples of translation
+between discrete action plans and their continuous implementation.
+8.6 Summary
+In this chapter, we have overviewed the applications of continuous-­time
+generative models ­under Active Inference. This is a huge topic, and much
+has been left out (see ­table 8.1 for further reading). However, the broad
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+170
+
+­Table 8.1
+Key advances in continuous-­time models
+Application
+
+Sources
+
+Notes
+
+Synthetic
+birdsong
+
+Friston and Frith 2015a
+Friston and Frith 2015b
+Isomura, Parr, and
+Friston 2019
+
+This series of papers deals with
+communication and the interaction
+between synthetic agents, a simulated pair (or group) of songbirds
+singing to one another. The studies
+unpack phenomena from generalized synchrony to perceptual inference to sensory attenuation.
+
+Oculomotor
+delays
+
+Perrinet, Adams, and
+Friston 2014
+
+By taking advantage of beliefs
+about the near past and ­future
+implicit in models formulated in
+generalized coordinates of motion,
+it is pos­si­ble to account for sensori­
+motor delays through projections
+a short way into the ­future or past.
+
+Conditioned
+reflexes
+
+Friston and Herreros
+2016
+
+Using a model based on a Lotka-­
+Volterra system, the temporal
+relationship between a conditioned
+and unconditioned stimulus is
+learned and used to generate an
+anticipatory blink.
+
+Smooth pursuit
+eye movements
+
+Adams, Perrinet, and
+Friston 2012
+
+This work looks at the role of
+smooth pursuit eye movements,
+following a visual target. It aims
+to reproduce differences between
+neurotypical and schizophrenic
+individuals in response to pursuit
+with and without visual occlusion.
+
+Psychosis
+
+Adams, Stephan et al.
+2013
+
+Building on the songbird and
+smooth pursuit models, this
+research looks at how false, psychotic inference may arise from
+suboptimal prior beliefs.
+
+Illusions
+
+Brown and Friston 2012
+Brown, Adams et al. 2013
+
+Illusions offer a useful tool to reveal
+the prior beliefs our brains appeal
+to in the presence of uncertain or
+ambiguous sensory input. ­These
+papers take several examples of
+common illusions and demonstrate
+the optimality of illusory inferences
+­under certain prior beliefs.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+171
+
+­Table 8.1
+(continued)
+Application
+
+Sources
+
+Notes
+
+Saccades
+
+Friston, Adams et al.
+2012
+Donnarumma et al. 2017
+Parr and Friston 2018a
+
+Like the smooth pursuit simulations, ­these papers consider eye
+movement control. However, ­here
+the eyes do not simply follow a
+target but must move to one of
+several pos­si­ble target locations.
+They deal with the generative
+models we need to be able to do
+this and (once the models have
+been specified) the emergent architectures and physiology.
+
+Action
+observation
+
+Friston, Mattout, and
+Kilner 2011
+
+This work considers the role of the
+mirror neuron system and formalizes the idea that generative models
+of our own actions can also be put
+to use in modeling, and replicating,
+be­hav­ior observed in ­others.
+
+Attention
+
+Feldman and Friston
+2010
+Kanai et al. 2015
+
+Through predicting precision, we
+implicitly select the data that we
+believe is most informative. This
+work highlights how implementations of this idea reproduce classical
+psychophysical findings in the
+Posner paradigm and figure-­ground
+discrimination tasks.
+
+Hybrid models
+
+Friston, Parr, and de
+Vries 2017
+Parr and Friston 2018c
+Parr and Friston 2019b
+
+­These models make use of discrete
+POMDP models in combination
+with predictive coding schemes.
+Most current examples of this
+modeling are framed in terms of
+visual search be­hav­ior or oculo­
+motor control. ­These require
+selecting where to look and then
+implementing the pro­cess of
+looking ­there.
+
+Self-­organization
+
+Friston 2013
+Friston, Levin et al. 2015
+Palacios et al. 2020
+
+This line of research is based on
+the idea that groups of cells can
+or­ga­nize into a predefined structure when each cell has the same
+implicit generative model of that
+structure. Specifically, they must
+know what sort of sensory input
+they would predict if they ­were a
+par­tic­u­lar kind of cell.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+172
+
+concepts outlined h
+­ ere provide a foundation from which t­ hese models may
+be further explored. Specifically, we have considered movement generation
+in terms of the fulfillment of predictions. This greatly simplifies the treatment of motor control prob­lems, as we do not need any additional machinery or inverse models—­just spinal or brain stem reflex arcs. We highlighted
+the role of precision and sensory attenuation in motor control of this sort.
+Given that a key advantage of continuous schemes is to articulate generative
+models in terms of dynamical systems, we outlined two ubiquitous types of
+dynamical system that have found widespread application in Active Inference research. Generalized Lotka-­Volterra systems act to provide temporal
+sequencing in a continuous context, while Lorenz attractors may be used
+to generate rich simulations, including synthetic birdsong. Next we considered the concept of generalized synchrony. Synchronization of the internal
+states of a system to external states forms the basis of inferential treatments
+of brain function and is crucial in accounts of social systems—­where external states largely comprise conspecifics (i.e., creatures like me). Fi­nally, we
+set out the unification of the discrete and continuous models of chapters 7
+and 8, bringing together the expected ­free energy minimizing (exploitative
+and explorative) dynamics of POMDP formulations, the enaction of the
+be­hav­iors t­ hese mandate through continuous pro­cesses, and the reciprocal
+message passing that mediates this interaction. In short, this takes us from
+decisions to movements—­and back again.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+9
+
+Model-­Based Data Analy­sis
+
+Just ­because we have the best hammer does not mean that ­every prob­lem is a nail.
+—­Barack Obama
+
+9.1 Introduction
+Ultimately, the models described in this book are only useful if they can
+answer scientific questions. In this chapter, we focus on the ways in which
+Active Inference can be applied in understanding empirical data. The central idea is that we, as scientists, can appeal to the same maths as we have
+assumed the brain uses in previous chapters. Our general goal is to recover
+the par­ameters of the generative model that a subject’s brain uses to produce be­hav­ior—­the subjective model. For this, we can use our own generative model (of how the subjective model produces be­hav­ior)—­the objective
+model. We can invert our objective model on the basis of the be­hav­ior we
+observe to draw inferences about the par­ameters of the subjective generative model. This meta-­Bayesian inference affords the opportunity to test
+hypotheses about the model we assume the brain uses and to phenotype
+individuals on the basis of the prior beliefs they would have to hold for
+their be­hav­ior to be Bayes optimal. Belief-­based computational phenotyping of this sort holds promise in the emerging fields of computational psychiatry, neuropsychology, and neurology.
+9.2 Meta-­Bayesian Methods
+This chapter deals with the utility of Active Inference formulations in analyzing data from behavioral experiments. This goes beyond the proof-­of-­principle
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+174
+
+simulations we have seen in previous chapters and instead exploits Active
+Inference in answering scientific questions. We have seen already that a subject’s generative model is the key determinant of be­hav­ior u
+­ nder Active Inference. This implies that hypotheses about the c­ auses of empirical behavioral
+mea­sure­ments must be framed in terms of the alternative generative models
+used to select ­those actions. Our challenge, then, is to fit an Active Inference
+scheme to observed data by manipulating the par­ameters (i.e., prior beliefs)
+of the generative model.
+Broadly speaking, t­here are two (related) reasons for fitting a computational model to observed be­hav­ior. The first is to estimate par­ameters of
+interest from that model that best explain the be­hav­ior of a specific subject
+or group of subjects. This is useful in characterizing subjective be­hav­ior in
+terms of the computations that generate it, a pro­cess known as computational phenotyping (Montague et al. 2012, Schwartenbeck and Friston 2016,
+Friston 2017). Computational phenotypes may be used in combination
+with other mea­sures (e.g., to establish links between neuroimaging findings and function) or may be used alone in forecasting be­hav­iors in other
+settings (e.g., following a therapeutic intervention).
+The second reason is to compare alternative hypotheses, expressed as
+models, that represent dif­fer­ent explanations for a behavioral phenomenon
+(Mirza et al. 2018). T
+­ hese two agendas—­parameter estimation and model
+comparison—­map to one side of Bayes’ theorem. Pa­ram­et­er estimation is
+the pro­cess of finding the posterior probability, ­under a model, of a pa­ram­
+e­ter setting. Model comparison rests on finding the marginal likelihoods
+(i.e., evidence) for each model. To recap, Bayes’ theorem is
+P(u | θ ,m) P(θ |m) = P(θ | u,m) P(u | m).
+!#"#$ !
+#"#
+$ !#"#$ !"
+# #
+$
+Likelihood
+
+Prior
+
+Posterior
+
+Evidence
+
+(9.1)
+
+The right-­hand side deals with the posterior probability of par­ameters (θ )
+given behavioral data (u) ­under a model (m) and the model evidence, and
+the left-­hand side tells us what we need to specify for our model: we need
+prior beliefs about our par­ameters of interest and a likelihood function.
+Importantly, while we appeal to the same Bayesian inference scheme as
+used in previous chapters, our purpose is dif­fer­ent h
+­ ere. This rests on the
+fact that t­here are two inference pro­cesses g
+­ oing on (figure 9.1). The first
+is that creatures use their model of the pro­cesses generating their sensory
+data to draw inferences about their world (and about how to act). This has
+been the focus of the preceding chapters. The second is that we as objective
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+175
+
+Θ
+
+P (θ | m)
+
+θ
+
+Parameters
+
+Experimental stimuli
+
+õ
+
+P(õ, s,  | θ, m)
+G
+
+
+
+Sτ-1
+
+B
+
+Sτ
+
+B
+
+Sτ+1
+
+A
+
+A
+
+A
+
+Oτ-1
+
+Oτ
+
+Oτ+1
+
+P(ũ | θ, õ, m)
+
+Subjective model
+
+ũ
+
+Observed behavior
+
+Objective model
+Figure 9.1
+Relationship between the subjective and objective models of meta-­Bayesian inference. Inner dashed box: Subjective model assumed to be used by an experimental
+subject. This could be a POMDP model as illustrated or some other form of model.
+The impor­tant features are that it depends on par­ameters (θ  ) whose value we do not
+know and that it generates sensory data (o). Outer dashed box: Experimenter’s objective model (m) includes prior beliefs about the par­ameters and predicts the be­hav­
+ior (u) we would expect on presenting experimental stimuli (sensory data from the
+subjective model’s perspective). Crucially, the likelihood distribution of the objective
+model depends on the subjective model. This means we evaluate the likelihood of
+par­ameters taking a par­tic­ul­ar value as follows. First, we incorporate the par­ameters
+in the subjective model. We then use the Active Inference schemes described in previous chapters to solve this model, presenting our experimental stimuli as sensory
+data, and infer a distribution over the most probable course of action. Fi­nally, we
+evaluate the probability of the observed actions or choices, given this distribution.
+This is the likelihood of observed be­hav­ior given par­ameters and stimuli—­i.e., the
+likelihood distribution in the objective model.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+176
+
+scientists observe the creature’s be­hav­ior and seek to draw inferences about
+the (subjective) generative model it is using by inverting our own (objective)
+generative model. The implication ­here is that we are drawing inferences
+about an inferential process—­
+sometimes referred to as “meta-­
+Bayesian”
+inference (Daunizeau et al. 2010).
+More formally, this approach defines the likelihood distribution in terms
+of the solution to an Active Inference prob­lem. By using a given pa­ram­
+e­ter setting, we can simulate be­hav­ior ­under Active Inference and quantify the likelihood that a series of actions would have been taken. Equipped
+with prior beliefs about the value of ­these par­ameters, we have a generative
+model of how a creature uses its generative model to produce actions. While
+our focus is on Active Inference (and discrete-­time models specifically), the
+generic methods used ­here may be used with any arbitrary likelihood function. Other normative models of be­hav­ior (such as t­ hose used in reinforcement learning) may be substituted in place of the Active Inference models.
+The following sections unpack an example of a generic inference scheme
+that may be used for meta-­Bayesian inference (namely, variational Laplace)
+and the use of hierarchical models for model comparison. We then provide a s­ imple r­ ecipe for model-­based data analy­sis and fi­nally review a key
+example of this procedure. It is impor­tant to emphasize that understanding
+the technical details is not required to use ­these methods effectively; thus,
+readers uninterested in t­ hese details are invited to skip sections 9.3 and 9.4.
+In brief, the basic idea is to evaluate the likelihood of any observed set
+of choices, given the unknown par­ameters of interest—­namely, the par­
+ameters of a subject’s prior beliefs. We then combine this likelihood with
+our objective prior over ­those par­ameters to evaluate the posterior over the
+subject’s priors, in the usual way. If we have several subjects, t­hese posteriors can be combined to make inferences about group or between-­subject
+effects, using parametric empirical Bayes (PEB). The requisite likelihood is
+simply the probability of sampling the observed sequence of choices, u
+­ nder
+the subject’s posterior beliefs about action. ­These posterior beliefs depend
+on what the subject sees (i.e., cues or stimuli) and her prior beliefs—­and
+are evaluated in a straightforward way by solving the appropriate Active
+Inference scheme. Note that we are using Bayesian procedures twice: first
+to evaluate the subject’s posterior beliefs about action, and second to evaluate our posterior beliefs about the unknown priors that characterize the
+subject. We now rehearse the vari­ous parts of this meta-­Bayesian procedure.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+177
+
+9.3 Variational Laplace
+Variational Laplace is an inference scheme based on the same princi­ples as
+predictive coding (Friston, Mattout et al. 2007). However, it may be used for
+more generic likelihood functions than ­those encountered ­earlier—­which
+­were defined as Gaussian. We w
+­ ill start this section with an overview of the
+likelihood function L(θ ) of interest ­here. This should give the probability of
+actions for an Active Inference scheme with a generative model with par­
+ameters set at value θ. The actions selected depend on the observations made:
+!
+L(θ ) = ln P(u! |θ ,m, o)
+! = u! i σ (θα ln u)
+!
+P(u! | θ ,m, o)
+u! = π i U
+
+(9.2)
+
+π = arg min F
+π
+
+Unpacking this, the first term gives the log likelihood of an observed
+sequence of actions (ũ) as a function of par­ameters (θ ), the model (m), and a
+sequence of stimuli (õ) presented during a real experiment. The probability
+of t­hese actions is found by using the par­ameters to set the prior beliefs in
+a POMDP model of the sort described in chapter 7. We can then solve the
+POMDP as described in chapters 4 and 7, forcing the simulation to take
+the observed action sequence and presenting it with the same experimental
+stimuli. As we described in preceding chapters, this involves computing the
+beliefs (π) a synthetic subject holds about the policy or course of action she
+chooses to pursue. This minimizes the ­free energy (F) associated with her
+generative model of the world. We can then take ­these beliefs and calculate
+the average probability of pursuing an action sequence. This requires us to
+distribute the probability for each policy over the actions implied by that
+policy (indexed by an array U). Fi­nally, a softmax temperature pa­ram­e­ter
+(θα ) is applied to account for randomness (shaky-­handedness) in be­hav­ior not
+accounted for by the model. If this softmax pa­ram­e­ter is one, we are effectively assuming that the subject samples her actions from posterior beliefs
+about her actions; sometimes, this is called matching be­hav­ior. Alternatively, if the softmax pa­ram­e­ter is very large, the action emitted is the action
+with the greatest subjective posterior—­that is, the subject always chooses

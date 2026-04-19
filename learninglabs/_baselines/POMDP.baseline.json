@@ -1,0 +1,5 @@
+{
+  "standard": { "freeEnergy": "1.490", "policyMass": "Repair \u2192 Repair @ 0.265", "ticks": "8" },
+  "noisy":    { "freeEnergy": "2.553", "policyMass": "Repair \u2192 Repair @ 0.270", "ticks": "8" },
+  "sticky":   { "freeEnergy": "1.946", "policyMass": "Repair \u2192 Repair @ 0.504", "ticks": "8" }
+}

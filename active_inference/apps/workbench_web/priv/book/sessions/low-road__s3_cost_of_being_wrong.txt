@@ -1,0 +1,312 @@
+what one observes (i.e., a prediction error). We w
+­ ill introduce variational
+­free energy formally in section 2.5. For simplicity section 2.4 focuses on the
+ways in which perception and action minimize the discrepancy between the
+generative model and the world.
+2.5 Minimizing the Discrepancy between Model and World
+Having established perception and action in terms of Bayesian inference,
+we now turn to the question of what the objective of inference is. In other
+words, what is being optimized by inference? In cognitive science, it is
+common to assume that dif­fer­ent cognitive functions like perception and
+action optimize dif­fer­ent objectives. For example, we could assume perception maximizes the accuracy of reconstruction while action se­lection maximizes utility. Instead, a fundamental insight of Active Inference is that both
+perception and action serve the very same objective. As a first approximation, this common objective of perception and action can be formulated as a
+minimization of the discrepancy between the model and the world. Sometimes
+this is operationalized in terms of prediction error.
+To understand how perception and action reduce the discrepancy between
+the model and the world, consider again the example of a person who expects
+to see an apple (figure 2.3). She generates a top-­down visual prediction (e.g.,
+about seeing something red and not jumping). This visual prediction is compared with a sensation (e.g., something jumping)—­and this comparison
+results in a discrepancy.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+26
+
+Prediction
+
+Observation
+
+DISCREPANCY
+
+Perception:
+change beliefs
+
+Action:
+change world
+
+Figure 2.3
+Both perception and action minimize discrepancy between model and world.
+
+The person can resolve this discrepancy in two ways. First, she could
+change her mind about what she is seeing (i.e., a frog) to fit the world,
+hence resolving the discrepancy. This corresponds to perception. Second,
+she could foveate the nearest apple tree and see something that looks very
+much like an apple. This also resolves the initial discrepancy, but in a dif­fer­
+ent way. This entails changing the world—­including her direction of gaze—­
+and subsequent sensations to fit what is in her mind, not changing her
+mind to fit the world. This is the other direction of fit. This is action.
+While changing the direction of one’s gaze seems less compelling than
+changing one’s mind in the world of apples and frogs, let us consider another
+case: a person who expects his body temperature to be in a certain range
+who senses a high temperature via central thermoreceptors. This is surprising
+and pre­sents a significant discrepancy to resolve. As in the former example,
+he has two ways to minimize this discrepancy, corresponding to perception
+(changing mind) and action (changing the world), respectively. In this case,
+simply changing one’s mind does not seem very adaptive, but acting to lower
+the body temperature (e.g., by opening the win­dow) is.
+This speaks to the fact that in Active Inference, the notion of marginal
+probabilities or surprise (e.g., about body temperature) has a meaning that
+goes beyond standard Bayesian treatments to absorb notions like homeostatic and allostatic set-­points. Technically, Active Inference agents come
+equipped with models that assign high marginal probabilities to the states
+they prefer to visit or the observations they prefer to obtain. For a fish, this
+means a high marginal likelihood for being in w
+­ ater. This implies that
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+27
+
+organisms implicitly expect the observations they sample to be within their
+comfort zone (e.g., physiological bounds).
+In sum, we have discussed how, at any point in time, we can minimize
+the discrepancy between our model and our world through perception and
+action. ­Whether we adjust our beliefs or our data depends on the confidence
+with which we hold ­those beliefs. In our example of the apple, the belief
+is held with sufficient uncertainty that this ­will be updated as opposed to
+acted on. In contrast, in the temperature example, we are considerably more
+confident about our core temperature ­because it underwrites our existence.
+This confidence means we update our world to comply with our beliefs.
+Yet, in Active Inference, perception and action act more cooperatively than
+suggested by this treatment. To understand why this is the case, the next
+section moves from the restricted notion of discrepancy (or prediction error) to
+the more general notion of variational f­ ree energy—­which is the quantity that
+Active Inference actually minimizes and which subsumes prediction error as
+a special case.
+2.6 Minimizing Variational F
+­ ree Energy
+So far, we have discussed perception and action within a Bayesian scheme
+that aims to minimize surprise. Yet, exact Bayesian inference supporting perception and action is computationally intractable in most cases, ­because two
+quantities—­the model evidence (P( y)) and the posterior probability (P(x | y))—­
+cannot be computed for two pos­si­ble reasons. The first is that for complex
+models, ­there may be many types of hidden states that all need marginalizing out, making the prob­lem computationally intractable. The second
+is that the marginalization operation might require analytically intractable
+integrals. Active Inference appeals to a variational approximation of Bayesian inference that is tractable.
+The formalism of variational inference ­will be unpacked in chapter 4.
+­Here, it suffices to say that performing variational Bayesian inference
+implies substituting the two intractable quantities—­posterior probability and
+(log) model evidence—­with two quantities that approximate them but can be
+computed efficiently—­namely, an approximate posterior Q and a variational
+­free energy F, respectively. The approximate posterior is sometimes called
+a variational or recognition distribution. Negative variational ­free energy
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+28
+
+is also known as an evidence lower bound (ELBO), especially in machine
+learning.
+Most importantly, the prob­lem of Bayesian inference now becomes a
+prob­lem of optimization: the minimization of variational f­ ree energy F. Variational f­ree energy is a quantity with roots in statistical physics that plays
+a fundamental role in Active Inference. In equation 2.5, it is denoted as
+F [Q , y], as it is a functional (function of a function) of the approximate
+posterior Q and a function of data y:
+F[Q, y] = −EQ ( x)[ln P(y, x)] − H[Q(x)]
+#"#
+$
+!##
+#"###
+$ !
+Energy
+
+Entropy
+
+= DKL[Q(x) || P(x)] − EQ ( x)[ln P(y |x)]
+!##
+#"###
+$ !##
+#"###
+$
+Complexity
+
+Accuracy
+
+(2.5)
+
+= DKL[Q(x) || P(x | y)] − ln P(y)
+!###"###$ !"
+# #
+$
+Divergence
+
+Evidence
+
+Variational f­ree energy may seem prima facie an abstract concept, but
+its nature and the role it plays in Active Inference become apparent when
+decomposed into quantities that are more intuitive and familiar in cognitive science. Each of t­hese perspectives on variational f­ree energy offers
+useful intuitions about what f­ree energy minimization means. We briefly
+sketch ­these intuitions ­here, as they ­will become impor­tant when we discuss examples in the second part of the book.
+The first line of equation 2.5 shows that minimizing with re­spect to Q
+requires consistency with the generative model (energy) while also maintaining a high posterior entropy.5 The latter means that, in the absence
+of data or precise prior beliefs (which only influence the energy term), we
+should adopt maximally uncertain beliefs about the hidden states of the
+world, in accord with Jaynes’s maximum entropy princi­ple ( Jaynes 1957).
+Put simply, we should be uncertain (adopt a high entropy belief ) when we
+have no information. The term energy inherits from statistical physics. Specifically, u
+­ nder a Boltzmann distribution, the average log probability of a
+system adopting some configuration is inversely proportional to the energy
+associated with that configuration—­that is, the energy required to move
+the system into this configuration from a baseline configuration.
+The second line emphasizes the interpretation of ­free energy minimization as finding the best explanation for sensory data, which must be
+the simplest (minimally complex6) explanation that is able to accurately7
+account for the data (cf. Occam’s razor). The complexity-­accuracy trade-­off
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+29
+
+recurs across several domains, normally in the context of model comparison for data analy­sis. In statistics, other approximations to model evidence
+are sometimes used, such as the Bayesian information criterion or Akaike
+information criterion. The complexity-­
+accuracy trade-­
+off ­
+will become
+impor­tant when we describe how to use f­ ree energy for model comparison
+during model-­based data analy­sis—­and in the context of structure learning
+and model reduction. Inferring explanations that have minimal complexity is also impor­tant from a cognitive perspective. This is b
+­ ecause one can
+assume that updating what one knows (the prior) to accommodate the data
+entails a cognitive cost (Ortega and Braun 2013, Zénon et al. 2019); hence,
+an explanation that diverges minimally from the prior is preferable.
+On this view, the complexity cost is just Bayesian surprise. In other words,
+the degree to which “I change my mind” is quantified by the divergence
+between the prior and the posterior. This means e­ very accurate explanation
+for my sensations incurs a complexity cost, and this cost scores the degree
+of Bayesian belief updating. Variational ­free energy, then, scores the difference
+between accuracy and complexity.
+The final line expresses the f­ree energy as a bound on negative log
+evidence (see figure 2.4). As the left part of the figure illustrates, the ­free
+energy is an upper bound on negative log evidence, where the bound is the
+divergence between Q and the posterior probability that would have been
+obtained w
+­ ere it pos­si­ble to perform exact (as opposed to variational) inference. The right part of the figure shows that as the divergence decreases, the
+Upper bound
+
+F [Q,y]
+
+Upper bound F [Q,y]
+DKL[Q(x) || P(x | y)]
+DKL[Q(x) || P(x | y)]
+
+Surprise
+
+–ln P(y)
+
+Surprise
+
+–ln P(y)
+
+Figure 2.4
+Variational ­free energy as an upper bound on negative log evidence.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+30
+
+­free energy approaches the negative log evidence (surprise)—­and becomes
+equal to surprise, if the approximate posterior Q matches the exact posterior P(x | y). This offers a formal motivation for perceptual inference as one
+way to lower f­ree energy by optimizing our approximate posterior Q as
+much as pos­si­ble.
+The final line of equation 2.5 shows that perceptual inference is not the
+only way to minimize f­ree energy. We could also change the log evidence
+term through acting to change sensory data. This decomposition is in­ter­est­
+ing from a cognitive perspective, since minimizing divergence and maximizing evidence map to the two complementary sub-­objectives of perception
+and action, respectively; see figure 2.5. Note that the above expressions all
+become ways of characterizing the negative log evidence if we replace Q
+with P(x | y), generalizing to the case of exact inference.
+In sum, Active Inference amounts to minimizing variational f­ree energy
+by perception and action. This minimization permits an organism to fit its
+generative model to the observations it samples. This fit is a mea­sure of both
+perceptual adequacy (as expressed by the divergence term) and active control over external states—in the sense that it permits the organism to maintain itself in a suitable set of preferred states, as defined by the generative
+model. Another way of phrasing this is to appeal to the divergence versus
+
+y
+
+Q
+
+FREE ENERGY
+F[Q, y] = DKL[Q(x) || P(x | y)] – ln P(y)
+Divergence
+
+Perception: change
+beliefs to minimize
+divergence
+
+Evidence
+
+Action: change
+observations to
+maximize evidence
+
+Figure 2.5
+Complementary roles of perception and action in the minimization of variational
+­free energy.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+31
+
+evidence decomposition of ­free energy. Equating the negative log evidence
+with surprise, and noting that the smallest pos­si­ble divergence is zero, we
+see that ­free energy is an upper bound on surprise. This means it can only
+be greater than or equal to surprise. When the organism minimizes its divergence (through perception), then f­ ree energy becomes an approximation to
+surprise. When an organism additionally changes the observations it gathers (by acting) to render them more similar to prior predictions, it minimizes
+surprise.
+Variational f­ ree energy has a retrospective aspect, as it is a function of past
+and pre­sent, but not f­ uture, observations. Although it facilitates inferences
+about the ­future based on past data, it does not directly facilitate prospective forms of inference based on anticipated f­uture data. This is impor­
+tant in planning and decision-­making. ­Here, we infer the best actions or
+action sequences (policies) on the basis of the ­future observations they are
+expected to bring about. ­Doing this requires that we supplement our generative models with the notion of expected ­free energy.
+2.7 Expected ­Free Energy and Planning as Inference
+Expected ­free energy extends Active Inference to include a quintessentially
+prospective form of cognition: planning. Planning a sequence of actions,
+such as the series of moves required to escape from a maze, requires considering f­uture observations that one expects to gather. For example, the
+consequences of pos­si­ble courses of action include seeing a dead end ­after
+turning right or seeing the exit a
+­ fter a sequence of three left turns. Each
+pos­si­ble sequence of actions is termed a policy. This highlights an impor­
+tant distinction made in Active Inference between an action and a policy.
+The former is something that directly influences the outside world, while
+the latter is a hypothesis about a way of behaving. The implication is that
+Active Inference treats planning and decision-­making as a pro­cess of inferring what to do. This brings planning firmly into the realm of Bayesian
+inference and means we must specify priors and likelihoods as before (section 2.1). However, in place of frogs and apples, the alternatives are behavioral policies (Is it more probable that I look ­toward the pond or the tree?).
+In this section, we first briefly deal with the likelihood—­that is, the consequences of pursuing a policy—­and then turn to the prior. This is where
+expected ­free energy comes in.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+32
+
+Policy-­dependent outcomes are not immediately available (they are in
+the ­future), but they can be predicted by chaining together two components of the generative model. The first is our beliefs about how hidden
+states change as a function of policies. We w
+­ ill get into the details of this in
+chapter 4. For now, we use the notation x~ to denote a sequence or trajectory
+of hidden states over time, and we condition trajectories on the policies (π )
+a creature pursues. This means the dynamical part of our model is given by
+P( x~ | π ). Drawing from our ­earlier frog-­apple example, the policy may be the
+decision to go to a pond or to an orchard, which changes the probability of
+encountering frogs versus apples.
+The second component of the model is the usual likelihood distribution.
+This describes which observations to expect in e­ very pos­si­ble state (e.g.,
+jumping or not, conditioned on frog or apple). By combining t­hese two
+components, an organism can engage its generative model vicariously to
+run “what if” or counterfactual simulations of the consequences of its pos­
+si­ble actions or policies—­for example, “What would happen if I go to the
+pond?” Marginalizing over states, this gives us the marginal likelihood or

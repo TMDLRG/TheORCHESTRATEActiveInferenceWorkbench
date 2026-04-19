@@ -1,0 +1,50 @@
+{
+  "slug": "continuous-precision-tradeoff",
+  "title": "Continuous-Time: Sensor vs. Dynamics Precision",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 10,
+  "tags": ["continuous-time", "precision", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "sinusoid_tracker",
+    "actions_used": ["continuous_step"],
+    "skills_used": ["generalized_filter"],
+    "horizon": 300,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "High pi_s snaps x to noisy y; high pi_f smooths over noise but lags the signal. The crossover is visible in tracking MSE."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=continuous-precision-tradeoff",
+    "labs_url": "/labs?recipe=continuous-precision-tradeoff&world=sinusoid_tracker"
+  },
+  "math": {
+    "latex": "\\text{MSE}(\\pi_s, \\pi_f) = \\frac{1}{T}\\sum_t (x_t - \\sin t)^2",
+    "symbols": {
+      "pi_s": "sensor precision (trust the measurements)",
+      "pi_f": "dynamics precision (trust the model)",
+      "MSE": "mean squared tracking error"
+    }
+  },
+  "audiences": {
+    "kid": "Trust your eyes more: you follow the ball snappily. Trust your brain more: you don't over-react but you lag.",
+    "real": "Precision-tuning in continuous-time trades off responsiveness (pi_s) vs. smoothness (pi_f). Sweep both and pick the MSE floor.",
+    "equation": "MSE is a bathtub curve in log-precision space. Minimum depends on noise level and signal frequency.",
+    "derivation": "Steady-state Kalman-filter tradeoff. For a Gaussian signal with noise variance sigma^2 and signal bandwidth omega, optimal pi_s/pi_f ~ sigma^{-2} * omega^{-1} (Jazwinski 1970)."
+  },
+  "equation_refs": ["eq-8-1"],
+  "figure_refs": [],
+  "session_refs": ["continuous-time/s2"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Find the precision setting with minimum MSE on the sinusoid tracker.",
+    "role": "Continuous-time precision tutor.",
+    "context": "sinusoid_tracker; sweep (pi_s, pi_f) in {1, 5, 20, 100} x {0.5, 1, 5}; report MSE per cell."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 8.",
+    "Jazwinski (1970), Stochastic Processes and Filtering Theory."
+  ]
+}

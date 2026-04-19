@@ -1,0 +1,49 @@
+{
+  "slug": "perception-sweep-iteration-budget",
+  "title": "Sweep Iterations: When Is the Posterior Done?",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 6,
+  "tags": ["perception", "convergence", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive"],
+    "skills_used": ["variational_free_energy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Free-energy F drops sharply over the first 2-3 sweeps then plateaus. Most convergence is bought by the first pass."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=perception-sweep-iteration-budget",
+    "labs_url": "/labs?recipe=perception-sweep-iteration-budget&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\Delta F_k = F[q^{(k)}] - F[q^{(k-1)}] < 0,\\quad \\Delta F_k \\to 0",
+    "symbols": {
+      "q^(k)": "variational posterior at sweep iteration k",
+      "Delta F_k": "free-energy drop per iteration"
+    }
+  },
+  "audiences": {
+    "kid": "When you think it over, the first couple of tries help the most. After that you're just polishing.",
+    "real": "The perceive action sweeps until F converges. Diagnostic: F drops fast then plateaus; 2-3 sweeps captures most of the gain.",
+    "equation": "Delta F_k decays geometrically for well-conditioned problems. Budget n_iters=2..4 to balance speed and accuracy.",
+    "derivation": "Mean-field coordinate ascent on F monotonically decreases F. Standard VB convergence arguments (Bishop 2006, Ch 10) bound per-iteration improvement by a constant factor."
+  },
+  "equation_refs": ["eq-4-11", "eq-b-5"],
+  "figure_refs": [],
+  "session_refs": ["low-road/s2"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Show that 2-3 sweep iterations capture most of the variational gain.",
+    "role": "Convergence-budget tutor; practical calibration for n_iters.",
+    "context": "tiny_open_goal, observe one obs, log Delta F over n_iters in {1..8}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), App B.",
+    "Bishop (2006), Pattern Recognition and Machine Learning, Ch 10."
+  ]
+}

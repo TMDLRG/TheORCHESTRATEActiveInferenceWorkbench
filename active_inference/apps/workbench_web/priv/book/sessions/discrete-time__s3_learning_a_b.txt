@@ -1,0 +1,394 @@
+I (π ) = H[Q( o! |π )] − EQ ( s! |π )[ H[ P( o! | s! )]]
+!
+!#"#$ !###"###
+$
+
+Epistemic value
+
+Post. pred. entropy
+
+Expected ambiguity
+
+= DKL[ P( o! | s! )Q( s! |π ) || Q( o! |π )Q( s! |π )]
+!######
+#"#######
+$
+
+(7.8)
+
+Mutual information
+
+! || Q( s! |π )]]; Q( s! |π , o)
+! !
+= EQ ( o! |π )[ DKL[Q( s! |π , o)
+!######"######
+$
+Information gain, salience, Bayesian surprise
+
+P( o! | s! )Q( s! |π )
+Q( o! |π )
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+τ=1
+
+τ=2
+
+τ=3
+
+L
+L
+
+L
+
+L
+
+1
+0.8
+
+Sτ
+
+0.6
+0.4
+0.2
+0
+1
+
+2
+
+3
+
+S1
+
+1
+
+S2
+
+1
+
+S3
+
+1
+
+2
+
+S2
+
+2
+
+S3
+
+0.08
+0.06
+
+ετ
+
+0.04
+L
+
+0.02
+
+0.00
+–0.02
+–0.04
+R
+
+–0.06
+1
+
+2
+Time step
+
+3
+
+S1
+
+2
+
+Figure 7.7
+Simulated epistemic and pragmatic be­hav­ior of a rat foraging in a T-­maze. The rat
+starts in the central location but then chooses to sample the informative cue in the
+lower arm of the maze. This location is associated with the greatest epistemic value,
+as observing the cue in this location reveals the context (reward right or left) that
+the rat finds itself in. On observing the cue, the rat undergoes rapid belief updating
+(s), inducing an LFP (ε). With no more uncertainty to resolve, the rat selects the pragmatically valuable option and goes to the left arm of the maze. The two plots on the
+right show the beliefs held by the rat at the end of the trial about all previous times
+(i.e., t­hese are retrospective beliefs and not the beliefs of the rat at the moment of
+the decision). It believes (correctly) that it started in the central location, went to the
+cue arm, and then went to the left arm. For the context hidden state ­factor, the rat
+believes that the context was the left context throughout.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+137
+
+­These are the posterior predictive entropy and the expected ambiguity, respectively.
+Below ­these, we highlight the correspondence between t­ hese and other rearrangements. To unpack t­ hese in an intuitive way, we w
+­ ill frame this in terms
+of a visual paradigm, where alternative saccades (π ) lead to dif­fer­ent transitions between fixation locations (s). In addition to fixation locations, the hidden states include the identity of a stimulus at each location. A combination
+of stimulus and fixation generate visual and proprioceptive consequences (o).
+With this in mind, we can interpret the posterior predictive entropy as the
+dispersion (or uncertainty) associated with “what I would see if I performed
+this eye movement.” From the perspective of a scientist, this quantifies how
+uncertain we might be about the data we would obtain on performing a given
+experiment. ­Under this perspective, it makes sense that we should select
+­those saccades (or experiments) that are associated with the greatest posterior
+predictive entropy, as ­these offer the greatest potential for uncertainty resolution. We would gain nothing by performing an experiment if we already
+knew what the results would be with a high degree of confidence.
+However, the predictive entropy only tells us the total amount of uncertainty. It does not tell us how much uncertainty is actually resolvable. We
+­will always be uncertain about the next number in a sequence of randomly
+generated numbers, but we ­will never resolve our uncertainty about the
+pro­cess generating them by fixating on t­hese. This is where the expected
+ambiguity comes in. This quantifies the degree to which observations and
+states are in­de­pen­dent of one another. If states always generate the same
+observation, this quantity w
+­ ill be zero. It w
+­ ill be maximal if, as in the random number generator, ­there is no association between states and outcomes.
+In the visual domain, this implies that the best saccade ­will be that ­toward a
+well-­lit stimulus, where t­ here is ­little ambiguity about “what I would see if I
+looked at this stimulus.” Taken together, this says that the best saccades (i.e.,
+perceptual experiments) are ­those for which ­there is the greatest uncertainty
+to resolve (posterior predictive entropy) but only if that uncertainty can be
+resolved (negative ambiguity). Interestingly, this has exactly the same form
+as expressions developed in statistics to score experimental design in terms
+of information gain (Lindley 1956).
+Figure 7.9 illustrates what happens in a saccadic paradigm (Parr and
+­Friston 2017b) when we simulate manipulations to the ambiguity and posterior predictive entropy. This shows four stimuli (squares), each of which
+may change color from moment to moment. Superimposed on ­these is a
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+138
+
+simulated eye-­tracking trace, as if we w
+­ ere mea­sur­ing where an experimental
+participant was looking. Crucially, we specify prior beliefs about outcomes
+to be uniform (i.e., pragmatic value to be absent), precluding any preference-­
+based choices. This means each saccade is selected to maximize epistemic
+value. When the generative model treats all four stimuli as equivalent (left
+image), all are sampled with approximately the same frequency. However,
+we can modulate the uncertainty associated with each stimulus (see box
+7.1). If we set one stimulus to have a greater ambiguity (by increasing the
+value of off-­diagonal ele­ments of the corresponding A-­matrix), this square
+is ignored (­middle image). This is an example of the famous “streetlight”
+effect (Demirdjian et al. 2005), which takes its name from the meta­phor of
+Box 7.1
+Uncertainty and precision
+The example in figure 7.7 appeals to the concept of precision—an impor­tant
+idea in this book. Precision is the inverse of variance and scores our confidence in a given probability distribution. This is closely related to the negative
+entropy (negentropy) of a distribution:
+−H[P(s)] = E P(s)[ ln P(s)]
+A ­simple way to pa­ram­e­terize a distribution such that it can be made more
+or less precise is to use a Gibbs form with an inverse temperature pa­ram­e­ter (ω ).
+This has the following form:
+P(s| ω ) = Cat(σ (ω lnD))
+Note that the precision multiplies the log prior, so it can be interpreted as a
+gain-­control device (amplifying as opposed to adding to neural signals). The
+plots in figure 7.8 show how the probability distribution (each column representing the probability of an alternative state) changes for a given D when we
+vary ω. Note the increasing confidence with increasing precision.
+This sort of pa­ram­e­terization may be applied to any of the distributions
+used in a POMDP. In addition, we can define priors over the precision and infer
+ω = 0.1
+
+ω=1
+
+ω = 10
+
+ω = 100
+
+Figure 7.8
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+139
+
+Box 7.1 (continued)
+this just as we infer other latent variables (i.e., through f­ree energy minimization). Assuming the prior has a Gamma distribution (precluding negative values of the precision), we get the following updates (see appendix B for details):
+P(ω ) = Γ(1, βω )
+Q(ω ) = Γ(1,βω )
+.
+−1
+⇒ βω = (Dβω − s) i ln D + βω − βω
+­There is an increasing recognition that the biological substrate of ­these
+precision par­ameters may be the neuromodulatory systems that set the gain of
+neural responses. Chapter 5 discusses the evidence relating ­these par­ameters
+to specific neurochemicals.
+
+Figure 7.9
+Simulated epistemic visual search paradigm (Parr and Friston 2017b) with the synthetic eye-­tracking trace superimposed on the four stimulus locations. Each stimulus (shaded square) is associated with a transition matrix that may be more or less
+predictable and a likelihood matrix that may be more or less ambiguous. Left: When
+transitions and likelihoods are equally predictable for all four locations, all locations
+are sampled with about the same frequency. ­Middle: The viewer shows aversion to
+the upper-­left square when it is specified with a less precise (more ambiguous) likelihood mapping. Right: The lower-­left square is epistemically attractive when the
+transition probabilities are specified as more uncertain.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+140
+
+­people who have lost their keys late at night. The first place they might look
+is ­under the streetlight—­not ­because the keys are most likely to be ­there, but
+­because it is the best place to find high-­quality, unambiguous, uncertainty-­
+resolving information. The simulation shows how the ambiguous (e.g.,
+poorly lit) square is ignored, reproducing an in silico streetlight effect.
+In contrast, the right image in figure 7.8 shows what happens when we
+make the transitions less predictable for the lower-­left square. We accumulate uncertainty about this location very quickly, ensuring a high posterior
+predictive entropy with no change to the ambiguity. As we can see, this
+leads to more frequent fixation on this location, as t­here is always new
+uncertainty to resolve h
+­ ere. Intuitively, if I know something has very predictable dynamics, I do not have to look at it very often to be confident
+about its state. In contrast, if something may have changed in the time that
+I have been looking at something ­else, it is worth looking back at to check.
+­These simulations are designed to offer an intuition for the two parts of the
+epistemic value, to see how minimization of expected ­free energy ensures
+we actively select our sensory data to find out about the world.
+7.5 Learning and Novelty
+Sections 7.2–7.4 set out every­thing that is required for the majority of practical applications of Active Inference. However, we have assumed that the
+generative model is already known and does not change as an effect of learning. In some practical applications, we may want to consider how one or
+more parts of the generative model (e.g., the A-­ or B-­matrix) are learned
+during an experiment or, more broadly, how we optimize the structure of
+the generative model itself, given some data (Friston, FitzGerald et al. 2016).
+In ­doing so, Active Inference extends to active learning, and the salience
+(equation 7.5) describing information gain about states is complemented
+by novelty, which deals with resolution of uncertainty about (for example)
+the ele­ments of the A matrix shown in equation 7.1, the B matrix shown in
+equation 7.2, or any other par­ameters of the generative model. ­These beliefs
+can now vary with time rather than being fixed, as assumed so far (Schwartenbeck et al. 2019). To get to this, we first have to extend the generative
+model as in Figure 7.10 to include beliefs about t­ hese model par­ameters.
+Conceptually, including beliefs about par­ameters in the generative model
+permits treating learning as another form of Bayesian inference—­namely,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+141
+
+c
+
+e
+
+C
+
+E
+
+G
+
+d
+
+
+
+D
+
+b
+a
+
+B
+
+sτ–1
+
+B
+
+sτ
+
+B
+
+sτ+1
+B
+
+A
+
+A
+
+A
+
+oτ–1
+
+oτ
+
+oτ+1
+
+A
+
+Figure 7.10
+This generative model for learning uses the same POMDP structure as in figure 7.3,
+but the priors for each of the hidden states now depend on variables (in circles),
+which themselves now come equipped with prior beliefs. ­These have the form of
+Dirichlet distributions, which are conjugate (see box 7.2) to the categorical distributions considered thus far. The model shows how the likelihood of outcomes given
+states now also depends on a variable A (which is the same for all time-­points), the
+transition probabilities are now conditioned on a variable B, the preferences depend
+on C, the initial states depend on D, and the fixed form policy prior depends on E. By
+making prior beliefs about the par­ameters of the generative model explicit, this figure
+emphasizes that both inference and learning are ­free energy minimizing pro­cesses,
+but they are distinct. In short, inference describes the optimization of beliefs about
+the state of the world as it is (s), including beliefs about the way in which we are acting (π ). In contrast, learning describes optimization of beliefs about the relationships
+between ­these variables (A,  B,  C,  D, or E ). The latter vary much more slowly than the
+former and may only be learned when the states have been inferred. We w
+­ ill return to
+this separation of timescales below when we consider hierarchical generative models.
+
+as the passage from prior to posterior beliefs about model par­ameters. This
+highlights the fundamental similarity of perception and learning: in the
+same way that perception can be described as the inversion of a generative
+model to infer hidden states from observations, learning can be described
+as the inversion of a generative model to include beliefs about par­ameters
+(although normally this inversion may operate on a slower timescale).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+142
+
+Box 7.2
+Conjugate priors
+When setting up a generative model of the form in figure 7.10, it is impor­tant to
+carefully select the appropriate distribution for prior beliefs. Typically, ­these ­will
+be the conjugate prior distribution associated with the likelihood. A conjugate
+prior belief means that, when used to perform Bayesian inference, the posterior
+belief w
+­ ill be the same type of distribution. For example, using Bayes’ rule:
+P(D | s) ∝ P(D) P(s | D)
+If P(s | D) is a categorical distribution, when we choose a Dirichlet distribution
+(conjugate to categorical ) for P(D), we can guarantee that P(D | s) is also a Dirichlet distribution. Put formally:
+P(D) = Dir(d)
+
+⎫
+⎬ ⇒ P(D |s) = Dir(d)
+P(s| D) = Cat(D) ⎭
+
+The simplest way to choose the right kind of prior is to look up the conjugate prior for what­ever form the likelihood distribution takes. For the categorical distributions used h
+­ ere, a Dirichlet distribution is the appropriate
+choice for beliefs about par­ameters (see box 7.2). Having included ­these additional prior beliefs, we can now optimize posterior beliefs about the structure
+of the generative model. This means incorporating t­ hese into the f­ ree energy
+(as we did for states in chapter 4) and finding the ­free energy minima.
+
+θ = ( A, B, C, D, E)
+F = EQ (π ,θ )[ F(π ,θ )] + DKL[Q(θ ) || P(θ )] + DKL[Q(π ) || P(π )]
+
+(7.9)
+
+Dirichlet distributions are pa­ram­e­terized by counts (or pseudo-­counts)
+that index the number of times a given categorical variable has been seen
+(or, in the case of the priors, as if it had been seen that number of times).
+For the derivation of the update rules for t­ hese par­ameters, see appendix B.
+For now, we summarize the update rule and key properties of a Dirichlet
+distribution, focusing on the a and a concentration par­ameters associated
+with the prior and posterior over A.
+a=a+
+
+∑τ sτ ⊗ oτ
+
+EQ [ Aij ] = A ij ≈
+
+aij
+a0 j
+
+(7.10)
+
+EQ [ln Aij ] = ln A ij = ψ (aij ) − ψ (a 0 j )
+a0 j !
+
+∑a

@@ -1,0 +1,295 @@
+2
+
+2
+
+2
+
+oτ–1
+
+oτ
+
+oτ+1
+
+1
+v
+
+3
+
+x
+
+3
+
+xʹ
+
+3
+
+1
+
+P(v)
+
+xʺ
+
+2
+
+P(y | x)
+
+3
+
+P(xʹ | x, v)
+
+2
+
+2
+
+2
+
+y
+
+yʹ
+
+yʺ
+
+Figure 4.3
+Two dynamic generative models (using the same graphical notation as in figure 4.2)
+that we ­will appeal to throughout the remainder of this book. Top: Partially Observable Markov Decision Pro­cess (POMDP), defined in terms of a sequence of states
+evolving through time (indexed by the subscript). Bottom: Continuous-­time model,
+of the sort implied by stochastic differential equations (with the prime notation indicating temporal derivatives).
+
+states generate observations (y). The difference in notation (s, π, o vs. x, v, y) is
+used to emphasize the difference between categorical variables that evolve
+in discrete time and continuous variables that evolve in continuous time.
+Similarly, from h
+­ ere on, we w
+­ ill use lowercase p and q for probability densities over continuous variables and uppercase P and Q for distributions
+over categorical variables. Sections 4.4 and 4.5 w
+­ ill unpack t­hese models
+in more detail and ­will show how minimization of ­free energy in each
+case leads to a set of equations that describes the dynamics of inferential
+pro­cesses.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+71
+
+4.4 Active Inference in Discrete Time
+In this section, we focus on the discrete-­time model outlined above. This is
+impor­tant for understanding a range of cognitive pro­cesses that deal with
+categorical inferences and se­lection between alternative hypotheses. This
+formalism additionally facilitates an examination of the classic exploitation-­
+exploration prob­lem and illustrates how active inference resolves this.
+4.4.1 Partially Observable Markov Decision Pro­cesses
+As shown in figure 4.3, a POMDP expresses the evolution over time of a
+sequence of hidden states that depend on a policy. To specify this pro­cess
+formally, we need to account for the form of each of the square ­factor nodes
+in the figure. First, we describe each of ­these f­ actors. We then combine them
+to express the joint distribution that constitutes the generative model.
+As with the ­simple example of Bayes’ rule given in chapter 2, we can
+separate the ­factors into ­those representing a likelihood and ­those combining to make a prior. The likelihood is similar to that used before and
+expresses the probability of an outcome (observable) given a state (hidden).
+If both the outcomes and states are categorical variables, the likelihood is a
+categorical distribution, pa­ram­e­terized by a matrix, A:
+P(oτ | sτ) = Cat(A)
+
+(4.5)
+
+Aij = P(oτ = i | sτ = j)
+
+The second line ­here details what is meant by the Cat notation (i.e., specification of a categorical distribution). This accounts for the nodes labeled “2”
+in figure 4.3. The prior over the sequence (expressed using the ~ symbol) of
+hidden states depends on two ­things: the prior over the initial state (specified by a vector, D) and beliefs about how the state at one time transitions
+to that at the next (specified as a matrix, B):
+P(sτ | sτ , π )
+∏
+τ
+
+P( s! |π ) = P(s1 )
+
++1
+
+=1
+
+P(s1 ) = Cat(D)
+
+(4.6)
+
+P(sτ + 1 | sτ , π ) = Cat(Bπτ )
+Together, t­ hese account for the “3” nodes in figure 4.3. Note that the transitions are conditionally dependent on the policy chosen. Thus, we can
+interpret the priors of equation 4.6, combined with the likelihood of equation 4.5, as expressing a model (π ) of a behavioral sequence. To allow us
+to select between t­ hese models (i.e., to form a plan), we need a prior belief
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+72
+
+about the most probable sequence. For a f­ree energy minimizing creature,
+a self-­consistent prior is that the most probable policies are ­those that ­will
+lead to the lowest expected f­ ree energy (G) in the ­future:
+P(π ) = Cat(π 0 )
+π 0 = σ (−G)
+! π ) || Q( s! |π )]] − EQ! [ln P( o! |C)]
+Gπ = G(π ) = −EQ! [ DKL[Q( s! | o,
+
+(4.7)
+
+! , s | π ) ! P(o | s )Q(s | π )
+Q(o
+τ τ
+τ τ
+τ
+This equation, being of fundamental importance to Active Inference, is worth
+unpacking in more depth. The first two lines express the prior probability for
+each policy, as pa­ram­e­terized by π0, as being related to the negative expected
+­free energy associated with that policy. The softmax function (σ ) enforces normalization (i.e., ensures that the probability over policies sums to one). The
+final two lines of equation 4.7 express the form of the expected f­ ree energy.
+Note the similarity between this and the functional form of the ­free energy
+(equation 4.4)—­with a log probability of outcomes and a KL-­Divergence. The
+key difference h
+­ ere is that the expectation is taken with re­spect to the posterior
+predictive density as defined by the final equality. This distribution expresses
+a joint probability over ­future states and observations. Crucially, this means
+we can compute the expected f­ ree energy in the f­ uture—­something we could
+not do with the variational ­free energy, which depends on (pre­sent and past)
+observations. In addition, note the distribution over outcomes depends on
+par­ameters (C) and the reversal of the sign of the KL-­Divergence, which is a
+consequence of the expectation u
+­ nder the posterior predictive probability.
+This last point can cause some confusion, so it is worth spelling out explic­itly
+why this is. In the context of the variational ­free energy, the KL-­Divergence
+was the expected difference between the log probability of the approximate posterior and the log probability of the exact posterior (equation 4.4).
+The analogous term in the expected f­ree energy is the expected difference
+between the approximate posterior and the exact posterior we would get on
+the basis of the entire trajectory of outcomes, using current posterior beliefs
+as if they ­were priors. Unpacking this, we get the following:
+! π ) ⎤⎦
+EQ! ⎡⎣ lnQ ( s! | π ) − lnQ ( s! | o,
+! π ) ⎤⎦ ⎤
+= EQ ( o|! π ) ⎡ EQ ( s!|o,! π ) ⎡⎣ lnQ ( s! | π ) − lnQ ( s! | o,
+⎣
+⎦
+! π ) − lnQ ( s! | π ) ⎤⎦ ⎤
+= −EQ ( o! | π ) ⎡ EQ ( s!|o,! π ) ⎡⎣ lnQ ( s! | o,
+⎣
+⎦
+
+! π ) || Q( s! | π )]]
+= −EQ ( o! |π ) [ DKL[Q( s! | o,
+
+(4.8)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+73
+
+­Here we see that the order in which must take expectations is impor­tant.
+It prompts a reversal in sign relative to the analogous term in the variational f­ree energy. This underwrites an impor­tant difference between the
+two quantities. The expected ­free energy is minimized by selecting ­those
+observations that cause a large change in beliefs, in contrast to the variational ­free energy that is minimized when observations comply with current beliefs. This is the difference between optimizing beliefs in relation to
+data that have already been gathered (variational ­free energy minimization)
+and selecting t­ hose data that w
+­ ill best optimize beliefs (expected f­ ree energy
+minimization).
+This reiterates that Active Inference uses two constructs, variational f­ ree
+energy (F ) and expected ­free energy (G), which are mathematically related
+but play distinct and complementary roles. Variational f­ree energy is the
+primary quantity that is minimized over time. It is optimized in relation
+to a generative model, which can include policies (or action sequences). As
+with all other hidden states, the agent needs to assign a prior probability to
+policies—­because policies are just another random variable in the generative model. Active Inference uses a prior that is (loosely speaking) equivalent to the belief that one ­will minimize ­free energy in the ­future: that is,
+the expected f­ree energy. In other words, expected f­ree energy furnishes a
+prior over policies and is therefore a prerequisite in minimizing variational
+­free energy.
+In chapter 2 we saw that, as with the variational f­ ree energy, the expected
+­free energy can be rearranged in a number of ways to disclose vari­ous interpretations. ­Here, we focus on an interpretation as the difference between
+the risk and the ambiguity associated with a policy. This is equivalent to the
+expression in equation 4.7:
+! π ) || Q( s! | π )]] − E ! [ln P( o|C)]
+!
+G(π ) = −EQ! [ DKL[Q( s! | o,
+!#####"#####$ !Q##"##$
+Information gain
+
+Pragmatic value
+
+! s! )]] + DKL[Q( o|
+! π ) || P( o|C)]
+!
+= EQ! [ H[ P( o|
+#"####
+$
+!##"##$ !###
+Expected ambiguity
+
+(4.9)
+
+Risk
+
+Recall from chapter 2 that the first of t­ hese expresses the trade-­off between
+seeking new information (i.e., exploration) and seeking preferred observations (i.e., exploitation). By minimizing expected ­free energy, the relative
+balance between ­
+these terms determines ­
+whether be­
+hav­
+ior is predominantly explorative or exploitative. Note that pragmatic value emerges as a
+prior belief about observations, where the C-­parameters of this distribution
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+74
+
+may be chosen to reflect the sort of system we are interested in characterizing (in terms of its characteristic or preferred outcome states). Following the
+second line of equation 4.9, we can rewrite equation 4.7 in linear algebraic
+form as follows:
+π 0 = σ (−G)
+Gπ = H i sπτ + oπτ i ς πτ
+ς πτ = ln oπτ − ln Cτ
+H = −diag(A i ln A)
+(4.10)
+
+P(oτ | C) = Cat(Cτ )
+Q(oτ | π ) = Cat(oπτ ), oπτ = Asπτ
+Q(sτ | π ) = Cat(sπτ )
+Q(sτ ) = Cat(sτ ),
+
+sτ =
+
+∑ π π π sπτ
+
+The first line of equation 4.10 uses a softmax (normalized exponential)
+operator to construct a probability distribution (pa­ram­e­terized with sufficient statistics π 0) that sums to one from the expected ­free energy vector.
+Lines two to four express the components of the expected ­free energy in linear algebraic notation. The fifth line shows that the prior belief about observations is a categorical distribution (whose sufficient statistics are given in
+the C vector). The sixth to eighth lines specify the relationship between
+the linear algebraic quantities and the associated probability distributions.
+Having completed the specification of the generative model, we can now
+express the ­free energy in terms of the variables above:
+F = π iF
+Fπ =
+
+∑τ Fπτ
+
+(4.11)
+
+Fπτ = sπτ i (ln sπτ − ln A i oτ − lnBπτ sπτ −1 )
+The decomposition of this into a sum over time is due to the implicit mean-­
+field approximation that assumes we can factorize the approximate posterior into a product of f­ actors:
+Q ( s! | π ) =
+
+∏ τ Q ( sτ | π )
+
+(4.12)
+
+In logarithmic form, this becomes a sum, just as in equation 4.11. This
+factorization is one of many possibilities in variational inference—­and represents the simplest option. In practice, this is often nuanced slightly, as
+detailed in appendix B.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+75
+
+4.4.2 Active Inference in a POMDP
+Hitherto, we have defined the four key ingredients for a discrete-­time generative model. ­These are the likelihood (A), transition probabilities (B), prior

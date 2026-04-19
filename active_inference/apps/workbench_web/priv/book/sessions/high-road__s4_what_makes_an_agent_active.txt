@@ -1,0 +1,240 @@
+and expected) ­free energy minimization. Furthermore, Active Inference is
+largely coherent with ideomotor theory (Herbart 1825, James 1890, Hoffmann 1993, Hommel et al. 2001), which states that action starts with an
+imaginative pro­cess, and it is a predictive repre­sen­ta­tion (of action consequences) that triggers actions—­not a stimulus, like in stimulus-­response
+theory (Skinner 1938). Active Inference casts this idea in an inferential
+framework, in which an action stems from a belief (about the f­uture); this
+has a number of implications, such as the fact that in order to trigger action,
+one has to temporarily attenuate sensory evidence (which would other­wise
+falsify the belief that triggers action) (H. Brown et al. 2013).
+The reconciliation of ­these frameworks is in­ter­est­ing, as they are often
+considered at odds. For example, self-­organization and teleology are often
+seen as incompatible in biology. Furthermore, enactive theories tend to
+de-­emphasize repre­sen­ta­tion and control, which is instead a central construct of most theories of model-­based inference. Active Inference formalizes autopoietic dynamics of adaptive agents from an unusual ­angle, which
+si­mul­ta­neously considers self-­organization and prediction. By connecting
+dif­fer­ent perspectives, Active Inference can potentially help us understand
+how they illuminate one another.
+3.8 Active Inference, from the Emergence of Life to Agency
+Active Inference starts from first princi­ples and unfolds them to explain
+be­hav­ior and cognition expressed by the simplest to the most complex
+forms of adaptive and living systems. In the continuum between simpler and more complex creatures, Active Inference draws a line between
+­those that minimize variational ­free energy and ­those that also minimize
+expected ­free energy.
+Any adaptive system that actively samples sensations to minimize variational f­ree energy is (equivalently) an agent that actively gathers evidence
+for its generative model, aka a self-­evidencing agent (Hohwy 2016). T
+­ hese
+systems are able to avoid dissipation, self-­regulate, and survive by achieving
+set-­points provided by basic homeostatic pro­cesses. ­These systems can generate complex and diverse forms of be­hav­ior and can also have very high
+fitness levels (as is already apparent in the case of viruses). Some may have
+hierarchical generative models that permit inferring events that change
+at dif­fer­ent timescales, from faster (at lower hierarchical levels) to slower
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+59
+
+(at higher levels)—­and hence can develop sophisticated strategies to deal
+with what they experience. However, t­hese creatures are also fundamentally l­imited b
+­ ecause their generative models lack temporal depth—or the
+capacity to plan and consider the f­uture explic­itly (although they can do
+so implicitly, for example, as a result of ge­ne­tic evolution)—­and hence they
+always live in the pre­sent.
+A generative model endowed with temporal depth opens the door to
+the minimization of expected ­free energy—or in psychological terms, planning. In Active Inference, this entails much more than increased adaptivity:
+it entails at least a primitive form of agency. For an adaptive system, minimizing expected f­ ree energy is equivalent to having the (implicit) prior that
+one is a f­ ree energy minimizing agent—­but acts to minimize f­ ree energy in
+the ­future. When this (prior) belief enters the generative model, the adaptive system becomes able to form beliefs about how it should behave in the
+­future and which trajectories it ­will pursue. In other words, it becomes able
+to select among alternative f­utures as opposed to simply selecting how to deal
+with the sensed pre­sent, as in the simplest agents described above. This temporal depth therefore translates into a psychological depth. To ask about
+the ways living creatures populate the continuum between the simplest
+and most complex adaptive systems—­and what forms of Active Inference
+they can express—is an empirical question.
+3.9 Summary
+The main topics of this chapter can be summarized as follows: Living organisms have to ensure that they only visit their characteristic or preferred
+states. If one defines t­ hese preferred states as expected states, then one can
+say that living organisms must minimize the surprise of their sensory observations (and maintain an optimal entropy; see box 3.3).
+­Doing this requires agents to exercise some autonomy from environmental dynamics and to be equipped with a Markov blanket that separates
+(i.e., expresses a conditional in­de­pen­dence between) their internal states
+and the external states of the environment. Agents within the Markov blanket can engage in reciprocal (action-­perception) exchanges with the environment. ­These exchanges are formally described by the theory of Active
+Inference, where both perception and action minimize surprise. They can
+do so by being equipped with a probabilistic generative model of how their
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+60
+
+Box 3.3
+Entropy minimization and open-­ended be­hav­ior
+Active Inference is based on the premise that living organisms strive to maintain a relative order (or negative entropy), controllability and predictability,
+despite being immersed in an environment whose natu­ral forces generate continuous fluctuations—­and a never-­ending threat of entropic erosion. The most
+basic manifestation of this active pursuance of order is physiological homeostasis, with critical physiological par­ameters that need to be kept within ­viable
+regions. However, minimizing entropy should not be equated with a rigid
+repertoire of responses (e.g., autonomic homeostatic responses) but rather the
+opposite, especially in advanced organisms. We can develop open-­ended repertoires of novel be­hav­iors to pursue our original homeostatic imperatives—­
+for example, to produce and buy good wine to satisfy thirst and other needs.
+This is sometimes referred to as “allostasis” (Sterling 2012).
+More broadly, we actively pursue some order and controllability per se,
+without necessary reference to a specific homeostatic imperative—­perhaps
+­because preserving order facilitates many such imperatives. We actively carve
+our ecological niches to render them more predictable and less surprising.
+This is evident in the ways we construct our physical spaces (e.g., refuges and
+cities that give shelter from uncontrolled natu­ral forces) and cultural spaces
+(e.g., socie­ties with laws and deontic norms that give shelter from anarchic
+social forces). In all ­these examples, we usually need to accept some short-­term
+increase of entropy or surprise (e.g., when we build something new or shift
+social stances) to ensure their long-­term decrease. This helps us understand
+how the basic requirement for surprise minimization is not at odds with but
+rather promotes the epistemic imperatives and novelty-­seeking, curious, and
+exploratory be­hav­ior that we recognize as central to many species.
+A first way epistemic imperatives become apparent is during the minimization of variational ­free energy. One of the ways to decompose ­free energy is to
+express it as a Gibbs energy expected ­under the approximate posterior minus
+the entropy of the approximate posterior. In other words, the agent is striving
+to increase entropy. While this seems paradoxical, the paradox dis­appears if
+one considers that this is the entropy of the agent’s (approximate posterior)
+belief. This can be understood as the imperative to explain ­things as accurately
+as pos­si­ble but also “keep options open” and avoid committing to any specific
+explanation ­unless this is necessary—­that is, the maximum entropy princi­ple
+( Jaynes 1957).
+A second way epistemic dynamics become apparent is during the minimization of expected f­ree energy, wherein—­interestingly—­there are two entropies with opposite signs. T
+­ hese include the posterior predictive entropy (how
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+61
+
+Box 3.3 (continued)
+uncertain I am about what outcomes I would encounter given a choice) that
+must be maximized—as for beliefs about states in the variational f­ ree energy—­
+and the conditional entropy of outcomes given states (the ambiguity entailed
+by a policy) that must be minimized. While during the minimization of variational ­free energy the imperative is to maximize entropy of (pre­sent) beliefs,
+during the maximization of expected ­free energy the imperative is to select
+actions that minimize the ambiguity of (­future) beliefs. This gives rise to epistemic, curious, novelty-­seeking, and information-­foraging be­hav­iors, which
+support uncertainty resolution or improvement of the generative model—­
+which in turn minimizes surprise in the long run (Seth 2013; Friston, Rigoli
+et al. 2015; Seth and Friston 2016; Schwartenbeck, Passecker et al. 2019).
+
+sensory observations are generated. This model defines surprise—or better,
+a tractable proxy, variational ­free energy, which can be mea­sured and minimized efficiently.
+An Active Inference agent appears to perform (approximate) B
+­ ayesian in­­
+ference u
+­ nder a generative model and to maximize evidence for its model—­
+that is, it is a self-­evidencing agent. The prospective bit of the inference
+is realized by selecting courses of actions or policies that are expected to
+minimize ­free energy in the ­future. This formalism leads to a novel view of
+(optimal) be­hav­ior in terms of the Hamiltonian princi­ple of least Action—­a
+(first) princi­ple that connects Active Inference to the domains of statistical
+physics, thermodynamics, and nonequilibrium steady states.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+4
+
+The Generative Models of Active Inference
+
+Every­thing should be made as s­ imple as pos­si­ble, but not simpler.
+—­Albert Einstein
+
+4.1 Introduction
+This chapter complements the preceding chapters’ conceptual treatment
+of Active Inference with a more formal treatment. Specifically, it sets out
+the relationship between ­free energy and Bayesian inference, the form of
+the generative models typically used in Active Inference, and the dynamics
+obtained from minimizing ­free energy for ­these models. A key focus is on
+how time is represented in a generative model. We ­will see the distinction
+between generative models formulated in continuous time and t­ hose that
+treat time as a sequence of events. Fi­nally, we set out the idea of inferential
+message passing, which underwrites prominent theories in neurobiology—­
+including predictive coding.
+4.2 From Bayesian Inference to F
+­ ree Energy
+In the preceding two chapters, we outlined some of the impor­tant connections between Active Inference and other established paradigms in the neurosciences. In chapter 2, we focused on the notion of the Bayesian brain (Knill
+and Pouget 2004, Doya 2007)—­one of its closest relatives—­which provides
+a useful way to think about some of the consequences of active inference
+from a more formal perspective. Specifically, it helps us frame the prob­lems
+that an agent engaging in Active Inference must solve. Broadly, ­these are
+the prob­lem of inferring states of the world (perception) and inferring a
+course of action (planning). While it is tempting to equate Bayes optimality
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+64
+
+with exact Bayesian inference, exact inference is generally computationally intractable or even infeasible. In cognitive psy­chol­ogy and artificial
+intelligence applications, it is common to consider bounded forms of inference and rationality. We highlighted some examples in chapter 3. U
+­ nder
+a Bayesian framework, this translates into using approximate ­inference.
+­These methods comprise sampling methods and variational ­methods—on
+which active inference is based. In this section, we recap the basic ele­ments
+of Bayesian inference and its variational manifestations (Beal 2003, Wainwright and Jordan 2008). In d
+­ oing so, we hope to provide some intuition
+for the role of ­free energy and to emphasize the importance of generative
+models in drawing inferences about the world.
+This chapter is more technical than chapters 1–3, appealing to a l­ittle
+linear algebra, differentiation, and the Taylor series expansion. T
+­ hose readers interested in the details or in need of a refresher may turn to the appendices for the requisite background. T
+­ hose who do not want to delve into the
+theoretical under­pinnings may skip this chapter. Throughout, we explain
+the key implications of each equation—so it should be pos­si­ble to develop
+an understanding of the impor­tant conceptual points herein even without
+following the formal argument.
+A good place to start is Bayes’ theorem. Recall from chapter 2 that this
+theorem expresses an equality between the product of a prior and a likelihood and the product of a posterior and a marginal likelihood. This is
+reproduced in equation 4.1:
+P ( x ) P ( y |x ) = P ( x| y ) P ( y )
+P( y) =
+
+∑ P ( y, x ) = ∑ P ( y| x ) P ( x )
+x
+
+(4.1)
+
+x
+
+The first line of equation 4.1 is Bayes’ theorem. The second line shows
+that the marginal likelihood (or model evidence), P( y), can be computed
+directly from the prior and likelihood.1 This makes the point that the prior
+and likelihood—­which together comprise the generative model—­are sufficient for us to compute the model evidence and the posterior probability.
+Despite this, it is not always easy to do so. The summation (or integration,
+if dealing with continuous variables) in equation 4.1 can be computationally or analytically intractable. One way to resolve this—­the starting point
+of variational inference—is to convert this potentially difficult integration
+prob­lem into an optimization prob­lem. To understand how this works, we
+need to appeal to Jensen’s in­equality, which says that “the log2 of an average
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+65
+
+lnx2
+ln [x]
+≥ [ln x]
+lnx1
+x1
+
+[x]
+
+x2
+
+Figure 4.1
+Logarithmic function providing intuition for Jensen’s in­equality. If we had only two
+data-­points (x1 and x2), ­either we could take their average (E[x]) and then find its log,
+or we could take the log of each data-­point and then take the average of t­ hese (E[ln x]).
+The latter (E[ln x]) w
+­ ill always be below the former (ln E[x]), due to the concavity of
+the logarithmic function, u
+­ nless the data-­points are the same (wherethe log of the
+average and the average of the log are equal). This in­equality holds for any number
+of data-­points.
+
+is always greater than or equal to the average of a log.” Figure 4.1 provides
+a graphical intuition for why this is the case.
+To take advantage of this property, we can rewrite equation 4.1 by multiplying the term inside the sum on the second line by an arbitrary function
+(Q ) divided by itself (this is equivalent to multiplying by one, so the equality still holds) and taking the log of each side. Mathematically, this changes

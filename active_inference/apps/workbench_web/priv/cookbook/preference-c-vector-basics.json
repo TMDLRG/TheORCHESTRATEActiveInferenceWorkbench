@@ -1,0 +1,50 @@
+{
+  "slug": "preference-c-vector-basics",
+  "title": "The C Vector: Preferences as Log-Probabilities",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 8,
+  "tags": ["preference", "pragmatic", "c-vector", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 2,
+    "policy_depth": 2,
+    "preference_strength": 2.0,
+    "expected_outcome": "Changing the log-preference on one observation bit flips the preferred action. C = softmax(logits); logits encode preference."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=preference-c-vector-basics",
+    "labs_url": "/labs?recipe=preference-c-vector-basics&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "p(o) = \\sigma(\\text{logits}),\\quad \\text{pragmatic}(\\pi) = -\\mathbb{E}_{q(o|\\pi)}[\\ln p(o)]",
+    "symbols": {
+      "C": "log-preference vector (length n_obs)",
+      "p(o)": "softmax of C; the prior over outcomes",
+      "pragmatic term": "how much the agent wants obs o"
+    }
+  },
+  "audiences": {
+    "kid": "You write a list of what you like. Bigger numbers mean 'I want this more'. The agent picks plans that lead to the high-number things.",
+    "real": "C is a vector of log-preferences over observations. The pragmatic term of G is negative expected log-preference, so bigger C entries pull action toward those observations.",
+    "equation": "logits[o] = preference; C = softmax(logits); pragmatic(pi) = -sum_o q(o|pi) log p(o). Higher logits[o] -> stronger pull.",
+    "derivation": "From the generative model p(o, s), factor p(o) is the prior over outcomes; log p(o) is the surprise-minimisation target. Preferences are literally log-probabilities in the agent's model (Friston et al. 2017)."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["generative-models/s2"],
+  "labs": ["forge", "pomdp"],
+  "orchestrate": {
+    "objective": "Show directly that editing C reshapes the agent's behaviour.",
+    "role": "C-vector tutor introducing preference engineering.",
+    "context": "tiny_open_goal; custom c_preference_override swaps which observation is most preferred."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Friston, FitzGerald, Rigoli, Schwartenbeck & Pezzulo (2017), Active inference: a process theory."
+  ]
+}

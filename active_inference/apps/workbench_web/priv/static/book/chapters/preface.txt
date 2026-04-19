@@ -1,0 +1,149 @@
+­ ill learn something. You are palpating this page
+with your eyes simply ­because this is the kind of action that w
+­ ill resolve uncertainty about what you ­will see next and—­indeed—­what t­ hese words convey.
+In short, Active Inference puts the action into perception, whereby perception
+is treated as perceptual inference or hypothesis testing. Active Inference goes
+even further and considers planning as inference—­that is, inferring what you
+would do next to resolve uncertainty about your lived world.
+To illustrate the simplicity of Active Inference—­and what we are trying to explain—­place your fingertips ­gently on your leg. Keep them t­here
+motionless for a second or two. Now, does your leg feel rough or smooth?
+If you had to move your fin­gers to evince a feeling of roughness or smoothness, you have discovered a fundament of Active Inference. To feel is to
+palpate. To see is to look. To hear is to listen. This palpation does not necessarily have to be overt—we can act covertly by directing our attention to
+this or that. In short, we are not simply trying to make sense of our sensations; we have to actively create our sensorium. In what follows, we ­will
+see why this has to be the case and why every­thing that we perceive, do, or
+plan is in the compass of one existential imperative—­self-­evidencing.
+Active Inference is not just about reading or epistemic foraging. It is, on
+one view, something that all creatures and particles do, in virtue of their
+existence. This might sound like a strong claim; however, it speaks to the
+fact that Active Inference inherits from a f­ ree energy princi­ple that equates
+existence with self-­evidencing and self-­evidencing with an enactive sort of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+viii
+
+Preface
+
+inference. However, this book is not concerned with the physics of sentient
+systems. Its focus is on the implications of this physics for understanding
+how the brain works.
+This understanding is not an easy business, as witnessed by millennia of
+natu­ral philosophy and centuries of neuroscience. Although one can find
+the roots of Active Inference in first princi­ple accounts of self-­organized
+be­hav­ior (i.e., variational princi­ples akin to Hamilton’s princi­ple of stationary
+action), first princi­ples do not help very much when asking how a par­tic­u­lar
+brain works and how it differs from another brain. For example, committing
+to the theory of evolution by natu­ral se­lection does not help in the slightest
+when it comes to understanding why I have two eyes or speak French. This
+book is about using princi­ples to scaffold key questions in neuroscience and
+artificial intelligence. To do this, we have to move beyond princi­ples and get
+to grips with the mechanics to which the princi­ples apply.
+As such, Active Inference—­and its accompanying Bayesian mechanics—
+is ­there to frame questions about how we perceive, plan, and act. Crucially,
+it does not aim to replace other frameworks, such as behavioral psy­chol­ogy,
+decision theory, and reinforcement learning. Rather, it hopes to embrace
+all t­ hose approaches that have proven so successful within a unified framework. In what follows, we w
+­ ill pay special attention to linking key constructs from psy­chol­ogy, cognitive neuroscience, enactivism, ethology, and
+so on to the calculus of belief updating in Active Inference—­and its associated pro­cess theories.
+By pro­cess theories, we refer to theories about how belief updating is realized by neuronal (and other biophysical) pro­cesses in the embodied brain
+and beyond. Work to date in Active Inference offers a fairly straightforward
+set of computational architectures and simulation tools to both model vari­
+ous aspects of a functioning brain and enable ­people to test hypotheses
+about dif­fer­ent computational architectures. However, ­these tools only solve
+half the prob­lem. At the heart of Active Inference lies a generative model—­
+namely, a probabilistic repre­sen­ta­tion of how unobservable c­ auses in the
+world out ­there generate the observable consequences—­our sensations.
+Getting the generative model right—as an apt explanation for the sentient
+be­hav­ior of any experimental subject or creature—is the big challenge.
+This book tries to explain how to meet this challenge. The first part sets
+up the basic ideas and formalisms that are called on in the second part—to
+illustrate how they can be applied in practice. In short, this book is for
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Preface
+
+ix
+
+­people who want to use Active Inference to simulate and model sentient
+be­hav­ior, in the ser­vice of e­ ither scientific inquiry or, possibly, artificial
+intelligence. Thus it focuses on ­those ideas and procedures that are necessary to understand and implement an Active Inference scheme without
+getting distracted by the physics of sentient systems on the one hand or
+philosophy on the other.
+A Note from Karl Friston
+I have a confession to make. I did not write much of this book. Or, more
+precisely, I was not allowed to. This book’s agenda calls for a crisp and clear
+writing style that is beyond me. Although I was allowed to slip in a few of
+my favorite words, what follows is a testament to Thomas and Giovanni,
+their deep understanding of the issues at hand, and, importantly, their
+theory of mind—in all senses.
+Acknowl­edgments
+We gratefully acknowledge invaluable input from our friends and
+­colleagues—in par­tic­u­lar, past and pre­sent members of the Theoretical
+Neurobiology group at the Wellcome Centre for ­Human Neuroimaging,
+University College London; the Cognition in Action (CONAN) Lab at the
+Institute of Cognitive Sciences and Technologies, National Research Council
+of Italy; and numerous international collaborators who have been integral
+to the development of the ideas presented in this book. This young but
+growing community has been more than generous in providing both intellectual support and motivation. Furthermore, we gratefully acknowledge
+Robert Prior and Anne-­Marie Bono from MIT Press for kindly accompanying
+and advising us during the preparation of this book and Jakob Hohwy and
+other thoughtful reviewers for their guidance. Fi­nally, we thank the funding
+agencies that provided financial support for our research: KJF was funded by
+a Wellcome Trust Principal Research Fellowship (Ref: 088130/Z/09/Z); GP
+was funded by the Eu­ro­pean Research Council ­under the Grant Agreement
+No. 820213 (ThinkAhead) and the Eu­ro­pean Union’s Horizon 2020 Framework Programme for Research and Innovation ­under the Specific Grant
+Agreement No. 945539 (­Human Brain Proj­ect SGA3).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+I
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+1
+
+Overview
+
+Chance f­ avors the prepared mind.
+—­Louis Pasteur
+
+1.1 Introduction
+This chapter introduces the main question that Active Inference seeks
+to address: How do living organisms persist while engaging in adaptive
+exchanges with their environment? We discuss the motivation for addressing
+this question from a normative perspective, which starts from first princi­ples
+and then unpacks their cognitive and biological implications. Furthermore,
+this chapter briefly introduces the structure of the book, including its subdivision into two parts: the first of which aims to help readers understand
+Active Inference, and the second of which aims to help them use it in their
+own research.
+1.2 How Do Living Organisms Persist and Act Adaptively?
+Living organisms constantly engage in reciprocal interactions with their
+environment (including other organisms). They emit actions that change
+the environment and receive sensory observations from it, as schematically
+illustrated in figure 1.1.
+Living organisms can only maintain their bodily integrity by exerting
+adaptive control over the action-­perception loop. This means acting to solicit
+sensory observations that ­either correspond to desired outcomes or goals
+(e.g., the sensations that accompany secure nutrients and shelter for ­simple
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+4
+
+Observation
+
+Action
+Figure 1.1
+An action-­perception cycle reciprocally connecting a creature and its environment.
+The term environment is intentionally generic. In the examples that we discuss, it can
+include the physical world, the body, the social environment, and so on.
+
+organisms, or friends and jobs for more complex ones) or help in making
+sense of the world (e.g., informing the organism about its surroundings).
+Engaging in adaptive action-­perception loops with the environment
+poses formidable challenges to living organisms. This is largely due to the

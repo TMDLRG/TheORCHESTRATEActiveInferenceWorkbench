@@ -1,0 +1,48 @@
+{
+  "slug": "continuous-discrete-bridge",
+  "title": "Continuous vs. Discrete Time: The Same Story",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 12,
+  "tags": ["continuous-time", "discrete-time", "comparison", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "sinusoid_tracker",
+    "actions_used": ["continuous_step", "perceive"],
+    "skills_used": ["generalized_filter", "variational_free_energy", "softmax"],
+    "horizon": 200,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Discrete and continuous filters agree in the small-dt limit on a matched signal. Recipe shows the two paradigms are one framework."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=continuous-discrete-bridge",
+    "labs_url": "/labs?recipe=continuous-discrete-bridge&world=sinusoid_tracker"
+  },
+  "math": {
+    "latex": "\\lim_{dt \\to 0} \\text{discrete filter} = \\text{continuous filter}",
+    "symbols": {
+      "dt": "integration step",
+      "discrete limit": "Euler step of continuous dynamics"
+    }
+  },
+  "audiences": {
+    "kid": "Same story told two ways: tiny steps make the discrete story look just like the continuous one.",
+    "real": "Take dt -> 0 in the discrete filter; you get the continuous filter. The two paradigms are unified in the limit.",
+    "equation": "Discrete update x_{t+1} = x_t + dt * (v_t - ...) approaches the continuous ODE as dt shrinks.",
+    "derivation": "Euler discretisation of the continuous-time gradient flow. Error O(dt) per step; total error O(dt*T). Match in the dt->0 limit (Jazwinski 1970)."
+  },
+  "equation_refs": ["eq-4-13", "eq-8-1"],
+  "figure_refs": [],
+  "session_refs": ["continuous-time/s4"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Show discrete and continuous filters converge in the small-dt limit.",
+    "role": "Unification tutor; bridges Ch 4 and Ch 8 frameworks.",
+    "context": "Run both filters on the same sinusoid sampler, sweep dt in {0.5, 0.05, 0.005}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4 & Ch 8."
+  ]
+}

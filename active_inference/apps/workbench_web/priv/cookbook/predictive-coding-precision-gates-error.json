@@ -1,0 +1,50 @@
+{
+  "slug": "predictive-coding-precision-gates-error",
+  "title": "Precision Gates the Error Message",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 8,
+  "tags": ["predictive-coding", "precision", "attention", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["predictive_coding_pass"],
+    "skills_used": ["variational_free_energy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "High pi_1 pulls mu_1 tightly to y; high pi_2 locks mu_1 to mu_2 even if y disagrees. Attention is precision."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=predictive-coding-precision-gates-error",
+    "labs_url": "/labs?recipe=predictive-coding-precision-gates-error&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\text{belief update} \\propto \\pi_k \\cdot \\text{error}_k",
+    "symbols": {
+      "pi_k": "precision at level k",
+      "error_k": "prediction error at level k",
+      "attention": "per-level precision scaling"
+    }
+  },
+  "audiences": {
+    "kid": "Where you pay attention, the signal matters more. Precision is the spotlight.",
+    "real": "In predictive coding, precision is attention -- it gates how strongly each error message propagates. Raise pi_1 -> fast adaptation to y; raise pi_2 -> stubborn top-down prior.",
+    "equation": "Update at level k is pi_k * error_k * eta. Raising pi_k scales the update proportionally.",
+    "derivation": "Precision is the inverse variance of the Gaussian density on the corresponding error. Variational gradient descent scales updates by precision (Feldman & Friston 2010)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": ["fig_5.5"],
+  "session_refs": ["message-passing/s3"],
+  "labs": ["tower", "atlas"],
+  "orchestrate": {
+    "objective": "Show attention-as-precision in the 2-level predictive-coding unit.",
+    "role": "Precision-as-attention tutor.",
+    "context": "PredictiveCodingPass with y=1; sweep (pi_1, pi_2) in {(10,1), (1,10)}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Feldman & Friston (2010), Attention, uncertainty, and free-energy."
+  ]
+}

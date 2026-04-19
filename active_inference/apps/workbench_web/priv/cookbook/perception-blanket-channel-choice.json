@@ -1,0 +1,49 @@
+{
+  "slug": "perception-blanket-channel-choice",
+  "title": "Blanket Channels: Choosing What the Agent Sees",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 8,
+  "tags": ["perception", "blanket", "channels", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax", "shannon_entropy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Turning on/off channels on the SharedContracts.Blanket changes the A matrix used by BundleBuilder and the observable posterior entropy."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=perception-blanket-channel-choice",
+    "labs_url": "/labs?recipe=perception-blanket-channel-choice&world=corridor_turns"
+  },
+  "math": {
+    "latex": "A_{\\text{full}} \\supseteq A_{\\text{channel-subset}},\\quad H_{\\text{full}} \\le H_{\\text{channel-subset}}",
+    "symbols": {
+      "A matrix": "observation model over active blanket channels",
+      "H": "posterior entropy; monotonic in channel subset"
+    }
+  },
+  "audiences": {
+    "kid": "Cover one of your senses and you can't tell apart things that used to be easy. More senses, fewer mistakes.",
+    "real": "The Markov blanket declares which observation channels flow to the agent. Subtracting a channel shrinks the A matrix; the posterior gets fuzzier.",
+    "equation": "H[q(s|o)] is monotonic non-decreasing as we subset the channels (data processing inequality).",
+    "derivation": "By the data processing inequality, I[s; full o] >= I[s; subset]. Since H[s|full] = H[s] - I[s; full], subsetting cannot decrease conditional entropy (Cover & Thomas 2006)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["overview/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Show channel-subsetting's effect on posterior entropy using the Blanket abstraction.",
+    "role": "Blanket-invariant tutor; clarifies the Markov blanket contract.",
+    "context": "corridor_turns; toggle {:goal_cue, :wall_*} channels on/off via a custom Blanket config."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 2.",
+    "Cover & Thomas (2006), Elements of Information Theory."
+  ]
+}

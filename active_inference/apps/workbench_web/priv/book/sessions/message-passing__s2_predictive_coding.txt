@@ -1,0 +1,293 @@
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+93
+
+inhibitory and one excitatory synapse. The striatum inhibits the external
+globus pallidus, which itself inhibits the subthalamic nucleus (STN). The
+STN proj­ects to the basal ganglia outputs, meaning that the output nuclei
+are inhibited by the direct pathway and disinhibited by the indirect pathway. As t­ hese nuclei are themselves inhibitory, the net result of activating
+D1-­expressing striatal neurons is disinhibition of be­hav­ior, which would be
+suppressed by D2-­expressing neurons (Freeze et al. 2013).
+Given that we have associated proprioceptive predictions with the projections to the spinal cord, which messages should we associate with the
+layer V projections to the striatum? Inspection of figure 5.1 offers a pos­si­
+ble solution. Predicted outcomes (o) and the differences between preferred
+and predicted outcomes (ς ) are shown in this layer, combining to compute
+the expected ­free energy (G) of a policy. Computing the last of t­ hese in the
+striatum is consistent with the notion that the basal ganglia are involved in
+planning—­that is, evaluating alternative courses of action. Figure 5.4 shows
+one pos­si­ble mapping of the message passing for policy evaluation onto the
+anatomy of the basal ganglia.
+The key t­ hing to draw from figure 5.4 is that, as described in chapter 4,
+­ ere in the internal gloposterior probabilities over policies (π)—­shown h
+bus pallidus—­are computed on the basis of their expected f­ ree energy. This
+pattern follows the direct pathway from layer V of the cortex through the
+striatum to the basal ganglia output nuclei. However, ­there are a few additional subtleties. In the hierarchical scheme shown on the left in figure 4.4,
+we see that expectations about states at higher levels can influence beliefs
+about policies at lower levels. Figure 5.4 shows this on the left, where the
+expected observations ­under high-­level states are used to form empirical
+priors (E) that influence policy se­lection in­de­pen­dently of the expected f­ ree
+energy. We ­will return to this in chapter 7, but the main idea is that we have
+beliefs about how we act in par­tic­u­lar contexts. ­These prior expectations
+tend to bias policy evaluation when we find ourselves in the same context
+again—­much like habit formation. In this sense, the influences of E and G
+can be seen as habitual and goal-­directed drives, respectively. In reinforcement learning (Lee et al. 2014), ­these are sometimes referred to as “model-­
+free” and “model-­based” systems.1 Associating t­hese with the direct and
+indirect pathways of the basal ganglia has an in­ter­est­ing consequence: it
+implies that dopamine modulates the balance of the two. Remember that
+dopamine tends to promote the direct pathway and execution of specific
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+94
+
+policies (Moss and Bolam 2008)—­presumably ­those associated with the
+lowest expected ­free energy. In contrast, low dopamine might be expected
+to ­favor context-­sensitive priors in the indirect pathway, whose role is to
+suppress implausible policies in a given context. In a sense, striatal dopamine can be thought of as modulating the balance between inferring what
+to do and what not to do (Parr 2020).
+The above is consistent with perturbations of the dopaminergic system;
+its depletion in severe Parkinson’s disease c­ auses akinesia—­a failure to enact
+specific policies—­while exogenous dopamine agonists promote impulsive
+be­hav­iors (Frank 2005; Galea et al. 2012; Friston, Schwartenbeck et al. 2014).
+In addition, it is consistent with conceptual models of basal ganglia function. For example, Nambu (2004) suggests that the direct pathway mediates
+a fast and focused inhibition of the internal globus pallidus, followed by a
+broad and slow excitation, which c­ auses excitation and inhibition of the
+targets of the basal ganglia, respectively. This is thought to ensure a “centre-­
+surround” pattern that facilitates motor programs with a high specificity,
+which is consistent with the fast pro­cesses computing the expected f­ree
+energy facilitating action and the broader contextualization of the slower
+pathway communicating empirical priors.
+The final observation to make about figure 5.4 is that ­there are two levels
+of a cortical hierarchy (superscripted) contributing to the same basal ganglia cir­cuit. This suggests temporally slower regions in targeting of indirect
+pathway neurons, but both fast and slow influences over the direct pathway. As we ascend cortical hierarchies, neurons tend to represent slower
+dynamics. For example, we may expect frontal cortical regions to represent
+longer timescales than parietal regions. This is consistent with the anatomical distribution of cortical inputs to the basal ganglia pathways (Wall et al.
+2013). This temporal coarse graining in the indirect pathway is complemented by spatial coarseness, with the direct pathway medium spiny neurons exhibiting larger dendritic arbors (Gertler et al. 2008), enabling finer
+tuning. Therefore, the anatomy of figure 5.4 is endorsed by evidence from
+both clinical pathology (e.g., Parkinsonism) and cellular morphology.
+In addition to the basal ganglia, many other impor­tant subcortical
+structures contribute to neuronal message passing. In the next section, we
+­will discuss ­those from which neuromodulatory systems originate; we ­will
+conclude this section by briefly touching on the thalamus. We ­will not
+be able to do this highly complex structure full justice; however, we can
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+95
+
+outline some basic princi­ples. The thalamus is often divided into primary
+and secondary nuclei. Figure 5.1 shows that primary thalamic nuclei can
+play the same role as lower cortical regions, in the sense that they target
+layer IV of the cortex and receive input from layer VI deep pyramidal cells
+(Thomson 2010, Olsen et al. 2012). An example is the lateral geniculate
+nucleus in the visual system, often thought of as a relay between the eye
+and the visual cortex. Like t­ hose neurons representing prediction errors,
+this receives both sensory information from the eye and backward projections from the cortex, which could be construed as predictions. Second
+order thalamic nuclei include the mediodorsal nucleus and the pulvinar,
+which interact with frontal and posterior cortices, respectively. ­These may
+have a role in predicting second order statistics (i.e., precision and variance) of sensory or higher order inputs and have been associated with
+figure-­ground discrimination tasks (Kanai et al. 2015). Simplistically, this
+suggests that the division of the thalamus into primary and secondary
+nuclei may be a manifestation of the division into first and second order
+statistics.
+5.5 Neuromodulation and Learning
+Structural neuroanatomy is impor­tant, but it only gives us part of the picture of neural pro­cessing ­because the presence of a connection does not tell
+us much about the way it is used. As an example, consider the role of the
+substantia nigra shown in figure 5.4. The modulatory effect this has on striatal connectivity underwrites very dif­fer­ent outputs from the basal ganglia,
+depending on the amount of dopamine released. Fast modulation of synaptic efficacy of this form can be contrasted with the slower but more per­sis­tent
+changes that occur with learning. In this section, we focus on t­ hese two ways
+in which synaptic efficacy can change.
+Precision is an impor­tant concept in understanding neuromodulation
+(Feldman and Friston 2010). We touched on this in chapter 4 and in our
+discussion of sensory attenuation above, where we saw that it acts as a
+multiplicative weight on the prediction errors. More broadly, precision
+is a mea­sure of confidence in a probability distribution. The relationship
+between the two is s­ imple. If we have very precise beliefs about how data
+are generated from hidden states, then our beliefs about hidden states can
+be updated by observing data more than if we are not confident in ­those
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+96
+
+o(i+1)
+
+o(i)
+
+Cerebral cortex
+
+σ(i)
+
+Striatum
+E(i)
+
+G(i)
+
+Globus pallidus
+
+(i)
+
+(i)
+Indirect pathway
+
+Direct pathway
+STN
+
+γ(i)
+SNpc
+
+Figure 5.4
+Direct and indirect pathways of the message passing for policy se­lection associated
+with Active Inference through the basal ganglia using a POMDP generative model.
+Pathways from the ce­re­bral cortex culminate in estimation of policies. The direct
+pathway (right ) goes from cortex to striatum to internal globus pallidus. The indirect pathway (left ) goes from cortex to striatum to external globus pallidus to subthalamic nucleus (STN) to internal globus pallidus. Both pathways exist bilaterally; in
+addition, the substantia nigra pars compacta (SNpc) is shown modulating the balance between the two. (Note: This is a simplification of basal ganglia connectivity.)
+
+beliefs. When belief updates manifest as changes in neuronal firing, a more
+precise likelihood distribution manifests as an increased neural response
+to a given sensory stimulus. This is essential for cognitive functions from
+attention (Parr and Friston 2019a) to multisensory integration (Limanowski
+and Friston 2019).
+This perspective on synaptic gain control tells us something ­simple but
+impor­tant. If precision is an attribute of some distribution in a generative
+model, then ­there should be dif­fer­ent precisions associated with dif­fer­ent
+distributions. This is intuitively sensible, as we can be more or less confident in the reliability of our sensations, in how t­hings ­will dynamically
+evolve, and even in how we might act (Parr and Friston 2017b). We have
+seen the last of t­ hese in the context of dopaminergic signaling in the basal
+ganglia. The greater the associated precision, the more confident we are
+that our policies ­will minimize expected f­ ree energy.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+97
+
+If one of the roles of the dopaminergic system—­originating in the substantia nigra pars compacta and the ventral tegmental area of the midbrain—is
+to signal confidence in what to do, then do other neuromodulatory systems
+play similar roles? ­Table 5.1 summarizes the evidence associating precisions
+with neuromodulatory systems—­with the symbols sometimes used for ­these
+precisions. Specifically, the cholinergic system arising from the basal nucleus
+of Meynert appears to signal the precision of some likelihood distributions.
+The noradrenergic system, from the locus coeruleus, seems to play a role
+in signaling the precision of transitions over time. The serotonergic system
+seems less clear but may relate to the precision of prior preferences.
+Why is it useful to be able to associate t­ hese precisions with neuromodulatory systems? The answer is threefold: it lets us explain observed biology,
+form hypotheses, and develop noninvasive methods to mea­sure precision.
+We ­will highlight one example of each of t­hese. First, regarding explanations of observed biology, empirical mea­sure­ments of dopamine signals
+famously look like “reward prediction errors” (Schultz 1997)—­with animals’
+dopamine increasing on receiving unexpected fruit juice or seeing a cue
+signaling imminent fruit juice. Active Inference offers an alternative explanation of t­hese findings (Schwartenbeck, FitzGerald, Mathys, Dolan, and
+Friston 2015). Achieving a reward (or fulfilling our preferences) or encountering a cue indicative of a f­ uture reward enhances our confidence that we
+are pursuing a policy that minimizes expected f­ ree energy. This increase in
+confidence manifests as a spike in dopamine.
+Second, regarding formation of hypotheses, an example concerns the
+decrease in cholinergic signaling associated with Lewy body dementia (Parr,
+Benrimoh et al. 2018)—­a condition that leads to complex visual hallucinations. One plausible explanation for this is that accumulation of pathology in higher visual cortices prompts a mismatch between the predictions
+from ­these areas and the activity in primary visual cortices. Such a mismatch downgrades confidence in the associated likelihood distributions
+and ­causes loss of cholinergic signaling. The consequence of this loss of
+precision is a failure to update beliefs on the basis of sensory data, meaning
+perception loses the constraints afforded by sensation. This could explain
+the development of hallucinatory percepts in this condition.
+Third, regarding noninvasive mea­
+sure­
+ment of precision par­
+ameters,
+an example is the identification of computational phenotypes. ­There are
+a number of peripheral manifestations of central neurochemical activity,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+98
+
+­Table 5.1
+Putative roles of neurotransmitters in Active Inference
+Neurotransmitter
+
+Precision
+
+Evidence
+
+Acetylcholine
+
+Likelihood (ζ  )
+
+• ​Presence of presynaptic receptors on
+
+thalamocortical afferents (Sahin et al. 1992,
+Lavine et al. 1997)
+• ​Modulation of gain of visually evoked
+responses (Gil et al. 1997, Disney et al.
+2007)
+• ​Changes in effective connectivity with
+pharmacological manipulations
+(Moran et al. 2013)
+• ​Modeling of behavioral responses ­under
+pharmacological manipulation (Vossel
+et al. 2014, Marshall et al. 2016)
+Noradrenaline
+
+Transitions (ω )
+
+• ​Maintenance of per­sis­tent prefrontal
+
+(delay-­period) activity (requiring precise
+transition probabilities) depends on
+noradrenaline (Arnsten and Li 2005,
+Zhang et al. 2013)
+• ​Pupillary responses to surprising (i.e.,
+imprecise) sequences (Nassar et al. 2012,
+Lavín et al. 2013, Liao et al. 2016, Krishna­
+murthy et al. 2017, Vincent et al. 2019)
+• ​Modeling of behavioral responses ­under
+pharmacological manipulation (Marshall
+et al. 2016)
+Dopamine
+
+Policies (γ )
+
+• ​Expressed postsynaptically on striatal
+
+medium spiny neurons (Freund et al. 1984,
+Yager et al. 2015)
+• ​Computational fMRI reveals midbrain
+activity with changes in precision
+(Schwartenbeck, FitzGerald, Mathys,
+Dolan, and Friston 2015)
+• ​Modeling of behavioral responses ­under
+pharmacological manipulation (Marshall
+et al. 2016)
+Serotonin
+
+Preferences or
+interoceptive
+likelihood (χ )
+
+• ​Receptors expressed on layer V pyramidal
+
+cells (Aghajanian and Marek 1999, Lambe
+et al. 2000, Elliott et al. 2018) in medial
+prefrontal cortex
+• ​Medial prefrontal cortical regions heavi­ly
+implicated in interoceptive pro­cessing and
+autonomic regulation (Marek et al. 2013,
+Mukherjee et al. 2016)
+
+Source: Parr and Friston 2018.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+99
+
+including the relationship between spontaneous blink rate and dopamine
+(Karson 1983) and between pupillary size and noradrenaline (Koss 1986).
+Recent work exploring the latter (Vincent et al. 2019) has demonstrated a
+relationship between the transition precision expected to be inferred by an
+ideal Bayesian observer and the dynamics of pupillary constriction and dila­­
+tation. The implication is that we could probe someone’s implicit generative model (i.e., empirical prior beliefs) through peripheral mea­sure­ments

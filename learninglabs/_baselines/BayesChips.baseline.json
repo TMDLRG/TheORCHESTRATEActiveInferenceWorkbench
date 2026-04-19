@@ -1,0 +1,36 @@
+{
+  "default": {
+    "a": 12, "b": 9, "c": 8, "d": 88,
+    "observe": "E",
+    "selectedGold": 9, "selectedSteel": 8, "selectedTotal": 17,
+    "posterior": 0.5294117647058824
+  },
+  "preset_0_E": {
+    "a": 8, "b": 7, "c": 12,
+    "observe": "E",
+    "selectedGold": 7, "selectedSteel": 12, "selectedTotal": 19,
+    "posterior": 0.3684210526315789,
+    "label": "Rare condition, strong signal"
+  },
+  "preset_1_E": {
+    "a": 40, "b": 28, "c": 24,
+    "observe": "E",
+    "selectedGold": 28, "selectedSteel": 24, "selectedTotal": 52,
+    "posterior": 0.5384615384615384,
+    "label": "Common condition, noisy signal"
+  },
+  "preset_2_notE": {
+    "a": 15, "b": 2, "c": 30,
+    "observe": "!E",
+    "selectedGold": 13, "selectedSteel": 55, "selectedTotal": 68,
+    "posterior": 0.19117647058823528,
+    "label": "Absence of evidence matters"
+  },
+  "preset_3_E": {
+    "a": 55, "b": 44, "c": 10,
+    "observe": "E",
+    "selectedGold": 44, "selectedSteel": 10, "selectedTotal": 54,
+    "posterior": 0.8148148148148148,
+    "label": "Evidence is selective and powerful"
+  }
+}

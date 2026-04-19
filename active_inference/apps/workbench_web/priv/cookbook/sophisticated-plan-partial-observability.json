@@ -1,0 +1,49 @@
+{
+  "slug": "sophisticated-plan-partial-observability",
+  "title": "Sophisticated Planning Under Partial Observability",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 13,
+  "tags": ["sophisticated-planning", "pomdp", "uncertainty", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(deceptive_dead_end)",
+    "world": "deceptive_dead_end",
+    "actions_used": ["perceive", "sophisticated_plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax", "shannon_entropy"],
+    "horizon": 6,
+    "policy_depth": 4,
+    "preference_strength": 2.5,
+    "expected_outcome": "Under noisy A, sophisticated planning still finds the detour because its recursive min considers the best follow-up given each possible observation."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=sophisticated-plan-partial-observability",
+    "labs_url": "/labs?recipe=sophisticated-plan-partial-observability&world=deceptive_dead_end"
+  },
+  "math": {
+    "latex": "G_{\\text{soph}}(\\pi_t) = G_t(\\pi_t) + \\mathbb{E}_{q(o_t|\\pi_t)}[\\min_{\\pi_{t+1}} G_{\\text{soph}}(\\pi_{t+1}|o_t)]",
+    "symbols": {
+      "q(o_t|pi_t)": "predictive obs distribution",
+      "G_soph(pi_{t+1}|o_t)": "sophisticated EFE conditioned on the imagined obs"
+    }
+  },
+  "audiences": {
+    "kid": "The agent imagines what it might see, then figures out the best next plan for each case, then picks what to do now.",
+    "real": "Under partial observability, sophisticated planning conditions its lookahead on imagined observations, giving robust plans even when the agent is currently uncertain.",
+    "equation": "Recursion is over (pi_t, o_t) pairs: for each imagined o_t, pick the best pi_{t+1}. Average over q(o_t|pi_t).",
+    "derivation": "Belief-MDP formulation of the POMDP: the agent plans over beliefs, not states. Sophisticated EFE is the information-theoretic analog of POMDP value iteration (Kaelbling et al. 1998; Friston et al. 2021)."
+  },
+  "equation_refs": ["eq-b-22", "eq-4-14"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s4"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Show sophisticated planning's robustness under partial observability.",
+    "role": "POMDP + sophisticated-planning tutor.",
+    "context": "deceptive_dead_end with noisy A (lower precision); run SophisticatedPlan with depth=4."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), App B.",
+    "Kaelbling, Littman & Cassandra (1998), Planning and acting in partially observable stochastic domains."
+  ]
+}

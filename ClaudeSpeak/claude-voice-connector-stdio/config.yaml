@@ -1,0 +1,16 @@
+# Claude Voice Connector Configuration
+# Piper TTS - Local Neural Text-to-Speech
+
+# Default voice (British female, natural)
+voice: en_GB-jenny_dioco-medium
+
+# Available voices:
+#   en_GB-jenny_dioco-medium  - British female, warm and natural (default)
+#   en_US-amy-medium          - American female, clear and professional  
+#   en_GB-alba-medium         - British female, gentle tone
+
+# Audio settings (Piper native = 22050 Hz)
+sample_rate_hz: 22050
+
+# Logging level
+log_level: INFO

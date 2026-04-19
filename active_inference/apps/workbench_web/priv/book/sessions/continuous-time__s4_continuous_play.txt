@@ -1,0 +1,242 @@
+sequencing in a continuous context, while Lorenz attractors may be used
+to generate rich simulations, including synthetic birdsong. Next we considered the concept of generalized synchrony. Synchronization of the internal
+states of a system to external states forms the basis of inferential treatments
+of brain function and is crucial in accounts of social systems—­where external states largely comprise conspecifics (i.e., creatures like me). Fi­nally, we
+set out the unification of the discrete and continuous models of chapters 7
+and 8, bringing together the expected ­free energy minimizing (exploitative
+and explorative) dynamics of POMDP formulations, the enaction of the
+be­hav­iors t­ hese mandate through continuous pro­cesses, and the reciprocal
+message passing that mediates this interaction. In short, this takes us from
+decisions to movements—­and back again.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+9
+
+Model-­Based Data Analy­sis
+
+Just ­because we have the best hammer does not mean that ­every prob­lem is a nail.
+—­Barack Obama
+
+9.1 Introduction
+Ultimately, the models described in this book are only useful if they can
+answer scientific questions. In this chapter, we focus on the ways in which
+Active Inference can be applied in understanding empirical data. The central idea is that we, as scientists, can appeal to the same maths as we have
+assumed the brain uses in previous chapters. Our general goal is to recover
+the par­ameters of the generative model that a subject’s brain uses to produce be­hav­ior—­the subjective model. For this, we can use our own generative model (of how the subjective model produces be­hav­ior)—­the objective
+model. We can invert our objective model on the basis of the be­hav­ior we
+observe to draw inferences about the par­ameters of the subjective generative model. This meta-­Bayesian inference affords the opportunity to test
+hypotheses about the model we assume the brain uses and to phenotype
+individuals on the basis of the prior beliefs they would have to hold for
+their be­hav­ior to be Bayes optimal. Belief-­based computational phenotyping of this sort holds promise in the emerging fields of computational psychiatry, neuropsychology, and neurology.
+9.2 Meta-­Bayesian Methods
+This chapter deals with the utility of Active Inference formulations in analyzing data from behavioral experiments. This goes beyond the proof-­of-­principle
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+174
+
+simulations we have seen in previous chapters and instead exploits Active
+Inference in answering scientific questions. We have seen already that a subject’s generative model is the key determinant of be­hav­ior u
+­ nder Active Inference. This implies that hypotheses about the c­ auses of empirical behavioral
+mea­sure­ments must be framed in terms of the alternative generative models
+used to select ­those actions. Our challenge, then, is to fit an Active Inference
+scheme to observed data by manipulating the par­ameters (i.e., prior beliefs)
+of the generative model.
+Broadly speaking, t­here are two (related) reasons for fitting a computational model to observed be­hav­ior. The first is to estimate par­ameters of
+interest from that model that best explain the be­hav­ior of a specific subject
+or group of subjects. This is useful in characterizing subjective be­hav­ior in
+terms of the computations that generate it, a pro­cess known as computational phenotyping (Montague et al. 2012, Schwartenbeck and Friston 2016,
+Friston 2017). Computational phenotypes may be used in combination
+with other mea­sures (e.g., to establish links between neuroimaging findings and function) or may be used alone in forecasting be­hav­iors in other
+settings (e.g., following a therapeutic intervention).
+The second reason is to compare alternative hypotheses, expressed as
+models, that represent dif­fer­ent explanations for a behavioral phenomenon
+(Mirza et al. 2018). T
+­ hese two agendas—­parameter estimation and model
+comparison—­map to one side of Bayes’ theorem. Pa­ram­et­er estimation is
+the pro­cess of finding the posterior probability, ­under a model, of a pa­ram­
+e­ter setting. Model comparison rests on finding the marginal likelihoods
+(i.e., evidence) for each model. To recap, Bayes’ theorem is
+P(u | θ ,m) P(θ |m) = P(θ | u,m) P(u | m).
+!#"#$ !
+#"#
+$ !#"#$ !"
+# #
+$
+Likelihood
+
+Prior
+
+Posterior
+
+Evidence
+
+(9.1)
+
+The right-­hand side deals with the posterior probability of par­ameters (θ )
+given behavioral data (u) ­under a model (m) and the model evidence, and
+the left-­hand side tells us what we need to specify for our model: we need
+prior beliefs about our par­ameters of interest and a likelihood function.
+Importantly, while we appeal to the same Bayesian inference scheme as
+used in previous chapters, our purpose is dif­fer­ent h
+­ ere. This rests on the
+fact that t­here are two inference pro­cesses g
+­ oing on (figure 9.1). The first
+is that creatures use their model of the pro­cesses generating their sensory
+data to draw inferences about their world (and about how to act). This has
+been the focus of the preceding chapters. The second is that we as objective
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+175
+
+Θ
+
+P (θ | m)
+
+θ
+
+Parameters
+
+Experimental stimuli
+
+õ
+
+P(õ, s,  | θ, m)
+G
+
+
+
+Sτ-1
+
+B
+
+Sτ
+
+B
+
+Sτ+1
+
+A
+
+A
+
+A
+
+Oτ-1
+
+Oτ
+
+Oτ+1
+
+P(ũ | θ, õ, m)
+
+Subjective model
+
+ũ
+
+Observed behavior
+
+Objective model
+Figure 9.1
+Relationship between the subjective and objective models of meta-­Bayesian inference. Inner dashed box: Subjective model assumed to be used by an experimental
+subject. This could be a POMDP model as illustrated or some other form of model.
+The impor­tant features are that it depends on par­ameters (θ  ) whose value we do not
+know and that it generates sensory data (o). Outer dashed box: Experimenter’s objective model (m) includes prior beliefs about the par­ameters and predicts the be­hav­
+ior (u) we would expect on presenting experimental stimuli (sensory data from the
+subjective model’s perspective). Crucially, the likelihood distribution of the objective
+model depends on the subjective model. This means we evaluate the likelihood of
+par­ameters taking a par­tic­ul­ar value as follows. First, we incorporate the par­ameters
+in the subjective model. We then use the Active Inference schemes described in previous chapters to solve this model, presenting our experimental stimuli as sensory
+data, and infer a distribution over the most probable course of action. Fi­nally, we
+evaluate the probability of the observed actions or choices, given this distribution.
+This is the likelihood of observed be­hav­ior given par­ameters and stimuli—­i.e., the
+likelihood distribution in the objective model.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+176
+
+scientists observe the creature’s be­hav­ior and seek to draw inferences about
+the (subjective) generative model it is using by inverting our own (objective)
+generative model. The implication ­here is that we are drawing inferences
+about an inferential process—­
+sometimes referred to as “meta-­
+Bayesian”
+inference (Daunizeau et al. 2010).
+More formally, this approach defines the likelihood distribution in terms
+of the solution to an Active Inference prob­lem. By using a given pa­ram­
+e­ter setting, we can simulate be­hav­ior ­under Active Inference and quantify the likelihood that a series of actions would have been taken. Equipped
+with prior beliefs about the value of ­these par­ameters, we have a generative
+model of how a creature uses its generative model to produce actions. While
+our focus is on Active Inference (and discrete-­time models specifically), the
+generic methods used ­here may be used with any arbitrary likelihood function. Other normative models of be­hav­ior (such as t­ hose used in reinforcement learning) may be substituted in place of the Active Inference models.
+The following sections unpack an example of a generic inference scheme
+that may be used for meta-­Bayesian inference (namely, variational Laplace)
+and the use of hierarchical models for model comparison. We then provide a s­ imple r­ ecipe for model-­based data analy­sis and fi­nally review a key
+example of this procedure. It is impor­tant to emphasize that understanding
+the technical details is not required to use ­these methods effectively; thus,
+readers uninterested in t­ hese details are invited to skip sections 9.3 and 9.4.
+In brief, the basic idea is to evaluate the likelihood of any observed set
+of choices, given the unknown par­ameters of interest—­namely, the par­
+ameters of a subject’s prior beliefs. We then combine this likelihood with
+our objective prior over ­those par­ameters to evaluate the posterior over the
+subject’s priors, in the usual way. If we have several subjects, t­hese posteriors can be combined to make inferences about group or between-­subject
+effects, using parametric empirical Bayes (PEB). The requisite likelihood is
+simply the probability of sampling the observed sequence of choices, u
+­ nder
+the subject’s posterior beliefs about action. ­These posterior beliefs depend
+on what the subject sees (i.e., cues or stimuli) and her prior beliefs—­and
+are evaluated in a straightforward way by solving the appropriate Active
+Inference scheme. Note that we are using Bayesian procedures twice: first
+to evaluate the subject’s posterior beliefs about action, and second to evaluate our posterior beliefs about the unknown priors that characterize the
+subject. We now rehearse the vari­ous parts of this meta-­Bayesian procedure.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+177
+
+9.3 Variational Laplace
+Variational Laplace is an inference scheme based on the same princi­ples as
+predictive coding (Friston, Mattout et al. 2007). However, it may be used for
+more generic likelihood functions than ­those encountered ­earlier—­which
+­were defined as Gaussian. We w
+­ ill start this section with an overview of the
+likelihood function L(θ ) of interest ­here. This should give the probability of
+actions for an Active Inference scheme with a generative model with par­
+ameters set at value θ. The actions selected depend on the observations made:
+!
+L(θ ) = ln P(u! |θ ,m, o)
+! = u! i σ (θα ln u)
+!
+P(u! | θ ,m, o)
+u! = π i U
+
+(9.2)
+
+π = arg min F
+π
+
+Unpacking this, the first term gives the log likelihood of an observed
+sequence of actions (ũ) as a function of par­ameters (θ ), the model (m), and a
+sequence of stimuli (õ) presented during a real experiment. The probability
+of t­hese actions is found by using the par­ameters to set the prior beliefs in
+a POMDP model of the sort described in chapter 7. We can then solve the
+POMDP as described in chapters 4 and 7, forcing the simulation to take
+the observed action sequence and presenting it with the same experimental
+stimuli. As we described in preceding chapters, this involves computing the
+beliefs (π) a synthetic subject holds about the policy or course of action she
+chooses to pursue. This minimizes the ­free energy (F) associated with her
+generative model of the world. We can then take ­these beliefs and calculate
+the average probability of pursuing an action sequence. This requires us to
+distribute the probability for each policy over the actions implied by that
+policy (indexed by an array U). Fi­nally, a softmax temperature pa­ram­e­ter
+(θα ) is applied to account for randomness (shaky-­handedness) in be­hav­ior not
+accounted for by the model. If this softmax pa­ram­e­ter is one, we are effectively assuming that the subject samples her actions from posterior beliefs
+about her actions; sometimes, this is called matching be­hav­ior. Alternatively, if the softmax pa­ram­e­ter is very large, the action emitted is the action
+with the greatest subjective posterior—­that is, the subject always chooses

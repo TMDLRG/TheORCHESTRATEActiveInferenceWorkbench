@@ -1,0 +1,50 @@
+{
+  "slug": "bayes-sequential-urns",
+  "title": "Sequential Bayes: Walking the Corridor",
+  "level": 1,
+  "tier_label": "Skeptical Supervisor",
+  "minutes": 8,
+  "tags": ["bayes", "perception", "sequential", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["softmax"],
+    "horizon": 4,
+    "policy_depth": 2,
+    "preference_strength": 2.0,
+    "expected_outcome": "Across 4+ steps the belief collapses from broad to near-point-mass as each new obs multiplicatively refines the posterior."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=bayes-sequential-urns",
+    "labs_url": "/labs?recipe=bayes-sequential-urns&world=corridor_turns"
+  },
+  "math": {
+    "latex": "P(s_t \\mid o_{1:t}) \\propto P(o_t \\mid s_t) \\sum_{s_{t-1}} P(s_t \\mid s_{t-1}, a_{t-1}) \\, P(s_{t-1} \\mid o_{1:t-1})",
+    "symbols": {
+      "s_t": "state at time t",
+      "o_{1:t}": "observation history",
+      "a_{t-1}": "previous action",
+      "P(s_t|s_{t-1},a)": "transition model (B matrix)"
+    }
+  },
+  "audiences": {
+    "kid": "Every time you see another clue you shrink the list of possible rooms you could be in. After enough clues, you know exactly where you are.",
+    "real": "Bayesian filtering: each observation multiplicatively refines the belief through the transition model. The 5x5 corridor makes the collapse visible.",
+    "equation": "Forward filter: predict with B, then update with A. Posterior P(s_t | o_{1:t}) concentrates as log-likelihoods accumulate.",
+    "derivation": "Starting from P(s_t, o_{1:t}) = P(o_t|s_t) sum_{s_{t-1}} P(s_t|s_{t-1}, a_{t-1}) P(s_{t-1}, o_{1:t-1}), the filtering recursion follows by marginalisation. This is eq 4.13 of Ch 4."
+  },
+  "equation_refs": ["eq-4-13"],
+  "figure_refs": [],
+  "session_refs": ["low-road/s1", "low-road/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Demonstrate that the posterior sharpens monotonically across observations in a small corridor world.",
+    "role": "Filtering tutor grounded in the POMDP bundle's perceive-plan-act loop.",
+    "context": "A 5x5 corridor-with-turns maze where the agent walks from start to goal, re-sweeping its belief at every step."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4."
+  ]
+}

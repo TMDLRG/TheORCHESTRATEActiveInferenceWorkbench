@@ -1,0 +1,168 @@
+recursive nature of the cycle, where each observation, solicited by the previous action, changes how we decide on the next action, to solicit the next
+observation. The possibilities for control and adaptation are plentiful, but
+very few are useful. Yet during evolution, living organisms have managed to develop adaptive strategies to face the fundamental challenges of
+existence. ­These strategies vary in their level of cognitive sophistication,
+with simpler and more rigid solutions in simpler organisms (e.g., following nutrient gradients in bacteria) and more cognitively demanding and
+flexible solutions in more advanced organisms (e.g., planning to achieve
+distal goals in ­humans). ­These strategies also vary for the timescales at
+which they are selected and operate—­ranging from ­simple responses to
+environmental threats or morphological adaptations that arise at an evolutionarily timescale, to behavioral patterns established during cultural
+or developmental learning, up to ­those requiring cognitive pro­cesses that
+operate at comparable timescales to action and perception (e.g., attention
+and memory).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Overview
+
+5
+
+1.3 Active Inference: Be­hav­ior from First Princi­ples
+This diversity is a blessing for biology but challenging for formal theories of
+brain and mind. Broadly, ­there are two perspectives we could take on this.
+One perspective is that dif­fer­ent biological adaptations, neural pro­cesses
+(e.g., synaptic exchanges and brain networks), and cognitive mechanisms
+(e.g., perception, attention, social interaction) are highly idiosyncratic and
+require dedicated explanations. This would lead to proliferation of theories in fields like philosophy, psy­chol­ogy, neuroscience, ethology, biology,
+artificial intelligence, and robotics, with l­ittle hope for their unification.
+Another perspective is that, despite their diverse manifestations, the central aspects of be­hav­ior, cognition, and adaptation in living organisms are
+amenable to a coherent explanation from first princi­ples.
+­These two possibilities map to two dif­fer­ent research programs and, to
+some extent, dif­fer­ent attitudes ­toward science: “neats” versus “scruffies”
+(terms due to Roger Shank). Neats always seek unification beyond the (apparent) heterogeneity of brain and mind phenomena. This usually corresponds
+to designing top-­down, normative1 models that start from first princi­ples and
+try to derive as much as pos­si­ble about brains and minds. Scruffies instead
+embrace the heterogeneity by focusing on details that demand dedicated
+explanations. This usually corresponds to designing bottom-up models that
+start from data and use what­ever works to explain complex phenomena,
+including dif­fer­ent explanations for dif­fer­ent phenomena.
+Is it pos­si­ble to explain heterogenous biological and cognitive pheno­
+mena from first princi­ples, as the neats assume? Is a unified framework to
+understand brain and mind pos­si­ble?
+This book answers ­these questions affirmatively and advances Active
+Inference as a normative approach to understand brain and mind. Our
+treatment of Active Inference starts from first princi­ples and unpacks their
+cognitive and biological implications.
+1.4 Structure of the Book
+The book comprises two parts. ­These are aimed at readers who want to understand Active Inference (first part) and t­ hose who seek to use it for their own
+research (second part). The first part of the book introduces Active Inference
+both conceptually and formally, contextualizing it within current theories of
+cognition. The goal of this first part is to provide a comprehensive, formal,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+6
+
+and self-­contained introduction to Active Inference: its main constructs and
+implications for the study of brain and cognition.
+The second part of the book illustrates specific examples of computational models that use Active Inference to explain cognitive phenomena,
+such as perception, attention, memory, and planning. The goal of this second part is to help readers both understand existing computational models
+using Active Inference and design novel ones. In short, this book divides
+into theory (part 1) and practice (part 2).
+1.4.1 Part 1: Active Inference in Theory
+Active Inference is a normative framework to characterize Bayes-­optimal2
+be­
+hav­
+ior and cognition in living organisms. Its normative character is
+evinced in the idea that all facets of be­hav­ior and cognition in living organisms follow a unique imperative: minimizing the surprise of their sensory observations. Surprise has to be interpreted in a technical sense: it mea­sures how
+much an agent’s current sensory observations differ from its preferred sensory observations—­that is, t­ hose that preserve its integrity (e.g., for a fish,
+being in the ­water). Importantly, minimizing surprise is not something that
+can be done by passively observing the environment: rather, agents must
+adaptively control their action-­perception loops to solicit desired sensory
+observations. This is the active bit of Active Inference.
+Minimizing surprise turns out to be a challenging prob­lem for technical
+reasons that ­will become apparent l­ater. Active Inference offers a solution
+to this prob­lem. It assumes that even if living organisms cannot directly
+minimize their surprise, they can minimize a proxy—­called (variational)
+­free energy. This quantity can be minimized through neural computation
+in response to (and in anticipation of ) sensory observations. This emphasis
+on f­ree energy minimization discloses the relation between Active Inference and the (first) princi­ple that motivates it: the ­free energy princi­ple
+(Friston 2009).
+­Free energy minimization seems a very abstract starting point to explain
+biological phenomena. However, it is pos­si­ble to derive a number of formal and empirical implications from it and to address a number of central
+questions in cognitive and neural theory. ­These include how the variables
+involved in ­free energy minimization may be encoded in neuronal populations; how the computations of minimized f­ree energy map to specific
+cognitive pro­cesses, such as perception, action se­lection, and learning; and
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Overview
+
+7
+
+what kind of be­hav­iors emerge when an Active Inference agent minimizes
+its ­free energy.
+As the above list of topics exemplifies, in this book we are mainly concerned
+with Active Inference and ­free energy minimization at the level of living
+organisms—­simpler (e.g., bacterial) or more complex (e.g., h
+­ uman)—­and
+their behavioral, cognitive, social, and neural pro­cesses. This clarification is
+necessary to contextualize our treatment of Active Inference within the more
+general ­free energy princi­ple (FEP), which discusses f­ ree energy minimization
+across a much wider range of biological phenomena and timescales beyond
+neural information processing—­ranging from evolutionary to cellular and
+cultural (Friston, Levin et al. 2015; Isomura and Friston 2018; Palacios, Razi
+et al. 2020; Veissière et al. 2020)—­which are beyond the scope of this book.
+It is pos­si­ble to motivate Active Inference by taking one of two roads: a
+high road and a low road; see figure 1.2. T
+­ hese two roads provide two distinct but highly complementary perspectives on Active Inference:
+•
+
+The high road to Active Inference starts from the question of how living organisms persist and act adaptively in the world and motivates
+
+Selfevidencing
+Autopoiesis and
+niche construction
+Active
+Inference
+Bayesian
+brain
+Predictive
+coding
+
+Markov
+blanket
+
+Predictive
+processing
+
+Free energy
+principle
+Selforganization
+
+Surprise
+minimization
+
+Variational
+Bayes
+
+Planning as
+inference
+Perception as
+inference
+
+Generative
+model
+Bayes’
+theorem
+
+Figure 1.2
+Two roads to Active Inference: the high road (starting from top-­right) and the low
+road (starting from bottom-­left).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+8
+
+Active Inference as a normative solution to ­these prob­lems. This high
+road perspective is useful to understand the normative nature of Active
+Inference: what living organisms must do to face their fundamental existential challenges (minimize their ­free energy) and why (to vicariously
+minimize the surprise of their sensory observations).
+•
+
+The low road to Active Inference starts from the notion of the Bayesian
+brain, which casts the brain as an inference engine trying to optimize
+probabilistic repre­sen­ta­tions of the c­ auses of its sensory input. It then
+motivates Active Inference as a specific, variational approximation to
+the (other­wise intractable) inferential prob­lem, which has a degree of
+biological plausibility. This low road perspective is useful to illustrate

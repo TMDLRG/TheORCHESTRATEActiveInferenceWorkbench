@@ -1,0 +1,267 @@
+nothing. However, we can now interpret the expression as an expectation
+(E)3 of a ratio between two probabilities and so exploit Jensen’s in­equality:
+ln P(y) = ln
+
+Q(x)
+
+∑ P(y, x) Q(x)
+x
+
+⎡ P(y, x) ⎤
+⎡ P(y, x) ⎤
+= ln EQ ( x) ⎢
+⎥ ≥ EQ ( x) ⎢ ln Q(x) ⎥ ! − F[Q , y]
+⎣ Q(x) ⎦
+⎣
+⎦
+
+(4.2)
+
+The second line of this equation uses the fact that we have a log expectation and that, by Jensen’s in­equality, this must always be greater than or
+equal to the expectation of the log. This move is sometimes referred to as
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+66
+
+importance sampling. The right-­hand side of this in­equality is known as the
+(negative) variational f­ ree energy:4 the smaller the ­free energy, the closer it
+is to the negative log model evidence. With this in mind, we can rewrite
+Bayes’ theorem (equation 4.1) in logarithmic form, take its average u
+­ nder
+the posterior distribution, and disclose the relationship between this and
+the quantities of equation 4.2:
+ln P(x, y) = ln P(y) + ln P(x | y) ⇒
+E P( x | y )[ln P(x, y)] = ln P(y) + E P( x|y )[ln P(x | y)]
+
+(4.3)
+
+EQ ( x)[ln P(x, y)] = − F[Q, y] + EQ ( x)[lnQ(x)]
+The second line follows from the fact that the log probability of y is not
+a function of x, so taking an expectation ­under the posterior distribution
+does not change this quantity. Equation 4.3 provides some intuition for
+the roles of the ­free energy and the Q distribution—­the two quantities that
+­were difficult to compute without the variational approximation. The former plays the role of the negative log model evidence, while the latter acts
+as if it ­were the posterior probability. More formally, we can rearrange the
+­free energy as we did in chapter 2 to quantify the relationship between ­free
+energy and model evidence:
+F[Q, y] = DKL[Q(x) || P(x | y)] −
+!###"###$
+Divergence
+
+ln P(y)
+!"
+# #
+$
+
+Log model evidence
+
+DKL[Q(x) || P(x | y)] = EQ ( x) [ lnQ(x) − ln P(x | y)]
+
+(4.4)
+
+The first line of equation 4.4 shows the ­free energy expressed in terms of a
+KL-­Divergence and a negative log evidence. The KL-­Divergence is defined
+in the second line as the expected difference between two log probabilities.
+This is often used as a mea­sure of how dif­fer­ent two probability distributions are from one another.
+Sometimes, the use of f­ree energy is motivated directly in terms of this
+divergence. The argument goes that if our aim is to perform approximate
+Bayesian inference, we need to find an approximate posterior that best
+matches the exact posterior. As such, we can select a mea­sure of the divergence between the two—of which the KL-­Divergence in equation 4.4 is one
+example—­and minimize this. As we do not know the exact posterior, we
+cannot use this divergence directly. One solution is to add the log evidence
+term, which may be combined with the log posterior to form the joint
+probability (which we do know ­because this is the generative model). The
+result is the ­free energy.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+67
+
+An in­
+ter­
+est­
+ing consequence of this perspective is that t­here is some
+ambiguity over which divergence mea­sure to use. If we want to make the
+approximate and exact posterior as close as pos­si­ble, we could use the other
+KL-­Divergence, where Q and P are swapped, or choose from a large f­amily
+of divergences, each of which emphasizes dif­fer­ent aspects of the difference
+between distributions. However, the ideas set out in chapter 3 highlight
+the importance of self-­evidencing for systems engaging in Active Inference.
+Therefore, we are primarily looking for a tractable evidence maximization
+scheme and only secondarily looking to minimize the divergence. From
+this perspective, t­here is no ambiguity as to which divergence mea­sure to
+use. This emerges from the use of Jensen’s in­equality.
+4.3 Generative Models
+To calculate the ­free energy, we need three t­hings: data, a ­family of variational distributions, and a generative model (comprising a prior and a likelihood). In this section, we outline two very general sorts of generative model
+used for Active Inference and the form the ­free energy takes in relation to
+each. The first deals with inferences about categorical variables (e.g., object
+identity) and is formulated as a sequence of events. The second deals with
+inferences about continuous variables (e.g., luminance contrast) and is formulated in continuous time using stochastic differential equations. Before
+specifying the details of t­ hese models, we review a graphical formalism that
+expresses the dependencies implied by a generative model.
+Figure 4.2 shows several examples of generative models expressed as
+­factor graphs, chosen to provide some intuition for the sorts of ­things that
+may be articulated in this way. T
+­ hese represent the f­actors (e.g., prior and
+likelihood) of a generative model as squares and the variables in that model
+(hidden states or data) in circles. Arrows indicate the direction of causality between t­hese variables. The upper-­left graph shows the simplest form
+­these models can take, with a hidden state (x) causing data ( y). The prior
+in this model is shown as ­factor 1, and the likelihood is ­factor 2. The other
+graphs extend this idea by introducing additional variables. In the upper
+right, z plays the role of a second hidden state, so that y depends on the
+states of both x and z.
+As an example, consider a clinical diagnostic test. In this setting, the ­simple
+graph in the upper left can be interpreted as the presence or absence of a
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+68
+
+1
+x
+
+1 P(x)
+
+2
+
+2 P(y | x)
+
+3
+
+1
+
+z
+
+x
+
+1 P(x)
+
+2
+
+2 P(y | x, z)
+
+y
+
+3 P(z)
+
+y
+1
+
+1
+1 P(x)
+
+x
+
+v
+
+3
+
+x
+
+1 P(v)
+
+2
+
+3
+
+2 P(y | x)
+
+2
+
+2 P(y | x)
+
+y
+
+w
+
+3 P(w | x)
+
+y
+
+3 P(x | v)
+
+Figure 4.2
+Dependencies between variables in a (graphical) probabilistic model. The circles represent random variables (i.e., the t­hings about which we hold beliefs); the squares
+represent the probability distributions that describe the relationships between t­ hese
+variables. An arrow from one circle to another via a square indicates that the variable
+in the second circle depends on that in the first circle and that this de­pen­dency is
+captured in the probability distribution represented by the square.
+
+disease (x) and the result of the test (y). The prior is then the prevalence of
+the disease, while the likelihood specifies the properties of the test. ­These
+include its specificity (the probability of a negative result in the absence of
+the disease) and sensitivity (the probability of a positive result in the presence
+of the disease). We can then think of the model in terms of the mechanism
+by which a test result is obtained—­going from the top to the bottom of the
+­factor graph. First, we sample a person from a population with known prevalence of a disease. If they have the disease, they ­will generate a true positive
+test result with probability given by the test sensitivity, and a false negative
+other­wise. If they do not have the disease, they ­will generate a true negative
+with probability given by the specificity, and a false positive other­wise.
+Pursuing the same example, we can interpret the other f­ actor graphs. In
+the upper-­right panel, x and z could be the presence or absence of two dif­
+fer­ent diseases, e­ ither of which could give a positive test result. In the lower
+left, w plays the role of data. Both y and w are generated by x and could
+represent (for example) two dif­fer­ent diagnostic tests that are informative
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+69
+
+about the same disease pro­cess. Fi­nally, the lower-­right graph treats both
+x and v as hidden states but introduces a hierarchical structure in which v
+­causes x ­causes y. ­Here we could think of v as providing a context or a predisposing f­ actor (e.g., ge­ne­tic polymorphism) for the presence or absence of
+disease x, which may be tested for by mea­sur­ing y. In princi­ple, we can add
+an arbitrary number of variables to this hierarchy.
+Generative models of this sort are often used for static perceptual tasks,
+such as object recognition or cue integration. The generative models used
+for active inference differ in an impor­tant way: they evolve over time as
+new observations are sampled, and the observations that are added depend
+(via action) on beliefs about variables in the model. This has two key implications. First, the conditional dependencies include the dependencies of
+hidden variables at a given time on t­ hose at previous times. Second, t­ hese
+models sometimes include hypotheses about “how I am acting” as hidden
+variables.
+Figure 4.3 illustrates the two basic forms of dynamic generative model
+used in active inference (Friston, Parr, and de Vries 2017) in f­ actor graph
+form (Loeliger 2004, Loeliger et al. 2007). The upper graph shows a Partially
+Observable Markov Decision Pro­cess (POMDP), which expresses a model in
+which a sequence of states (s) evolves over time. At each time step, the current state is conditionally dependent on the state at the previous time and
+on the policy (π ) currently being pursued. Policies ­here may be thought of
+as indexing alternative trajectories, or sequences of actions, that could be
+followed. Each time-­point is associated with an observation (o) that depends
+only on the state at that time. This sort of model is very useful in dealing
+with sequential planning tasks—­for example, navigating a maze (Kaplan and
+Friston 2018)—or decision-­making pro­cesses that involve selecting between
+alternatives (e.g., categorization of a scene [Mirza et al. 2016]).
+The lower graph in figure 4.3 shows a very similar graphical model but
+expressed in continuous time. In place of representing a trajectory as a
+series of states, this model represents the current position, velocity, and
+acceleration (and successive temporal derivatives) of a state (x). ­These values (referred to as generalized coordinates of motion) can be used to reconstruct a trajectory using a Taylor series expansion (see appendix A for an
+introduction to Taylor series approximations in this context). The relationship between a state and its temporal derivative ­here depends on (slowly
+varying) ­causes (v) that play a similar role to the policies above. As before,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+70
+
+1
+
+1 P()
+3
+
+sτ–1
+
+3
+
+sτ
+
+3
+
+sτ+1
+
+2 P(oτ | sτ)
+3 P(sτ+1 | sτ, )

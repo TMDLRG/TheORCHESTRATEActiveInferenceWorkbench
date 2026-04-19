@@ -1,0 +1,578 @@
+217
+
+models. From the perspective of belief updating, this means anxiety is just
+a commitment to the Bayesian belief “I am anxious” that best explains the
+prevailing sensory and interoceptive queues. From the perspective of acting,
+the ensuing (interoceptive) predictions augment or attenuate vari­ous precisions (i.e., covert action) or enslave autonomic responses (i.e., overt action).
+This may look much like arousal, which confirm the hypothesis that “I am
+anxious.” Usually, emotional inference entails belief updating that is domain
+general, assimilating information from both interoceptive and exteroceptive
+sensory streams—­hence the intimate relationship between emotion, interoception, and attention in health (Seth and Friston 2016; Smith, Lane et al.
+2019; Smith, Parr, and Friston 2019) and disease (Peters et al. 2017, J. E.
+Clark et al. 2018).
+10.11 Attention, Salience, and Epistemic Dynamics
+True ignorance is not the absence of knowledge, but the refusal to acquire it.
+—­Karl Popper
+
+Given the number of times we have referred to precision and expected ­free
+energy in this chapter alone, it would be negligent not to devote a l­ ittle space
+to attention and salience. T
+­ hese concepts recur throughout psy­chol­ogy, having been subject to numerous redefinitions and classifications. Sometimes
+­these terms are used to refer to synaptic gain control mechanisms (Hillyard
+et al. 1998), which preferentially select some sensory modality or subset of
+channels within a modality. Sometimes they refer to how we orient ourselves, through overt or covert action, to gain more information about the
+world (Rizzolatti et al. 1987; Sheliga et al. 1994, 1995).
+Although the uncertainty afforded by the many meanings of attention
+underwrites some of the epistemic attractiveness of this field of study, ­there
+is also value in resolving the attendant ambiguity. One of the ­things offered
+by a formal perspective on psy­chol­ogy is that we do not need to worry about
+this ambiguity. We can operationally define attention as the precision associated with some sensory input. This neatly maps to the concept of gain
+control, as sensations we infer to be more precise ­will have greater influence over belief updating than ­those inferred to be imprecise. The construct
+validity of this association has been demonstrated in relation to psychological paradigms, including the famous Posner paradigm (Feldman and Friston
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+218
+
+2010). Specifically, responding to a stimulus at a location in visual space that
+is afforded a higher precision is faster than responding to stimuli in other
+locations.
+This leaves the term salience in want of a similar formal definition. Typically, in Active Inference, we associate salience with expected information
+gain (or epistemic value): a component of the expected f­ree energy. Intuitively, something is more salient when we expect it to yield more information. However, this defines salience in terms of an action or policy, while
+attention is an attribute of beliefs about sensory input. This fits with the
+notion of salience as overt or covert orienting. We saw in chapter 7 that we
+could further subdivide expected information gain into salience and novelty.
+The former is the potential to infer, while the latter is the potential to learn.
+An analogy that expresses the difference between attention and salience (or
+novelty) is the design and analy­sis of a scientific experiment. Attention is
+the pro­cess of selecting the highest quality data from what we have already
+mea­sured and using ­these to inform our hypothesis testing. Salience is the
+design of the next experiment to ensure the highest quality data.
+We do not dwell on this issue to simply add another reclassification
+of attentional phenomena to the lit­er­a­ture but to highlight an impor­tant
+advantage in committing to a formal psy­chol­ogy. ­Under Active Inference,
+it does not ­matter if ­others define attention (or any other construct) differently—as we can simply refer to the mathematical constructs in question
+and preclude any confusion. A final point of consideration is that ­these
+definitions offer a s­ imple explanation for why attention and salience are so
+often conflated. Highly precise data are minimally ambiguous. This means
+that they should be afforded attention and that actions to acquire ­these
+data are highly salient (Parr and Friston 2019a).
+10.12 Rule Learning, Causal Inference, and Fast Generalization
+Yesterday I was clever, so I wanted to change the world. T
+­ oday I am wise, so I am
+changing myself.
+—­Rumi
+
+­Humans and other animals excel at making sophisticated causal inferences,
+learning abstract concepts and the causal relationships between objects,
+and generalizing from l­imited experience—in contrast to current machine
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+219
+
+learning paradigms, which require a large number of examples to attain
+similar per­for­mance. This difference suggests that current machine learning
+approaches, which are largely based on sophisticated pattern recognition,
+may not fully capture the ways h
+­ umans learn and think (Lake et al. 2017).
+The learning paradigm of Active Inference is based on the development
+of generative models that capture the causal relations between actions,
+events, and observations. In this book, we have considered relatively ­simple
+tasks (e.g., the T-­maze example of chapter 7) that require unsophisticated
+generative models. In contrast, understanding and reasoning about complex situations require deep generative models that capture the latent
+structure of the environment—­such as hidden regularities that permit generalizing across a number of apparently dissimilar situations (Tervo et al.
+2016; Friston, Lin et al. 2017).
+One ­simple example of a hidden rule that governs sophisticated social
+interactions is a traffic intersection. Imagine a naïve person who observes
+a busy crossroad and has to predict (or explain) on which occasions pedestrians or cars cross the road. The person can accumulate statistics about the
+co-­occurrence of events (e.g., a red car stopping and a tall man crossing; an
+old w
+­ oman stopping and a big car passing), but most are ultimately useless. The person can eventually discover some recurrent statistical patterns,
+such as that pedestrians cross the road soon a
+­ fter all cars stop at a certain
+point on the road. This determination would be deemed sufficient in a
+machine learning setting if the task w
+­ ere just to predict when pedestrians
+are about to walk, but it would not entail any understanding of the situation. In fact, it may even lead to the erroneous conclusion that the stopping
+of cars explains the movement of pedestrians. This sort of error is typical in
+machine learning applications that do not appeal to (causal) models—­and
+cannot distinguish ­whether the rain explains the wet grass or the wet grass
+explains the rain (Pearl and Mackenzie 2018).
+On the other hand, inferring the correct hidden (e.g., traffic light) rule
+provides a deeper understanding of the causal structure of the situation
+(e.g., it is the traffic light that ­causes the cars to stop and the pedestrians
+to walk). The hidden rule not only affords better predictive power but also
+renders inference more parsimonious, as it can abstract away from most
+sensory details (e.g., the color of cars). In turn, this permits generalizing to
+other situations, such as dif­fer­ent crossroads or cities, where most sensory
+details differ significantly—­with the caveat that facing crossroads in some
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+220
+
+cities, like Rome, may require more than looking at traffic lights. Fi­nally,
+learning about traffic light rules may also enable more efficient learning in
+novel situations—or to develop what is called a “learning set” in psy­chol­
+ogy or a learning-­to-­learn ability in machine learning (Harlow 1949). When
+facing a crossroad where the traffic light is off, one cannot use the learned
+rule but may nevertheless have the expectation that ­there is another, similar hidden rule in play—­and this could help understanding what the traffic
+police officer is d
+­ oing.
+As this ­simple example illustrates, learning rich generative models—of
+the latent structure of the environment (aka structure learning)—­affords
+sophisticated forms of causal reasoning and generalization. Scaling up
+generative models to address t­hese sophisticated situations is an ongoing
+objective in computational modeling and cognitive science (Tenenbaum
+et al. 2006, Kemp and Tenenbaum 2008). Interestingly, ­there is a tension
+between current machine learning trends—­wherein the general idea is “the
+bigger, the better”—­and the statistical approach of Active Inference—­which
+suggests the importance of balancing the accuracy of a model with its complexity and to f­avor simpler models. Model reduction (and the pruning of
+unnecessary par­ameters) is not simply a way to avoid wasting resources—it
+is also an effective way to learn hidden rules, including during offline periods like sleep (Friston, Lin et al. 2017), perhaps manifesting in resting state
+activity (Pezzulo, Zorzi, and Corbetta 2020).
+10.13 Active Inference and Other Fields: Open Directions
+It has to start somewhere, it has to start sometime,
+what better place than ­here? What better time than now?
+—­Rage Against the Machine, “Guerrilla Radio”
+
+In this book, we mainly focus on Active Inference models that address biological prob­lems of survival and adaptation. Yet Active Inference can be applied
+in many other domains. In this last section, we briefly discuss two such
+domains: social and cultural dynamics and machine learning and robotics.
+Addressing the former requires thinking about the ways in which multiple
+Active Inference agents interact and the emergent effects of such interaction.
+Addressing the latter requires understanding how Active Inference can be
+endowed with more effective learning (and inference) mechanisms to scale
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+221
+
+up to more complex prob­lems—­but in a way that is compatible with the basic
+assumptions of the theory. Both are in­ter­est­ing open directions for research.
+10.13.1 Social and Cultural Dynamics
+Many in­ter­est­ing aspects of our (­human) cognition relate to social and
+cultural dynamics rather than individualistic perceptions, decisions, and
+actions (Veissière et al. 2020). By definition, social dynamics require multiple Active Inference creatures that engage in physical interactions (e.g.,
+joint actions, such as playing team sports) or more abstract interactions
+(e.g., elections or social networking). ­Simple demonstrations of inter-­Active
+Inference between identical organisms already produced in­ter­est­ing emergent phenomena, such as the self-­organization of ­simple life forms that
+resist dispersion, the possibility to engage in morphoge­ne­tic pro­cesses to
+acquire and restore a body form, and mutual coordinated prediction and
+turn taking (Friston 2013; Friston and Frith 2015a; Friston, Levin et al.
+2015). Other simulations have addressed the ways in which creatures can
+extend their cognition to material artifacts and shape their cognitive niches
+(Bruineberg et al. 2018).
+­These simulations capture only a fraction of the complexity of our social
+and cultural dynamics, but they illustrate the potential of Active Inference
+to expand from a science of individuals to a science of socie­ties—­and how
+cognition extends beyond our skulls (Nave et al. 2020).
+10.13.2 Machine Learning and Robotics
+The generative modeling and variational inference methods discussed in
+this book are widely used in machine learning and robotics. In ­these fields,
+the emphasis is often on how to learn (connectionist) generative models—
+as opposed to how to use them for Active Inference, the focus of this book.
+This is in­ter­est­ing as machine learning approaches are potentially useful to
+scale up the complexity of the generative models and of the prob­lems considered in this book—­with the caveat that they may call on very dif­fer­ent
+pro­cess theories of Active Inference.
+While it is impossible to review ­here the vast lit­er­a­ture on generative
+modeling in machine learning, we briefly mention some of the most popu­
+lar models, from which many variants have been developed. Two early
+connectionist generative models, the Helmholtz machine and the Boltzmann
+machine (Ackley et al. 1985, Dayan et al. 1995), provided paradigmatic
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+222
+
+examples of how to learn the internal repre­sen­ta­tions of a neural network
+in an unsupervised way. The Helmholtz machine is especially related to the
+variational approach of Active Inference, as it uses separate recognition and
+generative networks to infer a distribution over hidden variables and sample
+from them to obtain fictive data. The early practical success of ­these methods was l­imited. But afterward, the possibility to stack multiple (restricted)
+Boltzmann machines enabled learning of multiple layers of internal repre­
+sen­ta­tions and was one of the early successes of unsupervised deep neural
+networks (Hinton 2007).
+Two recent examples of connectionist generative models, variational autoencoders or VAEs (Kingma and Welling 2014) and generative adversarial networks or GANs (Goodfellow et al. 2014), are widely used in machine learning
+applications, such as recognizing or generating pictures and videos. VAEs
+exemplify an elegant application of variational methods to learning in generative networks. Their learning objective, the evidence lower bound (ELBO),
+is mathematically equivalent to variational ­free energy. This objective enables
+learning of an accurate description of the data (i.e., maximizes accuracy) but
+also f­avors internal repre­sen­ta­tions that do not differ too much from their
+priors (i.e., minimizes complexity). The latter objective acts as a so-­called
+regularizer, which helps to generalize and avoid overfitting.
+GANs follow a dif­fer­ent approach: they combine two networks, a generative network and a discriminative network, which continuously compete
+during learning. The discriminative network learns to distinguish which
+example data produced by the generative network are real or fictive. The
+generative network tries to generate fictive data that fool (i.e., are misclassified by) the discriminative network. The race between t­ hese two networks
+forces the generative network to improve its generative capabilities and
+produce high fidelity fictive data—an ability that has been widely exploited
+to generate, for example, realistic images.
+The above generative models (and ­others) can be used for control tasks.
+For example, Ha and Eck (2017) have used a (sequence-­to-­sequence) VAE
+to learn to predict pencil strokes. By sampling from the internal repre­sen­
+ta­tion of the VAE, the model can construct novel stroke-­based drawings.
+Generative modeling approaches have been used to control robot movements, too. Some of ­these approaches use Active Inference (Pio-­Lopez et al.
+2016, Sancaktar et al. 2020, Ciria et al. 2021) or closely related ideas, but
+in a connectionist setting (Ahmadi and Tani 2019, Tani and White 2020).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+223
+
+One of the main challenges in this domain is that robot movements
+are high dimensional and require (learning) sophisticated generative models. One in­ter­est­ing aspect of Active Inference and related approaches is
+that the most impor­tant ­thing to be learned is a forward mapping between
+actions and sensory (e.g., visual and proprioceptive) feedback at the next
+time step. This forward mapping can be learned in vari­ous ways: by autonomous exploration, by demonstration, or even by direct interaction with a
+­human—­for example, a teacher (the experimenter) who guides the hands of
+the robot along a trajectory to the goal, hence scaffolding the acquisition of
+effective goal-­directed actions (Yamashita and Tani 2008). The possibility to
+learn generative models in vari­ous ways greatly expands the scope of robot
+skills that can be eventually achieved. In turn, the possibility to develop
+more advanced (neuro-) robots using Active Inference could be impor­tant
+not just for technological but also for theoretical reasons. Indeed, some
+key aspects of Active Inference, such as the adaptive agent-­environment
+interactions, the integration of cognitive functions, and the importance of
+embodiment, are naturally addressed in robotic settings.
+10.14 Summary
+Home is b
+­ ehind, the world ahead,
+and ­there are many paths to tread
+through shadows to the edge of night,
+­until the stars are all alight.
+—­J. R. R. Tolkien, The Lord of the Rings
+
+We started this book by asking ­whether it is pos­si­ble to understand brain
+and be­hav­ior from first princi­ples. We then introduced Active Inference as
+a candidate theory to meet this challenge. We hope that the reader has been
+convinced that the answer to our original question is yes. In this chapter, we
+considered the unified perspective that Active Inference offers on sentient
+be­hav­ior and what implications this theory has for familiar psychological
+constructs, such as perception, action se­lection, and emotion. This gave us
+the opportunity to revisit the concepts introduced throughout the book
+and to remind ourselves of the fascinating questions still open for f­uture
+research. We hope this book provides a useful complement to related works
+on Active Inference, including on the one hand the philosophy (Hohwy
+2013, Clark 2015) and on the other hand the physics (Friston 2019a).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+224
+
+We are now at the end of our journey. Our aim has been to offer an
+introduction to t­hose interested in using t­hese methods—­both at conceptual and formal levels. However, it is impor­tant to emphasize that Active
+Inference is not something that can be learned purely in theory. We encourage anyone who has enjoyed this book to think about pursuing it in practice. Impor­tant rites of passage in theoretical neurobiology are trying to
+write down a generative model, experiencing the frustration when simulations misbehave, and learning from violations of your prior beliefs when
+something unexpected happens. W
+­ hether or not you choose to pursue this
+practice at a computational level, we hope that you ­will reflect on it as
+you engage in Active Inference in day-­to-­day life. This may manifest in the
+compulsion to direct your eyes to resolve uncertainty about something in
+your peripheral vision. It may be in choosing to eat at a favorite restaurant
+to fulfill prior (gustatory) preferences. It may be in reducing the heat when
+the shower is too hot to ensure the temperature conforms to your model of
+how the world should be. Ultimately, we are confident that you ­will continue to pursue Active Inference in some form.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Appendix A: Mathematical Background
+
+A.1 Introduction
+This appendix offers an introduction (or a refresher) to the basic mathematical
+techniques employed throughout this book. We provide an introductory (but
+nonexhaustive) overview of four topics: linear algebra, Taylor series approximation, variational calculus, and stochastic dynamics. For each of ­these techniques, we refer to where it comes into play in the book. Our aim ­here is
+to provide a focused introduction—­with emphasis on building intuition as
+opposed to formal and rigorous proofs. The maths required to understand
+and use Active Inference is not complicated, but its multidisciplinary basis
+means it is often difficult to find resources that bring together the necessary
+prerequisites. We hope this appendix goes some way ­toward remedying this.
+A.2 Linear Algebra
+A.2.1 The Basics
+Linear algebra refers to a notation used to simply and concisely express combinations of multiplications and summations. It relies on matrices and vectors comprising arrays of numbers in structures with multiple rows and
+columns (or multiple rows and a single column, for a vector). The ele­ment
+of a matrix A in the ith row and jth column is referred to as Aij. The product
+A of two matrices B and C (or a matrix and vector) is defined as follows:
+A = BC
+⇒
+Aij =
+
+∑BC
+k
+
+ik
+
+(A.1)
+kj
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+226
+
+Appendix A
+
+For this definition to hold, we need the number of columns of B to match the
+number of rows of C. However, let us instead say that the number of columns
+of B match the columns in C and we want to express the following sum:
+Aij =
+
+∑BC
+ki
+
+k
+
+(A.2)
+
+kj
+
+How would we do this using linear algebraic notation? We need to appeal
+to another operation that swaps the subscripted indices of B (i.e., reflects
+the array such that the columns become rows and vice versa). This is the
+transpose operation, normally expressed using a superscript T:
+BikT ! Bki
+A = BT C ! B i C
+
+(A.3)
+
+⇒
+Aij =
+
+∑BC
+k
+
+ki
+
+kj
+
+Equation A.3 shows how we can use the transpose operator to express the
+summation from equation A.2. The second line highlights an alternative
+notation using a dot operator. This notation is inspired by the fact that,
+when B and C have only one column each, equation A.3 reduces to a vector
+dot product.
+Another useful operation is the trace operator. This takes the ele­ments
+along the diagonal of a square matrix and sums them:
+tr [ A] !
+
+∑A
+i
+
+(A.4)
+
+ii
+
+Part of the utility of a trace operator is afforded by the way we can permute
+ele­ments in the trace of a matrix product:
+
+∑∑∑ AB C
+= ∑ ∑ ∑ C A B = tr [CAB ]
+= ∑ ∑ ∑ B C A = tr [ BCA]
+
+tr [ ABC ] =
+
+i
+
+j
+
+k
+
+ij
+
+jk
+
+ki
+
+k
+
+i
+
+j
+
+ki
+
+ij
+
+jk
+
+j
+
+k
+
+i
+
+jk
+
+ki
+
+ij
+
+(A.5)
+
+The main use we w
+­ ill find for this identity in this book is when applied
+to scalar quantities. A scalar can be viewed as a matrix with only one row
+and one column. As such, we can apply a trace operator to it, but this ­will
+not do anything—we get the same scalar out. This means that, if a matrix
+product gives rise to a scalar quantity, we can permute the terms as above.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Mathematical Background
+
+227
+
+For example, if we have a square matrix B with N columns and rows, and a
+vector c with N rows, we can use equation A.5 to show the following:
+a = c i Bc
+= tr [ c T Bc ]
+
+= tr [ Bcc T ]
+
+(A.6)
+
+= tr [ BC ]
+
+C = c ⊗ c ! cc T
+This reexpresses a quadratic expression (first line) with the trace of the
+product of two matrices (penultimate line). The final line defines the outer
+product (in contrast to the inner dot product). Equation A.6 becomes particularly useful in the context of multivariate normal distributions, as we
+­will come to in section A.2.3.
+The final concepts of linear algebra to be aware of are the inverse and
+determinant of a matrix. An inverse is defined as follows:
+A−1 A = AA−1 = I(A.7)
+Equation A.7 says that the product of a matrix and its inverse is the identity matrix—­a square matrix with ones along its main and zeros elsewhere.
+Multiplying any matrix by the identity matrix returns the original matrix,
+unchanged. It is the linear algebraic equivalent of scalar multiplication by
+1 (which could be interpreted as a 1-­dimensional identity matrix). This
+means that if we multiply something by a matrix, and then by the inverse
+of that matrix, we end up with the original quantity.
+The determinant is a useful quantity but one for which it is harder to
+develop a clear intuition. The only point at which it appears in this book is
+as part of the normalizing constant of a multivariate normal distribution.
+As such, it is worth knowing how it is calculated, but we ­will not dwell on
+this concept. The determinant is defined recursively as follows:
+A !
+
+∑ (−1)
+
+i −1
+
+i
+
+A1i A\(1, i )
+
+(A.8)
+
+­Here, the notation A\(1, i) means the matrix A with row 1 and column i omitted. For example:
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+228
+
+Appendix A
+
+⎡ A11
+A= ⎢
+⎢⎣ A21
+A\(1,1) = A22
+
+A12 ⎤
+⎥
+A22 ⎥⎦
+(A.9)
+
+A\(1, 2) = A21
+A = A11 A22 − A12 A21
+= A11 A22 − A12 A21
+
+This concludes our outline of the basic operations of linear algebra.
+A.2.2 Derivatives
+Differentiation of matrix and vector quantities follows directly from the
+application of standard calculus to each ele­ment of a matrix. For example,
+if we have a matrix B whose ele­ments are functions of a scalar x, the derivative of B with re­spect to x is as follows:
+A(x) = ∂x B(x)
+⇒ A(x)ij = ∂x B(x)ij
+
+(A.10)
+
+∂
+∂x !
+∂x
+
+However, a few impor­tant definitions and identities w
+­ ill be useful in
+understanding the technical details in this book. The first is how to take
+derivatives with re­spect to nonscalar quantities. If we have a vector quantity b that is a function of another vector c, the derivative of b with re­spect
+to c is a matrix:
+A = ∂c b(c)
+
+(A.11)
+
+⇒ Aij = ∂c j b(c)i
+
+We ­will also make use of the gradient operator, which deals with derivatives with re­spect to a vector. This is defined as follows:
+∇b = ⎡ ∂ b1 ∂ b2
+⎣
+a = ∇b x(b)
+⇒
+
+∂ b3 ! ⎤
+⎦
+
+T
+
+(A.12)
+
+ai = ∂bi x(b)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Mathematical Background
+
+229
+
+The definition of the gradient operator as a vector of derivative operators
+also affords a concise definition of a related quantity—­the divergence of a
+vector function:
+∇a i b(a) =
+
+∑ ∂ b(a)
+i ai
+
+(A.13)
+
+i
+
+­There are many useful derivative identities for linear algebraic quantities,
+but we ­will not attempt to provide a comprehensive overview; for readers
+who wish to delve further, we recommend The Matrix Cookbook (Petersen
+and Pedersen 2012). H
+­ ere, we limit ourselves to two identities that ­will be
+particularly useful. The first is the gradient of a quadratic quantity:
+d(a) = ∇a ( b(a) i Cb(a))
+⇒
+
+∑ ∑ b(a) C b(a)
+= ∑ ∑ (( ∂ b(a) ) C b(a) + ( ∂ b(a) ) C b(a) )
+
+d(a)i = ∂ ai
+
+j
+
+j
+
+j
+
+k
+
+k
+
+ai
+
+jk

@@ -1,0 +1,262 @@
+SP
+
+II
+
+εv(i+1)
+
+IV
+
+SS
+
+II
+
+εv(i)
+
+εx(i)
+
+ε(i)
+
+
+V
+
+DP
+
+µv(1)
+
+µx(1)
+
+o(i)
+
+
+VI
+
+DP
+
+µv(i)
+
+µx(i)
+
+s(i)
+
+εv(i) g (i)
+Primary thalamus Basal ganglia
+Lower cortical
+Secondary thalamus
+regions
+Spinal motor neurons
+
+s(i)
+
+g (1) A(i) .s(i–1) s(i)
+
+σ(i)
+
+G(i)
+
+Figure 5.1
+Canonical cortical microcircuits illustrating the relationship between inferential message passing and the architecture of the ce­re­bral cortex. Left: Simplified schematic
+based on a synthesis of Miller 2003; Haeusler and Maass 2007; Shipp 2007, 2016; and
+Bastos et al. 2012 (refer to t­ hese papers for a summary of the neuroanatomical observations from which this synthesis is derived). Round arrowheads indicate inhibition;
+normal arrowheads indicate excitatory connections. The neural populations divide
+coarsely into superficial pyramidal (SP), deep pyramidal (DP), spiny stellate (SS), and
+inhibitory interneurons (II). ­Middle: Message passing that underwrites hierarchical
+predictive coding. Right: Message passing needed to solve a partially observable Markov decision pro­cess (POMDP).
+
+in the dynamics at a specific timescale—­consistent with their role in the
+intrinsic (within-­column) connectivity in figure 5.1.
+Asymmetry in message passing is impor­tant, as it offers empirical predictions about the difference between ascending and descending activity.
+One of t­ hese predictions is that we might expect t­ hese messages to be communicated by neural activity at dif­fer­ent temporal frequencies. The reason for this is that the operations required to compute a prediction error
+from an expectation are nonlinear (Friston 2019b). This nonlinearity is
+due to the computation of predictions using nonlinear functions ( g) that
+tend to increase the frequency of a signal (e.g., a doubling of frequency
+on squaring a sine wave). A prediction arising from this is that ascending
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+89
+
+Superficial
+
+Ascending prediction error
+
+εv(i)
+εx(i–1)
+
+εv(i+1)
+
+εv(i+1)
+εx(i+1)
+
+εx(i)
+
+Deep
+
+IV
+
+µx(i–1)
+
+µv(i+1)
+
+µv(i)
+
+µv(i–1)
+µx(i)
+
+µx(i+1)
+
+Descending predictions
+
+Figure 5.2
+Simplified version of the predictive coding scheme shown in the ­middle of figure 5.1,
+unpacked to show the message passing between three cortical regions. Emphasis is
+on the asymmetry in message passing, with dotted lines showing ascending messages (prediction errors) and solid lines showing descending messages (predictions).
+Figure 5.1 is a finer-­grained version of this schematic, including the intermediate
+neurons in the polysynaptic connections shown h
+­ ere. In this figure, coarse-­graining
+the laminar specificity and dividing the cortex into Superficial and Deep relative to
+layer IV recovers a predictive coding scheme that ­will be familiar to many readers.
+
+messages—­originating from error units—­may be mea­sur­able in higher frequency bands than descending messages—­
+originating from expectation
+units (see figure 5.2). This is consistent with mea­sured spectral asymmetries, wherein ascending connections are typically associated with gamma
+frequencies and descending connections with alpha or beta bands (Arnal
+and Giraud 2012; Bastos, Litvak et al. 2015).
+The schematic on the right in figure 5.1 shows an interpretation of the
+message passing for a POMDP model as a cortical microcircuit. This has a
+structure similar to the predictive coding architecture, with expectations (s)
+represented in superficial and deep pyramidal cells and propagated up and
+down cortical hierarchies. In addition, error units (ε) in layer IV are in receipt
+of ascending signals. In contrast to predictive coding–­style architectures, the
+messages passed between regions are mixtures of expectations as opposed to
+errors (Friston, Rosch et al. 2017; Parr, Markovic et al. 2019). However, the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+90
+
+overall structure of minimizing an error (i.e., f­ ree energy gradient) by updating expectations is preserved. This message passing distinguishes between
+expectations conditioned on a policy (subscript π) and ­those averaged ­under
+policies. To translate from the former to the latter, we also need posterior
+­ ill return to this in section 5.4, but for now
+beliefs about policies (π). We w
+it is worth highlighting the consistency of this message passing with the
+targeting of superficial cortical layers by subcortical structures that could
+compute t­ hese beliefs.
+In figure 5.1, note the absence of a one-­to-­one mapping between the
+architecture on the left and the message passing schemes in the m
+­ iddle and
+right. For example, ­there appears to be a discrepancy between the ­middle
+and left: the descending input in the column on the left arrives at layers II
+and IV, but that in the m
+­ iddle graphic targets layer III. This highlights that
+the connections implied by message passing schemes may not manifest as
+single synapses. The descending inhibitory connection targeting layer III
+could be mediated by the combination of an excitatory projection to layer
+IV inhibitory interneurons, and the projection of ­these interneurons to layer
+III. This disynaptic pathway resolves the apparent discrepancy between the
+two architectures.
+In sections 5.3 and 5.4, we deal with the layer V neurons’ role in movement and planning, corresponding to their spinal (or brain stem) and subcortical projections, respectively. In sections 5.5 and 5.6, we deal with the ways
+neural message passing is modulated over time and then return to the relationship between the microcircuits for categorical and continuous inference.
+5.3 Motor Commands
+The schematic on the left in figure 5.1 shows that layer V of the cortex
+proj­ects to spinal pyramidal neurons and that this can be interpreted as a
+prediction (Adams, Shipp, and Friston 2013). This is unpacked in figure 5.3,
+which shows the spinal components of this cir­cuit; we see a prediction
+based on the expectations encoded by Betz cells in layer V of the primary
+motor cortex. This is subtracted from the incoming proprioceptive input to
+the dorsal horn of the spinal cord, resulting in a proprioceptive prediction
+error. This error drives muscle activity that results in its own suppression—as
+proprioceptive data change to comply with predictions. The idea of a motor
+command as a prediction is central to Active Inference, as it highlights the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+91
+
+µx(1)
+
+µv(1)
+
+Decussation
+
+Pyra
+m
+
+idal
+
+tract
+
+Betz cells
+
+Proprioceptive
+afferent
+
+g (1)
+Dorsal horn
+
+y
+
+εy
+
+Ventral horn
+
+Lower motor neuron
+Figure 5.3
+Neuroanatomy associated with Active Inference in modulating spinal motor reflexes.
+Starting from the Betz cells (upper motor neurons) in layer V of the motor cortex,
+the pyramidal tract carries predictions of proprioceptive input u
+­ nder the movement entailed by motor cortical expectations. The tract decussates (crosses over) and
+synapses—­sometimes polysynaptically—on lower motor neurons in the ventral horn
+of the spinal cord. Subtracting the predictions from proprioceptive afferent signals
+arriving at the dorsal horn of the spinal cord results in an error that says how much
+muscle contraction would be required to meet the prediction. Lower motor neurons
+then cause this muscle contraction (or relaxation), ensuring that the resulting proprioceptive data match descending predictions.
+
+duality of action and perception. The action part is the minimization of any
+discrepancy between predictions and sensory data by changing the data.
+This says that the only ­thing we should need to generate a movement is a
+prediction of the sensory consequences anticipated if that movement ­were
+to be executed. The fact that proprioceptive prediction errors can always be
+resolved by reflexes (as opposed to belief updating) offers a pos­si­ble explanation for the paucity of granular cells in layer IV of the primary motor
+cortex (Shipp, Adams, and Friston 2013).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+92
+
+An impor­tant aspect of this sort of motor control is the notion of sensory
+attenuation (Brown et al. 2013). Consider the prob­lem of initiating a new
+movement. To do this, we need to be able to predict that we are moving.
+However, ­until we are moving, the proprioceptive data to hand contradicts
+this hypothesis and could prompt its revision. Therefore, we need a way
+to preclude sensory data from updating our expectations, so that we can
+entertain the (initially false) belief that we are moving so that this belief
+can be realized through action (cf. ideomotor phenomena). The implication is that we need to be able to attend away from proprioceptive data by
+turning down their gain. Technically, this gain is given by the precision
+(inverse variance) with which t­ hese data are predicted. To attenuate this, we
+need descending motor tracts to predict not just the data but the precision
+of—or confidence placed in—­those data, decreasing this precision to initiate movement. This is known as sensory attenuation and can be thought
+of as the complement to sensory attention, equipping us with the capacity
+to ignore certain prediction errors, such as ­those generated by saccadic eye
+movements (­here sensory attenuation is known as saccadic suppression).
+Failures to attenuate are thought to be central to a range of neurological
+and psychiatric syndromes, including passivity phenomena (Pareés et al.
+2014) and—at its most extreme—­catatonic states in schizo­phre­nia and the
+failure to initiate movements in Parkinson’s disease.
+5.4 Subcortical Structures
+In addition to its projections to the spinal cord, cortical layer V targets several other structures. Among t­hese is the striatum (Shipp 2007, Wall et al.
+2013)—­a structure deep within the cerebrum comprising the caudate nucleus
+and putamen. The striatum is the input nucleus of a complex network of
+structures known as the basal ganglia. Medium spiny neurons are the functional units of the striatum, taking input from the cortex and projecting to
+other nuclei of the basal ganglia. T
+­ hese divide into two types—­those that
+express D1 dopamine receptors and t­ hose that express D2 receptors—­where
+dopamine enhances activity of the former and attenuates it for the latter.
+The former cells are the origin of the direct pathway through the basal
+ganglia, connected by a single inhibitory synapse to the output nuclei (the
+internal globus pallidus and substantia nigra pars reticulata). The D2 cells
+give rise to the indirect pathway, a slightly more complex course with two

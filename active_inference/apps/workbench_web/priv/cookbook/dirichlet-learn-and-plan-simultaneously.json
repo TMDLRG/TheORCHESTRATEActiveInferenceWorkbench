@@ -1,0 +1,49 @@
+{
+  "slug": "dirichlet-learn-and-plan-simultaneously",
+  "title": "Learn and Plan at the Same Time",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 14,
+  "tags": ["dirichlet", "learning", "planning", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "act", "dirichlet_update_a", "dirichlet_update_b"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Episode-over-episode A + B both concentrate while the agent still reaches the goal. Joint perception + learning + planning loop is stable."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=dirichlet-learn-and-plan-simultaneously",
+    "labs_url": "/labs?recipe=dirichlet-learn-and-plan-simultaneously&world=forked_paths"
+  },
+  "math": {
+    "latex": "\\text{inference} \\rightarrow \\text{learning} \\rightarrow \\text{planning}",
+    "symbols": {
+      "inference": "perceive / sweep_state_beliefs",
+      "learning": "Dirichlet updates on A and B",
+      "planning": "EFE over updated bundle"
+    }
+  },
+  "audiences": {
+    "kid": "The agent learns from every try and plans better the next time.",
+    "real": "Enable both learning hooks. Each episode updates A and B; the next episode plans against the updated model. This is the full Active Inference learning loop.",
+    "equation": "For each episode: sweep beliefs -> Dirichlet updates -> replan with updated A, B. Three coupled loops.",
+    "derivation": "Under mean-field factorisation over states, parameters, and policies, the three sub-loops can be alternated while monotonically decreasing total F (Parr et al. 2022, Ch 7 eq 7.10-7.14)."
+  },
+  "equation_refs": ["eq-4-11", "eq-4-14", "eq-7-10"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Run the full inference + learning + planning loop across multiple episodes on a real maze.",
+    "role": "End-to-end learning-agent tutor.",
+    "context": "forked_paths, learning_enabled=true, 5+ episodes. Log F, episode length, and A/B column norms."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7."
+  ]
+}

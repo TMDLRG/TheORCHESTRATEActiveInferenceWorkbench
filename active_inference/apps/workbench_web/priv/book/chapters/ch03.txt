@@ -1,0 +1,967 @@
+example of this is a Markov chain, where the past ­causes the pre­sent ­causes the
+­future. In this scenario, the past may only influence the ­future via the pre­sent.
+This means no additional information about the f­uture is gained by finding
+out about the past (assuming we know the pre­sent).
+To identify a Markov blanket in a system wherein we know the conditional
+dependencies, we can follow a s­imple rule. The blanket for a given variable
+comprises its parents (the variables it depends on), its ­children (the variables
+that depend on it) and, in some settings, the other parents of its c­ hildren.
+
+In brief, a Markov blanket is the set of variables that mediate all (statistical)
+interactions between a system and its environment. Figure 3.1 illustrates an
+interpretation of a Markov blanket in a dynamic setting. ­Here the conditional
+in­de­pen­dences have been supplemented with dynamical constraints, so that
+the flows do not depend upon states on the opposite side of the blanket.
+The Markov blanket in figure 3.1 distinguishes states internal to the adaptive system (i.e., brain activity) from external states of the environment.
+Furthermore, it identifies two additional states, labeled sensory states and
+active states, which form the blanket that (statistically) separates internal and
+external states. Statistical separation means that if we knew about the active
+and sensory states, the external states would offer no additional information
+about internal states (and vice versa). In a dynamical setting, this is often
+interpreted as saying internal states cannot directly change external states
+but can do so vicariously by changing active states. Similarly, external states
+cannot directly change internal states but can do so indirectly by changing
+sensory states.
+This is a restatement of the classical action-­perception cycle, wherein an
+adaptive system and its environment can interact (only) through actions
+and observations, respectively. This reformulation has two main benefits.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+44
+
+Active states
+u· = fu (x, u, y) + ωu
+
+External states
+x· = fx (x, u, y) + ωx
+
+Internal states
+µ· = fµ (µ, u, y) + ωµ
+
+Sensory states
+y· = fy (µ, u, y) + ωy
+
+b = (u, y)
+Blanket states
+Figure 3.1
+A dynamic Markov blanket, which separates an adaptive system (­here, the brain)
+from the environment. The dynamics of each set of states are determined by a
+deterministic flow specified as a function ( f   ) giving the average rate of change and
+additional stochastic (random) fluctuations (ω ). The arrows indicate the direction of
+influence of each variable over the rates of change of other variables (technically, the
+nonzero ele­ments of the associated Jacobians). This is just one example; one can use
+a Markov blanket to separate an entire organism from the environment or nest multiple Markov blankets within one another. For example, brains, organisms, dyads,
+and communities can be conceived in terms of dif­fer­ent Markov blankets that are
+nested within one another (see Friston 2019a; Parr, Da Costa, and Friston 2020 for a
+formal treatment). Confusingly, dif­fer­ent fields use dif­fer­ent notations for the variables; sometimes, sensory states are denoted s, external states η, and active states a.
+­Here we have chosen variables for consistency with the other chapters in this book.
+
+First, it formalizes the fact that an adaptive system’s internal states are
+autonomous from environmental dynamics and can therefore resist their
+influences. Second, it scaffolds the way in which adaptive systems minimize their surprise: it highlights the internal, sensory, and active states they
+have access to. Specifically, surprise is defined in relation to sensory states,
+while internal and active state dynamics are the means by which the surprise of sensory states may be minimized.
+The key point to notice h
+­ ere is that the internal states of an adaptive
+system bear a formal relation to external states. This is due to a kind of symmetry across the Markov blanket as both influence and are influenced by
+blanket states. A consequence of this is that we can construct conditional
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+45
+
+probability distributions for the internal and external states, given the blanket states. ­Because ­these are conditioned on the same blanket states, we can
+associate pairs of expected internal and external states with one another. In
+other words, on average, the internal and external states acquire a kind of
+(generalized) synchrony—­just as we might anticipate on attaching a pendulum to each end of a wooden beam. Over time, as they synchronize, each
+pendulum becomes predictive of the other through the vicarious influence of the beam (Huygens 1673). Figure 3.2 offers a graphical intuition
+for this relationship. This means that if we can write down in­de­pen­dent
+60
+40
+
+150
+100
+
+x|b
+
+x
+
+µ
+
+20
+0
+
+0
+
+–20
+
+–50
+
+–40
+–10
+
+–5
+
+0
+b
+
+5
+
+10
+
+µ|b
+
+50
+
+–100
+–10
+
+–5
+
+0
+b
+
+60
+x|
+
+10
+
+P(µ|b) [µ]
+
+Probability
+
+x
+
+40
+
+5
+
+20
+0
+–20
+–40
+–100 –50
+
+0
+µ
+
+50
+
+100
+
+–8
+
+–7
+
+–6
+x
+
+–5
+
+–4
+
+Figure 3.2
+Association between average internal states of a Markov blanket and distributions
+of external states. Top: Assuming a linear Gaussian form for the conditional probabilities, ­these plots show samples from the conditional distribution over external
+and internal states, respectively, given blanket states. The thick black lines indicate
+the average of ­these variables given the associated blanket state. Bottom left: The
+same data are plotted to illustrate the synchronization of internal and external states
+afforded by sharing a Markov blanket—­here, an inverse synchronization. The dashed
+lines and black cross illustrate that if we knew the average internal state (vertical
+line), we could identify the average external state (horizontal line) and the spread
+around this point. Bottom right: We can associate the average internal state with a
+distribution over the external state.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+46
+
+distributions over external and internal states given their Markov blanket,
+the two states become informative about one another via this blanket.
+This synchrony gives internal states the appearance of representing (or
+modeling) external states—­which links back to the idea of surprise minimization introduced in chapter 2. This is ­because surprise depends on an
+internal model of how sensory data are generated. To recap, minimizing
+the surprise (negative log probability) of sensory observations becomes
+identical to maximizing the evidence (marginal likelihood) for the model,
+which is just the probability of sensory observations ­under that model. This
+notion of surprise minimization can be understood from two equivalent—­
+Bayesian and ­free energy—­perspectives, which we discuss next.
+3.3 Surprise Minimization and Self-­Evidencing
+­Under a Bayesian perspective, an agent with a Markov blanket appears to
+model the external environment in the sense that internal states correspond
+(on average) to a probabilistic representation—an approximate posterior
+belief—of external states of the system (figure 3.2). The dynamics of internal
+states correspond to a form of (approximate) Bayesian inference of external states, as their motion changes the associated probability distribution,
+which is afforded by an implicit generative model of how sensations (or
+sensory states in the Markov blanket jargon) are generated. If we reinstate
+the notion of an agent as constituted by internal and blanket states, we can
+talk about an agent’s generative model.
+Importantly, the agent’s generative model cannot simply mimic external dynamics (other­wise the agent would simply follow external dissipative
+dynamics). Rather, the model must also specify the preferred conditions
+for the agent’s existence, or the regions of states that the agent has to visit
+to maintain its existence, or satisfy the criteria for its existence in terms
+of occupying characteristic states. T
+­ hese preferred states (or observations)
+can be specified as the priors of the model—­which implies that the model
+implicitly assumes that its preferred (prior) sensations are more likely to
+occur (i.e., are less surprising) if it satisfies the criteria for existence. This
+means it has an implicit optimism bias. This optimism bias is necessary for
+the agent to go beyond the mere duplication of external dynamics to prescribe active states that underwrite its preferred or characteristic states.
+­Under this formulation, one can cast optimal be­hav­ior (with re­spect to
+prior preferences) as the maximization of model evidence by perception and
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+47
+
+action. Indeed, model evidence summarizes how well the generative model
+fits or explains sensations. A good fit indicates that the model successfully accounts for its sensations (this is the descriptive side of inference); at
+the same time, it realizes its preferred sensations, given that they are less
+surprising (this is the prescriptive side of the inference). Such good fit is a
+guarantee of surprise minimization, as maximizing model evidence P( y) is
+mathematically equivalent to minimizing surprise: ℑ( y) = −ln P( y).
+A way to reformulate the above arguments more succinctly consists in saying that any adaptive system engages in “self-­evidencing” (Hohwy 2016). Self-­
+evidencing ­here means acting to garner sensory data consistent with (i.e., that
+affords evidence to) an internal model, hence maximizing model evidence.
+3.3.1 Surprise Minimization as a Hamiltonian Princi­ple of Least Action
+In the preceding sections, we have asserted that surprise must be minimized
+but have not detailed why this is. Although the details of the under­lying physics of self-­evidencing are outside the scope of this book (see Friston 2019b for
+details), we ­here provide a brief overview of the princi­ples. ­These are underwritten by the idea that biological creatures—­with Markov blankets—­persist
+over time, resisting the dispersive effects of environmental fluctuations. The
+per­
+sis­
+tence of a Markov blanket implies that the distribution of blanket
+states remains constant over time. Simply put, this means that any deviation
+of sensory (or active) states from regions that are highly probable ­under this
+distribution must be corrected by the average flow of states (which is just
+the deterministic part of the flow in figure 3.1). Expressing this as a physicist
+might, stochastic (random) systems at steady state engage in dynamics that
+(on average) descend an energy function (or Hamiltonian) that is interpretable as a negative log evidence or surprise. This is like a ball rolling down
+a hill from high gravitational potential energy at the top of the hill to low
+energy in a basin. See figure 3.3.
+For the system shown on the left of figure 3.3, e­ very time a fluctuation ­causes a move to a less probable state, this is corrected by a move up
+the probability gradient, such that the system occupies probability-­dense
+regions a greater proportion of the time. The key insight ­here is that this
+system maintains sensory states within a narrow range by minimizing surprise (on average)—in contrast to the system on the right, for which surprise
+grows in­def­initely.
+Surprise minimization permits living organisms to (temporarily) resist
+the second law of thermodynamics, which states that entropy—or the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+48
+
+y(t)
+
+20
+
+0
+
+–5
+–10
+
+10
+
+0
+0
+y1
+
+10
+
+–10
+–20
+
+(y)
+
+5
+
+10
+y2
+
+y2
+
+5
+
+y(t)
+
+y2
+
+10
+
+0
+
+–5
+0
+y1
+
+–10
+20 –10
+
+0
+y1
+
+10
+
+Figure 3.3
+Left: Path taken by a 2-­dimensional random dynamical system with a (nonequilibrium1) steady state. This can be interpreted as minimizing its surprise, which is shown
+in the contour plot on the right. Right: The center is the least surprising region; the
+circles moving away from the center represent progressively more surprising regions.
+­Middle: In contrast, this plot shows the trajectory of a system starting in the same place
+(5, 5), with random fluctuations of the same amplitude, whose dynamics bear no relation to surprise. Not only does it enter more surprising regions of space; it also fails to
+achieve any sort of steady state, dissipating in an unconstrained fashion over time. The
+scope of Active Inference is restricted to systems like that on the left—­which c­ ounter
+random fluctuations with their average flow and thereby retain their form over time.
+
+dispersion of systemic states—­always grows. This is b
+­ ecause, on average,
+entropy is the long-­term average of surprise and, on average, the maximization of a log probability of observations is equivalent to minimization of
+(Shannon) entropy:2
+H[ P(y)] = E P( y )[ℑ(y)] = −E P( y )[ln P(y)]
+
+(3.1)
+
+Ensuring that a small proportion of sensory states is occupied with
+high probability is equivalent to maintaining a par­tic­u­lar entropy. This is
+a defining characteristic of self-­organizing systems, as long recognized by
+cybernetic theories.
+From a physiologist’s perspective, surprise minimization formalizes the
+idea of homeostasis. As a sensor value leaves its optimal range, negative
+feedback mechanisms kick in that reverse t­ hese deviations. From a control
+perspective, we can interpret optimal be­hav­ior in relation to some desired
+steady state probability density. In other words, if we define a distribution
+of preferred outcomes, optimal be­hav­ior ­will involve evolution of the system ­toward—­and maintenance of—­that distribution.
+As we saw in chapter 2, ­free energy is an upper bound on surprise, suggesting that optimal be­hav­ior can be obtained by minimizing ­free energy
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+49
+
+in the face of random fluctuations. Recall that the difference between ­free
+energy and surprise is the divergence between an exact posterior probability (i.e., the distribution of external states given blanket states) and an
+approximate posterior probability (i.e., the distribution over external states
+given average internal states). As such, the motion of internal states can be
+thought of as minimizing the divergence, which then enables active states,
+on average, to minimize the surprise accompanying sensory states. In other
+words, the optimal be­hav­ior resulting from ­free energy minimization is the
+one that is least surprising and follows a path of least Action3 from the current state to the desired state—­that is, the Hamiltonian princi­ple of least
+Action applied to be­hav­ior.
+Figure 3.3 shows a very ­simple example of a system equipped with a random attractor. This is analogous to a thermostat, which (in cybernetic parlance) has a single set-­point and cannot learn or plan. Active Inference aims
+to use the same explanatory apparatus to cover much more complex and
+adaptive systems. ­Here, the difference between simplest and more complex
+systems can be reduced to the dif­fer­ent shapes of their attractors—­from
+fixed points to increasingly more complex and itinerant dynamics. From
+this perspective, one can understand living organisms as constantly seeking
+a compromise between excessive stability and excessive dispersion—­and
+Active Inference aims to explain how such compromise is achieved.
+3.4 Relations between Inference, Cognition, and Stochastic Dynamics
+The physicist E. T. Jaynes famously argued that inference, information
+theory, and statistical physics are dif­fer­ent perspectives on the same ­thing
+( Jaynes 1957). In the previous sections, we discussed how Bayesian and
+statistical physics perspectives offer two equivalent ways to understand
+surprise minimization and optimal be­hav­ior—­effectively adding a form of
+cognition to Jaynes’s triad. This equivalence between vari­ous schools of
+thought is appealing but can be confusing to ­those who are not familiar
+with the respective formalisms, where many dif­fer­ent words are used to
+refer to the same quantities. To help demystify this, in this section we elaborate on the main equivalences between Bayesian and statistical physics
+perspectives and their cognitive interpretations; see t­ able 3.1 for a summary
+and box 3.2.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+50
+
+­Table 3.1
+Statistical physics, Bayesian inference, and information theory—­and their cognitive
+interpretations
+Statistical physics
+
+Bayesian inference and
+information theory
+
+Cognitive interpretation
+
+Minimize variational ­free
+energy
+
+Maximize model evidence
+(or marginal likelihood);
+minimize surprisal
+(or self-­information)
+
+Perception and action
+
+Minimize expected ­free
+energy; Hamiltonian
+princi­ple of least Action
+
+Infer the most likely
+(or less surprising) course
+of action
+
+Planning as inference
+
+Attain nonequilibrium
+steady-­state
+
+Perform approximate
+Bayesian inference
+
+Self-­evidencing
+
+Gradient flows on energy
+functions; gradient
+descent on ­free energy
+
+Gradient ascent on
+model evidence; gradient
+descent on surprisal
+
+Neuronal dynamics
+
+Box 3.2
+­Free energy in statistical physics and Active Inference
+The notion of ­free energy is widely used in statistical physics to characterize (for example) thermodynamic systems. Although Active Inference uses
+exactly the same equations, it applies them to characterize the belief state
+of an agent (in relation to a generative model). Hence, when we talk of an
+Active Inference agent minimizing its (variational) ­free energy, we are referring to pro­cesses that change its belief state, not (for example) the particles of
+its body. To avoid misunderstandings, we use the term variational ­free energy,
+hence adopting a terminology that is more common in machine learning.
+Another more subtle point is that the concept of f­ree energy is often used
+in the context of equilibrium statistical thermodynamics. Active Inference
+targets living organisms—or nonequilibrium steady state systems that are
+open—­that feature continuous, reciprocal exchanges with the environment.
+This is an exciting novel field (Friston 2019a).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+51
+
+3.4.1 Variational ­Free Energy, Model Evidence, and Surprise
+A first impor­tant equivalence is between the maximization of model evidence
+(or marginal likelihood) in Bayesian inference and the minimization of
+variational ­free energy—­both of which minimize surprise. This equivalence
+becomes evident when one appeals to a specific approximate solution to
+intractable prob­lems of inference—­variational inference. Variational inference recasts the inference prob­lem as an optimization prob­lem by minimizing ­free energy. The minimum of the ­free energy is the point at which the
+approximation of the exact solution is at its best. Expressing this formally
+sheds light on the relations between the three quantities:
+ℑ(y |m) = −ln P(y |m) ≤ DKL [Q(x) || P(x | y,m)] − ln P(y |m)
+!"
+# #
+$
+!"
+# #
+$ !######
+#"#######
+$
+Surprise
+
+Model evidence
+
+(3.2)
+
+Variational free energy
+
+In equation 3.2, unlike in chapter 2, we have explic­itly conditioned all
+quantities on a model, m, to emphasize that t­ hese depend on the model we
+have (or are) about how y are generated, and the quantities ­will vary if dif­fer­
+ent models are used. The equivalence of ­these quantities raises the question
+as to why it is useful to distinguish between them. The main reason is that,
+unlike model evidence, variational ­free energy can be minimized efficiently.
+Recall from chapter 2 that the variational f­ ree energy is only exactly equivalent to the negative model evidence or surprise when the KL-­Divergence
+term becomes zero. This is not always pos­si­ble, but this can be made close
+to zero. Hence, in the pro­cess of finding better and better values for Q(x),
+variational ­free energy also approximates surprise more closely. We have said
+this a few times already ­because it is impor­tant to emphasize the central
+relationship between f­ree energy and surprise that is the foundation of this
+book. Specifically, ­free energy is an upper bound on surprise. It can be the
+same as or greater than surprise—­where what is greater than is quantified by
+the KL-­Divergence.
+An in­
+ter­
+est­
+ing aspect of this is that any system minimizing its surprise, including the very ­simple system in figure 3.2, is also minimizing
+a ­free energy, where the Q (x) is always set to be equal to the exact posterior probability—­that is, setting the KL-­Divergence to be zero. One perspective on the difference between cognitive and noncognitive systems is
+that the latter always have a zero KL-­Divergence, while cognitive systems
+must go through the (perceptual) pro­cess of minimizing this term before
+their actions are guaranteed to minimize surprise. Note that minimizing
+the divergence is the only t­ hing that perception can do. This places a g
+­ reat
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+52
+
+deal of emphasis on the motion of internal states, such that the distribution
+they pa­ram­e­terize (figure 3.2) is as close to the exact posterior as pos­si­ble.
+However, perception cannot minimize the second (evidence) component
+of variational f­ ree energy that corresponds to the ­actual surprise, ­because it
+cannot change the sensations that have been gathered. Only by acting in
+ways that change sensations can an agent minimize the second (evidence)
+component of variational ­free energy and resolve its surprise—or, equivalently, maximize its model evidence. This places emphasis on the motion
+of active states, given internal states, in self-­evidencing.
+An example helps in illustrating this point. Imagine that your generative
+model predicts a distribution of glucose levels in your blood given levels of
+hunger, with relatively high versus low glucose levels relating to satiation
+and hunger, respectively. In addition, imagine this model ascribes a higher
+prior probability to satiation and therefore to relatively high glucose levels—­
+making low glucose levels surprising. Imagine you are initially uncertain
+about your hunger levels and sense low blood glucose. Perception leads to
+the inference that you are hungry and the experience of hunger—­closing
+the KL-­Divergence. However, perception cannot go further than that to
+reduce your surprise—­and the discrepancy between the high level of glucose
+that you expect a priori and the low level of glucose that you sense—­because
+it cannot act on your sensations (low glucose) or their c­ auses (physiology).
+You can only minimize your surprise by acting to change (the hidden source
+of ) the sensations you gather—­for example, by eating a dessert.
+In sum, perception can minimize variational f­ree energy by reducing
+the discrepancy between approximate and true posterior but cannot go further in minimizing surprise. The next step of surprise minimization entails
+changing the sensations one gathers by acting, which is where inference
+goes beyond perception and becomes active.
+3.4.2 Expected F
+­ ree Energy and Inference of the Most Likely Trajectory
+Another impor­tant equivalence is between the minimization of expected
+­free energy and inferring the most likely course of action, or policy. This goes
+beyond specifying the least surprising part of state-­space and deals with
+how surprising alternative routes to that part or location may be. ­These
+alternative paths are expressed in terms of policies, which are essentially
+trajectories across states. Importantly, in Active Inference the log probability of a policy is set proportional to the expected f­ree energy if that policy
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+53
+
+was pursued. This implies that the most probable or least surprising path is
+(set to be) the one that minimizes expected f­ ree energy. This formulation is
+equivalent to the way Action is defined in physics, where it scores the probability of a path by an integral (or sum) of an energy. While a physical system
+may pursue a space of hy­po­thet­i­cal trajectories, the path it actually follows
+is the one for which Action is minimized—­that is, Hamilton’s princi­ple of
+least Action. This analogy between Active Inference and Hamilton’s princi­
+ple of least Action is unpacked in the next section.
+3.5 Active Inference: A Novel Foundation to Understand
+Be­hav­ior and Cognition
+In fields like optimal control, reinforcement learning, and economics, the
+optimization of be­hav­ior results from a value function of states, following
+Bellman’s equation (Sutton and Barto 1998). Essentially, each state (or state-­
+action pair) is assigned a value, which represents how good a state is for an
+agent to be in. The value of states (or state-­action pairs) is usually learned
+by trial and error, by counting how many times—­and ­after how much
+time—­one obtains reward by starting from ­those states. Be­hav­ior consists
+in optimizing reward acquisition by reaching high-­valued states, hence
+capitalizing on learning history.
+In contrast, in Active Inference, be­hav­ior is the result of inference and
+its optimization is a function of beliefs. This formulation unites notions
+of (prior) belief and preference. As discussed above, using the notion of
+expected ­free energy amounts to endowing the agent with an implicit prior
+belief that it ­will realize its preferences. Hence, the agent’s preference for a
+course of action becomes simply a belief about what it expects to do, and to
+encounter, in the ­future—or a belief about ­future trajectories of states that it
+­will visit. This replaces the notion of value with the notion of (prior) belief.
+This is an apparently strange move, if one has a background in reinforcement learning (where value and belief are separated) or Bayesian statistics
+(where belief does not entail any value). However, it is a power­ful move, for
+at least three reasons.
+First, it automatically entails a self-­consistent pro­cess model of purposive
+(or teleological) be­hav­ior, which is akin to cybernetic formulations. If we
+endow an Active Inference agent with some prior preference, then it w
+­ ill
+act to realize such preferences—­because this is the only course of action
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+54
+
+consistent with its prior belief that it ­will act to fulfill its expectations. Note
+that the resulting (preferred) course of action, or policy, is directly mea­sur­
+able in experimental settings, whereas a value function or prior belief needs
+to be inferred and hence is a more indirect, if not tautological, mea­sure.
+Second, casting be­hav­ior as a functional of beliefs (probability distributions) automatically entails notions such as degree of belief and uncertainty.
+­These notions undergird impor­tant facets of adaptive action but are not
+directly available in the Bellman formulation. By the same token, this formulation gives more flexibility in modeling sequential dynamics and itinerant be­hav­iors, which are harder to model in terms of a value function of
+states (Friston, Daunizeau, and Kiebel 2009).
+Third, in this formulation, optimal be­hav­ior comes to follow a Hamiltonian princi­ple of least Action in statistical physics. Indeed, Active Inference
+goes one step further ­toward the idea that be­hav­ior is a function of beliefs:
+it also assumes that it becomes an energy function—­and the most likely
+course of action of an Active Inference agent is the one that minimizes f­ ree
+energy. A profound consequence is that living organisms behave according
+to Hamilton’s princi­ple of least Action: they follow a path of least re­sis­tance
+­until they reach a steady state (or a trajectory of states), as exemplified by
+the be­hav­ior of a random dynamical system (shown in figure 3.3). This is a
+fundamental assumption that distinguishes Active Inference from alternative theories of be­hav­ior and cognition based on the Bellman formulation.
+It is worth briefly outlining what we mean by drawing analogies between
+Hamiltonian physics and Active Inference. This is intended on three levels.
+The first is that the advance offered by Active Inference to the behavioral
+and life sciences is comparable to the advance Lagrangian4 and Hamiltonian
+formulations offered to Newton’s accounts of mechanics. While Newtonian
+mechanics ­were originally formulated in terms of differential equations—­
+including Newton’s famous third law expressing the proportionality
+between acceleration and force—­a complementary perspective on mechanics was offered by considering what is conserved by dynamical systems.
+Newtonian dynamics can then be derived from ­these conservation laws.
+­These offer a perspective on which to base further theoretical advances, and
+they form the basis for parts of stochastic, relativistic, and quantum physics. Analogously, Active Inference reformulates the sorts of neuronal and
+behavioral dynamics that might previously have been built up from a series
+of differential equations by specifying the quantity—­free energy—­from
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+55
+
+which ­these dynamics may be derived. Just as dif­fer­ent sorts of Hamiltonians lead to dif­fer­ent types of physics, ­free energies based on dif­fer­ent
+generative models lead to dif­fer­ent neuronal and behavioral dynamics.
+The second point of connection between Hamiltonian physics and Active
+Inference arises from a more direct association between a Hamiltonian and
+probability mea­sures. The idea ­here is to associate the conserved Hamiltonian with the energy of the system. Remember that the quantities we have
+referred to as energies so far (­here and in chapter 2) have all had the form of
+a negative log probability. This reflects an interpretation of energy as simply
+a mea­sure of the improbability of any given configuration of a system. On
+this view, conservation of energy and of probability are equivalent laws. As
+dissipative systems—­coupled to external states via a Markov blanket—­move
+to states of low energy or high probability, we can directly associate the
+energy or Hamiltonian with surprise. As such, Active Inference is Hamil­­
+tonian physics applied to a certain kind of system (systems that feature a
+Markov blanket).
+The third association between ­these formulations is the variational calculus that underwrites the association between energies and dynamics.
+This is most apparent when Hamiltonian physics is expressed as a princi­
+ple of least Action, where Action refers to the integral of a Lagrangian over
+a path. Crucially, this Action is a functional of a path. ­Here, a path is a
+function of time whose output is the position and velocity of a particle
+on that path at that time. The path followed by a (deterministic) particle
+minimizes this Action. Similarly, Active Inference is predicated on the idea
+that beliefs (themselves functions of hidden states) must minimize a ­free
+energy functional. The key point of contact h
+­ ere is that in both cases, functions (paths or beliefs) must be optimized in relation to functionals (Action
+or ­free energy, respectively). This places both in the context of variational
+calculus, which is a branch of mathe­matics dedicated to finding extrema of
+functionals. In physics, this leads to the Euler-­Lagrange equations. In Active
+Inference, we arrive at variational inference procedures.
+3.6 Models, Policies, and Trajectories
+In section 3.2, we highlighted that the scope of Active Inference pertains to
+­those systems that enjoy some separation from their environment and saw
+that this translates into the presence of a Markov blanket. In section 3.3,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+56
+
+we highlighted that the per­sis­tence of this blanket requires dynamics that
+(on average) minimize the surprise of (sensory) states. As this may be interpreted as self-­evidencing, we arrive at the conclusion that be­hav­ior is determined by a steady-­state distribution that can be interpreted as a generative
+model of how (sensory) data are generated.
+This tells us something very impor­tant. Each generative model should be
+associated with dif­fer­ent sorts of be­hav­ior. As such, dif­fer­ent sorts of be­hav­
+ior may be accounted for by specifying dif­fer­ent generative models—­and
+implicitly what that system would find surprising. Furthermore, dif­fer­ent
+kinds of generative model may correspond to adaptive or cognitive creatures
+having vari­ous levels of complexity (Corcoran et al. 2020). Very s­ imple generative models of the sort driving the dynamics in figure 3.3 offer a minimal
+sort of cognition, as they cannot entertain the possibility of alternative (or
+counterfactual) trajectories. Further, ­these models are shallow, in the sense
+that they afford inference at just one timescale. In contrast, hierarchical generative models afford inference at multiple timescales. In hierarchical or
+deep models, the dynamics at higher hierarchical levels generally encode
+­things that change more slowly (e.g., the sentence I am reading) and that
+contextualize ­things that change faster (e.g., the word I am reading), which
+are represented at lower hierarchical levels (Kiebel et al. 2008; Friston, Parr,
+and de Vries 2017).
+What do we need to include in a model to derive more complex be­hav­
+iors of the sort we would associate with agency and sentient systems? One
+answer to this is the capacity to model alternative ­futures, or dif­fer­ent ways
+in which events might play out—­and to select among them. In turn, considering pos­si­ble ­futures requires a generative model that has some temporal depth and explic­itly represents the consequences of actions. Working
+this into the model ­will ensure be­hav­ior that conforms to the most likely of
+­these ­futures. The (counterfactual) capacity to entertain t­hese alternatives
+may be what separates the steady state associated with sentient systems
+from simpler creatures. When alternative ­futures pertain to ­things over
+which we have control, we refer to t­ hese as policies or plans. As we saw in
+chapter 2, one way of disambiguating between ­these plans is to incorporate
+a prior belief into a model that says that ­those policies with the lowest
+expected ­free energy are the most plausible. This offers a way of characterizing a certain kind of system with a Markov blanket at steady state—­which
+seems to correspond well to systems like us.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+57
+
+3.7 Reconciliation of Enactive, Cybernetic, and Predictive Theories
+­under Active Inference
+By emphasizing f­ree energy minimization, Active Inference unites and
+extends three apparently disconnected theoretical perspectives.
+First, Active Inference is in keeping with enactive theories of life and
+cognition, which emphasize the self-­organization of be­hav­ior and autopoietic interactions with the environment, which ensure that living organisms
+remain within acceptable bounds (Maturana and Varela 1980). Active Inference provides a formal framework explaining how living organisms manage
+to resist the dispersion of their states by self-­organizing a statistical structure—­
+the Markov blanket—­that affords reciprocal exchanges between organism
+and environment while also separating (and in a sense protecting the integrity of ) the organisms’ states from external, environmental dynamics.
+Second, Active Inference is in keeping with cybernetic theories, which
+describe be­hav­ior as purposive and teleological. Teleology means that be­hav­
+ior is internally regulated by a mechanism that continuously tests ­whether
+a goal is achieved and, if not, steers corrective actions (Rosenblueth et al.
+1943, Wiener 1948, Ashby 1952, G. Miller et al. 1960, Powers 1973). Similarly, Active Inference agents use both perception and action to minimize
+the discrepancy between preferred and sensed states. Active Inference provides a normative and v
+­ iable description of the minimization pro­cess by
+specifying that what is actually minimized is a statistical quantity that the
+agent can measure—­variational ­free energy—­which ­under certain conditions corresponds to a prediction error, or the difference between what is
+expected and what is sensed. This implies a formulation of cybernetic control as a prospective process—­which leads us to the next point.
+Third, Active Inference is in keeping with theories that describe control
+as a prospective pro­cess that rests on a model of the environment—­possibly
+physically implemented in the brain (Craik 1943). Active Inference assumes
+that agents use a (generative) model to construct predictions that guide perception and action and to evaluate their ­future (and counterfactual) action
+possibilities. This assumption is coherent with the good regulator theorem
+(Conant and Ashby 1970), which says that any controller should have—or
+be—­a good model of the environment. Active Inference reconciles t­hese
+model-­based perspectives on brain and be­hav­ior u
+­ nder a rigorous characterization in terms of (approximate) Bayesian inference and (variational
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+58
+
+and expected) ­free energy minimization. Furthermore, Active Inference is
+largely coherent with ideomotor theory (Herbart 1825, James 1890, Hoffmann 1993, Hommel et al. 2001), which states that action starts with an
+imaginative pro­cess, and it is a predictive repre­sen­ta­tion (of action consequences) that triggers actions—­not a stimulus, like in stimulus-­response
+theory (Skinner 1938). Active Inference casts this idea in an inferential
+framework, in which an action stems from a belief (about the f­uture); this
+has a number of implications, such as the fact that in order to trigger action,
+one has to temporarily attenuate sensory evidence (which would other­wise
+falsify the belief that triggers action) (H. Brown et al. 2013).
+The reconciliation of ­these frameworks is in­ter­est­ing, as they are often
+considered at odds. For example, self-­organization and teleology are often
+seen as incompatible in biology. Furthermore, enactive theories tend to
+de-­emphasize repre­sen­ta­tion and control, which is instead a central construct of most theories of model-­based inference. Active Inference formalizes autopoietic dynamics of adaptive agents from an unusual ­angle, which
+si­mul­ta­neously considers self-­organization and prediction. By connecting
+dif­fer­ent perspectives, Active Inference can potentially help us understand
+how they illuminate one another.
+3.8 Active Inference, from the Emergence of Life to Agency
+Active Inference starts from first princi­ples and unfolds them to explain
+be­hav­ior and cognition expressed by the simplest to the most complex
+forms of adaptive and living systems. In the continuum between simpler and more complex creatures, Active Inference draws a line between
+­those that minimize variational ­free energy and ­those that also minimize
+expected ­free energy.
+Any adaptive system that actively samples sensations to minimize variational f­ree energy is (equivalently) an agent that actively gathers evidence
+for its generative model, aka a self-­evidencing agent (Hohwy 2016). T
+­ hese
+systems are able to avoid dissipation, self-­regulate, and survive by achieving
+set-­points provided by basic homeostatic pro­cesses. ­These systems can generate complex and diverse forms of be­hav­ior and can also have very high
+fitness levels (as is already apparent in the case of viruses). Some may have
+hierarchical generative models that permit inferring events that change
+at dif­fer­ent timescales, from faster (at lower hierarchical levels) to slower
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+59
+
+(at higher levels)—­and hence can develop sophisticated strategies to deal
+with what they experience. However, t­hese creatures are also fundamentally l­imited b
+­ ecause their generative models lack temporal depth—or the
+capacity to plan and consider the f­uture explic­itly (although they can do
+so implicitly, for example, as a result of ge­ne­tic evolution)—­and hence they
+always live in the pre­sent.
+A generative model endowed with temporal depth opens the door to
+the minimization of expected ­free energy—or in psychological terms, planning. In Active Inference, this entails much more than increased adaptivity:
+it entails at least a primitive form of agency. For an adaptive system, minimizing expected f­ ree energy is equivalent to having the (implicit) prior that
+one is a f­ ree energy minimizing agent—­but acts to minimize f­ ree energy in
+the ­future. When this (prior) belief enters the generative model, the adaptive system becomes able to form beliefs about how it should behave in the
+­future and which trajectories it ­will pursue. In other words, it becomes able
+to select among alternative f­utures as opposed to simply selecting how to deal
+with the sensed pre­sent, as in the simplest agents described above. This temporal depth therefore translates into a psychological depth. To ask about
+the ways living creatures populate the continuum between the simplest
+and most complex adaptive systems—­and what forms of Active Inference
+they can express—is an empirical question.
+3.9 Summary
+The main topics of this chapter can be summarized as follows: Living organisms have to ensure that they only visit their characteristic or preferred
+states. If one defines t­ hese preferred states as expected states, then one can
+say that living organisms must minimize the surprise of their sensory observations (and maintain an optimal entropy; see box 3.3).
+­Doing this requires agents to exercise some autonomy from environmental dynamics and to be equipped with a Markov blanket that separates
+(i.e., expresses a conditional in­de­pen­dence between) their internal states
+and the external states of the environment. Agents within the Markov blanket can engage in reciprocal (action-­perception) exchanges with the environment. ­These exchanges are formally described by the theory of Active
+Inference, where both perception and action minimize surprise. They can
+do so by being equipped with a probabilistic generative model of how their
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+60
+
+Box 3.3
+Entropy minimization and open-­ended be­hav­ior
+Active Inference is based on the premise that living organisms strive to maintain a relative order (or negative entropy), controllability and predictability,
+despite being immersed in an environment whose natu­ral forces generate continuous fluctuations—­and a never-­ending threat of entropic erosion. The most
+basic manifestation of this active pursuance of order is physiological homeostasis, with critical physiological par­ameters that need to be kept within ­viable
+regions. However, minimizing entropy should not be equated with a rigid
+repertoire of responses (e.g., autonomic homeostatic responses) but rather the
+opposite, especially in advanced organisms. We can develop open-­ended repertoires of novel be­hav­iors to pursue our original homeostatic imperatives—­
+for example, to produce and buy good wine to satisfy thirst and other needs.
+This is sometimes referred to as “allostasis” (Sterling 2012).
+More broadly, we actively pursue some order and controllability per se,
+without necessary reference to a specific homeostatic imperative—­perhaps
+­because preserving order facilitates many such imperatives. We actively carve
+our ecological niches to render them more predictable and less surprising.
+This is evident in the ways we construct our physical spaces (e.g., refuges and
+cities that give shelter from uncontrolled natu­ral forces) and cultural spaces
+(e.g., socie­ties with laws and deontic norms that give shelter from anarchic
+social forces). In all ­these examples, we usually need to accept some short-­term
+increase of entropy or surprise (e.g., when we build something new or shift
+social stances) to ensure their long-­term decrease. This helps us understand
+how the basic requirement for surprise minimization is not at odds with but
+rather promotes the epistemic imperatives and novelty-­seeking, curious, and
+exploratory be­hav­ior that we recognize as central to many species.
+A first way epistemic imperatives become apparent is during the minimization of variational ­free energy. One of the ways to decompose ­free energy is to
+express it as a Gibbs energy expected ­under the approximate posterior minus
+the entropy of the approximate posterior. In other words, the agent is striving
+to increase entropy. While this seems paradoxical, the paradox dis­appears if
+one considers that this is the entropy of the agent’s (approximate posterior)
+belief. This can be understood as the imperative to explain ­things as accurately
+as pos­si­ble but also “keep options open” and avoid committing to any specific
+explanation ­unless this is necessary—­that is, the maximum entropy princi­ple
+( Jaynes 1957).
+A second way epistemic dynamics become apparent is during the minimization of expected f­ree energy, wherein—­interestingly—­there are two entropies with opposite signs. T
+­ hese include the posterior predictive entropy (how
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+61
+
+Box 3.3 (continued)
+uncertain I am about what outcomes I would encounter given a choice) that
+must be maximized—as for beliefs about states in the variational f­ ree energy—­
+and the conditional entropy of outcomes given states (the ambiguity entailed
+by a policy) that must be minimized. While during the minimization of variational ­free energy the imperative is to maximize entropy of (pre­sent) beliefs,
+during the maximization of expected ­free energy the imperative is to select
+actions that minimize the ambiguity of (­future) beliefs. This gives rise to epistemic, curious, novelty-­seeking, and information-­foraging be­hav­iors, which
+support uncertainty resolution or improvement of the generative model—­
+which in turn minimizes surprise in the long run (Seth 2013; Friston, Rigoli
+et al. 2015; Seth and Friston 2016; Schwartenbeck, Passecker et al. 2019).
+
+sensory observations are generated. This model defines surprise—or better,
+a tractable proxy, variational ­free energy, which can be mea­sured and minimized efficiently.
+An Active Inference agent appears to perform (approximate) B
+­ ayesian in­­
+ference u
+­ nder a generative model and to maximize evidence for its model—­
+that is, it is a self-­evidencing agent. The prospective bit of the inference
+is realized by selecting courses of actions or policies that are expected to
+minimize ­free energy in the ­future. This formalism leads to a novel view of
+(optimal) be­hav­ior in terms of the Hamiltonian princi­ple of least Action—­a
+(first) princi­ple that connects Active Inference to the domains of statistical
+physics, thermodynamics, and nonequilibrium steady states.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+4
+
+The Generative Models of Active Inference
+
+Every­thing should be made as s­ imple as pos­si­ble, but not simpler.
+—­Albert Einstein
+
+4.1 Introduction
+This chapter complements the preceding chapters’ conceptual treatment
+of Active Inference with a more formal treatment. Specifically, it sets out
+the relationship between ­free energy and Bayesian inference, the form of
+the generative models typically used in Active Inference, and the dynamics
+obtained from minimizing ­free energy for ­these models. A key focus is on
+how time is represented in a generative model. We ­will see the distinction
+between generative models formulated in continuous time and t­ hose that
+treat time as a sequence of events. Fi­nally, we set out the idea of inferential
+message passing, which underwrites prominent theories in neurobiology—­
+including predictive coding.
+4.2 From Bayesian Inference to F
+­ ree Energy
+In the preceding two chapters, we outlined some of the impor­tant connections between Active Inference and other established paradigms in the neurosciences. In chapter 2, we focused on the notion of the Bayesian brain (Knill
+and Pouget 2004, Doya 2007)—­one of its closest relatives—­which provides
+a useful way to think about some of the consequences of active inference
+from a more formal perspective. Specifically, it helps us frame the prob­lems
+that an agent engaging in Active Inference must solve. Broadly, ­these are
+the prob­lem of inferring states of the world (perception) and inferring a
+course of action (planning). While it is tempting to equate Bayes optimality
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+64
+
+with exact Bayesian inference, exact inference is generally computationally intractable or even infeasible. In cognitive psy­chol­ogy and artificial
+intelligence applications, it is common to consider bounded forms of inference and rationality. We highlighted some examples in chapter 3. U
+­ nder
+a Bayesian framework, this translates into using approximate ­inference.
+­These methods comprise sampling methods and variational ­methods—on
+which active inference is based. In this section, we recap the basic ele­ments
+of Bayesian inference and its variational manifestations (Beal 2003, Wainwright and Jordan 2008). In d
+­ oing so, we hope to provide some intuition
+for the role of ­free energy and to emphasize the importance of generative
+models in drawing inferences about the world.
+This chapter is more technical than chapters 1–3, appealing to a l­ittle
+linear algebra, differentiation, and the Taylor series expansion. T
+­ hose readers interested in the details or in need of a refresher may turn to the appendices for the requisite background. T
+­ hose who do not want to delve into the
+theoretical under­pinnings may skip this chapter. Throughout, we explain
+the key implications of each equation—so it should be pos­si­ble to develop
+an understanding of the impor­tant conceptual points herein even without
+following the formal argument.
+A good place to start is Bayes’ theorem. Recall from chapter 2 that this
+theorem expresses an equality between the product of a prior and a likelihood and the product of a posterior and a marginal likelihood. This is
+reproduced in equation 4.1:
+P ( x ) P ( y |x ) = P ( x| y ) P ( y )
+P( y) =
+
+∑ P ( y, x ) = ∑ P ( y| x ) P ( x )
+x
+
+(4.1)
+
+x
+
+The first line of equation 4.1 is Bayes’ theorem. The second line shows
+that the marginal likelihood (or model evidence), P( y), can be computed
+directly from the prior and likelihood.1 This makes the point that the prior
+and likelihood—­which together comprise the generative model—­are sufficient for us to compute the model evidence and the posterior probability.
+Despite this, it is not always easy to do so. The summation (or integration,
+if dealing with continuous variables) in equation 4.1 can be computationally or analytically intractable. One way to resolve this—­the starting point
+of variational inference—is to convert this potentially difficult integration
+prob­lem into an optimization prob­lem. To understand how this works, we
+need to appeal to Jensen’s in­equality, which says that “the log2 of an average
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+65
+
+lnx2
+ln [x]
+≥ [ln x]
+lnx1
+x1
+
+[x]
+
+x2
+
+Figure 4.1
+Logarithmic function providing intuition for Jensen’s in­equality. If we had only two
+data-­points (x1 and x2), ­either we could take their average (E[x]) and then find its log,
+or we could take the log of each data-­point and then take the average of t­ hese (E[ln x]).
+The latter (E[ln x]) w
+­ ill always be below the former (ln E[x]), due to the concavity of
+the logarithmic function, u
+­ nless the data-­points are the same (wherethe log of the
+average and the average of the log are equal). This in­equality holds for any number
+of data-­points.
+
+is always greater than or equal to the average of a log.” Figure 4.1 provides
+a graphical intuition for why this is the case.
+To take advantage of this property, we can rewrite equation 4.1 by multiplying the term inside the sum on the second line by an arbitrary function
+(Q ) divided by itself (this is equivalent to multiplying by one, so the equality still holds) and taking the log of each side. Mathematically, this changes

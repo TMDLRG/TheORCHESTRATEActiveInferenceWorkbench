@@ -1,0 +1,50 @@
+{
+  "slug": "vfe-decompose-complexity-accuracy",
+  "title": "VFE = Complexity - Accuracy",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 8,
+  "tags": ["free-energy", "variational", "decomposition", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive"],
+    "skills_used": ["variational_free_energy", "kl_divergence", "shannon_entropy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Every belief sweep prints F = complexity - accuracy; both terms individually plotted, their signs interpretable."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=vfe-decompose-complexity-accuracy",
+    "labs_url": "/labs?recipe=vfe-decompose-complexity-accuracy&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "F[q] = \\mathbb{E}_{q(s)}[\\ln q(s) - \\ln p(o, s)] = D_{KL}[q(s) \\| p(s)] - \\mathbb{E}_{q(s)}[\\ln p(o|s)]",
+    "symbols": {
+      "F[q]": "variational free energy at a posterior q",
+      "D_KL[q||p]": "complexity term (divergence from prior)",
+      "E_q[ln p(o|s)]": "accuracy term (expected log-likelihood)"
+    }
+  },
+  "audiences": {
+    "kid": "Free energy is like a score where you lose points for changing your mind too much (complexity) and lose points for being surprised (inaccuracy).",
+    "real": "F decomposes cleanly into KL-from-prior (how much the posterior moved) and expected log-likelihood (how well it explains the data). Minimising F balances the two.",
+    "equation": "F = D_KL[q||p] - E_q[ln p(o|s)]. First term grows with belief updates; second term grows as accuracy drops.",
+    "derivation": "From F = E_q[ln q - ln p(o,s)] and p(o,s) = p(o|s) p(s), split into E_q[ln q - ln p(s)] (KL) and -E_q[ln p(o|s)] (neg accuracy). Standard variational decomposition (Jordan et al. 1999)."
+  },
+  "equation_refs": ["eq-4-11", "eq-b-5"],
+  "figure_refs": [],
+  "session_refs": ["low-road/s2"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Decompose F into complexity and accuracy and visualise the tradeoff across a belief sweep.",
+    "role": "Variational-calculus tutor; grounds the free-energy minimisation intuition in two visible quantities.",
+    "context": "tiny_open_goal with 1 observation; F is a scalar plotted against sweep iteration."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4 & App B.",
+    "Jordan, Ghahramani, Jaakkola & Saul (1999), Introduction to variational methods."
+  ]
+}

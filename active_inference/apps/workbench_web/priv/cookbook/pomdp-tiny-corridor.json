@@ -1,0 +1,51 @@
+{
+  "slug": "pomdp-tiny-corridor",
+  "title": "POMDP: Full Trajectory in the Tiny Corridor",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 5,
+  "tags": ["pomdp", "planning", "trajectory", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive", "plan", "act", "step"],
+    "skills_used": ["expected_free_energy", "softmax", "variational_free_energy"],
+    "horizon": 3,
+    "policy_depth": 2,
+    "preference_strength": 4.0,
+    "expected_outcome": "Agent reaches the goal in <=3 steps; every tick shows a clean perceive -> plan -> act cycle in the Glass Engine."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=pomdp-tiny-corridor",
+    "labs_url": "/labs?recipe=pomdp-tiny-corridor&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\pi^* = \\sigma(-G(\\pi)),\\quad G(\\pi) = \\mathbb{E}_{q(o,s|\\pi)}[\\ln q(s|\\pi) - \\ln p(s|o,\\pi)] + \\mathbb{E}_{q(o|\\pi)}[-\\ln p(o)]",
+    "symbols": {
+      "pi": "policy (action sequence over horizon)",
+      "G(pi)": "expected free energy of the policy",
+      "sigma": "softmax",
+      "q(s|pi)": "predictive belief under the policy",
+      "p(o)": "preference over observations (encoded in C)"
+    }
+  },
+  "audiences": {
+    "kid": "The agent has a tiny hallway and a goal at the end. It looks, thinks, moves, and arrives in three hops.",
+    "real": "Minimal end-to-end POMDP demo: perceive the current tile, plan 2 steps ahead, act, repeat. Verifies the Markov-blanket-separated plumbing.",
+    "equation": "pi* = softmax(-G). G decomposes into epistemic (information gain) and pragmatic (preference satisfaction) terms. Here the pragmatic term dominates.",
+    "derivation": "Under the variational posterior q, expected free energy equals complexity minus expected log-preference. Softmax over -G gives the policy posterior (Friston et al. 2017)."
+  },
+  "equation_refs": ["eq-4-10", "eq-4-14", "eq-b-9"],
+  "figure_refs": ["fig_4.1"],
+  "session_refs": ["generative-models/s1"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Run a full perceive-plan-act trajectory to the goal in the smallest maze.",
+    "role": "End-to-end sanity check for the native Jido agent.",
+    "context": "tiny_open_goal 3x3 maze, horizon=3, policy_depth=2, preference_strength=4.0."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4 & App B."
+  ]
+}

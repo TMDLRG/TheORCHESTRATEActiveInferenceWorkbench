@@ -1,0 +1,50 @@
+{
+  "slug": "efe-decompose-epistemic-pragmatic",
+  "title": "EFE = Epistemic + Pragmatic",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 9,
+  "tags": ["free-energy", "expected", "decomposition", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan"],
+    "skills_used": ["expected_free_energy", "kl_divergence"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Policy posterior prints with the EFE split into epistemic (info-gain) and pragmatic (preference) columns; the two rank policies differently."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=efe-decompose-epistemic-pragmatic",
+    "labs_url": "/labs?recipe=efe-decompose-epistemic-pragmatic&world=forked_paths"
+  },
+  "math": {
+    "latex": "G(\\pi) = \\underbrace{\\mathbb{E}_{q(o|\\pi)} D_{KL}[q(s|\\pi) \\| q(s|o,\\pi)]}_{\\text{epistemic}} + \\underbrace{\\mathbb{E}_{q(o|\\pi)}[-\\ln p(o)]}_{\\text{pragmatic}}",
+    "symbols": {
+      "epistemic term": "expected information gain from observing o under pi",
+      "pragmatic term": "expected surprise relative to preferences",
+      "p(o)": "C vector, the agent's log preference over observations"
+    }
+  },
+  "audiences": {
+    "kid": "The agent rates every plan two ways: how much will I learn? and how much will I like the result? EFE is both scores added up.",
+    "real": "EFE splits the policy score into 'what do I learn' and 'what do I want'. Seeing the split makes it obvious why exploration can beat exploitation sometimes.",
+    "equation": "G(pi) = epistemic + pragmatic. Epistemic ~ -D_KL between posterior and prior predictive; pragmatic ~ -ln p(o) expectation.",
+    "derivation": "Factorise q(o,s|pi) = q(s|o,pi) q(o|pi); apply Bayes to swap q(s,o|pi) and q(o|s,pi); the KL term emerges as negative mutual information. See Schwartenbeck et al. (2019) for the modern statement."
+  },
+  "equation_refs": ["eq-4-10", "eq-b-9"],
+  "figure_refs": ["fig_4.2"],
+  "session_refs": ["high-road/s1", "high-road/s2"],
+  "labs": ["pomdp", "forge"],
+  "orchestrate": {
+    "objective": "Print the per-policy EFE decomposition so the reader can see which term drove the choice.",
+    "role": "Decomposition tutor tied to Ch 4's epistemic/pragmatic breakdown.",
+    "context": "forked_paths 7x5 with preference_strength=2.0; a medium pragmatic weight that lets both terms matter."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Schwartenbeck, Passecker, Hauser, FitzGerald, Kronbichler & Friston (2019), Computational mechanisms of curiosity and goal-directed exploration."
+  ]
+}

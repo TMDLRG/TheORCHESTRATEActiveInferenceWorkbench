@@ -1,0 +1,235 @@
+# Prompts library for the workshop.  ORCHESTRATE-shaped (Polzin, 2025): each
+# prompt applies the sub-letters it needs most.  Agent system prompts (in
+# `agents.yaml`) already carry O-R-C via the ORCHESTRATE Core Preamble; these
+# saved prompts layer in S (Structure / FLOW), E (Examples / FIT),
+# T (Tone / VIBE), R (Review / DONE), A (Assure / VERIFY), or H (Handoff /
+# READY) per prompt class.  One file, grouped per chapter + equation + lab.
+# The seeder creates a PromptGroup per `group:` block and adds each `prompts:`
+# entry below it.
+#
+# Each prompt supports:
+#   type: chat | text     (default chat)
+#   command: <lowercase-hyphen-slug>  (optional, for the slash-command menu)
+#   prompt: string; {{var}} placeholders get UI prompts in LibreChat
+#   oneliner: group-level subtitle (on the group only)
+
+groups:
+  # -------- Chapter tours (one group per chapter) --------
+  - name: "Ch 1 - Active Inference Overview"
+    category: "chapter"
+    oneliner: "Kick-start prompts for Chapter 1 of Parr, Pezzulo and Friston (2022)."
+    prompts:
+      - command: "ch1-big-idea"
+        prompt: |
+          Objective: state Chapter 1's single biggest Active Inference idea for a {{audience}} learner in {{format}}, <= {{limit}} sentences.
+          Structure: lead with the idea itself; follow with one line on why it matters.
+      - command: "ch1-map"
+        prompt: |
+          Objective: map Ch 1's terms "generative model", "free energy", "active inference", "surprise".
+          Structure: per term -- one-sentence definition, then one real-world example the rest of the book leans on later.
+      - command: "ch1-preview"
+        prompt: |
+          Objective: preview what the next {{num}} chapters add on top of Ch 1.
+          Structure: one row per upcoming chapter -- chapter number + the single new concept it introduces relative to Ch 1.
+      - command: "ch1-quiz"
+        prompt: |
+          Objective: quiz me on Chapter 1 with {{count}} short questions, one per core idea.
+          Handoff: ask questions one at a time, wait for my answer, then reveal a 1-line rubric before the next question.
+
+  - name: "Ch 2 - The Low Road: Bayesian Inference"
+    category: "chapter"
+    oneliner: "Walk-throughs for the Bayesian belief-updating machinery of Chapter 2."
+    prompts:
+      - command: "bayes"
+        prompt: |
+          Objective: given prior P(H) = {{prior}}, likelihood P(E|H) = {{likelihood}}, P(E|not-H) = {{alt_likelihood}}, compute P(H|E).
+          Structure: unnormalised weights -> P(E) -> final posterior -> one-sentence plain-English interpretation.
+      - command: "bayes-absence"
+        prompt: |
+          Objective: given P(H) = {{prior}}, P(E|H) = {{likelihood}}, P(E|not-H) = {{alt_likelihood}}, compute P(H|not-E) and show why absence of evidence is still a valid Bayes update.
+          Structure: posterior first -> one-line reason.
+      - command: "bayes-odds"
+        prompt: |
+          Objective: convert P(H) = {{prior}} and likelihood ratio {{likelihood_ratio}} into posterior odds.
+          Structure: show that log-odds add linearly across independent pieces of evidence; include one numeric step.
+      - command: "ch2-chip"
+        prompt: |
+          Objective: for the BayesChips preset "{{preset}}" ({{a}} gold out of 100; {{b}} obs among gold; {{c}} obs among steel), derive the posterior.
+          Structure: likelihoods -> normalise -> posterior -> 1-line intuition.
+
+  - name: "Ch 3 - Hidden States and Belief"
+    category: "chapter"
+    prompts:
+      - command: "ch3-hidden"
+        prompt: |
+          Objective: define "hidden state" as Ch 3 uses it, and distinguish hidden states from observations in the Jumping Frog lab.
+          Structure: definition -> one visual-channel example -> one auditory-channel example.
+      - command: "ch3-concept"
+        prompt: |
+          Objective: compare the book's multi-modal frog example to a {{domain}} example of your choice.
+          Structure: features that make inference easier -> features that make it harder -> 1-line takeaway.
+
+  - name: "Ch 4 - Generative Models and Free Energy"
+    category: "chapter"
+    oneliner: "Variational free energy (Eq 4.19), generative models, and the POMDP skeleton."
+    prompts:
+      - command: "eq-419"
+        prompt: |
+          Objective: walk through Eq 4.19 (F = E_q[ln q(s) - ln p(o,s)]) term by term.
+          Structure: plain-word gloss per term -> KL-divergence rewrite -> why minimising F reduces both surprise and complexity.
+          Example: close with one numeric worked example at prior 0.5, likelihood 0.8, q(s) 0.5.
+      - command: "pomdp"
+        prompt: |
+          Objective: describe the POMDP underlying Ch 4.
+          Structure: list S, O, A, T, Z -> one line per component on how active inference treats it -> close with the single line distinguishing active inference from classical RL.
+      - command: "ch4-forge"
+        prompt: |
+          Objective: in the Free Energy Forge with prior {{prior}}, likelihood {{likelihood}}, q(s) {{q}}, compute F and identify the dominant term.
+          Structure: each term of Eq 4.19 separately -> dominant term named -> 1-line reason it dominates.
+
+  - name: "Ch 5 - Message Passing and Predictive Coding"
+    category: "chapter"
+    prompts:
+      - command: "ch5-pc"
+        prompt: |
+          Objective: explain predictive coding as Ch 5 presents it -- prediction-error signal, precision weighting, top-down/bottom-up flow.
+          Structure: one line per element -> close with a 1-line tie to free energy.
+      - command: "ch5-tower"
+        prompt: |
+          Objective: in the Laplace Tower with {{levels}} levels, if precision on level {{level}} changes, identify which errors propagate and why.
+          Structure: affected errors -> 1-line tie back to Eq 4.19.
+      - command: "ch5-fig55"
+        prompt: |
+          Objective: label every arrow in Figure 5.5 (the compact anatomy of a predictive-coding unit).
+          Structure: prediction -> error -> precision -> state; one line each.
+
+  - name: "Ch 6 - Action and Planning as Inference"
+    category: "chapter"
+    prompts:
+      - command: "ch6-plan"
+        prompt: |
+          Objective: summarise Ch 6's "planning as inference" and decompose expected free energy G into epistemic + pragmatic.
+          Structure: decomposition -> one intuitive example where the epistemic term dominates -> one where the pragmatic term dominates.
+      - command: "ch6-act"
+        prompt: |
+          Objective: compare "action as inference" to classical optimal control.
+          Structure: which information-theoretic quantity replaces the value function -> 1-line on why the swap matters.
+
+  - name: "Ch 7 - Learning and Model Selection"
+    category: "chapter"
+    prompts:
+      - command: "ch7-learn"
+        prompt: |
+          Objective: define "inference" vs "learning" vs "model selection" in Ch 7's terms.
+          Structure: one-paragraph definition per term, each with one concrete example.
+      - command: "ch7-pomdp"
+        prompt: |
+          Objective: in the POMDP Machine, predict which generative-model parameters typically update (and in which direction) across {{n}} learning episodes.
+          Structure: A-matrix -> B-matrix -> D-vector, one line each -> 1-line intuition.
+
+  - name: "Ch 8 - Continuous Time and Path Integrals"
+    category: "chapter"
+    prompts:
+      - command: "ch8-continuous"
+        prompt: |
+          Objective: contrast the discrete POMDP of Ch 4 with the continuous-time formulation of Ch 8.
+          Structure: what changes in the free-energy expression -> what stays the same.
+      - command: "ch8-forge-continuous"
+        prompt: |
+          Objective: explain how F is computed over a path of {{seconds}} seconds in the Free Energy Forge.
+          Structure: integrand -> accumulated terms -> 1-line takeaway.
+
+  - name: "Ch 9 - The Brain and Anatomy"
+    category: "chapter"
+    prompts:
+      - command: "ch9-anatomy"
+        prompt: |
+          Objective: map the predictive-coding unit (Fig 5.5) onto the cortical canonical microcircuits of Ch 9.
+          Structure: neuron populations that carry predictions -> populations that carry errors.
+      - command: "ch9-neuromod"
+        prompt: |
+          Objective: link the Atlas lab's neuromodulators (ACh, NE, dopamine) to precision, salience, and pragmatic value.
+          Structure: one line per modulator + one behavioural example of altered precision.
+
+  - name: "Ch 10 - A Unified Framework"
+    category: "chapter"
+    prompts:
+      - command: "ch10-unified"
+        prompt: |
+          Objective: summarise Ch 10's unification of Bayesian inference, predictive coding, and cortical anatomy under active inference.
+          Structure: the three threads -> one line each -> 1-line closing on how the loop stitches them.
+      - command: "ch10-misconception"
+        prompt: |
+          Objective: correct the misconception "{{misconception}}" about the free energy principle using Ch 10's unified view.
+          Structure: the mistake -> the correct framing -> the 1-line reason it sticks in learners' heads.
+
+  # -------- Equation walk-throughs (any chapter) --------
+  - name: "Equation Walkthroughs"
+    category: "equations"
+    oneliner: "Any numbered equation, explained in kid / real / equation / derivation voice."
+    prompts:
+      - command: "eq"
+        prompt: |
+          Objective: explain equation {{eq}} from {{chapter}} in the [[path:kid,real,equation,derivation]] voice.
+          Structure: symbolic form -> one-paragraph motivation -> one numeric worked example -> units for every quantity.
+      - command: "eq-intuition"
+        prompt: |
+          Objective: deliver the one-sentence intuition for Eq {{eq}}, then unfold it in three layers so I can stop at the depth I need.
+          Structure: sentence -> paragraph -> two-page derivation; label the layers.
+          Example: anchor each layer with a concrete quantity from the equation.
+      - command: "eq-compare"
+        prompt: |
+          Objective: compare Eq {{eq1}} and Eq {{eq2}}.
+          Structure: shared quantities -> which (if either) is a special case of the other -> 1-line takeaway.
+      - command: "eq-units"
+        prompt: |
+          Objective: list every symbol in Eq {{eq}} with its physical interpretation and units.
+          Structure: two columns -- symbol | interpretation + units.
+
+  # -------- Lab coach prompts --------
+  - name: "Lab Starters"
+    category: "labs"
+    oneliner: "Kick-off prompts for every hands-on lab in the suite."
+    prompts:
+      - command: "bayes-chips"
+        prompt: |
+          Objective: for the BayesChips preset "{{preset}}", state the expected posterior and explain how each slider moves it.
+          Tone: crisp and numerical; one line per slider.
+      - command: "pomdp-belief"
+        prompt: |
+          Objective: in the POMDP Machine, starting from belief {{belief}} and observing {{obs}}, compute the posterior belief after one update.
+          Tone: math first, intuition second; <= 6 lines total.
+      - command: "forge-eq"
+        prompt: |
+          Objective: in the Free Energy Forge, compute F for prior {{prior}}, likelihood {{likelihood}}, q(s) {{q}}.
+          Tone: show each term of Eq 4.19 separately; end by naming which term dominates.
+      - command: "tower-level"
+        prompt: |
+          Objective: in the Laplace Tower with {{levels}} levels, predict how a high-precision level {{level}} reshapes dynamics at level {{level2}}.
+          Tone: precise; name the levels explicitly.
+      - command: "anatomy-fig55"
+        prompt: |
+          Objective: in the Anatomy Studio, name which neuron type corresponds to prediction / error / state in Fig 5.5, citing Ch 9.
+          Tone: diagram-first; cite the chapter section used.
+      - command: "atlas-slider"
+        prompt: |
+          Objective: in the Atlas, after I moved {{modulator}} to {{value}}, state which precision changes and the expected behavioural effect.
+          Tone: neuromodulator -> precision affected -> behavioural effect; one line each.
+      - command: "frog-multimodal"
+        prompt: |
+          Objective: in the Jumping Frog with visual = "{{visual}}" and auditory = "{{audio}}", derive the posterior over toad vs frog using the multi-modal likelihood.
+          Tone: show per-channel likelihoods before combining; close with a 1-line gut-check.
+
+  # -------- Meta (study flow) --------
+  - name: "Study Workflow"
+    category: "meta"
+    prompts:
+      - command: "plan-day"
+        prompt: |
+          Objective: design a study plan for {{minutes}} minutes that covers Chapter {{chapter}} Sessions {{from}}-{{to}}, mixing labs with reading.
+          Review: before replying, check that every block has a labelled time cost, that labs and readings alternate at least once, and that the totals match the budget within +/-5 minutes.
+      - command: "check-understanding"
+        prompt: |
+          Objective: quiz me on what I have covered so far, drawing {{n}} recent chats and generating one question each.
+          Assure: before sending the quiz, verify each question maps to a distinct chat and references a concrete concept -- reject duplicates.
+          Handoff: ask one question at a time; wait for my answer before moving on.

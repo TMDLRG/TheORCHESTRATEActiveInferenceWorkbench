@@ -1,0 +1,55 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "claude-voice-connector"
+version = "0.1.0"
+description = "STDIO-based voice connector for Claude with Edge TTS and low-latency streaming playback"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "Claude Voice Connector Authors" }
+]
+keywords = ["tts", "edge-tts", "voice", "claude", "stdio", "ndjson"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+dependencies = [
+    "edge-tts>=6.1.0",
+    "sounddevice>=0.4.6",
+    "numpy>=1.24.0",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21",
+    "pytest-timeout>=2.0",
+]
+
+[project.scripts]
+claude-voice-connector = "claude_voice_connector.stdio_main:main_sync"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/claude_voice_connector"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+timeout = 30
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

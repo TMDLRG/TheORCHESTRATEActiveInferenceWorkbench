@@ -1,0 +1,36 @@
+# Voice Profiles for Claude Voice Connector
+# These profiles define pre-configured voice settings for different use cases
+
+profiles:
+  freya_default:
+    voice: en-AU-FreyaNeural
+    rate: "-5%"
+    pitch: "+0%"
+    description: "Australian English, warm and natural - default for general use"
+    
+  freya_slow:
+    voice: en-AU-FreyaNeural
+    rate: "-15%"
+    pitch: "+0%"
+    description: "Slower pace for complex explanations or accessibility"
+    
+  freya_excited:
+    voice: en-AU-FreyaNeural
+    rate: "+5%"
+    pitch: "+5%"
+    description: "Enthusiastic tone for exciting content"
+    
+  sonia_professional:
+    voice: en-GB-SoniaNeural
+    rate: "-10%"
+    pitch: "+0%"
+    description: "British English, professional and formal"
+    
+  natasha_friendly:
+    voice: en-AU-NatashaNeural
+    rate: "-5%"
+    pitch: "+3%"
+    description: "Australian English, warm and approachable"
+
+# Default profile to use when none specified
+default_profile: freya_default

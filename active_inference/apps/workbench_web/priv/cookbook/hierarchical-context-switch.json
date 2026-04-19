@@ -1,0 +1,50 @@
+{
+  "slug": "hierarchical-context-switch",
+  "title": "Hierarchical: Meta-Level Gates Base-Level Preferences",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 13,
+  "tags": ["hierarchical", "context", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(hierarchical_maze)",
+    "world": "hierarchical_maze",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 2.5,
+    "expected_outcome": "AgentPlane.Hierarchical switches the base agent's C mid-trajectory; the base agent changes direction accordingly."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=hierarchical-context-switch",
+    "labs_url": "/labs?recipe=hierarchical-context-switch&world=hierarchical_maze"
+  },
+  "math": {
+    "latex": "\\text{context}_{\\text{meta}} \\to C_{\\text{base}} \\to \\pi_{\\text{base}}",
+    "symbols": {
+      "context_meta": "meta-level state (slow variable)",
+      "C_base": "base-level preference vector under current context",
+      "pi_base": "base-level policy"
+    }
+  },
+  "audiences": {
+    "kid": "A leader tells the worker which snack is best; when the leader changes their mind, the worker chases a different snack.",
+    "real": "Hierarchical composition: the meta-agent picks a context; the base agent runs under that context's C vector. Switching context mid-episode reshapes behaviour.",
+    "equation": "Base bundle.c = softmax(contexts[current_context]); switch_context mutates it.",
+    "derivation": "Two-level factorisation of the generative model: p(o, s_base, s_meta) = p(o|s_base) p(s_base|s_meta) p(s_meta). Meta state acts as a prior on base-level parameters (Friston et al. 2022)."
+  },
+  "equation_refs": ["eq-4-10", "eq-b-22"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s4"],
+  "labs": ["pomdp", "atlas"],
+  "orchestrate": {
+    "objective": "Demonstrate AgentPlane.Hierarchical switching the base agent's C and altering behaviour.",
+    "role": "Hierarchical-composition tutor.",
+    "context": "hierarchical_maze 11x11; two contexts with different C vectors; switch every N steps."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7.",
+    "Friston, Pezzulo, Kilner & Penny (2022), Hierarchical active inference."
+  ]
+}

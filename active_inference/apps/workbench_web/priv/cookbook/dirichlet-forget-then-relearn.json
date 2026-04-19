@@ -1,0 +1,49 @@
+{
+  "slug": "dirichlet-forget-then-relearn",
+  "title": "Forgetting and Relearning: Dirichlet Decay",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 11,
+  "tags": ["dirichlet", "forgetting", "non-stationary", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act", "dirichlet_update_a", "dirichlet_update_b"],
+    "skills_used": ["expected_free_energy"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Applying a decay factor (a := gamma*a + delta) between episodes lets old data fade, enabling the agent to track drifting dynamics."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=dirichlet-forget-then-relearn",
+    "labs_url": "/labs?recipe=dirichlet-forget-then-relearn&world=corridor_turns"
+  },
+  "math": {
+    "latex": "a^{(t+1)} = \\gamma \\cdot a^{(t)} + \\Delta a,\\quad \\gamma \\in (0, 1]",
+    "symbols": {
+      "gamma": "forgetting rate (1 = no forgetting, 0 = total reset)",
+      "Delta a": "new pseudo-counts from the current episode"
+    }
+  },
+  "audiences": {
+    "kid": "Sometimes what you learned yesterday isn't true anymore. A little forgetting keeps the agent nimble.",
+    "real": "Dirichlet decay gamma < 1 turns the structure-learner into a tracker. Old data is downweighted; recent evidence matters more.",
+    "equation": "a(t+1) = gamma * a(t) + new_counts. Effective memory length ~ 1/(1-gamma).",
+    "derivation": "Exponential discounting on the concentration parameters is equivalent to a time-weighted likelihood. Posterior variance now floors at a finite value, allowing tracking in non-stationary environments (Sato 2001)."
+  },
+  "equation_refs": ["eq-7-10"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Demonstrate a practical trick for tracking non-stationary dynamics via Dirichlet decay.",
+    "role": "Non-stationarity tutor.",
+    "context": "corridor_turns; change the world (e.g. flip a wall) between episodes and watch the agent catch up."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7.",
+    "Sato (2001), Online model selection based on the variational Bayes."
+  ]
+}

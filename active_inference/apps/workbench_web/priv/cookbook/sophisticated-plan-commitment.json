@@ -1,0 +1,48 @@
+{
+  "slug": "sophisticated-plan-commitment",
+  "title": "Commitment vs. Re-planning",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 9,
+  "tags": ["sophisticated-planning", "commitment", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "sophisticated_plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Replanning every step is safer; committing to 2+ steps is faster. Recipe shows the tradeoff in expected regret."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=sophisticated-plan-commitment",
+    "labs_url": "/labs?recipe=sophisticated-plan-commitment&world=corridor_turns"
+  },
+  "math": {
+    "latex": "\\text{regret}(\\text{commit } k) = \\mathbb{E}[\\text{min } G^*] - \\mathbb{E}[\\text{committed } G]",
+    "symbols": {
+      "commit k": "execute k actions before replanning",
+      "G*": "best policy under fully re-planned trajectory"
+    }
+  },
+  "audiences": {
+    "kid": "Do you decide every move, or plan two moves ahead and only rethink then? Depends on how much the world surprises you.",
+    "real": "Replanning-every-step is robust to noise. Committing to k>1 actions saves compute but can be costly if observations reveal the committed plan is wrong.",
+    "equation": "Expected regret of commitment grows with env stochasticity and policy_depth. Tunable by Application.",
+    "derivation": "Commitment trades expected regret for compute savings. Optimal commitment depth k* solves argmin_k compute(k) + regret(k)."
+  },
+  "equation_refs": ["eq-b-22"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Show the commitment-vs-replanning tradeoff on a simple maze.",
+    "role": "Commitment-policy tutor.",
+    "context": "corridor_turns; run SophisticatedPlan with commit in {1, 2, 3}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND)."
+  ]
+}

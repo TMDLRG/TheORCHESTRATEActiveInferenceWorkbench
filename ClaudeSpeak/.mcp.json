@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "claude-voice": {
+      "command": "C:\\Users\\mpolz\\Documents\\ClaudeSpeak\\claude-voice-connector-stdio\\venv\\Scripts\\python.exe",
+      "args": [
+        "-u",
+        "-m",
+        "claude_voice_connector.stdio_main"
+      ],
+      "env": {
+        "PYTHONPATH": "C:\\Users\\mpolz\\Documents\\ClaudeSpeak\\claude-voice-connector-stdio\\src"
+      }
+    }
+  }
+}

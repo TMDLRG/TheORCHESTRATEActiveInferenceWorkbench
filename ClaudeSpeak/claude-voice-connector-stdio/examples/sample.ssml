@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+    <p>
+        <s>Welcome to the Claude Voice Connector demonstration.</s>
+        <s>This example showcases various SSML features supported by Microsoft Edge Text-to-Speech.</s>
+    </p>
+
+    <break time="500ms"/>
+
+    <p>
+        <s>First, let's demonstrate <emphasis level="strong">prosody controls</emphasis>.</s>
+        <s><prosody rate="slow">This sentence is spoken slowly.</prosody></s>
+        <s><prosody rate="fast">And this one is spoken quickly!</prosody></s>
+        <s><prosody pitch="high">This has a higher pitch.</prosody></s>
+        <s><prosody pitch="low">While this has a lower pitch.</prosody></s>
+    </p>
+
+    <break time="300ms"/>
+
+    <p>
+        <s>Now, let's try different <emphasis level="moderate">speaking styles</emphasis>.</s>
+        <s>The voice can express various emotions and tones depending on the content.</s>
+    </p>
+
+    <break time="500ms"/>
+
+    <p>
+        <s>Here's an example of a longer passage that demonstrates natural speech flow.</s>
+        <s>When synthesizing longer texts, the connector automatically segments the content.</s>
+        <s>This ensures smooth playback without long initial delays.</s>
+        <s>Each segment is processed and played back in order.</s>
+    </p>
+
+    <break time="300ms"/>
+
+    <p>
+        <s>We can also handle special content like:</s>
+        <s>Numbers: <say-as interpret-as="cardinal">12345</say-as></s>
+        <s>Dates: <say-as interpret-as="date" format="mdy">03/14/2024</say-as></s>
+        <s>Times: <say-as interpret-as="time">2:30pm</say-as></s>
+        <s>And spelling: <say-as interpret-as="characters">SSML</say-as></s>
+    </p>
+
+    <break time="500ms"/>
+
+    <p>
+        <s>This concludes our demonstration.</s>
+        <s><prosody volume="soft">Thank you for listening.</prosody></s>
+    </p>
+</speak>

@@ -1,0 +1,49 @@
+{
+  "slug": "epistemic-risk-vs-ambiguity",
+  "title": "Risk vs. Ambiguity: Two Kinds of Uncertainty",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 11,
+  "tags": ["epistemic", "uncertainty", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(deceptive_dead_end)",
+    "world": "deceptive_dead_end",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "kl_divergence", "shannon_entropy"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "EFE decomposes into risk (expected KL from preferences) and ambiguity (expected conditional entropy). Plotting both shows the agent prioritising disambiguation early."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=epistemic-risk-vs-ambiguity",
+    "labs_url": "/labs?recipe=epistemic-risk-vs-ambiguity&world=deceptive_dead_end"
+  },
+  "math": {
+    "latex": "G(\\pi) = \\underbrace{D_{KL}[q(o|\\pi) \\| p(o)]}_{\\text{risk}} + \\underbrace{\\mathbb{E}_{q(s|\\pi)}[H[p(o|s)]]}_{\\text{ambiguity}}",
+    "symbols": {
+      "risk": "divergence between predicted outcomes and preferences",
+      "ambiguity": "expected conditional entropy; reducible by disambiguating observations"
+    }
+  },
+  "audiences": {
+    "kid": "There's 'I know what's coming and I don't like it' and there's 'I can't tell what's coming at all'. Both are uncertainty. The agent treats them differently.",
+    "real": "EFE = risk + ambiguity. Risk = divergence between predicted obs and preferences. Ambiguity = conditional entropy of obs given state. Disambiguating actions minimise the second term even without preference pull.",
+    "equation": "Risk = D_KL[q(o|pi) || p(o)]; ambiguity = E_q[H[p(o|s)]]. Both are minimised by good policies; their mix characterises the agent's style.",
+    "derivation": "Starting from G = E_q[ln q(s|pi) - ln p(o,s)], adding and subtracting ln p(o) splits G into the KL-to-preferences and the expected conditional entropy (Schwartenbeck et al. 2019, eq 5)."
+  },
+  "equation_refs": ["eq-4-10", "eq-b-9"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s4"],
+  "labs": ["pomdp", "forge"],
+  "orchestrate": {
+    "objective": "Decompose EFE into risk and ambiguity and show when each dominates.",
+    "role": "Uncertainty-decomposition tutor.",
+    "context": "deceptive_dead_end where initial ambiguity is high; watch the agent disambiguate before committing."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Schwartenbeck, Passecker, Hauser, FitzGerald, Kronbichler & Friston (2019)."
+  ]
+}

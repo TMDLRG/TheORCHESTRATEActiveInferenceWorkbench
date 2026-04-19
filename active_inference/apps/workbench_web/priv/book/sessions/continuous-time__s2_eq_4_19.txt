@@ -1,0 +1,394 @@
+162
+
+generalized Lotka-­Volterra systems afford useful models of sequential dynamics using a continuous dynamical system.
+The POMDP formulation of chapter 7 has largely superseded the use of
+generalized Lotka-­Volterra systems in Active Inference applications. However, it is useful to bear this kind of dynamic in mind as a plausible continuous system that might underwrite the discrete sequential dynamics of
+chapter 7. In addition, Lotka-­Volterra systems make explicit the distinction
+between repre­sen­ta­tions of sequences involved in temporally deep planning
+and repre­sen­ta­tions of rates of change in generalized coordinates of motion
+(see chapter 4). Each has its place but deals with dif­fer­ent sorts of prob­lems.
+The second sort of dynamical system that has found widespread application in active inference research is the Lorenz system:
+⎤
+⎡σ (x2 − x1 )
+. ⎢
+⎥
+x = ⎢ x1 ( ρ − x3 ) − x2 ⎥
+⎢ x1x2 − β x3
+⎥
+⎣
+⎦
+
+(8.7)
+
+The par­ameters are known as the Prandtl number (σ ), the Rayleigh number ( ρ), and a constant ( β ) that relates to the physics of the system. Depending on the values t­ hese take, the system may behave in very dif­fer­ent ways.
+Lorenz attractors ­
+were initially formulated to account for atmospheric
+convection dynamics. Their itinerant (wandering) be­hav­ior has prompted
+their use in generative models to simulate challenging inference prob­lems.
+An impor­tant example of this is in the simulation of birdsong, which we
+unpack in the next section. T
+­ hese systems have also been used to simulate ­simple physical systems and to investigate the conditions ­under which
+their be­hav­ior starts to appear sentient. Figure 8.4 shows how the Lorenz
+system behaves ­under example pa­ram­e­ter settings.
+8.4 Generalized Synchrony
+As mentioned above, a key example application of continuous state-­space
+models is in a series of studies based on synthetic birdsong (Friston and
+Frith 2015b). An impor­tant aspect of ­these studies looks at communication
+and multi-­agent inference prob­lems. The idea ­here rests on the capacity
+of a creature to synchronize its internal states with something out ­there
+in the world (i.e., inference). When what is out t­here is another creature
+with a similar model, this synchronization means the internal states of one
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+163
+
+Lorenz system
+40
+20
+0
+–20
+500
+
+1000
+
+1500
+
+2000
+
+20
+
+40
+
+10
+
+30
+
+0
+
+2500
+
+z
+
+y
+
+0
+
+20
+
+–10
+
+10
+
+–20
+–10
+
+0
+x
+
+10
+
+20
+
+0
+
+–20
+
+0
+y
+
+20
+
+Figure 8.4
+Be­hav­ior of a Lorenz system attractor (using the same format as figure 8.2), showing
+how this 3-­dimensional system evolves. Characteristically, it appears chaotic and
+unpredictable, spending some of its time orbiting one part of space before switching to another orbit. This itinerancy and apparent autonomy make this in­ter­est­ing
+system well suited to inclusion in models of biological phenomena.
+
+creature should come to resemble the internal states of the other: a primitive kind of theory of mind.
+Figure 8.5 shows the kind of generative model used to simulate songbirds. In this hierarchical model, high-­level states (level 2) evolve according to a slow Lorenz system. One dimension of this system is then used to
+pa­ram­et­erize the Rayleigh number of a faster Lorenz system at the lower
+level (level 1). The lower-­level variables then map to sensory (sonographic)
+data. Analogous to figure 8.1, the generative pro­cess additionally includes
+action; ­here, instead of moving a limb, actions influence the larynx, such
+that the sonographic data may be influenced by the bird. As before, action
+is generated to resolve prediction error. This means that if a bird hears the
+song it is predicting, t­here is no need to generate it itself. However, if it
+predicts a song that is not heard, it must start singing to resolve any error.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+164
+
+(2)
+(2)
+10(x2 – x1 )
+(2)
+(2)
+(2)
+1
+(32 – x3 )x1 – x2
+f (2) = –—
+128
+(2) (2)
+(2)
+x1 x2 – 8–3 x3
+(2)
+g (2) = x1
+(1)
+
+1
+f (1) = ––
+16
+
+Level 1
+
+g (1) =
+Sensory data
+
+y
+
+(1)
+
+x3
+
+–20 0 20 40
+Second-level
+expectations (first bird)
+
+(1)
+(1) (1)
+(1)
+θ((v1 – 8) – x3 )x1 – x2
+(1) (1) 8 (1)
+x1 x2 – –3 x3
+
+x2(1)
+
+20
+0
+–20
+–40
+
+(1)
+
+10(x2 – x1 )
+
+Expectations
+(second bird)
+
+Level 2
+
+Synchronization manifold
+Before learning
+60
+40
+
+Expectations
+(second bird)
+
+Generative model
+
+80
+60
+40
+20
+0
+–20
+–40
+–50
+
+After learning
+
+0
+50 100
+Second-level
+expectations (first bird)
+
+Figure 8.5
+Synchronization and communication. Left: Generative model underwriting the birdsong simulations described in the main text. This is a hierarchical model, with Lorenz
+attractors at each level. Right: Synchronization manifolds of expectations at the second level for two birds before and a
+­ fter they have learned about one another. A
+­ fter
+learning the par­ameters of each other’s generative models, the two bird’s joint trajectory is confined to an (almost) 1-­dimensional subspace, indicating synchronization.
+
+This dynamic becomes more in­ter­est­ing when t­ here are two birds in play,
+with similarly structured generative models. As long as one bird is singing,
+the other does not need to, as ­there is no error to resolve. However, if one
+bird stops singing, the other needs to continue the same song. This leads to
+a form of turn taking, sometimes phrased as “singing from the same hymn
+sheet,” with each bird contributing sections of the same song. What leads
+to this turn taking? Why ­doesn’t one bird continue singing the ­whole song
+to its conspecific? The answer relates to the issue of sensory attenuation (see
+box 8.1), as acting to generate birdsong requires a reduction in the precision of predictions about the consequences of action. Just as in saccadic eye
+movements, this implies alternation between attention to sensory (visual or
+auditory) data and attenuation during (saccadic or vocal) action designed
+to change ­those data. When ­there are two agents involved, this leads to an
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Continuous Time
+
+165
+
+alternation between listening to the other and singing—­a ­simple form of
+conversation.
+For this synthetic conversation to work, it is essential that the two birds
+synchronize with one another and know where they are in the song (or
+conversational trajectory). This implies that the inferences about hidden
+states in the generative model should be aligned between the birds. On
+the upper right of figure 8.5, we show a synchronization manifold of two
+birds who have not yet optimized their generative models in relation to one
+another; this plots a trajectory of the beliefs each bird has about the higher-­
+level hidden states. Synchronization implies that when one bird infers a
+specific hidden state value, the other bird should infer the same; therefore, we would expect the trajectory to stay fixed to the x = y line (technically called identical synchronization of chaos). Fluctuations around this
+line imply imperfect synchronization, as this plot shows. ­After exposure to
+one another and learning the par­ameters of each other’s generative models
+(see box 8.2), the synchronization is nearly perfect (lower-­right plot). The
+implication is that each bird has learned about the other and is able to infer
+what is ­going on in the other’s head. In short, they have learned to share
+the same narrative and “sing from the same hymn sheet.”
+A more general form of synchronization does not require synchronization
+along the x = y line. In generalized synchronization, the joint be­hav­ior occupies a lower, 1-­dimensional space than the higher, 2-­dimensional space that
+could be occupied by this be­hav­ior. However, this low-­dimensional space
+(the synchronization manifold) may be curved or have some other shape;
+this is analogous to the 2-­dimensional space we occupy on the surface of
+the planet, despite the surface being curved into a 3-­dimensional sphere. In
+addition to its central role in social be­hav­ior, generalized synchronization—­
+occupancy of a low-­dimensional region of a high-­dimensional joint space—
+is very impor­tant in characterizations of biological systems as engaging in
+inference (generalized synchrony between internal and external states).
+While we do not have the space to unpack this extensive subject h
+­ ere, the
+inferential perspective speaks to the failure of generalized synchrony associated with neuropsychiatric syndromes like autism. This kind of synchrony
+is impor­tant not only in continuous-­time models but also in POMDP
+models of linguistic communication between multiple agents (Friston, Parr
+et al. 2020).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+166
+
+8.5 Hybrid (Discrete and Continuous) Models
+As we have seen in this and the previous chapter, discrete and continuous
+models both have impor­tant applications in Active Inference. While many
+settings call for one or the other, a more holistic perspective acknowledges
+that both are likely in play. This means we need a way to combine ­these
+generative models so that a single model includes both continuous and
+discrete variables (Friston, Parr, and de Vries 2017). Such hybrid or mixed
+models allow inferences about sequential action plans and translations of
+­these decisions into movements through a continuous model. Figure 8.6
+shows the form of ­these models, with a POMDP at the higher level, behaving as described in chapter 7, which generates a continuous model of the
+
+G
+
+sτ–1
+
+D
+
+x
+
+f
+
+sτ
+
+B
+
+sτ+1
+
+B
+
+A
+
+A
+
+A
+
+oτ–1
+
+oτ
+
+oτ+1
+
+η
+
+η
+
+η
+
+v
+
+v
+
+v
+
+xʹ
+
+f
+
+xʺ
+
+x
+
+f
+
+xʹ
+
+f
+
+xʺ
+
+x
+
+f
+
+xʹ
+
+f
+
+xʺ
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+g
+
+y
+
+yʹ
+
+yʺ
+
+y
+
+yʹ
+
+yʺ
+
+y
+
+yʹ
+
+yʺ
+
+Figure 8.6
+Mixed generative models in the form of a hierarchical model much like that in figure 7.12. However, ­there is an impor­tant difference between the form of the model
+at the higher level and that at the lower level. While the lower-­level model (one
+example is highlighted by the dashed box) is the same form as the other models
+considered in this chapter—­i.e., it is framed in terms of continuous states and continuous time and uses generalized coordinates of motion—­the higher-­level model is
+a POMDP model of the sort we saw throughout chapter 7—­i.e., it is framed in terms

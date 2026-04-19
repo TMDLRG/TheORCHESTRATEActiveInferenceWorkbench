@@ -1,0 +1,50 @@
+{
+  "slug": "predictive-coding-two-level-pass",
+  "title": "Two-Level Predictive-Coding Pass",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 9,
+  "tags": ["predictive-coding", "hierarchy", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["predictive_coding_pass"],
+    "skills_used": ["variational_free_energy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Sweep of PredictiveCodingPass converges mu1 toward the observation and mu2 toward mu1; free energy drops smoothly."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=predictive-coding-two-level-pass",
+    "labs_url": "/labs?recipe=predictive-coding-two-level-pass&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\mu_1 \\leftarrow \\mu_1 + \\eta (\\pi_1 (y - \\mu_1) - \\pi_2 (\\mu_1 - \\mu_2)),\\quad \\mu_2 \\leftarrow \\mu_2 + \\eta \\pi_2 (\\mu_1 - \\mu_2)",
+    "symbols": {
+      "mu_1, mu_2": "level-1 and level-2 belief means",
+      "pi_1, pi_2": "precisions at each level",
+      "eta": "learning rate"
+    }
+  },
+  "audiences": {
+    "kid": "The top of your brain guesses, the bottom checks, and they nudge each other until they agree.",
+    "real": "Top-down predictions meet bottom-up errors. One sweep of PredictiveCodingPass applies the gradient step; repeat until F stabilises.",
+    "equation": "mu_1 update blends bottom-up error (pi_1 * (y-mu_1)) with top-down error (-pi_2 * (mu_1-mu_2)). mu_2 update pulls toward mu_1.",
+    "derivation": "Gradient descent on Gaussian free energy F = 0.5 * (pi_1 (y-mu_1)^2 + pi_2 (mu_1-mu_2)^2). Each belief update is a step on its local gradient (Rao & Ballard 1999; Bogacz 2017)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": ["fig_5.5"],
+  "session_refs": ["message-passing/s2"],
+  "labs": ["tower", "anatomy"],
+  "orchestrate": {
+    "objective": "Execute a full 2-level predictive-coding sweep against a fixed observation.",
+    "role": "Predictive-coding micro-tutor.",
+    "context": "One observation y=1.0; mu1 = mu2 = 0; sweep 100 iterations."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Rao & Ballard (1999), Predictive coding in the visual cortex."
+  ]
+}

@@ -1,0 +1,46 @@
+# Docker env files — never commit; see .env.example
+.env
+.env.*
+!.env.example
+
+# Claude Code local config (user-specific)
+.claude/
+
+# ============================================================================
+# Commercial / copyrighted book sources -- keep LOCAL ONLY.
+# See BOOK_SOURCES.md for how contributors can obtain these.
+# Derivative extracts in active_inference/apps/workbench_web/priv/book/ stay
+# committed (code-grade source of truth, attributed per CC BY-NC-ND).
+# ============================================================================
+THE ORCHESTRATE METHOD.txt
+LEVEL_UP*.pdf
+book_9780262369978.pdf
+book_*.txt
+book_*.pdf
+
+# Elixir build artefacts (root level, if any)
+/_build/
+/deps/
+*.ez
+erl_crash.dump
+.elixir_ls/
+.elixir-tools/
+
+# Qwen / llama.cpp local weights and CUDA binaries (GitHub 100MB limit)
+Qwen3.6/models/
+Qwen3.6/llama.cpp-bin/
+Qwen3.6/venv/
+Qwen3.6/.qwen_pid
+Qwen3.6/logs/
+Qwen3.6/librechat/
+
+# Nested Python venvs
+ClaudeSpeak/**/venv/
+**/__pycache__/
+*.pyc
+
+# Large generated audio (keep local only)
+audio book/
+
+# Suite launcher runtime state (logs + admin JWT + passwords) -- never commit.
+scripts/.suite/

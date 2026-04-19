@@ -1,0 +1,50 @@
+{
+  "slug": "multimodal-cue-combination",
+  "title": "Optimal Cue Combination: The Statistician's Frog",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 10,
+  "tags": ["multi-modal", "optimal-cue-combination", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(frog_pond)",
+    "world": "frog_pond",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "When both channels provide independent noisy estimates, the posterior is the precision-weighted average -- exactly the optimal-cue-combination result from psychophysics."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=multimodal-cue-combination",
+    "labs_url": "/labs?recipe=multimodal-cue-combination&world=frog_pond"
+  },
+  "math": {
+    "latex": "\\mu_{\\text{combined}} = \\frac{\\pi_1 \\mu_1 + \\pi_2 \\mu_2}{\\pi_1 + \\pi_2},\\quad \\pi_{\\text{combined}} = \\pi_1 + \\pi_2",
+    "symbols": {
+      "mu_k": "channel k's estimate",
+      "pi_k": "channel k's precision",
+      "mu_combined": "optimal-cue-combination posterior mean"
+    }
+  },
+  "audiences": {
+    "kid": "If both eyes and ears give you guesses, the best answer is a weighted average -- trust each more if it's clearer.",
+    "real": "Gaussian factored likelihoods produce the optimal-cue-combination posterior: precision-weighted mean, summed precisions.",
+    "equation": "In a Gaussian multi-modal bundle, closed-form posterior has mu = (pi_1 mu_1 + pi_2 mu_2)/(pi_1 + pi_2), pi = pi_1 + pi_2.",
+    "derivation": "Multiplying two Gaussian densities yields another Gaussian with summed precisions and precision-weighted mean. This reproduces Ernst & Banks (2002) haptic-visual integration in closed form."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["message-passing/s3"],
+  "labs": ["frog"],
+  "orchestrate": {
+    "objective": "Reproduce optimal-cue-combination as a special case of multi-modal Active Inference.",
+    "role": "Psychophysics-connection tutor.",
+    "context": "frog_pond with two channels whose precisions you sweep; posterior is the precision-weighted average."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Ernst & Banks (2002), Humans integrate visual and haptic information in a statistically optimal fashion."
+  ]
+}

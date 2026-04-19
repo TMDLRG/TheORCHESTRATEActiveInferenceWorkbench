@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Active Inference Atlas — Cortical Circuits, Predictive Coding, and Neuromodulation</title>
+<style>
+:root{
+  --bg:#130f0d;
+  --panel:#211b17;
+  --panel2:#2b231e;
+  --edge:#5e5044;
+  --edge2:#8e7b66;
+  --text:#efe6db;
+  --muted:#c9bbaa;
+  --accent:#d7b26a;
+  --accent2:#9bcfc6;
+  --warn:#d98c74;
+  --good:#9dc98f;
+  --violet:#c3a2e6;
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --r:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--text);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:
+    radial-gradient(circle at 15% 0%, #30261f 0, transparent 24%),
+    radial-gradient(circle at 85% 10%, #261f18 0, transparent 22%),
+    linear-gradient(180deg,#17120f,#0f0d0b 44%,#15110f);
+}
+.wrap{max-width:1680px;margin:0 auto;padding:18px}
+.title{
+  display:flex;justify-content:space-between;gap:16px;align-items:start;
+  border:1px solid #4e4338;border-radius:22px;padding:18px 22px;
+  background:linear-gradient(180deg,#2b241e,#1d1815);box-shadow:var(--shadow)
+}
+h1{margin:0;font-size:28px;letter-spacing:.06em}
+.sub{max-width:1100px;font-size:13px;line-height:1.5;color:var(--muted)}
+.badge{padding:8px 12px;border-radius:999px;background:#4a3f35;border:1px solid #8e7c67;font-size:12px;text-transform:uppercase}
+.topbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+button,select,input[type="number"]{
+  font:inherit;color:var(--text);
+  background:linear-gradient(180deg,#655545,#4d4034);
+  border:1px solid #9a876f;border-radius:12px;padding:9px 11px;
+}
+button{cursor:pointer}
+button:hover{filter:brightness(1.05)}
+button:active{transform:translateY(1px)}
+select,input[type="number"]{width:100%;background:#17120f}
+input[type="range"]{width:100%}
+.grid{display:grid;grid-template-columns:430px 1fr;gap:16px;margin-top:16px}
+.col{display:flex;flex-direction:column;gap:16px}
+.panel{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid #52463a;border-radius:var(--r);padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden
+}
+.panel:before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 28%);
+  pointer-events:none
+}
+.panel h2{margin:0 0 10px 0;font-size:18px}
+.small{font-size:12px;color:var(--muted);line-height:1.45}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:10px 12px;border-radius:999px;background:#3b3128;border:1px solid #756551;cursor:pointer}
+.tab.active{background:linear-gradient(180deg,#745f43,#5a4836);border-color:#c9ab72;color:#fff0c7}
+.module{display:none}
+.module.active{display:block}
+.score{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.card{border:1px solid #5a4d41;border-radius:14px;padding:12px;background:rgba(0,0,0,.14)}
+.big{font-size:24px;color:#fff0cb;margin-top:6px}
+.meter{height:14px;border-radius:999px;border:1px solid #6e5d4c;background:#120f0d;overflow:hidden}
+.meter > span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--good),var(--accent),var(--warn))}
+.group{border:1px solid #5a4d41;border-radius:14px;padding:10px;background:rgba(0,0,0,.12)}
+.group h3{margin:0 0 8px 0;font-size:14px;color:#ffeab9}
+.line{display:grid;grid-template-columns:72px 1fr 58px;gap:8px;align-items:center;margin:8px 0}
+.line span{font-size:12px}
+.line2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.builder-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.levels{display:flex;flex-direction:column;gap:10px;max-height:500px;overflow:auto;padding-right:4px}
+details.level{border:1px solid #5a4d41;border-radius:14px;background:rgba(0,0,0,.12)}
+details.level summary{cursor:pointer;list-style:none;padding:10px 12px;font-size:13px;color:#ffedbe}
+details.level summary::-webkit-details-marker{display:none}
+.level-body{padding:0 12px 12px 12px}
+.order-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{border:1px solid #6d5d4d;border-radius:10px;padding:8px;background:#17120f}
+.chip .name{font-size:11px;color:var(--muted)}
+.chip .val{font-size:18px;margin-top:4px;color:#fff1cb}
+.machine{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+canvas{
+  width:100%;height:540px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),#17120f;
+  border:1px solid #594c40;border-radius:16px
+}
+.eq{
+  white-space:pre-wrap;font-size:12px;line-height:1.48;background:#14100d;border:1px solid #5b4d41;border-radius:14px;padding:12px
+}
+.ledger{max-height:540px;overflow:auto}
+.log{max-height:250px;overflow:auto;border:1px solid #594c40;border-radius:12px;padding:10px;background:#13100d}
+.entry{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.07);font-size:12px}
+.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#3a3129;border:1px solid #7a6855;font-size:11px;color:#fff1c8}
+.footer-note{font-size:12px;color:var(--muted)}
+.matrix-table{width:100%;border-collapse:collapse;font-size:12px}
+.matrix-table td,.matrix-table th{border:1px solid #5f5144;padding:6px 7px;text-align:left;vertical-align:top}
+.matrix-table th{color:#ffedbe;background:#231d18}
+.lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bul{font-size:12px;color:#ddd2c3;line-height:1.45}
+@media (max-width:1200px){
+  .grid{grid-template-columns:1fr}
+  .machine{grid-template-columns:1fr}
+  .score{grid-template-columns:1fr 1fr}
+  .lesson-grid{grid-template-columns:1fr}
+}
+.stageStrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:12px;position:sticky;top:8px;z-index:5;background:linear-gradient(180deg,rgba(22,18,15,0.94),rgba(22,18,15,0.82));backdrop-filter:blur(8px);border:1px solid rgba(215,178,106,0.22);border-radius:14px;padding:9px}
+.stageStrip .cell{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 10px;min-width:0}
+.stageStrip .lab{font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageStrip .val{font-size:18px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageStrip .sub2{font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageToolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:9px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:12px;align-items:center}
+.stageToolbar button,.stageToolbar select{padding:9px 12px;font-size:13px;flex:0 0 auto}
+.iconBtn{width:34px;padding:9px 0 !important;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+.introStrip{background:linear-gradient(180deg,rgba(155,207,198,0.10),rgba(155,207,198,0.04));border:1px solid rgba(155,207,198,0.28);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.introStrip .body{display:grid;gap:6px;font-size:13px;line-height:1.4}
+.introStrip .row{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.introStrip .tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:rgba(155,207,198,0.24);color:#d5eae3;white-space:nowrap}
+.introStrip .dismiss{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);font-size:12px;padding:6px 10px}
+.introStrip.hidden{display:none}
+.tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px);z-index:9999;display:none;align-items:flex-end;justify-content:center;padding:24px}
+.tour-overlay.on{display:flex}
+.tour-card{background:linear-gradient(180deg,#2b241e,#1d1915);border:1px solid rgba(215,178,106,0.5);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;max-width:560px;width:100%;color:var(--text)}
+.tour-card h4{margin:0 0 8px;font-size:15px;color:var(--accent);letter-spacing:0.5px}
+.tour-card .step-line{font-size:13px;line-height:1.45;color:var(--text)}
+.tour-card .tour-actions{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+.tour-highlight{position:absolute;pointer-events:none;border:2px solid #e0c07a;border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,0.5),0 0 16px rgba(224,192,122,0.5);transition:top .2s ease,left .2s ease,width .2s ease,height .2s ease;z-index:9998}
+
+/* === Learning Shell === */
+.ls-pathbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;padding:8px 10px;background:linear-gradient(180deg,rgba(215,178,106,0.08),rgba(215,178,106,0.02));border:1px solid rgba(215,178,106,0.22);border-radius:12px;font-size:13px}
+.ls-pathbar .ls-pathlabel{color:var(--muted);margin-right:4px}
+.ls-pathbar .ls-pathbtn{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text);cursor:pointer;font-size:12px;font-weight:600}
+.ls-pathbar .ls-pathbtn:hover{background:rgba(255,255,255,0.10)}
+.ls-pathbar .ls-pathbtn[aria-pressed="true"]{background:linear-gradient(180deg,rgba(215,178,106,0.32),rgba(215,178,106,0.12));border-color:rgba(215,178,106,0.5);color:#fff8e6}
+.ls-pathbar .ls-spacer{flex:1 1 auto}
+.ls-pathbar .ls-toolbtn{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;font-size:12px}
+.ls-pick-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px}
+.ls-pick-overlay.on{display:flex}
+.ls-pick-card{background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(215,178,106,0.4);border-radius:16px;padding:22px 24px;max-width:720px;width:100%;color:var(--text)}
+.ls-pick-card h3{margin:0 0 6px;color:var(--accent);font-size:20px}
+.ls-pick-card .ls-pick-sub{color:var(--muted);font-size:13px;margin-bottom:14px;line-height:1.4}
+.ls-pick-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ls-pick-opt{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;color:var(--text)}
+.ls-pick-opt:hover{background:rgba(255,255,255,0.08)}
+.ls-pick-opt .ls-pick-icon{font-size:22px;display:block;margin-bottom:6px}
+.ls-pick-opt .ls-pick-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.ls-pick-opt .ls-pick-desc{font-size:12px;color:var(--muted);line-height:1.35}
+.ls-pick-card .ls-pick-actions{margin-top:14px;display:flex;justify-content:flex-end}
+.ls-pick-card .ls-pick-actions button{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);padding:6px 12px;border-radius:999px;font-size:12px;cursor:pointer}
+.ls-dock{position:fixed;right:18px;bottom:18px;z-index:200;display:flex;flex-direction:column;gap:8px}
+.ls-dock button{min-width:44px;height:44px;border-radius:22px;background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(215,178,106,0.35);color:var(--text);cursor:pointer;padding:0 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+.ls-dock button:hover{filter:brightness(1.1)}
+.ls-dock .ls-dock-ic{font-size:17px}
+.ls-panel-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);display:none}
+.ls-panel-overlay.on{display:block}
+.ls-panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,96vw);background:linear-gradient(180deg,#2b241d,#1d1714);border-left:1px solid rgba(215,178,106,0.3);box-shadow:-8px 0 24px rgba(0,0,0,0.45);z-index:310;display:none;flex-direction:column;color:var(--text)}
+.ls-panel.on{display:flex}
+.ls-panel-head{padding:14px 16px;border-bottom:1px solid rgba(215,178,106,0.2);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ls-panel-head h4{margin:0;font-size:15px;color:var(--accent)}
+.ls-panel-close{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer}
+.ls-panel-body{padding:14px 16px;overflow:auto;flex:1 1 auto;font-size:13px;line-height:1.45}
+.ls-term{border-bottom:1px dotted rgba(215,178,106,0.55);cursor:help}
+.ls-tooltip{position:absolute;z-index:400;background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(215,178,106,0.45);border-radius:10px;padding:10px 12px;max-width:340px;min-width:220px;color:var(--text);font-size:12px;line-height:1.45;box-shadow:0 8px 22px rgba(0,0,0,0.5);display:none}
+.ls-tooltip.on{display:block}
+.ls-tooltip .ls-term-name{font-weight:800;color:var(--accent);font-size:13px;margin-bottom:4px}
+.ls-tooltip .ls-term-tier{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.1);font-size:11px;color:var(--muted)}
+.ls-tooltip .ls-term-tier b{color:var(--text);font-weight:700}
+.ls-eqpanel .ls-eqtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.ls-eqpanel .ls-eqtab{padding:5px 10px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--muted);cursor:pointer}
+.ls-eqpanel .ls-eqtab[aria-pressed="true"]{background:linear-gradient(180deg,rgba(215,178,106,0.32),rgba(215,178,106,0.12));border-color:rgba(215,178,106,0.5);color:#fff8e6}
+.ls-eqpanel .ls-eqbody{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px;font-size:13px;line-height:1.55;color:var(--text);min-height:60px}
+.ls-eqpanel .ls-eqbody .ls-eqmath{font-family:"Courier New",monospace;white-space:pre-wrap;color:#f1eadc}
+.ls-eqpanel .ls-eqbody .ls-eqpic{display:flex;flex-direction:column;gap:6px;font-family:"Courier New",monospace;font-size:12px;color:#f1eadc}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqbox{padding:4px 8px;border:1px solid rgba(215,178,106,0.4);border-radius:6px;background:rgba(215,178,106,0.08)}
+.ls-analogy{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.ls-analogy h6{margin:0 0 4px;font-size:13px;color:var(--accent)}
+.ls-analogy .ls-analogy-persona{display:inline-block;font-size:10px;letter-spacing:0.6px;text-transform:uppercase;background:rgba(215,178,106,0.2);color:#fff8e6;border-radius:999px;padding:2px 7px;margin-right:6px}
+.ls-analogy .ls-analogy-scenario{color:var(--text);margin:6px 0;font-size:12px}
+.ls-analogy .ls-analogy-map{font-size:11px;color:var(--muted);background:rgba(0,0,0,0.2);border-radius:6px;padding:6px 8px;margin-top:6px}
+.ls-analogy .ls-analogy-map table{width:100%;border-collapse:collapse}
+.ls-analogy .ls-analogy-map td{padding:2px 4px;border-bottom:1px dashed rgba(255,255,255,0.06);font-size:11px}
+.ls-analogy .ls-analogy-map td:first-child{color:var(--accent);font-weight:700;white-space:nowrap}
+.ls-analogy .ls-analogy-ex{font-size:11px;color:var(--muted);margin-top:6px;border-top:1px dashed rgba(255,255,255,0.08);padding-top:6px}
+.ls-exercise{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-bottom:10px}
+.ls-exercise h6{margin:0 0 6px;color:var(--accent);font-size:13px}
+.ls-exercise .ls-ex-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
+.ls-exercise .ls-ex-sect{margin-top:8px}
+.ls-exercise .ls-ex-sect b{color:var(--accent);font-size:11px;letter-spacing:.6px;text-transform:uppercase;display:block;margin-bottom:3px}
+.ls-exercise ol,.ls-exercise ul{margin:4px 0 4px 18px;padding:0}
+.ls-exercise li{margin-bottom:3px;font-size:12px}
+.ls-exercise .ls-ex-print{font-size:11px;background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.2);border-radius:999px;padding:4px 10px;cursor:pointer;margin-top:8px}
+@media print{body>*:not(.ls-print-root){display:none !important}.ls-print-root{display:block !important;color:#000 !important;background:#fff !important;padding:8px !important;font-size:11pt;max-width:5.5in}@page{size:letter;margin:0.4in}}
+.ls-beat{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;margin-bottom:12px;background:linear-gradient(180deg,rgba(152,200,143,0.10),rgba(152,200,143,0.04));border:1px solid rgba(152,200,143,0.28);border-radius:12px;font-size:13px}
+.ls-beat .ls-beat-body{flex:1 1 200px;line-height:1.4}
+.ls-beat .ls-beat-head{display:block;font-size:11px;letter-spacing:.8px;color:#9fc59b;text-transform:uppercase;margin-bottom:3px}
+.ls-beat .ls-beat-ctrl{display:inline-flex;gap:6px}
+.ls-beat .ls-beat-ctrl button{padding:6px 10px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12)}
+.ls-beat .ls-beat-ctrl button.primary{background:linear-gradient(180deg,rgba(152,200,143,0.30),rgba(152,200,143,0.10));border-color:rgba(152,200,143,0.5)}
+.ls-beat .ls-beat-idx{font-weight:800;color:#d7e9c9;font-size:13px;font-variant-numeric:tabular-nums}
+.ls-glossary-entry{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);margin-bottom:8px}
+.ls-glossary-entry .ls-glossary-sym{display:inline-block;font-weight:800;color:var(--accent);margin-right:8px;font-family:"Courier New",monospace}
+.ls-glossary-entry .ls-glossary-tier{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.ls-glossary-entry .ls-glossary-tier b{color:var(--text);font-weight:700}
+.ls-glossary-search{width:100%;box-sizing:border-box;padding:8px 10px;margin-bottom:10px;background:rgba(0,0,0,0.2);color:var(--text);border:1px solid rgba(255,255,255,0.1);border-radius:8px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:100ms !important}}
+body.ls-dys{font-family:"Verdana","Tahoma","Trebuchet MS",sans-serif;letter-spacing:0.03em;word-spacing:0.08em}
+@media (max-width:820px){.ls-pathbar{font-size:12px}.ls-pathbar .ls-pathbtn{padding:5px 8px;font-size:11px}.ls-dock{right:10px;bottom:10px}.ls-dock button{padding:0 10px;font-size:12px;min-width:40px;height:40px}}
+</style>
+<link rel="stylesheet" href="/assets/suite-tokens.css" data-mark="suite-tokens-link-v1">
+</head>
+<body>
+<div class="wrap">
+  <div class="ls-pathbar" role="region" aria-label="Learning path">
+    <a class="ls-pathbtn ls-crumb" href="/learn" target="_top" data-ls-mark="ls-pathbar-breadcrumb-v1">← Learn</a><a class="ls-pathbtn ls-crumb" href="/" target="_top">Workbench ▸</a><span class="ls-pathlabel" style="margin-left:6px;">·</span><span class="ls-pathlabel">Path:</span>
+    <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false">🌱 Story</button>
+    <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true">🧭 Real-world</button>
+    <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false">🛠️ Equation</button>
+    <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false">🎓 Derivation</button>
+    <span class="ls-spacer"></span>
+    <button class="ls-toolbtn" id="lsPickerBtn">♻ Switch audience</button>
+    <button class="ls-toolbtn" id="lsDysBtn" aria-pressed="false">🅰 Font</button>
+  </div>
+  <div class="title">
+    <div>
+      <h1>ACTIVE INFERENCE ATLAS</h1>
+      <div class="sub">
+        A standalone educational sim game for the continuous-time predictive-coding and active-inference material in your pages:
+        Laplace approximation, generalized coordinates, hierarchical message passing, cortical microcircuits, policy inference, action, and a simplified neuromodulator/precision lab.
+        It is faithful at the level of the equations’ roles and message flow, while using compact linear teaching-world maps so the math stays visible and editable.
+      </div>
+    </div>
+    <div class="badge">Standalone HTML</div>
+  </div>
+
+  <div class="topbar tabs" id="tabs">
+    <div class="tab active" data-tab="tower">Hierarchy Forge</div>
+    <div class="tab" data-tab="cortex">Cortical Circuit Lab</div>
+    <div class="tab" data-tab="policy">Policy & Basal Ganglia Lab</div>
+    <div class="tab" data-tab="neuro">Neuromodulator Bench</div>
+    <div class="tab" data-tab="lessons">Guided Lessons</div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="panel">
+        <h2>Scenario Bay</h2>
+        <div class="small">Load a teaching world, then rewire it. Presets span simple predictive coding, layered cortex, and active policy selection.</div>
+        <div style="margin-top:10px"><select id="presetSelect"></select></div>
+        <div class="topbar" style="margin-top:10px">
+          <button id="loadPresetBtn">Load preset</button>
+          <button id="randomizeBtn">Randomize μ</button>
+          <button id="resetBtn">Reset μ and u</button>
+          <button id="exportBtn">Export model JSON</button>
+        </div>
+        <div id="mission" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Global Controls</h2>
+        <div class="builder-row">
+          <div class="group">
+            <h3>Gradient descent</h3>
+            <div class="line"><span>lr μ</span><input type="range" id="lrMu" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrMuN" step="0.005" value="0.05"></div>
+            <div class="line"><span>lr u</span><input type="range" id="lrU" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrUN" step="0.005" value="0.05"></div>
+            <div class="line"><span>lr π</span><input type="range" id="lrPi" min="0.005" max="0.2" step="0.005" value="0.05"><input type="number" id="lrPiN" step="0.005" value="0.05"></div>
+          </div>
+          <div class="group">
+            <h3>Sensory stream</h3>
+            <div class="line"><span>base</span><input type="range" id="yBase" min="-4" max="4" step="0.1" value="0"><input type="number" id="yBaseN" step="0.1" value="0"></div>
+            <div class="line"><span>gain</span><input type="range" id="actGain" min="-3" max="3" step="0.1" value="1"><input type="number" id="actGainN" step="0.1" value="1"></div>
+            <div class="line"><span>Πy / ζ</span><input type="range" id="py" min="0.2" max="8" step="0.1" value="2"><input type="number" id="pyN" step="0.1" value="2"></div>
+          </div>
+        </div>
+        <div class="topbar" style="margin-top:8px">
+          <button id="stepBeliefsBtn">Belief step</button>
+          <button id="stepActionBtn">Action step</button>
+          <button id="stepPolicyBtn">Policy step</button>
+          <button id="stepBothBtn">Belief + action + policy</button>
+          <button id="autoBtn">Auto-run</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Hierarchy Builder</h2>
+        <div class="small">Add/remove levels and generalized orders, then edit each level’s precision and linear generative maps.</div>
+        <div class="topbar" style="margin-top:8px">
+          <button id="addLevelBtn">Add level</button>
+          <button id="removeLevelBtn">Remove top</button>
+          <button id="addOrderBtn">Add order</button>
+          <button id="removeOrderBtn">Remove order</button>
+        </div>
+        <div id="levelsEditor" class="levels" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Session Log</h2>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="stageStrip" role="region" aria-label="System state">
+        <div class="cell"><div class="lab">Total F</div><div class="val" id="stripF">0.000</div><div class="sub2" id="stripFTarget">target pending</div></div>
+        <div class="cell"><div class="lab">Fy</div><div class="val" id="stripFy">0.000</div><div class="sub2">sensory</div></div>
+        <div class="cell"><div class="lab">Fx</div><div class="val" id="stripFx">0.000</div><div class="sub2">dynamics</div></div>
+        <div class="cell"><div class="lab">Fv</div><div class="val" id="stripFv">0.000</div><div class="sub2">hierarchy</div></div>
+        <div class="cell"><div class="lab">Best π</div><div class="val" id="stripPi">0.000</div><div class="sub2" id="stripPiName">—</div></div>
+        <div class="cell"><div class="lab">Action u</div><div class="val" id="stripU">0.000</div><div class="sub2">y = base + gain·u</div></div>
+      </div>
+
+      <div class="introStrip" id="introStrip" role="note">
+        <div class="body">
+          <div class="row"><span class="tag">Goal</span><span>Tour active inference end-to-end: predictive coding, cortical mapping, policy selection, and neuromodulator precision.</span></div>
+          <div class="row"><span class="tag">Watch</span><span>Total F at the top — the tab canvases are four views of the same state.</span></div>
+          <div class="row"><span class="tag">First move</span><span>In <em>Hierarchy Forge</em>, click <strong>Belief step</strong>. Then try the neuromodulator bench.</span></div>
+        </div>
+        <button class="dismiss" id="introDismissBtn" aria-label="Dismiss intro">Got it ✕</button>
+      </div>
+
+      <div class="stageToolbar" role="toolbar" aria-label="Run controls">
+        <select id="toolbarPreset" style="width:auto;"></select>
+        <button id="tbLoadPreset">Load preset</button>
+        <button id="tbBelief">Belief step</button>
+        <button id="tbAction">Action step</button>
+        <button id="tbPolicy">Policy step</button>
+        <button id="tbFullCycle">Belief + action + policy</button>
+        <button id="tbAuto">Auto-run</button>
+        <button id="tbRandomize">Randomize μ</button>
+        <button id="tbReset">Reset μ and u</button>
+        <button class="iconBtn" id="tourOpenBtn" title="Open guided tour" aria-label="Open guided tour">?</button>
+      </div>
+
+      <div class="panel">
+        <h2>Machine Status</h2>
+        <div class="score">
+          <div class="card"><div class="small">Total F</div><div class="big" id="Ftot">0.000</div><div class="meter"><span id="meterF"></span></div></div>
+          <div class="card"><div class="small">Sensory</div><div class="big" id="Fy">0.000</div><div class="small">½ Πy εy²</div></div>
+          <div class="card"><div class="small">Dynamics</div><div class="big" id="Fx">0.000</div><div class="small">Σ ½ Πx||εx||²</div></div>
+          <div class="card"><div class="small">Hierarchy</div><div class="big" id="Fv">0.000</div><div class="small">Σ ½ Πv||εv||²</div></div>
+          <div class="card"><div class="small">Policy</div><div class="big" id="Gval">0.000</div><div class="small">E.G. + ambiguity</div></div>
+          <div class="card"><div class="small">Action u</div><div class="big" id="uVal">0.000</div><div class="small">y = base + gain·u</div></div>
+        </div>
+      </div>
+
+      <div class="panel module active" id="module-tower">
+        <h2>Hierarchy Forge</h2>
+        <div class="machine">
+          <canvas id="towerCanvas" width="980" height="540"></canvas>
+          <div class="ledger">
+            <div class="eq" id="summaryEq"></div>
+            <div class="eq" id="ledger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-cortex">
+        <h2>Cortical Circuit Lab</h2>
+        <div class="machine">
+          <canvas id="cortexCanvas" width="980" height="540"></canvas>
+          <div class="ledger">
+            <div class="eq" id="cortexEq"></div>
+            <table class="matrix-table" style="margin-top:12px">
+              <tr><th>Population</th><th>Teaching role here</th></tr>
+              <tr><td>SP (superficial pyramidal)</td><td>Carries ascending prediction errors.</td></tr>
+              <tr><td>DP (deep pyramidal)</td><td>Sends descending predictions and participates in policy/action related outputs in this teaching view.</td></tr>
+              <tr><td>SS (spiny stellate)</td><td>Receives input and local sensory drive.</td></tr>
+              <tr><td>II (inhibitory interneurons)</td><td>Implements gain control / shaping of local message passing.</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-policy">
+        <h2>Policy & Basal Ganglia Lab</h2>
+        <div class="machine">
+          <canvas id="policyCanvas" width="980" height="540"></canvas>
+          <div class="ledger">
+            <div class="eq" id="policyEq"></div>
+            <div class="group" style="margin-top:12px">
+              <h3>Policies</h3>
+              <div class="small">Posterior over policies is computed as softmax(-G - F_policy_bias), with dopamine-like γ sharpening or flattening the softmax.</div>
+              <div id="policyCards" class="lesson-grid" style="margin-top:8px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-neuro">
+        <h2>Neuromodulator Bench</h2>
+        <div class="machine">
+          <canvas id="neuroCanvas" width="980" height="540"></canvas>
+          <div class="ledger">
+            <div class="eq" id="neuroEq"></div>
+            <table class="matrix-table" style="margin-top:12px">
+              <tr><th>Modulator</th><th>Mapped teaching role</th><th>Slider effect here</th></tr>
+              <tr><td>Acetylcholine</td><td>Likelihood precision ζ</td><td>Changes Πy</td></tr>
+              <tr><td>Noradrenaline</td><td>Transition precision ω</td><td>Changes Πx</td></tr>
+              <tr><td>Dopamine</td><td>Policy precision γ</td><td>Sharpens policy posterior</td></tr>
+              <tr><td>Serotonin</td><td>Preference / interoceptive likelihood χ</td><td>Changes preference strength in G</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-lessons">
+        <h2>Guided Lessons</h2>
+        <div class="lesson-grid">
+          <div class="group">
+            <h3>Lesson 1 — Laplace approximation</h3>
+            <div class="bul">
+              Around the posterior mode μ, the log density is approximated by a quadratic. A quadratic log density means a Gaussian local approximation.
+              In the sim, this shows up as free energy being a sum of precision-weighted squared prediction errors.
+            </div>
+          </div>
+          <div class="group">
+            <h3>Lesson 2 — Generalized coordinates</h3>
+            <div class="bul">
+              D shifts generalized coordinates upward: Dμ[k] = μ[k+1]. Free-energy minima should satisfy “the motion of the mode is the mode of the motion.”
+            </div>
+          </div>
+          <div class="group">
+            <h3>Lesson 3 — Predictive coding hierarchy</h3>
+            <div class="bul">
+              Lower levels send errors upward. Higher levels send predictions downward. In the sim, εx links orders within a level, while εv links levels together.
+            </div>
+          </div>
+          <div class="group">
+            <h3>Lesson 4 — Action</h3>
+            <div class="bul">
+              Action only changes sensory data directly. That is why the action gradient uses the lowest-level sensory error channel.
+            </div>
+          </div>
+          <div class="group">
+            <h3>Lesson 5 — Policies</h3>
+            <div class="bul">
+              A policy posterior can be written as softmax(-G - F). Here G collects preference mismatch and ambiguity cost; dopamine-like precision γ controls sharpness.
+            </div>
+          </div>
+          <div class="group">
+            <h3>Lesson 6 — Neuromodulators</h3>
+            <div class="bul">
+              The sim uses a simplified mapping: acetylcholine ↔ likelihood precision, noradrenaline ↔ transition precision, dopamine ↔ policy precision, serotonin ↔ preferences/interoception.
+            </div>
+          </div>
+        </div>
+        <div class="eq" id="lessonEq" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;">
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px;color:var(--accent);font-size:14px;letter-spacing:1px;text-transform:uppercase;">Layered Equation Panel</h2>
+      <div class="ls-eqpanel" id="lsEqPanel">
+        <div class="ls-eqtabs"><button class="ls-eqtab" data-ls-tab="story">Story</button><button class="ls-eqtab" data-ls-tab="picture">Picture</button><button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button><button class="ls-eqtab" data-ls-tab="derivation">Derivation</button></div>
+        <div class="ls-eqbody" id="lsEqBody"></div>
+      </div>
+    </section>
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px;color:var(--accent);font-size:14px;letter-spacing:1px;text-transform:uppercase;">Beat Script</h2>
+      <div id="lsBeatHost"></div>
+    </section>
+  </div>
+</div>
+
+<div class="ls-dock"><button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button><button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button><button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button></div>
+<div class="ls-panel-overlay" id="lsPanelOverlay"></div>
+<aside class="ls-panel" id="lsPanel"><div class="ls-panel-head"><h4 id="lsPanelTitle">Panel</h4><button class="ls-panel-close" id="lsPanelClose">Close ✕</button></div><div class="ls-panel-body" id="lsPanelBody"></div></aside>
+<div class="ls-pick-overlay" id="lsPickerOverlay"><div class="ls-pick-card"><h3>Pick a learning path</h3><div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths.</div><div class="ls-pick-grid"><button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative + physical objects.</div></button><button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Analogies + missions.</div></button><button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code.</div></button><button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches.</div></button></div><div class="ls-pick-actions"><button id="lsPickerDismiss">Skip — I'll default to real-world</button></div></div></div>
+<div class="ls-tooltip" id="lsTooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>
+
+<script>
+(()=>{
+  const $ = id => document.getElementById(id);
+  let autoTimer = null;
+  let currentPreset = 0;
+
+  function bindPair(a,b){
+    $(a).addEventListener('input',()=>{$(b).value=$(a).value; update();});
+    $(b).addEventListener('input',()=>{$(a).value=$(b).value; update();});
+  }
+  ['lrMu','lrU','lrPi','yBase','actGain','py'].forEach(id=>bindPair(id,id+'N'));
+
+  const presets = [
+    {
+      name:'Predictive coding starter',
+      mission:'Drive free energy below 0.30. Start with 1 level, 2 orders, and learn εy / εx / εv.',
+      target:0.30,
+      build:()=>makeModel(1,2,{
+        py:2.0,yBase:0,actGain:1.0,
+        levels:[{px:1.4,pv:1.0,aObsX:1.0,aObsV:0.4,alpha:0.8,beta:0.3,predX:0,predV:0,mux:[-0.6,0.2],muv:[0.2,0],eta:[0,0]}],
+        policies:defaultPolicies()
+      })
+    },
+    {
+      name:'Three-region cortex',
+      mission:'Bring F below 0.65. Watch superficial error ascent and deep prediction descent across 3 levels.',
+      target:0.65,
+      build:()=>makeModel(3,2,{
+        py:2.2,yBase:-0.2,actGain:1.0,
+        levels:[
+          {px:1.8,pv:1.6,aObsX:1.1,aObsV:0.5,alpha:0.9,beta:0.4,predX:0.8,predV:0.7,mux:[-0.8,0.4],muv:[0.1,-0.1],eta:[0,0]},
+          {px:1.3,pv:1.0,aObsX:0,aObsV:0,alpha:0.8,beta:0.4,predX:0.7,predV:0.7,mux:[0.7,-0.2],muv:[0.4,0.1],eta:[0,0]},
+          {px:0.9,pv:0.8,aObsX:0,aObsV:0,alpha:0.6,beta:0.3,predX:0,predV:0,mux:[0.2,0.1],muv:[0.3,0.0],eta:[0,0]}
+        ],
+        policies:defaultPolicies()
+      })
+    },
+    {
+      name:'Cortex + policy selection',
+      mission:'Bring F below 1.00 and push the best policy posterior above 0.70.',
+      target:1.00,
+      build:()=>makeModel(2,3,{
+        py:2.0,yBase:0.1,actGain:1.0,
+        levels:[
+          {px:2.1,pv:1.9,aObsX:1.1,aObsV:0.6,alpha:0.9,beta:0.5,predX:0.8,predV:0.8,mux:[-0.7,0.6,0.2],muv:[0.2,0.0,0.0],eta:[0,0,0]},
+          {px:1.0,pv:0.9,aObsX:0,aObsV:0,alpha:0.7,beta:0.4,predX:0,predV:0,mux:[0.4,0.1,0.0],muv:[0.5,0.1,0.0],eta:[0,0,0]}
+        ],
+        policies:defaultPolicies()
+      })
+    }
+  ];
+
+  function defaultPolicies(){
+    return [
+      {name:'Observe',  control: 0.0, ambiguity: 0.6, target: 0.0, habit:0.0},
+      {name:'Approach', control: 1.2, ambiguity: 0.2, target: 1.6, habit:0.0},
+      {name:'Avoid',    control:-1.1, ambiguity: 0.3, target:-1.2, habit:0.0}
+    ];
+  }
+
+  function makeModel(L,O,cfg={}){
+    const model = {
+      orders: O,
+      levels: [],
+      py: cfg.py ?? 2.0,
+      yBase: cfg.yBase ?? 0,
+      actGain: cfg.actGain ?? 1.0,
+      u: 0.0,
+      gamma: 2.0,
+      chi: 1.5,
+      chol: 2.0,
+      nor: 1.5,
+      dop: 2.0,
+      ser: 1.5,
+      policies: cfg.policies ?? defaultPolicies()
+    };
+    for(let i=0;i<L;i++){
+      const base = cfg.levels?.[i] || {};
+      model.levels.push({
+        name:`Level ${i+1}`,
+        px: base.px ?? 1.5,
+        pv: base.pv ?? 1.2,
+        aObsX: base.aObsX ?? (i===0 ? 1.0 : 0.0),
+        aObsV: base.aObsV ?? (i===0 ? 0.5 : 0.0),
+        alpha: base.alpha ?? 0.8,
+        beta: base.beta ?? 0.4,
+        predX: base.predX ?? (i<L-1 ? 0.8 : 0.0),
+        predV: base.predV ?? (i<L-1 ? 0.8 : 0.0),
+        mux: normalizeLen(base.mux,O),
+        muv: normalizeLen(base.muv,O),
+        eta: normalizeLen(base.eta,O)
+      });
+    }
+    return model;
+  }
+  function normalizeLen(arr,O){
+    arr = (arr || []).slice();
+    while(arr.length < O) arr.push(0);
+    return arr.slice(0,O);
+  }
+  let model = presets[0].build();
+  // Track user interaction so the mission-cleared badge doesn't light up on
+  // load merely because the default preset already satisfies its own target.
+  let hasInteracted = false;
+
+  function fmt(x){ x = Math.abs(x)<1e-10 ? 0 : x; return Number(x).toFixed(3); }
+  function clamp(x,a,b){ return Math.max(a, Math.min(b,x)); }
+  function log(msg){
+    const d = document.createElement('div');
+    d.className='entry';
+    d.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+    $('log').prepend(d);
+  }
+
+  function yFromAction(m){ return m.yBase + m.actGain*m.u; }
+  function Dshift(arr){ return arr.map((_,k)=> k<arr.length-1 ? arr[k+1] : 0); }
+
+  // Teaching-world linear generative maps
+  function obsPred(L){ return L.aObsX*L.mux[0] + L.aObsV*L.muv[0]; }
+  function dynPred(L){
+    return L.mux.map((_,k)=>{
+      const nextx = (k<L.mux.length-1 ? L.mux[k+1] : 0);
+      return L.alpha*nextx + L.beta*L.muv[k];
+    });
+  }
+  function downPred(upper,O){
+    return Array.from({length:O}, (_,k)=> upper.predX*upper.mux[k] + upper.predV*upper.muv[k]);
+  }
+
+  function computePolicyStuff(m, sensory){
+    const pols = m.policies.map(p=>{
+      const predictedY = sensory + p.control;
+      const risk = 0.5 * m.chi * Math.pow(predictedY - p.target, 2);
+      const G = risk + p.ambiguity - p.habit;
+      return {...p, predictedY, risk, G};
+    });
+    const exps = pols.map(p=>Math.exp(-m.gamma * p.G));
+    const Z = exps.reduce((a,b)=>a+b,0);
+    pols.forEach((p,i)=> p.posterior = exps[i]/Z);
+    const Gbar = pols.reduce((s,p)=> s + p.posterior * p.G, 0);
+    return {pols, Gbar};
+  }
+
+  // NA baseline: at m.nor = NA_BASELINE the gain is 1.0, so per-level L.px is used as-is.
+  const NA_BASELINE = 1.5;
+
+  function compute(m){
+    // Teaching-world neuromodulator mapping (labeled as a simplified didactic map):
+    //   ACh  zeta  -> Py   (global likelihood precision)
+    //   DA   gamma -> policy precision (softmax sharpness)
+    //   5-HT chi   -> preference weighting in G
+    //   NA   omega -> multiplicative gain on dynamics precision Px, per level
+    // NA is a gain, not a replacer: per-level L.px values remain user-editable and are
+    // scaled uniformly. At NA = NA_BASELINE the effective Px equals the stored L.px.
+    m.py = m.chol;
+    m.gamma = m.dop;
+    m.chi = m.ser;
+    const naGain = m.nor / NA_BASELINE;
+
+    const y = yFromAction(m);
+    const out = {y, levels:[], Fy:0,Fx:0,Fv:0,F:0, naGain};
+    out.ey = y - obsPred(m.levels[0]);
+    out.Fy = 0.5 * m.py * out.ey*out.ey;
+
+    for(let i=0;i<m.levels.length;i++){
+      const L = m.levels[i];
+      const Dmx = Dshift(L.mux);
+      const f = dynPred(L);
+      const ex = Dmx.map((v,k)=> v - f[k]);
+      let ev, predFromAbove=null;
+      if(i===m.levels.length-1){
+        ev = L.muv.map((v,k)=> v - L.eta[k]);
+      } else {
+        predFromAbove = downPred(m.levels[i+1], m.orders);
+        ev = L.muv.map((v,k)=> v - predFromAbove[k]);
+      }
+      const pxEff = L.px * naGain;
+      const Fx_i = 0.5 * pxEff * ex.reduce((s,v)=>s+v*v,0);
+      const Fv_i = 0.5 * L.pv * ev.reduce((s,v)=>s+v*v,0);
+      out.Fx += Fx_i; out.Fv += Fv_i;
+      out.levels.push({Dmx,f,ex,ev,predFromAbove,Fx_i,Fv_i,pxEff});
+    }
+    out.F = out.Fy + out.Fx + out.Fv;
+    out.policy = computePolicyStuff(m, y);
+    return out;
+  }
+
+  function flattenMu(m){
+    const arr = [];
+    m.levels.forEach(L=>{ L.mux.forEach(v=>arr.push(v)); L.muv.forEach(v=>arr.push(v)); });
+    return arr;
+  }
+  function unflattenMu(m, arr){
+    let c=0;
+    m.levels.forEach(L=>{
+      for(let k=0;k<m.orders;k++) L.mux[k]=arr[c++];
+      for(let k=0;k<m.orders;k++) L.muv[k]=arr[c++];
+    });
+  }
+  function clone(x){ return JSON.parse(JSON.stringify(x)); }
+  function freeEnergyOf(m){ return compute(m).F; }
+
+  function muGradient(m){
+    const base = freeEnergyOf(m), h=1e-4;
+    const vec = flattenMu(m), grad = Array(vec.length).fill(0);
+    for(let i=0;i<vec.length;i++){
+      const cp = clone(m), arr = flattenMu(cp);
+      arr[i] += h;
+      unflattenMu(cp, arr);
+      grad[i] = (freeEnergyOf(cp)-base)/h;
+    }
+    return grad;
+  }
+  function uGradient(m){
+    const h=1e-4, base=freeEnergyOf(m);
+    const cp = clone(m); cp.u += h;
+    return (freeEnergyOf(cp)-base)/h;
+  }
+
+  function beliefStep(){
+    hasInteracted = true;
+    const lr = parseFloat($('lrMu').value);
+    const grad = muGradient(model), vals = flattenMu(model);
+    for(let i=0;i<vals.length;i++) vals[i] = clamp(vals[i] - lr*grad[i], -5, 5);
+    unflattenMu(model, vals);
+    renderEditors(); update();
+    const n = Math.sqrt(grad.reduce((s,v)=>s+v*v,0));
+    log(`Belief step: ||∇μF|| ≈ ${fmt(n)}.`);
+  }
+  function actionStep(){
+    hasInteracted = true;
+    const lr = parseFloat($('lrU').value);
+    const g = uGradient(model);
+    model.u = clamp(model.u - lr*g, -5, 5);
+    update();
+    log(`Action step: ∂F/∂u ≈ ${fmt(g)}.`);
+  }
+  function policyStep(){
+    hasInteracted = true;
+    // use best posterior policy to gently steer action
+    const C = compute(model);
+    const best = [...C.policy.pols].sort((a,b)=>b.posterior-a.posterior)[0];
+    const lr = parseFloat($('lrPi').value);
+    model.u = clamp(model.u + lr*(best.control - model.u), -5, 5);
+    update();
+    log(`Policy step: selected ${best.name} (posterior ${fmt(best.posterior)}).`);
+  }
+
+  function addLevel(){
+    const O = model.orders;
+    model.levels.push({
+      name:`Level ${model.levels.length+1}`,px:model.nor,pv:1.0,aObsX:0,aObsV:0,alpha:0.7,beta:0.35,predX:0,predV:0,mux:Array(O).fill(0),muv:Array(O).fill(0),eta:Array(O).fill(0)
+    });
+    if(model.levels.length>1){
+      model.levels[model.levels.length-2].predX ||= 0.8;
+      model.levels[model.levels.length-2].predV ||= 0.8;
+    }
+    renderEditors(); update(); log('Added a hierarchical level.');
+  }
+  function removeLevel(){
+    if(model.levels.length<=1) return;
+    model.levels.pop();
+    model.levels[model.levels.length-1].predX = 0; model.levels[model.levels.length-1].predV = 0;
+    renderEditors(); update(); log('Removed the top level.');
+  }
+  function addOrder(){
+    if(model.orders>=4) return;
+    model.orders += 1;
+    model.levels.forEach(L=>{L.mux.push(0);L.muv.push(0);L.eta.push(0);});
+    renderEditors(); update(); log('Added a generalized order.');
+  }
+  function removeOrder(){
+    if(model.orders<=1) return;
+    model.orders -= 1;
+    model.levels.forEach(L=>{L.mux.pop();L.muv.pop();L.eta.pop();});
+    renderEditors(); update(); log('Removed a generalized order.');
+  }
+  function randomizeBeliefs(){
+    model.levels.forEach(L=>{
+      L.mux = L.mux.map(()=>Math.random()*3-1.5);
+      L.muv = L.muv.map(()=>Math.random()*3-1.5);
+    });
+    model.u = Math.random()*2-1;
+    renderEditors(); update(); log('Randomized μ and u.');
+  }
+  function resetBeliefs(){
+    model.levels.forEach(L=>{L.mux=L.mux.map(()=>0);L.muv=L.muv.map(()=>0);});
+    model.u = 0; renderEditors(); update(); log('Reset μ and u.');
+  }
+  function exportModel(){
+    const blob = new Blob([JSON.stringify(model,null,2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'active_inference_atlas_model.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function renderEditors(){
+    const wrap = $('levelsEditor');
+    wrap.innerHTML = '';
+
+    // neuromodulator bench editor at top
+    const neuroGroup = document.createElement('div');
+    neuroGroup.className = 'group';
+    neuroGroup.innerHTML = `
+      <h3>Neuromodulator sliders</h3>
+      <div class="line"><span>ACh ζ</span><input type="range" min="0.2" max="8" step="0.1" value="${model.chol}" data-k="chol"><input type="number" step="0.1" value="${model.chol}" data-k2="chol"></div>
+      <div class="line"><span>NA ω</span><input type="range" min="0.2" max="8" step="0.1" value="${model.nor}" data-k="nor"><input type="number" step="0.1" value="${model.nor}" data-k2="nor"></div>
+      <div class="line"><span>DA γ</span><input type="range" min="0.2" max="8" step="0.1" value="${model.dop}" data-k="dop"><input type="number" step="0.1" value="${model.dop}" data-k2="dop"></div>
+      <div class="line"><span>5-HT χ</span><input type="range" min="0.2" max="8" step="0.1" value="${model.ser}" data-k="ser"><input type="number" step="0.1" value="${model.ser}" data-k2="ser"></div>
+    `;
+    wrap.appendChild(neuroGroup);
+    // Bidirectional sync: ACh (model.chol) and global Πy/ζ (model.py) share a
+    // single numeric meaning (sensory precision). Editing either surface
+    // updates the other so the two slider thumbs never disagree.
+    function syncChol(v){
+      model.chol = v;
+      model.py = v;
+      if($('py'))   $('py').value = v;
+      if($('pyN'))  $('pyN').value = v;
+    }
+    neuroGroup.querySelectorAll('input[data-k]').forEach(inp=>{
+      inp.addEventListener('input',e=>{
+        const k=e.target.dataset.k, v=parseFloat(e.target.value);
+        if(k==='chol'){ syncChol(v); } else { model[k]=v; }
+        neuroGroup.querySelector(`input[data-k2="${k}"]`).value=v; update();
+      });
+    });
+    neuroGroup.querySelectorAll('input[data-k2]').forEach(inp=>{
+      inp.addEventListener('input',e=>{
+        const k=e.target.dataset.k2, v=parseFloat(e.target.value);
+        if(k==='chol'){ syncChol(v); } else { model[k]=v; }
+        neuroGroup.querySelector(`input[data-k="${k}"]`).value=v; update();
+      });
+    });
+
+    model.levels.forEach((L,i)=>{
+      const det = document.createElement('details');
+      det.className='level';
+      det.open = i===0 || i===model.levels.length-1;
+      det.innerHTML = `
+        <summary>${L.name} <span class="pill">level ${i+1}/${model.levels.length}</span></summary>
+        <div class="level-body">
+          <div class="line2">
+            <div class="chip"><div class="name">Πx</div><div class="val"><input type="number" value="${L.px}" step="0.1" data-level="${i}" data-key="px"></div></div>
+            <div class="chip"><div class="name">Πv</div><div class="val"><input type="number" value="${L.pv}" step="0.1" data-level="${i}" data-key="pv"></div></div>
+          </div>
+          <div class="line2">
+            <div class="chip"><div class="name">alpha in f</div><div class="val"><input type="number" value="${L.alpha}" step="0.1" data-level="${i}" data-key="alpha"></div></div>
+            <div class="chip"><div class="name">beta in f</div><div class="val"><input type="number" value="${L.beta}" step="0.1" data-level="${i}" data-key="beta"></div></div>
+          </div>
+          <div class="line2">
+            <div class="chip"><div class="name">predX from above</div><div class="val"><input type="number" value="${L.predX}" step="0.1" data-level="${i}" data-key="predX"></div></div>
+            <div class="chip"><div class="name">predV from above</div><div class="val"><input type="number" value="${L.predV}" step="0.1" data-level="${i}" data-key="predV"></div></div>
+          </div>
+          ${i===0 ? `
+            <div class="line2">
+              <div class="chip"><div class="name">aObsX</div><div class="val"><input type="number" value="${L.aObsX}" step="0.1" data-level="${i}" data-key="aObsX"></div></div>
+              <div class="chip"><div class="name">aObsV</div><div class="val"><input type="number" value="${L.aObsV}" step="0.1" data-level="${i}" data-key="aObsV"></div></div>
+            </div>`:''}
+          <div class="small" style="margin:8px 0 6px 0">Generalized coordinates</div>
+          <div class="order-grid">
+            ${Array.from({length:model.orders}, (_,k)=> `<div class="chip"><div class="name">μx[${k+1}]</div><div class="val"><input type="number" value="${L.mux[k]}" step="0.1" data-level="${i}" data-vec="mux" data-k="${k}"></div></div>`).join('')}
+            ${Array.from({length:model.orders}, (_,k)=> `<div class="chip"><div class="name">μv[${k+1}]</div><div class="val"><input type="number" value="${L.muv[k]}" step="0.1" data-level="${i}" data-vec="muv" data-k="${k}"></div></div>`).join('')}
+            ${Array.from({length:model.orders}, (_,k)=> `<div class="chip"><div class="name">η[${k+1}]</div><div class="val"><input type="number" value="${L.eta[k]}" step="0.1" data-level="${i}" data-vec="eta" data-k="${k}"></div></div>`).join('')}
+          </div>
+        </div>
+      `;
+      wrap.appendChild(det);
+    });
+
+    wrap.querySelectorAll('input[data-key]').forEach(inp=>{
+      inp.addEventListener('input',e=>{
+        const i=+e.target.dataset.level, key=e.target.dataset.key;
+        model.levels[i][key] = parseFloat(e.target.value);
+        update();
+      });
+    });
+    wrap.querySelectorAll('input[data-vec]').forEach(inp=>{
+      inp.addEventListener('input',e=>{
+        const i=+e.target.dataset.level, key=e.target.dataset.vec, k=+e.target.dataset.k;
+        model.levels[i][key][k] = parseFloat(e.target.value);
+        update();
+      });
+    });
+  }
+
+  function setMission(text,target){
+    $('mission').innerHTML = `<div class="small">${text}<br><span class="pill">Target F < ${fmt(target)}</span></div>`;
+  }
+
+  function loadPreset(ix){
+    currentPreset = ix;
+    hasInteracted = false;
+    model = presets[ix].build();
+    $('py').value = $('pyN').value = model.py;
+    $('yBase').value = $('yBaseN').value = model.yBase;
+    $('actGain').value = $('actGainN').value = model.actGain;
+    setMission(presets[ix].mission, presets[ix].target);
+    renderEditors(); update(); log(`Loaded preset: ${presets[ix].name}.`);
+  }
+
+  function updateGlobalsFromUI(){
+    model.py = parseFloat($('py').value);
+    model.yBase = parseFloat($('yBase').value);
+    model.actGain = parseFloat($('actGain').value);
+    // ACh ↔ Πy share a single value. Mirror model.py into model.chol AND into
+    // the neuroGroup inputs (if present) so the neuro tab reflects the edit.
+    model.chol = model.py;
+    const cholRange = document.querySelector('input[data-k="chol"]');
+    const cholNum   = document.querySelector('input[data-k2="chol"]');
+    if (cholRange) cholRange.value = model.py;
+    if (cholNum)   cholNum.value   = model.py;
+  }
+
+  function update(){
+    updateGlobalsFromUI();
+    const C = compute(model);
+    $('Ftot').textContent = fmt(C.F);
+    $('Fy').textContent = fmt(C.Fy);
+    $('Fx').textContent = fmt(C.Fx);
+    $('Fv').textContent = fmt(C.Fv);
+    $('Gval').textContent = fmt(C.policy.Gbar);
+    $('uVal').textContent = fmt(model.u);
+    $('meterF').style.width = Math.min(100, C.F*8) + '%';
+
+    // Sticky status strip
+    $('stripF').textContent = fmt(C.F);
+    $('stripFy').textContent = fmt(C.Fy);
+    $('stripFx').textContent = fmt(C.Fx);
+    $('stripFv').textContent = fmt(C.Fv);
+    const best = [...C.policy.pols].sort((a,b)=>b.posterior-a.posterior)[0];
+    $('stripPi').textContent = fmt(best.posterior);
+    $('stripPiName').textContent = best.name;
+    $('stripU').textContent = fmt(model.u);
+    const p = presets[currentPreset];
+    $('stripFTarget').textContent = p ? (C.F < p.target ? `✓ under ${p.target.toFixed(2)}` : `target F < ${p.target.toFixed(2)}`) : 'open';
+
+    $('summaryEq').textContent =
+`Core teaching equations
+
+Laplace / local Gaussian view:
+q(x) ≈ N(μ, Σ⁻¹),     Σ⁻¹ = - ∂² ln p(x,y) / ∂x² |_(x=μ)
+
+Continuous-time predictive coding:
+μ̇ - Dμ = -∇_μ F
+
+Quadratic free energy used in this simulator:
+F = 1/2 Πy εy² + Σ_i 1/2 Πx^(i) ||εx^(i)||² + Σ_i 1/2 Πv^(i) ||εv^(i)||²
+
+Errors:
+εy = y(u) - g_0(μx^(1), μv^(1))
+εx^(i) = Dμx^(i) - f^(i)(μx^(i), μv^(i))
+εv^(i) = μv^(i) - g^(i+1)(μx^(i+1), μv^(i+1))
+
+Action:
+u̇ = -∂F/∂u
+
+Policies:
+π = softmax( -γ G )
+with G collecting preference mismatch and ambiguity in this teaching world.`;
+
+    const lines = [];
+    lines.push(`Sensory stream`);
+    lines.push(`y(u) = ${fmt(model.yBase)} + ${fmt(model.actGain)}·${fmt(model.u)} = ${fmt(C.y)}`);
+    lines.push(`g0 = ${fmt(obsPred(model.levels[0]))}`);
+    lines.push(`εy = y - g0 = ${fmt(C.ey)} ; Fy = 1/2·${fmt(model.py)}·εy² = ${fmt(C.Fy)}`);
+    model.levels.forEach((L,i)=>{
+      const R = C.levels[i];
+      lines.push('');
+      lines.push(`LEVEL ${i+1}`);
+      lines.push(`μx = [${L.mux.map(fmt).join(', ')}]`);
+      lines.push(`μv = [${L.muv.map(fmt).join(', ')}]`);
+      lines.push(`Dμx = [${R.Dmx.map(fmt).join(', ')}]`);
+      lines.push(`f = [${R.f.map(fmt).join(', ')}]`);
+      lines.push(`εx = [${R.ex.map(fmt).join(', ')}] ; effective Πx = ${fmt(R.pxEff)} = ${fmt(L.px)}·${fmt(C.naGain)} ; Fx_i = ${fmt(R.Fx_i)}`);
+      if(i < model.levels.length-1){
+        lines.push(`g_above = [${R.predFromAbove.map(fmt).join(', ')}]`);
+      } else {
+        lines.push(`η = [${L.eta.map(fmt).join(', ')}]`);
+      }
+      lines.push(`εv = [${R.ev.map(fmt).join(', ')}] ; Fv_i = ${fmt(R.Fv_i)}`);
+    });
+    lines.push('');
+    lines.push(`Policies`);
+    C.policy.pols.forEach(p=>{
+      lines.push(`${p.name}: predicted y=${fmt(p.predictedY)}, risk=${fmt(p.risk)}, ambiguity=${fmt(p.ambiguity)}, G=${fmt(p.G)}, posterior=${fmt(p.posterior)}`);
+    });
+    lines.push(`Expected G = ${fmt(C.policy.Gbar)}`);
+    lines.push(`Total F = ${fmt(C.F)}`);
+    $('ledger').textContent = lines.join('\n');
+
+    $('cortexEq').textContent =
+`Canonical cortical microcircuit teaching view
+
+Superficial populations (SP) carry ascending prediction errors.
+Deep populations (DP) carry descending predictions.
+Spiny stellate cells (SS) receive local sensory drive.
+Interneurons (II) shape local gain / inhibition.
+
+In this simulator:
+ascending arrow thickness ∝ |ε|
+descending arrow thickness ∝ |prediction|
+level nodes are arranged like a simplified laminar circuit
+and mapped onto the hierarchy equations on the left tab.`;
+
+    $('policyEq').textContent =
+`Policy / basal-ganglia teaching view
+
+Each policy p has:
+- control proposal u_p
+- ambiguity cost
+- preference target
+
+Expected free-energy proxy:
+G_p = 1/2 χ ( y + u_p - target_p )² + ambiguity_p - habit_p
+
+Posterior:
+π_p = exp( -γ G_p ) / Σ_q exp( -γ G_q )
+
+Interpretation:
+- dopamine-like γ sharpens or flattens selection
+- the direct vs indirect pathways are shown as biasing policy selection and disinhibition in a simplified way`;
+
+    $('neuroEq').textContent =
+`Neuromodulator bench  (teaching mapping, not a biochemical model)
+
+ACh (ζ)  → Πy         (global likelihood precision, replaces the sensory-Πy slider)
+NA  (ω)  → Πx gain    (multiplies every per-level stored Πx by ω / ${NA_BASELINE})
+DA  (γ)  → policy precision (sharpens softmax over policies)
+5-HT(χ)  → preference weighting χ in G
+
+Effective dynamics precision used in F:
+  effective Πx^(i) = (stored L.px at level i) · (NA / ${NA_BASELINE})
+At NA = ${NA_BASELINE} the stored per-level Πx is used as-is.
+This keeps the per-level editor and the NA slider both meaningful.`;
+
+    $('lessonEq').textContent =
+`How to use the atlas well
+
+1) In Hierarchy Forge, build a low-F model.
+2) Open Cortical Circuit Lab and see the same messages re-expressed as superficial/deep loops.
+3) Open Policy & Basal Ganglia Lab and compare policy G values and π.
+4) Open Neuromodulator Bench and change one precision at a time.
+5) Revisit the ledger after each manipulation; the numbers there are the source of truth for what changed.`;
+
+    renderPolicyCards(C);
+    drawTower(model, C);
+    drawCortex(model, C);
+    drawPolicy(model, C);
+    drawNeuro(model, C);
+    checkMission(C);
+  }
+
+  function renderPolicyCards(C){
+    const el = $('policyCards');
+    el.innerHTML = C.policy.pols.map(p=>`
+      <div class="card">
+        <div class="small">${p.name}</div>
+        <div class="big">${fmt(p.posterior)}</div>
+        <div class="small">G=${fmt(p.G)} | predicted y=${fmt(p.predictedY)}</div>
+      </div>
+    `).join('');
+  }
+
+  function checkMission(C){
+    const target = presets[currentPreset]?.target;
+    const best = [...C.policy.pols].sort((a,b)=>b.posterior-a.posterior)[0];
+    // Only fire the "cleared" badge after the learner has interacted,
+    // so the default preset doesn't spuriously claim credit on load.
+    if(target != null && C.F < target && hasInteracted){
+      $('mission').innerHTML = `<div class="small">${presets[currentPreset].mission}<br><span class="pill">F target cleared</span>${best.posterior>0.7?' <span class="pill">Policy target cleared</span>':''}</div>`;
+    }
+  }
+
+  function node(ctx,x,y,r,main,sub,fill='#221b16',stroke='#8d7a65'){
+    ctx.fillStyle=fill; ctx.strokeStyle=stroke; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#fff1cd'; ctx.font='bold 15px monospace'; ctx.textAlign='center'; ctx.fillText(main,x,y+4);
+    ctx.fillStyle='#d2c4b0'; ctx.font='11px monospace'; ctx.fillText(sub,x,y+r+14); ctx.textAlign='left';
+  }
+  function wire(ctx,x1,y1,x2,y2,strength,dotted=false,label=''){
+    ctx.strokeStyle='#655545'; ctx.lineWidth=9; ctx.lineCap='round';
+    if(dotted) ctx.setLineDash([4,5]); else ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle='#d1ae69'; ctx.lineWidth=4;
+    const t = Math.min(1, strength/3.5);
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x1 + (x2-x1)*t, y1 + (y2-y1)*t); ctx.stroke();
+    if(label){ ctx.fillStyle='#e6dccb'; ctx.font='12px monospace'; ctx.fillText(label,(x1+x2)/2,(y1+y2)/2-6); }
+  }
+  function gear(ctx,x,y,r,label,spin=0){
+    ctx.save(); ctx.translate(x,y); ctx.rotate(spin);
+    for(let i=0;i<10;i++){ ctx.save(); ctx.rotate(i*Math.PI/5); ctx.fillStyle='#8f775d'; ctx.fillRect(r-4,-5,12,10); ctx.restore(); }
+    ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fillStyle='#473b31'; ctx.fill(); ctx.lineWidth=6; ctx.strokeStyle='#8f775d'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(0,0,r*0.35,0,Math.PI*2); ctx.fillStyle='#1a1511'; ctx.fill();
+    ctx.fillStyle='#fff1cd'; ctx.font='bold 14px monospace'; ctx.textAlign='center'; ctx.fillText(label,0,5);
+    ctx.restore(); ctx.textAlign='left';
+  }
+  function panelFrame(ctx,w,h,title){
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle='#15110e'; ctx.strokeStyle='#5e5145'; ctx.lineWidth=2;
+    roundRect(ctx,18,18,w-36,h-36,18,true,true);
+    ctx.fillStyle='#cfc1af'; ctx.font='13px monospace'; ctx.fillText(title,24,36);
+  }
+  function roundRect(ctx,x,y,w,h,r,fill,stroke){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+    if(fill) ctx.fill(); if(stroke) ctx.stroke();
+  }
+
+  function drawTower(m,C){
+    const cv=$('towerCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+    panelFrame(ctx,W,H,'Predictive coding hierarchy');
+    const levels=m.levels.length, orders=m.orders;
+    const left=140, top=86, levelGap=(H-140)/levels, orderGap=orders>1 ? 180/(orders-1) : 0;
+    const xErrX=left+90, xMuX=left+190, xMuV=left+370, xErrV=left+470;
+
+    node(ctx,70,H-70,26,fmt(C.y),'y(u)');
+    wire(ctx,70,H-96,xErrV,top+(levels-1)*levelGap+50,Math.abs(C.ey),true,'εy');
+
+    for(let i=0;i<levels;i++){
+      const li=i, drawRow=levels-1-i, yBase=top+drawRow*levelGap, L=m.levels[li], R=C.levels[li];
+      ctx.fillStyle='#e9ddc9'; ctx.font='12px monospace'; ctx.fillText(`L${li+1}`,34,yBase+8);
+      gear(ctx,left+285,yBase+18,18,'D',Date.now()/700+i*.2);
+      gear(ctx,left+285,yBase+118,18,'f',Date.now()/650-i*.15);
+      if(li<levels-1) gear(ctx,left+535,yBase+18,18,'g',Date.now()/850+i*.13);
+      for(let k=0;k<orders;k++){
+        const yk=yBase+50+k*orderGap;
+        node(ctx,xErrX,yk,24,fmt(R.ex[k]),`εx[${k+1}]`);
+        node(ctx,xMuX,yk,28,fmt(L.mux[k]),`μx[${k+1}]`);
+        node(ctx,xMuV,yk,28,fmt(L.muv[k]),`μv[${k+1}]`);
+        node(ctx,xErrV,yk,24,fmt(li===0&&k===0 ? C.ey : R.ev[k]), li===0&&k===0?'εy':`εv[${k+1}]`);
+        if(k<orders-1){
+          wire(ctx,xMuX,yk,xMuX,yk+orderGap-28,Math.abs(L.mux[k+1]),false);
+          wire(ctx,xMuV,yk,xMuV,yk+orderGap-28,Math.abs(L.muv[k+1]),false);
+        }
+        wire(ctx,xMuX-28,yk,xErrX+24,yk,Math.abs(R.ex[k]),true);
+        wire(ctx,xMuV+28,yk,xErrV-24,yk,Math.abs(R.ev[k]),true);
+      }
+      wire(ctx,xMuX,yBase+50,left+267,yBase+18,Math.hypot(...R.ex),false);
+      wire(ctx,left+303,yBase+118,xErrX+22,yBase+50,Math.hypot(...R.ex),true);
+      wire(ctx,xMuV,yBase+50,left+303,yBase+118,Math.hypot(...R.ex),false);
+      if(li<levels-1){
+        wire(ctx,xMuX+28,yBase+50,left+517,yBase+18,Math.hypot(...R.ev),false);
+        wire(ctx,xMuV+28,yBase+50,left+553,yBase+18,Math.hypot(...R.ev),false);
+        wire(ctx,left+553,yBase+18,xErrV-24,yBase+50,Math.hypot(...R.ev),true);
+      }
+    }
+  }
+
+  function drawCortex(m,C){
+    const cv=$('cortexCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+    panelFrame(ctx,W,H,'Canonical cortical microcircuit teaching view');
+    const cols = Math.min(3,m.levels.length);
+    const x0=170, gap=260;
+    ['I','II','III','IV','V','VI'].forEach((lab,i)=>{
+      const y=80+i*68;
+      ctx.strokeStyle='rgba(240,230,210,.35)'; ctx.setLineDash([6,6]); ctx.beginPath(); ctx.moveTo(70,y); ctx.lineTo(W-60,y); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle='#d8ccb8'; ctx.font='13px monospace'; ctx.fillText(lab,56,y+4);
+    });
+    ctx.save(); ctx.translate(28,H/2+25); ctx.rotate(-Math.PI/2); ctx.fillStyle='#d8ccb8'; ctx.font='14px monospace'; ctx.fillText('Cortical layer',0,0); ctx.restore();
+
+    for(let i=0;i<cols;i++){
+      const L = m.levels[i], R=C.levels[i], x=x0+i*gap;
+      node(ctx,x,150,26,fmt(Math.abs(i===0?C.ey:R.ev[0])),'SP');
+      node(ctx,x+70,150,26,fmt(L.muv[0]),'II');
+      node(ctx,x,290,26,fmt(i===0?C.ey:R.ex[0]),'SS');
+      node(ctx,x+70,290,26,fmt(L.mux[0]),'II');
+      node(ctx,x,410,28,fmt(L.mux[0]),'DP');
+      node(ctx,x+70,410,28,fmt(L.muv[0]),'DP');
+
+      wire(ctx,x,386,x,316,Math.abs(L.mux[0]),false);       // deep to stellate
+      wire(ctx,x+70,386,x+70,176,Math.abs(L.muv[0]),false); // deep to superficial / local
+      wire(ctx,x,176,x,264,Math.abs(i===0?C.ey:R.ev[0]),true); // superficial up
+      wire(ctx,x,264,x,176,Math.abs(i===0?C.ey:R.ex[0]),true); // stellate error loop
+      wire(ctx,x+70,150,x,150,Math.abs(L.muv[0]),false); // inhibition teaching loop
+      wire(ctx,x+70,290,x,290,Math.abs(L.mux[0]),false);
+
+      if(i<cols-1){
+        wire(ctx,x,150,x0+(i+1)*gap,150,Math.abs(i===0?C.ey:R.ev[0]),true,'ascending ε');
+        wire(ctx,x+70,410,x0+(i+1)*gap+70,410,Math.abs(L.mux[0]),false,'descending pred');
+      }
+    }
+    ctx.fillStyle='#d8ccb8'; ctx.font='13px monospace';
+    ctx.fillText('Superficial', 32, 132);
+    ctx.fillText('Deep', 32, 422);
+  }
+
+  function drawPolicy(m,C){
+    const cv=$('policyCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+    panelFrame(ctx,W,H,'Policy selection and basal ganglia teaching view');
+    const best = [...C.policy.pols].sort((a,b)=>b.posterior-a.posterior)[0];
+    // cortex nodes
+    node(ctx,160,120,28,fmt(C.policy.pols[0].G),'G1');
+    node(ctx,290,120,28,fmt(C.policy.pols[1].G),'G2');
+    node(ctx,420,120,28,fmt(C.policy.pols[2].G),'G3');
+    ctx.fillStyle='#e8dcc8'; ctx.font='14px monospace'; ctx.fillText('Cerebral cortex',220,54);
+
+    // striatum / GP / STN / SNpc
+    node(ctx,240,250,30,fmt(C.policy.pols[0].posterior),'π1');
+    node(ctx,370,250,30,fmt(C.policy.pols[1].posterior),'π2');
+    node(ctx,500,250,30,fmt(C.policy.pols[2].posterior),'π3');
+    node(ctx,240,360,26,'D','Direct');
+    node(ctx,500,360,26,'I','Indirect');
+    node(ctx,370,455,30,fmt(m.gamma),'γ');
+    ctx.fillStyle='#e8dcc8'; ctx.fillText('Striatum / policy units',250,210);
+    ctx.fillText('SNpc / dopamine-like precision',250,510);
+
+    wire(ctx,160,148,240,220,Math.abs(C.policy.pols[0].G),false);
+    wire(ctx,290,148,370,220,Math.abs(C.policy.pols[1].G),false);
+    wire(ctx,420,148,500,220,Math.abs(C.policy.pols[2].G),false);
+    wire(ctx,240,280,240,334,C.policy.pols[0].posterior,false);
+    wire(ctx,500,280,500,334,C.policy.pols[2].posterior,false);
+    wire(ctx,370,425,240,280,m.gamma,false,'γ');
+    wire(ctx,370,425,370,280,m.gamma,false,'γ');
+    wire(ctx,370,425,500,280,m.gamma,false,'γ');
+
+    // action output
+    node(ctx,785,265,34,fmt(m.u),'u');
+    ctx.fillStyle='#e8dcc8'; ctx.fillText('Action output',740,210);
+    wire(ctx,240,360,785,265,best.posterior,false,'selected pathway');
+    wire(ctx,500,360,785,265,1-best.posterior,true,'competing pathway');
+
+    ctx.fillStyle='#d8ccb8';
+    ctx.fillText(`Best policy: ${best.name}`, 680, 420);
+    ctx.fillText(`posterior = ${fmt(best.posterior)}`, 680, 442);
+  }
+
+  function drawNeuro(m,C){
+    const cv=$('neuroCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+    panelFrame(ctx,W,H,'Neuromodulator precision bench');
+    const labels = [
+      {x:170, y:150, name:'ACh / ζ', val:m.chol, desc:'likelihood precision Πy', color:'#9bcfc6'},
+      {x:430, y:150, name:'NA / ω', val:m.nor, desc:'transition precision Πx', color:'#d7b26a'},
+      {x:170, y:360, name:'DA / γ', val:m.dop, desc:'policy precision', color:'#c3a2e6'},
+      {x:430, y:360, name:'5-HT / χ', val:m.ser, desc:'preferences', color:'#d98c74'},
+    ];
+    labels.forEach(o=>{
+      node(ctx,o.x,o.y,42,fmt(o.val),o.name, '#221b16', o.color);
+      ctx.fillStyle='#d8ccb8'; ctx.font='13px monospace'; ctx.fillText(o.desc, o.x-70, o.y+74);
+    });
+    node(ctx,760,150,46,fmt(C.Fy),'Fy');
+    node(ctx,760,270,46,fmt(C.policy.Gbar),'G');
+    node(ctx,760,390,46,fmt(C.Fx+C.Fv),'Fx+Fv');
+    wire(ctx,212,150,714,150,m.chol,false,'ACh → Πy');
+    wire(ctx,472,150,714,390,m.nor,false,'NA → Πx');
+    wire(ctx,212,360,714,270,m.dop,false,'DA → γ');
+    wire(ctx,472,360,714,270,m.ser,false,'5-HT → χ');
+  }
+
+  // Tabs
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+      tab.classList.add('active');
+      $('module-'+tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Buttons
+  presets.forEach((p,i)=>{
+    const o=document.createElement('option'); o.value=i; o.textContent=p.name; $('presetSelect').appendChild(o);
+  });
+  $('loadPresetBtn').addEventListener('click',()=>loadPreset(parseInt($('presetSelect').value,10)));
+  $('randomizeBtn').addEventListener('click',randomizeBeliefs);
+  $('resetBtn').addEventListener('click',resetBeliefs);
+  $('exportBtn').addEventListener('click',exportModel);
+  $('addLevelBtn').addEventListener('click',addLevel);
+  $('removeLevelBtn').addEventListener('click',removeLevel);
+  $('addOrderBtn').addEventListener('click',addOrder);
+  $('removeOrderBtn').addEventListener('click',removeOrder);
+  $('stepBeliefsBtn').addEventListener('click',beliefStep);
+  $('stepActionBtn').addEventListener('click',actionStep);
+  $('stepPolicyBtn').addEventListener('click',policyStep);
+  $('stepBothBtn').addEventListener('click',()=>{ beliefStep(); actionStep(); policyStep(); log('Ran combined belief, action, and policy step.'); });
+  $('autoBtn').addEventListener('click',()=>{
+    if(autoTimer){
+      clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Stopped auto-run.'); return;
+    }
+    autoTimer=setInterval(()=>{
+      const before=freeEnergyOf(model);
+      beliefStep(); actionStep(); policyStep();
+      const after=freeEnergyOf(model);
+      if(Math.abs(before-after)<1e-4){
+        clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Auto-run converged.');
+      }
+    },300);
+    $('autoBtn').textContent='Stop auto';
+    log('Started auto-run.');
+  });
+
+  // Populate toolbar preset dropdown
+  presets.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.name;$('toolbarPreset').appendChild(o);});
+
+  // Primary-toolbar wiring
+  $('tbLoadPreset').addEventListener('click',()=>{const i=parseInt($('toolbarPreset').value,10);$('presetSelect').value=$('toolbarPreset').value;loadPreset(i);});
+  $('tbBelief').addEventListener('click',beliefStep);
+  $('tbAction').addEventListener('click',actionStep);
+  $('tbPolicy').addEventListener('click',policyStep);
+  $('tbFullCycle').addEventListener('click',()=>{beliefStep();actionStep();policyStep();log('Toolbar: full cycle.');});
+  $('tbAuto').addEventListener('click',()=>$('autoBtn').click());
+  $('tbRandomize').addEventListener('click',randomizeBeliefs);
+  $('tbReset').addEventListener('click',resetBeliefs);
+
+  // Intro strip persistence
+  const INTRO_KEY='learninglabs.Atlas.introDismissed';
+  const introEl=$('introStrip');
+  if(localStorage.getItem(INTRO_KEY)==='1')introEl.classList.add('hidden');
+  $('introDismissBtn').addEventListener('click',()=>{introEl.classList.add('hidden');localStorage.setItem(INTRO_KEY,'1');});
+
+  // Guided tour
+  const tourSteps=[
+    {sel:'#toolbarPreset',title:'Pick a teaching world',body:'Start with Predictive-coding starter: one level, two orders. Easier to map onto the equations.'},
+    {sel:'#stripF',title:'Watch F',body:'F is the total free energy of the continuous-time stack. Every successful step should lower it.'},
+    {sel:'#tbBelief',title:'Belief step',body:'Numerical gradient descent on μ. Try this repeatedly until F plateaus.'},
+    {sel:'#tbAction',title:'Action step',body:'Action only changes sensory input. u̇ = −∂F/∂u.'},
+    {sel:'[data-tab="cortex"]',title:'Cortex tab (teaching mapping)',body:'Same math, drawn as canonical microcircuit populations. Don\u2019t read this as a literal claim about cortex.'},
+    {sel:'[data-tab="neuro"]',title:'Neuromodulator bench',body:'ACh→Πy, NA→Πx gain, DA→γ, 5-HT→χ. Slide one at a time and watch which term of F moves.'}
+  ];
+  let tourIndex=0;
+  const tourOverlay=document.createElement('div');tourOverlay.className='tour-overlay';
+  tourOverlay.innerHTML=`<div class="tour-card"><h4 id="tourTitle"></h4><div class="step-line" id="tourBody"></div><div class="tour-actions"><button id="tourSkipBtn">Close</button><div style="display:flex;gap:8px;align-items:center;"><span id="tourProgress" class="small"></span><button id="tourNextBtn">Next →</button></div></div></div>`;
+  document.body.appendChild(tourOverlay);
+  const tourHighlight=document.createElement('div');tourHighlight.className='tour-highlight';
+  function showTourStep(i){const s=tourSteps[i];if(!s){closeTour();return;}tourOverlay.querySelector('#tourTitle').textContent=s.title;tourOverlay.querySelector('#tourBody').textContent=s.body;tourOverlay.querySelector('#tourProgress').textContent=`${i+1} / ${tourSteps.length}`;tourOverlay.querySelector('#tourNextBtn').textContent=i===tourSteps.length-1?'Finish ✓':'Next →';const t=document.querySelector(s.sel);if(t){t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>{const r=t.getBoundingClientRect();tourHighlight.style.left=(window.scrollX+r.left-6)+'px';tourHighlight.style.top=(window.scrollY+r.top-6)+'px';tourHighlight.style.width=(r.width+12)+'px';tourHighlight.style.height=(r.height+12)+'px';if(!tourHighlight.parentNode)document.body.appendChild(tourHighlight);},220);}}
+  function openTour(){tourIndex=0;tourOverlay.classList.add('on');showTourStep(0);}
+  function closeTour(){tourOverlay.classList.remove('on');if(tourHighlight.parentNode)tourHighlight.parentNode.removeChild(tourHighlight);}
+  $('tourOpenBtn').addEventListener('click',openTour);
+  tourOverlay.querySelector('#tourSkipBtn').addEventListener('click',closeTour);
+  tourOverlay.querySelector('#tourNextBtn').addEventListener('click',()=>{tourIndex+=1;if(tourIndex>=tourSteps.length){closeTour();return;}showTourStep(tourIndex);});
+  tourOverlay.addEventListener('click',(e)=>{if(e.target===tourOverlay)closeTour();});
+
+  loadPreset(0);
+  renderEditors();
+  update();
+})();
+</script>
+
+<script>
+/* Learning Shell — isolated script block */
+(function(){
+  const LS=window.LS={};const state={path:'real',cfg:null,eqTab:'equation',beatIdx:0};
+  const $=id=>document.getElementById(id);
+  const pathbar=document.querySelector('.ls-pathbar'),picker=$('lsPickerOverlay'),pickerDismiss=$('lsPickerDismiss'),pickerBtn=$('lsPickerBtn'),dysBtn=$('lsDysBtn');
+  const dockG=$('lsDockGlossary'),dockA=$('lsDockAnalogies'),dockX=$('lsDockExercises');
+  const panel=$('lsPanel'),panelOv=$('lsPanelOverlay'),panelTitle=$('lsPanelTitle'),panelBody=$('lsPanelBody'),panelClose=$('lsPanelClose');
+  const eqBody=$('lsEqBody'),eqTabs=[...document.querySelectorAll('[data-ls-tab]')],beatHost=$('lsBeatHost'),tooltip=$('lsTooltip'),printRoot=$('lsPrintRoot');
+  LS.init=function(cfg){state.cfg=cfg;const key='ls.'+cfg.simKey+'.path',dysKey='ls.'+cfg.simKey+'.dys';/* ls-params-compact-v1 */try{var _qs=new URLSearchParams(window.location.search);var _qp=_qs.get('path');if(_qp && ['kid','real','equation','derivation'].indexOf(_qp)!==-1){localStorage.setItem(key,_qp);}var _cm=document.cookie && document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);if(_cm && !_qp){var _cv=decodeURIComponent(_cm[1]);if(['kid','real','equation','derivation'].indexOf(_cv)!==-1 && !localStorage.getItem(key)){localStorage.setItem(key,_cv);}}var _qb=parseInt(_qs.get('beat')||'',10);if(!isNaN(_qb) && _qb>0){setTimeout(function(){if(window.LS && window.LS.setBeat) window.LS.setBeat(_qb-1);},80);}}catch(_){}const saved=localStorage.getItem(key);if(localStorage.getItem(dysKey)==='1'){document.body.classList.add('ls-dys');if(dysBtn)dysBtn.setAttribute('aria-pressed','true');}if(!saved){if(picker)picker.classList.add('on');state.path='real';}else state.path=saved;applyPathButtons();renderEqPanel();renderBeat();wireTooltipTerms(document.body);if(cfg.onPathChange)cfg.onPathChange(state.path);};
+  LS.setPath=function(p){state.path=p;if(state.cfg)localStorage.setItem('ls.'+state.cfg.simKey+'.path',p);applyPathButtons();renderEqPanel();renderBeat();if(state.cfg&&state.cfg.onPathChange)state.cfg.onPathChange(p);};
+  LS.getPath=function(){return state.path;};
+  function applyPathButtons(){document.querySelectorAll('[data-ls-path]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lsPath===state.path?'true':'false'));}
+  if(pathbar)pathbar.addEventListener('click',e=>{const b=e.target.closest('[data-ls-path]');if(b)LS.setPath(b.dataset.lsPath);});
+  if(picker)picker.addEventListener('click',e=>{const b=e.target.closest('[data-ls-path]');if(b){picker.classList.remove('on');LS.setPath(b.dataset.lsPath);}});
+  if(pickerDismiss)pickerDismiss.addEventListener('click',()=>{picker.classList.remove('on');LS.setPath('real');});
+  if(pickerBtn)pickerBtn.addEventListener('click',()=>picker.classList.add('on'));
+  if(dysBtn)dysBtn.addEventListener('click',()=>{document.body.classList.toggle('ls-dys');const on=document.body.classList.contains('ls-dys');dysBtn.setAttribute('aria-pressed',on?'true':'false');if(state.cfg)localStorage.setItem('ls.'+state.cfg.simKey+'.dys',on?'1':'0');});
+  function openPanel(title,body){panelTitle.textContent=title;panelBody.innerHTML=body;panel.classList.add('on');panelOv.classList.add('on');wireTooltipTerms(panelBody);}
+  function closePanel(){panel.classList.remove('on');panelOv.classList.remove('on');}
+  if(panelClose)panelClose.addEventListener('click',closePanel);
+  if(panelOv)panelOv.addEventListener('click',closePanel);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePanel();if(picker)picker.classList.remove('on');hideTooltip();}});
+  function esc(s){return(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function tierFor(t){return(state.cfg&&state.cfg.terms&&state.cfg.terms[t])||null;}
+  function showTooltip(el){const term=el.dataset.term,entry=tierFor(term);if(!entry){tooltip.innerHTML=`<div class="ls-term-name">${esc(term)}</div><div class="ls-term-tier">No glossary entry yet.</div>`;}else{const order={kid:['kid','adult','phd'],real:['adult','kid','phd'],equation:['adult','phd','kid'],derivation:['phd','adult','kid']}[state.path]||['adult','phd','kid'];const labels={kid:'For a 5th grader',adult:'For a curious adult',phd:'For a PhD'};let html=`<div class="ls-term-name">${esc(entry.name||term)}</div>`;for(const t of order)if(entry[t])html+=`<div class="ls-term-tier"><b>${labels[t]}:</b> ${esc(entry[t])}</div>`;tooltip.innerHTML=html;}const r=el.getBoundingClientRect(),tw=320,th=140;let left=window.scrollX+r.left,top=window.scrollY+r.bottom+6;if(left+tw>window.scrollX+window.innerWidth-8)left=window.scrollX+window.innerWidth-tw-8;if(top+th>window.scrollY+window.innerHeight-8)top=window.scrollY+r.top-th-6;tooltip.style.left=Math.max(8,left)+'px';tooltip.style.top=Math.max(8,top)+'px';tooltip.classList.add('on');}
+  function hideTooltip(){if(tooltip)tooltip.classList.remove('on');}
+  function wireTooltipTerms(root){if(!root)return;root.querySelectorAll('[data-term]:not([data-ls-wired])').forEach(el=>{el.classList.add('ls-term');el.setAttribute('tabindex','0');el.setAttribute('data-ls-wired','1');el.setAttribute('aria-label','Definition of '+el.dataset.term);el.addEventListener('mouseenter',()=>showTooltip(el));el.addEventListener('mouseleave',hideTooltip);el.addEventListener('focus',()=>showTooltip(el));el.addEventListener('blur',hideTooltip);el.addEventListener('click',e=>{e.stopPropagation();showTooltip(el);});});}
+  document.addEventListener('click',e=>{if(!e.target.closest('[data-term]')&&!e.target.closest('.ls-tooltip'))hideTooltip();});
+  LS.wireTooltipTerms=wireTooltipTerms;
+  if(dockG)dockG.addEventListener('click',()=>{const terms=(state.cfg&&state.cfg.terms)||{};const rows=Object.keys(terms).sort();let html='<input class="ls-glossary-search" id="lsGSearch" placeholder="Search terms…" />';html+='<div id="lsGList">'+rows.map(k=>gRow(k,terms[k])).join('')+'</div>';openPanel('Glossary · '+rows.length+' terms',html);const input=$('lsGSearch'),list=$('lsGList');input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase();list.innerHTML=rows.filter(k=>{const e=terms[k];const hay=(k+' '+(e.name||'')+' '+(e.kid||'')+' '+(e.adult||'')+' '+(e.phd||'')).toLowerCase();return q===''||hay.includes(q);}).map(k=>gRow(k,terms[k])).join('');});});
+  function gRow(k,e){return`<div class="ls-glossary-entry"><span class="ls-glossary-sym">${esc(e.name||k)}</span><div class="ls-glossary-tier"><b>Kid:</b> ${esc(e.kid||'—')}</div><div class="ls-glossary-tier"><b>Adult:</b> ${esc(e.adult||'—')}</div><div class="ls-glossary-tier"><b>PhD:</b> ${esc(e.phd||'—')}</div></div>`;}
+  if(dockA)dockA.addEventListener('click',()=>{const an=(state.cfg&&state.cfg.analogies)||[];const html=an.map(a=>`<div class="ls-analogy"><h6><span class="ls-analogy-persona">${esc(a.persona||'')}</span>${esc(a.title||'')}</h6><div class="ls-analogy-scenario">${a.scenario||''}</div>${a.map?`<div class="ls-analogy-map"><b style="color:var(--accent);font-size:11px;display:block;margin-bottom:2px;">Variable map</b><table>${Object.entries(a.map).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</table></div>`:''}${a.exercise?`<div class="ls-analogy-ex"><b>Micro-exercise:</b> ${esc(a.exercise)}</div>`:''}</div>`).join('');openPanel('Analogy library · '+an.length+' analogies',html||'<div>No analogies defined.</div>');});
+  if(dockX)dockX.addEventListener('click',()=>{const ex=(state.cfg&&state.cfg.exercises)||[];const html=ex.map((e,i)=>`<div class="ls-exercise"><h6>${esc(e.title||'Exercise '+(i+1))}</h6><div class="ls-ex-meta">${esc(e.time||'2–5 minutes')} · ${esc(e.materials||'Household objects')}</div><div class="ls-ex-sect"><b>What you need</b><ul>${(e.need||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="ls-ex-sect"><b>Do this</b><ol>${(e.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div class="ls-ex-sect"><b>What you should see</b><div style="font-size:12px;color:var(--text)">${esc(e.outcome||'')}</div></div><div class="ls-ex-sect"><b>Back to the sim</b><div style="font-size:12px;color:var(--muted)">${esc(e.back||'')}</div></div><button class="ls-ex-print" data-ex-print="${i}">Print this card (half-letter)</button></div>`).join('');openPanel('Physical exercises · '+ex.length+' cards',html||'<div>No exercises defined.</div>');panelBody.addEventListener('click',e=>{const b=e.target.closest('[data-ex-print]');if(!b)return;printEx(ex[parseInt(b.dataset.exPrint,10)]);});});
+  function printEx(e){if(!e||!printRoot)return;printRoot.style.display='block';printRoot.innerHTML=`<h3 style="margin:0 0 4px;font-size:14pt;">${esc(e.title||'Exercise')}</h3><div style="font-size:10pt;margin-bottom:8px;">${esc(e.time||'')} · ${esc(e.materials||'')}</div><div style="margin-bottom:8px;"><b>What you need</b><ul style="margin:2px 0 0 18px;">${(e.need||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div style="margin-bottom:8px;"><b>Do this</b><ol style="margin:2px 0 0 18px;">${(e.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div style="margin-bottom:8px;"><b>What you should see</b><div>${esc(e.outcome||'')}</div></div><div><b>Back to the sim</b><div>${esc(e.back||'')}</div></div>`;setTimeout(()=>{window.print();printRoot.style.display='none';},50);}
+  eqTabs.forEach(t=>t.addEventListener('click',()=>{state.eqTab=t.dataset.lsTab;renderEqPanel();}));
+  function renderEqPanel(){eqTabs.forEach(t=>t.setAttribute('aria-pressed',t.dataset.lsTab===state.eqTab?'true':'false'));const ep=(state.cfg&&state.cfg.equationPanel)||{};const body=ep[state.eqTab];if(!eqBody)return;if(!body){eqBody.innerHTML='<div style="color:var(--muted)">(no content)</div>';return;}if(typeof body==='string')eqBody.innerHTML=body;else if(body.html)eqBody.innerHTML=body.html;wireTooltipTerms(eqBody);}
+  function renderBeat(){if(!beatHost)return;const beats=(state.cfg&&state.cfg.beats)||[];if(!beats.length){beatHost.innerHTML='<div style="color:var(--muted);font-size:13px;">No beats defined.</div>';return;}state.beatIdx=Math.max(0,Math.min(beats.length-1,state.beatIdx));const b=beats[state.beatIdx];const text=(b.text&&(b.text[state.path]||b.text.adult||b.text.real||b.text.kid))||b.hero||'';beatHost.innerHTML=`<div class="ls-beat"><div class="ls-beat-body"><span class="ls-beat-head">Beat <span class="ls-beat-idx">${state.beatIdx+1} / ${beats.length}</span> · ${esc(b.hero||'')}</span><span>${text}</span></div><div class="ls-beat-ctrl"><button id="lsBeatPrev">◀</button><button class="primary" id="lsBeatDo">${esc(b.action||'Do this')}</button><button id="lsBeatNext">▶</button></div></div>`;wireTooltipTerms(beatHost);$('lsBeatPrev').addEventListener('click',()=>{state.beatIdx--;renderBeat();});$('lsBeatNext').addEventListener('click',()=>{state.beatIdx++;renderBeat();});$('lsBeatDo').addEventListener('click',()=>{if(b.do){try{b.do();}catch(_){}}});}
+  LS.renderBeat=renderBeat;LS.setBeat=function(i){state.beatIdx=i;renderBeat();};
+})();
+
+/* ---- Per-sim content: Active Inference Atlas ---- */
+const ATLAS_TERMS = {
+  'Πy':{name:'Πy',kid:'Strictness about what your senses report — ACh-like.',adult:'Sensory precision, modulated in this sim by ACh.',phd:'Observation precision; Friston 2008 mapping to cortical ACh modulation.'},
+  'Πx':{name:'Πx',kid:'Strictness about how things move/change — NA-like.',adult:'State precision multiplied per-level by NA gain = NA/1.5.',phd:'Hidden-state precision; NA acts as multiplicative gain preserving per-level edits.'},
+  'γ':{name:'γ',kid:'Decisiveness of the planner — DA-like.',adult:'Policy precision; inverse temperature on softmax(−G).',phd:'Dopaminergic gain on policy posterior concentration.'},
+  'χ':{name:'χ',kid:'How much the planner cares about the goal — 5-HT-like.',adult:'Preference weight multiplying risk term in the EFE proxy.',phd:'5-HT-like scalar on (y−target)² in the scalar EFE surrogate.'},
+  'F':{name:'F',kid:'Current "how wrong" score, summed across levels.',adult:'Variational free energy; quadratic Laplace form.',phd:'F ≈ ½ Σ εᵀΠε; same as Laplace Tower.'},
+  'G':{name:'G',kid:'Expected cost per plan.',adult:'Scalar EFE proxy (teaching simplification).',phd:'G = ½χ(y+u_π−t_π)² + ambiguity_π − habit_π.'},
+  'π':{name:'π',kid:'Which plan is most likely.',adult:'Posterior over policies: softmax(−γG).',phd:'Categorical policy posterior; linked to basal-ganglia action selection.'},
+  'u':{name:'u',kid:'Action — only changes sensors.',adult:'Continuous control; u̇ = −∂F/∂u.',phd:'Active inference control law.'},
+  'SP/DP/SS/II':{name:'SP/DP/SS/II',kid:'Different brain cells, but for teaching only.',adult:'Cortical microcircuit populations; didactic mapping to prediction/error/posterior-mean slots.',phd:'Superficial/deep pyramidal, spiny stellate, inhibitory interneurons — schematic per Bastos et al. 2012.'},
+  'ACh':{name:'ACh',kid:'A chemical knob on sensor-trust.',adult:'Acetylcholine modulates Πy (sensory precision).',phd:'Friston 2008/2017 mapping, widely endorsed.'},
+  'NA':{name:'NA',kid:'A chemical knob on movement-trust.',adult:'Noradrenaline modulates Πx (state precision).',phd:'NA as precision-weighting gain on hidden-state errors.'},
+  'DA':{name:'DA',kid:'A chemical knob on confidence in plans.',adult:'Dopamine modulates γ (policy precision).',phd:'DA → γ is the most endorsed mapping.'},
+  '5-HT':{name:'5-HT',kid:'A chemical knob on caring about goals.',adult:'Serotonin modulates χ (preference weight). Speculative.',phd:'5-HT → χ; more speculative than DA → γ.'}
+};
+const ATLAS_ANALOGIES = [
+  {persona:'P1 · Kid',title:'A city with four traffic lights',scenario:'Four lights (ACh, NA, DA, 5-HT) each turn a flow in the city up or down. Turn one and traffic reroutes.',map:{'ACh':'Sensor lane','NA':'Movement lane','DA':'Plan-picker lane','5-HT':'Goal lane'},exercise:'Draw a 4-way intersection; turn one light off and watch which road floods.'},
+  {persona:'P2 · Pre-algebra',title:'Thermostats in different rooms',scenario:'Each room has a thermostat. Turning one knob changes how strictly that room reacts to temperature. Different knobs control different rooms.',map:{'Πy':'Room 1 sensitivity','Πx':'Room 2 sensitivity','γ':'Hallway sensitivity','χ':'Comfort target'},exercise:'Home experiment: pick 3 rooms, note which thermostat affects which.'},
+  {persona:'P3 · Adult',title:'Mixing board knobs',scenario:'Like a live sound mixing board, four knobs (ACh, NA, DA, 5-HT) control channels: sensors, movement, decision-making, preference strength.',map:{'ACh':'Mic volume','NA':'Instrument volume','DA':'Vocal clarity','5-HT':'Headphone mix'},exercise:'If you have a music app, try the EQ: bass/mid/treble/gain. Note how each reshapes the output without changing the song.'},
+  {persona:'P4 · Quantitative',title:'Same F/G engine, four precisions',scenario:'The Atlas reuses Laplace Tower F and the scalar-EFE G. Four scalars (Πy, Πx, γ, χ) modulate the shape of both. NA acts multiplicatively on per-level Πx (gain = NA/1.5).',map:{'F':'same as Laplace Tower','G':'same as Anatomy Studio','naGain':'Πx = L.px · (NA / 1.5)'},exercise:'Sweep NA from 0.5 to 3.0; watch Πx effective values and F trajectory.'},
+  {persona:'P5 · PhD',title:'Friston 2008/2017 neuromodulator mapping',scenario:'The precisions-to-neuromodulators story is partially empirical. DA→γ is widely endorsed; ACh→Πy, NA→Πx have strong theoretical support; 5-HT→χ is more speculative. See Friston, Schwartenbeck, FitzGerald, Moutoussis, Behrens 2013, 2014.',map:{'ACh→Πy':'endorsed','NA→Πx':'endorsed','DA→γ':'widely endorsed','5-HT→χ':'speculative'},exercise:'Read one primary source per link; write 2 sentences on how strong each mapping is.'}
+];
+const ATLAS_EXERCISES = [
+  {title:'E1 · Cardboard mixing board',time:'10 minutes',materials:'Cardboard, sticky notes, dice',need:['Cardboard','4 sticky notes','A die'],steps:['Label 4 vertical slots on the cardboard: ACh, NA, DA, 5-HT.','Roll the die: 1=low, 6=high; set each slider.','Describe how each setting would bias what you attend to.','Repeat with different rolls.'],outcome:'Different precision vectors produce different behavioural profiles.',back:'Load the Atlas; set the 4 neuromodulators to the same pattern; verify F and π change accordingly.'},
+  {title:'E2 · Dimmed-room sensory precision',time:'2 minutes',materials:'Light switch, eyes',need:['Any room with a dimmable light'],steps:['Stand with eyes open under full light.','Dim the light.','Close your eyes; let the visual channel "Πy" drop.','Notice how non-visual senses get more weight.'],outcome:'Lowering Πy shifts attention to other senses — modelled in the sim by reducing ACh.',back:'Set ACh low in the sim; watch Fy rise even if εy is similar.'},
+  {title:'E3 · "Who\u2019s in charge?" game',time:'5 minutes',materials:'Family + a deck of choices',need:['A household','6 choice cards'],steps:['Pick 3 chore options.','Each person argues for one (habit vs goal).','Vote by how "DA-decisive" the loudest person is.','Repeat with lower γ (everyone soft).'],outcome:'High γ produces a clear winner; low γ produces a committee.',back:'In the sim, slide γ between 0.5 and 4 and observe π entropy change.'}
+];
+const ATLAS_BEATS = [
+  {hero:'Load preset',text:{kid:'Pick a starting world.',real:'Load a preset to set the Π, γ, χ baseline.',equation:'Preset → (Πy, Πx, γ, χ).',derivation:'Parameters chosen for interpretability in the teaching sim.'},action:'Load preset',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/load preset/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Belief step',text:{kid:'Nudge the continuous guess toward the sensor story.',real:'Step the continuous PC.',equation:'μ̇ = −∂F/∂μ.',derivation:'Same as Laplace Tower.'},action:'Belief step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/belief step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Policy step',text:{kid:'Pick a plan.',real:'Update π given current beliefs and preferences.',equation:'π = softmax(−γG).',derivation:'Scalar EFE proxy.'},action:'Policy step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/policy step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Action step',text:{kid:'Do the action. Only sensors change.',real:'u̇ = −∂F/∂u.',equation:'u̇ = −∂F/∂u.',derivation:'Active inference control law.'},action:'Action step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/action step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Turn up ACh',text:{kid:'Trust the sensors more.',real:'Raise Πy. F should weight εy more heavily.',equation:'Increase Πy; Fy grows for same εy.',derivation:'ACh→Πy endorsed mapping.'},action:'Full cycle',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/full cycle/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Turn up NA',text:{kid:'Trust the flow story more at every floor.',real:'Raise NA. Per-level Πx scales by NA/1.5 multiplicatively.',equation:'Πx = L.px · (NA / 1.5).',derivation:'Multiplicative gain preserves per-level edits.'},action:'Full cycle'},
+  {hero:'Turn up DA',text:{kid:'Be more decisive. Pick the best plan firmly.',real:'Raise γ. π concentrates on the argmax.',equation:'π = softmax(−γG).',derivation:'Inverse temperature sharpens the categorical distribution.'},action:'Policy step'},
+  {hero:'Reset',text:{kid:'Start fresh.',real:'Reset the atlas to a known state.',equation:'Reset: state ← preset_0.',derivation:'Clean baseline for a new sweep.'},action:'Reset',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/^reset/i.test(x.textContent));if(b)b.click();}}
+];
+const ATLAS_EQ_PANEL = {
+  story:`<div class="ls-eqmath">The Atlas is the <span data-term="F">same engine</span> you saw before, wrapped in a brain-like story. Four chemical knobs (<span data-term="ACh">ACh</span>, <span data-term="NA">NA</span>, <span data-term="DA">DA</span>, <span data-term="5-HT">5-HT</span>) each turn a precision up or down.</div>`,
+  picture:`<div class="ls-eqpic">
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="ACh">ACh</span><span class="ls-eqarrow">→</span><span class="ls-eqbox" data-term="Πy">Πy</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="NA">NA</span><span class="ls-eqarrow">→</span><span class="ls-eqbox" data-term="Πx">Πx (gain)</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="DA">DA</span><span class="ls-eqarrow">→</span><span class="ls-eqbox" data-term="γ">γ</span></div>
+    <div class="ls-eqrow"><span class="ls-eqbox" data-term="5-HT">5-HT</span><span class="ls-eqarrow">→</span><span class="ls-eqbox" data-term="χ">χ</span></div>
+  </div>`,
+  equation:`<div class="ls-eqmath"><span data-term="F">F</span> = ½ Σ εᵀ Π ε  (same as Laplace Tower)
+<span data-term="G">G_π</span> = ½ <span data-term="χ">χ</span> (y + u_π − t_π)² + ambiguity_π − habit_π
+<span data-term="π">π</span> = softmax(−<span data-term="γ">γ</span> · G)
+<span data-term="Πx">Πx(effective)</span> = <span data-term="Πx">L.px</span> · (NA / 1.5)  ← NA as multiplicative gain</div>`,
+  derivation:`<div class="ls-eqmath">Cortical microcircuit populations (<span data-term="SP/DP/SS/II">SP, DP, SS, II</span>) are assigned didactic roles as prediction/error/posterior-mean slots per Bastos 2012. The neuromodulator-to-precision mapping is partially empirical: <span data-term="DA">DA→γ</span> widely endorsed; <span data-term="ACh">ACh→Πy</span> and <span data-term="NA">NA→Πx</span> strongly supported; <span data-term="5-HT">5-HT→χ</span> more speculative. See Friston 2017, Moutoussis et al. 2014.</div>`
+};
+LS.init({simKey:'Atlas',terms:ATLAS_TERMS,analogies:ATLAS_ANALOGIES,exercises:ATLAS_EXERCISES,beats:ATLAS_BEATS,equationPanel:ATLAS_EQ_PANEL,onPathChange:(p)=>LS.renderBeat&&LS.renderBeat()});
+</script>
+</body>
+</html>

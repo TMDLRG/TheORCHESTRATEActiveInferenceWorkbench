@@ -1,0 +1,49 @@
+{
+  "slug": "planning-horizon-depth",
+  "title": "Horizon Depth vs. Policy Depth",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 10,
+  "tags": ["planning", "horizon", "policy-depth", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 6,
+    "policy_depth": 4,
+    "preference_strength": 4.0,
+    "expected_outcome": "Horizon controls the predictive belief chain length; policy_depth controls committed action-sequence length. Recipe makes the distinction visible on one maze."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=planning-horizon-depth",
+    "labs_url": "/labs?recipe=planning-horizon-depth&world=corridor_turns"
+  },
+  "math": {
+    "latex": "G(\\pi) = \\sum_{\\tau=1}^{T} G_\\tau(\\pi),\\quad \\pi = (a_1, \\ldots, a_D),\\quad D \\le T",
+    "symbols": {
+      "T": "horizon (roll-out length of predictive beliefs)",
+      "D": "policy depth (committed action-sequence length)",
+      "G_tau": "per-step expected free-energy contribution"
+    }
+  },
+  "audiences": {
+    "kid": "How far ahead you imagine and how many moves you commit to are different questions. The first is bigger; the second is shorter.",
+    "real": "Horizon is how many steps the agent rolls beliefs forward; policy depth is the commitment length of the action sequence evaluated. They can be tuned independently.",
+    "equation": "EFE sums over tau=1..T. The policy space is enumerated up to depth D<=T. Increasing T lets the agent see further; increasing D makes it commit harder.",
+    "derivation": "Decomposing G into tau-indexed contributions is a direct consequence of the factorised predictive belief q(s_1, ..., s_T | pi) = prod_tau q(s_tau | pi). Policy depth is a separate choice about the action factorisation."
+  },
+  "equation_refs": ["eq-4-14", "eq-b-22"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Separate horizon and policy_depth and show how each independently affects behaviour.",
+    "role": "Planning-knob tutor disambiguating two commonly-conflated parameters.",
+    "context": "corridor_turns 5x5; vary (horizon, policy_depth) in {(2,2), (6,2), (6,4)} to isolate each effect."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4 & App B."
+  ]
+}

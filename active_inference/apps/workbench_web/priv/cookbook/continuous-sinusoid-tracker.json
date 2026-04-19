@@ -1,0 +1,51 @@
+{
+  "slug": "continuous-sinusoid-tracker",
+  "title": "Continuous-Time: Tracking a Sinusoid",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 11,
+  "tags": ["continuous-time", "generalized-coordinates", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "sinusoid_tracker",
+    "actions_used": ["continuous_step"],
+    "skills_used": ["generalized_filter"],
+    "horizon": 200,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "After a warm-up, the filter's x estimate tracks sin(t) within a small envelope; plotting x vs y shows clear smoothing."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=continuous-sinusoid-tracker",
+    "labs_url": "/labs?recipe=continuous-sinusoid-tracker&world=sinusoid_tracker"
+  },
+  "math": {
+    "latex": "x \\leftarrow x + dt \\, (v - \\kappa \\pi_s (x - y)),\\quad v \\leftarrow v + dt \\, (-\\kappa \\pi_f v)",
+    "symbols": {
+      "x": "position belief (order 0)",
+      "v": "velocity belief (order 1)",
+      "pi_s, pi_f": "sensor and dynamics precisions",
+      "kappa": "learning rate"
+    }
+  },
+  "audiences": {
+    "kid": "Imagine tracking a bouncing ball. Your eyes follow it; the ball moves smoothly; your guess is always close.",
+    "real": "Generalised-coordinate Bayes filter: the state carries position AND velocity. Smoothing emerges from the dynamics prior.",
+    "equation": "x, v updates are gradient steps on Gaussian free energy with precision weights on sensor and dynamics errors.",
+    "derivation": "Eq 8.1 regime: state in generalised coords (x, x'). Free energy F = 0.5 (pi_s (x-y)^2 + pi_f v^2). Gradient flow recovers a Kalman-like filter (Friston 2008)."
+  },
+  "equation_refs": ["eq-8-1"],
+  "figure_refs": [],
+  "session_refs": ["continuous-time/s1"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Run the generalized filter against a 1 Hz sinusoid and verify tracking.",
+    "role": "Continuous-time tutor.",
+    "context": "sinusoid_tracker fixture; 400 steps at dt=0.05s; pi_s=20, pi_f=1."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 8.",
+    "Friston (2008), Hierarchical models in the brain."
+  ]
+}

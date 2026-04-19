@@ -1,0 +1,49 @@
+{
+  "slug": "hierarchical-timescale-separation",
+  "title": "Hierarchical: Slow Meta, Fast Base",
+  "level": 5,
+  "tier_label": "Amplified Human",
+  "minutes": 12,
+  "tags": ["hierarchical", "timescales", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(hierarchical_maze)",
+    "world": "hierarchical_maze",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax", "shannon_entropy"],
+    "horizon": 6,
+    "policy_depth": 3,
+    "preference_strength": 2.5,
+    "expected_outcome": "Meta-level switches contexts on a slow schedule; base agent executes fast tactical steps within each context. The two timescales decouple cleanly."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=hierarchical-timescale-separation",
+    "labs_url": "/labs?recipe=hierarchical-timescale-separation&world=hierarchical_maze"
+  },
+  "math": {
+    "latex": "T_{\\text{meta}} = k \\cdot T_{\\text{base}},\\quad k \\gg 1",
+    "symbols": {
+      "T_meta": "meta-level timescale",
+      "T_base": "base-level timescale",
+      "k": "timescale separation"
+    }
+  },
+  "audiences": {
+    "kid": "The boss checks in occasionally; the worker moves a lot in between.",
+    "real": "Hierarchical active inference naturally separates timescales -- meta runs slow (strategic), base runs fast (tactical). Using steps_in_context to gate context switches.",
+    "equation": "Switch context when steps_in_context >= k, or when a meta-level prediction error exceeds a threshold.",
+    "derivation": "Timescale separation is emergent from the hierarchical generative model: slower dynamics at higher levels reflect slower-varying environmental statistics (Parr et al. 2022, Ch 7)."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s4"],
+  "labs": ["pomdp", "atlas"],
+  "orchestrate": {
+    "objective": "Run a 2-level hierarchical agent with slow meta switching and fast base action.",
+    "role": "Timescale-separation tutor.",
+    "context": "hierarchical_maze 11x11; meta switches every 5 base steps."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7."
+  ]
+}

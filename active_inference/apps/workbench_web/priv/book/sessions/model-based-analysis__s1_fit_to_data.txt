@@ -1,0 +1,294 @@
+the most likely option. This softmax pa­ram­e­ter can itself be estimated.
+The result is the probability of the actions u
+­ nder the model, given a
+sequence of stimuli and par­ameters—­that is, a likelihood of behavioral
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+178
+
+data given a model. Equipping the objective par­ameters with Gaussian pri-
+
+ors1 (θ ∼ N (η , Π(1) )) , we can use the Laplace assumption to express a (­free
+energy) approximation to model evidence:
+
+(
+
+! ≈ L( µ ) + 21 ε i Π(1)ε + ln ∇µµ L( µ ) − Π(1)
+ln P(u! |m, o)
+
+ε = η− µ
+µ = arg max
+µ
+
+{
+
+L( µ ) − 21
+
+)
+
+(ε Π ε + ln ∇ L( µ ) − Π )}
+i
+
+(1)
+
+µµ
+
+(9.3)
+
+(1)
+
+Equation 9.3 is the same as that unpacked in box 4.3 (generalized to a
+multidimensional pa­
+ram­
+e­
+ter space), but ­
+here we have substituted an
+explicit form for the posterior covariance and assumed a normally distributed prior. In chapter 4 and in the applications in chapter 8, we ignored
+the terms in equation 9.3 that did not depend on the mode. However, it
+is impor­tant to include ­these ­here when we consider model comparison
+prob­lems.
+To find the value of μ that maximizes the last line of equation 9.3, we
+perform a gradient ascent. U
+­ nder quadratic assumptions, this reduces to
+the following:
+.
+µ = ∇µ L( µ ) + Π(1)ε
+
+(9.4)
+
+While an explicit form for the gradient of the log likelihood used ­here
+may not be available, finite difference methods2 may be used to calculate
+a reasonable numerical approximation. ­These may also be used to find the
+posterior precision, which is the second derivative (or Hessian) of the negative log likelihood plus the prior precision. Equation 9.4 is the simplest
+form of update, but often more sophisticated methods based on the local
+curvature are used.
+9.4 Parametric Empirical Bayes (PEB)
+The variational Laplace procedure in the previous section lets us draw inferences about, and quantify the evidence for a model of, choice be­hav­ior.
+This enables us to computationally phenotype an individual and to compare alternative hypotheses about that individual. However, the in­ter­est­ing
+questions often lie at a group level. For example, we might be interested in
+how a parameter—­such as the precision of prior preferences—­varies with
+age. To answer this question, we can use the approach of section 9.3 to fit
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+179
+
+models to the be­hav­ior of individual participants with a range of ages. We
+then formulate a general linear model that generates the pa­ram­et­ er of interest, taking age into account:
+P(θ | β , X) = N (Xβ , Π(2) )
+
+(9.5)
+
+­Here, X is a matrix whose columns are alternative explanatory variables and
+whose rows indicate each participant. The first column of X typically comprises a matrix of ones (to indicate the effect of the mean pa­ram­e­ter over
+subjects). The second column, in our example, might be the age of each
+participant. The β vector indicates the size of effect of each of the explanatory variables in X. The first ele­ment of β is then the average value of the
+precision (or any other pa­ram­e­ter), while the second is the effect of age on
+precision. This value is the slope of the line in a plot of age ( x-­axis) against
+predicted precision ( y-­axis). ­There may be an arbitrary number of columns
+of X, with an arbitrary number of ele­ments in β.
+Once we have fit the model expressed in equation 9.5, supplemented
+with priors for the β values, we can ask questions about the role of the
+explanatory variables. For example, we can ask w
+­ hether age has an effect on
+the precision of prior preferences by comparing the evidence for a model
+in which the second ele­ment of β is allowed to deviate from zero with the
+evidence for a model with a precise belief that it is zero. Practically speaking, this can be done without multiple model inversions through use of
+Bayesian model reduction (Friston, Parr, and Zeidman 2018).
+9.5 Instructions for Model-­Based Analy­sis
+In practice, we follow the steps outlined below to analyze empirical choice
+be­hav­ior using active inference (Schwartenbeck and Friston 2016). T
+­ hese
+refer to the relevant routines available in the SPM12 Matlab package.
+1. Collect behavioral data, including the choices made and the sensory
+input available to the person making that choice. In addition, collect
+data of interest for second-­level, between-­subject analy­sis (e.g., ­whether
+the subject is a patient or a control subject, relevant demographic information, and so on).
+2. Formulate a POMDP model as in chapter 7. This should be a function
+that takes par­ameters as inputs and outputs a fully specified (but not yet
+solved) POMDP.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+180
+
+3. Specify a likelihood function (i.e., equation 9.2). This tells us how the
+model should be used to calculate a likelihood. This typically calls a
+POMDP solver (like the spm_MDP_VB_X.m routine) to simulate be­hav­ior
+and quantifies the likelihood of observed actions.
+4. Specify prior beliefs about the par­ameters in terms of expectations and
+precisions. Often ­these ­will be centered on zero, with precisions reflecting plausible ranges.
+5. Solve for posterior probability and model evidence. This uses a standard inference scheme such as the variational Laplace procedure outlined above (equation 9.4). The spm_nlsi_Newton.m routine ­will do
+this automatically.
+6. Perform group-­level analy­sis. This typically makes use of PEB, which
+treats the estimated par­ameters for each individual as if they ­were generated by a second-­level model. This allows us to test hypotheses about the
+­causes of ­those par­ameters. Practically, this may be performed using the
+spm_dcm_peb.m routine. Alternative analyses include standard statistical tests of association between the inferred par­ameters for each subject
+and other subject-­specific mea­sures. For example, a canonical variates
+analy­sis may be used to assess the relationship between questionnaire
+scores and inferred par­ameters.
+Figure 9.2’s summary of t­hese instructions are based on the be­hav­ior
+of the rat in the T-­maze task described in chapter 7. First, we place a rat in
+a T-­maze with a rewarding stimulus in ­either the left or right arm and an
+informative cue in the central arm. We then rec­ord the sequence of actions
+taken by the rat. This procedure may be repeated over multiple ­trials to
+rec­ord learned be­hav­ior, and it may be repeated for multiple dif­fer­ent rats
+­under dif­fer­ent interventions (e.g., pharmacological or optoge­ne­tic).
+Once ­these behavioral data have been obtained, we need a likelihood
+function that lets us quantify the probability of be­hav­ior (for a given rat
+in a given condition) u
+­ nder specific pa­ram­et­ er settings. We can do this by
+formulating the POMDP model we considered in chapter 7. This must be
+pa­ram­e­terized in terms of the par­ameters whose likelihood we seek to find.
+For example, if we wanted to assess the precision associated with preferences, we might include a log scale pa­ram­et­er that makes the preference
+distribution more or less peaky.
+Having set up the generative model (from the perspective of the rat),
+we can automatically solve the POMDP using the belief-­update equations
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+1
+
+181
+
+2
+
+Data collection
+
+3
+
+POMDP model
+
+Likelihood function
+
+G
+
+τ=1
+
+τ=2
+
+τ=3
+
+
+
+R
+
+D
+R
+
+Sτ-1
+
+B
+
+Sτ
+
+στ─1
+B
+
+A
+
+A
+
+A
+
+Oτ-1
+
+Oτ
+
+Oτ+1
+
+sτ─1
+
+PEB analysis
+θ=Xβ+ω
+
+sτ+1
+
+sτ
+
+ετ─1
+
+ετ
+
+ετ+1
+
+Oτ-1
+
+Oτ
+
+Oτ+1
+
+P(ũ | θ, õ, m)
+
+ũ
+
+6
+
+στ+1
+sτ+1
+
+sτ
+
+sτ─1
+
+Sτ+1
+
+στ
+
+R
+R
+
+
+
+5
+
+Invert model
+P(θ | m, õ, ũ)
+∞ P(θ | m) P(ũ | θ, õ, m)
+
+4
+
+Prior beliefs
+P(θ | m)
+
+Figure 9.2
+Roadmap of the six-­step inversion procedure for model-­based data analy­sis, as outlined in the main text (with reference to the chapters where more detail may be
+found). The arrows indicate the dependencies between each part of the pro­cess. The
+POMDP model must be defined for the likelihood to be evaluated. The model inversion requires collected data and the likelihood and priors; the PEB analy­sis cannot
+take place ­until ­after model inversion for each subject. Steps 4 and 5 schematize the
+update from a prior distribution over par­ameters ­under a model to a posterior distribution. The evidence and posterior from each model can then be combined using
+PEB to find posterior densities (shown as expectations with accompanying credible
+intervals) for the β coefficients of a linear model predicting ­these par­ameters.
+
+in chapter 4. This lets us calculate the probability of the data (i.e., the
+sequence of arms visited) conditioned on the model with the (preferences)
+scale pa­
+ram­
+e­
+ter at a par­
+tic­
+u­
+lar value. Combining this likelihood with
+our prior completes the specification of a generative model for be­hav­ior
+(from the perspective of the scientist). This may be solved using variational
+Laplace to find a posterior probability distribution over the scale pa­ram­e­ter
+for each rat.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+182
+
+In practice, before analyzing a
+­ctual data, we may want to check the
+face validity of the POMDP model by using it to generate fictive data—­
+and considering ­whether they are qualitatively plausible given the prob­lem
+at hand. A second sensible test for the model is pa­ram­e­ter recovery. This
+entails generating fictive data ­under some (known) pa­ram­e­terization to see
+­whether ­these par­ameters can be recovered on inverting the model. This is
+useful to verify w
+­ hether some par­ameters (or their combinations) are pos­si­

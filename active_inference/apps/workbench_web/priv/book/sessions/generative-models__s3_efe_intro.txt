@@ -1,0 +1,393 @@
+beliefs about observations (C), and prior belief about the initial state (D).
+Once ­these probability distributions are specified, a generic message passing
+scheme can be employed to minimize f­ ree energy and solve the POMDP. To
+make inferences about hidden states u
+­ nder a given policy, we set the rate
+of change of an auxiliary variable (v), which stands in for the log posterior
+(s), to be equal to the negative f­ ree energy gradient. A softmax (normalized
+exponential) function is then used to compute s from v.
+sπτ = σ (vπτ )
+.
+v πτ = ε πτ ! − ∇s Fπτ
+
+(4.13)
+
+= ln A i oτ + lnBπτ sπτ −1 + lnBπτ +1 i sπτ +1 − ln sπτ
+Equation 4.13 can be regarded as an example of variational message
+passing (see box 4.1). To update beliefs about policies, we find the posterior
+that minimizes the ­free energy:
+∇π F = 0 ⇔
+π = σ (−G − F)
+
+(4.14)
+
+For the simplest form of POMDP, equations 4.13 and 4.14 can be used to
+solve an Active Inference prob­lem for any set of probability matrices; t­ hese
+may be thought of as describing perception and planning, respectively. We
+­will unpack this in greater detail in the second part of the book, where we ­will
+provide worked examples of Active Inference for perception and planning
+(and other cognitive functions).
+Figure 4.4’s graphical repre­sen­ta­tions of equations 4.10, 4.13, and 4.14
+hint at pos­si­ble neuronal implementations of ­free energy minimization in
+the brain—if one interprets nodes as neuronal populations, edges as synapses, and messages as synaptic exchanges. In ­later chapters we ­will consider
+the extension of this to factorized state-­spaces, deep temporal models, and
+the optimization of the par­ameters of the generative model itself (learning).
+4.5 Active Inference in Continuous Time
+In the previous section, we dealt with the form Active Inference takes ­under
+a par­tic­u­lar choice of generative model. T
+­ hese POMDPs are a useful way to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+76
+
+Box 4.1
+Message passing and inference
+Markov blankets
+We encountered the concept of a Markov blanket in chapter 3. However, it is
+worth briefly reviewing the idea ­here. It relates to a system of multiple interacting variables. A Markov blanket for a given variable comprises a subset of
+­those that interact with it. If we know every­thing about this subset, knowledge of anything outside this subset does not increase our knowledge of the
+variable of interest. The relevance ­here is that we can draw inferences about
+a variable in a graphical model based on local information about its Markov
+blanket. The blanket of a variable x are ­those variables that cause x ( parents,
+ρ(x)), the variables that are caused by x (­children, κ (x)), and the parents of x’s
+­children. Using this notation, two of the most common Bayesian message
+passing schemes used for approximate inference are defined as follows:
+Variational message passing
+lnQ(x) = EQ ( ρ ( x))[ ln P(x | ρ(x))] + E Q (κ ( x))Q ( ρ (κ ( x))) [ ln P(κ (x)| ρ(κ (x)))]
+Q ( x)
+
+This involves messages from all constituents of the Markov blanket of x,
+including the parents (via the conditional probability of x given its parents)
+and the ­children. The latter depends on the conditional probability of the
+­children of x given all of their parents—­which include x. Note the expectation includes the ­children and parents of the ­children. As the parents of the
+­children include x, we divide by Q(x) to ensure the expectation includes the
+blanket only.
+Belief propagation
+lnQ(x) = ln µκ (x) + ln µρ (x)
+
+µκ (x) = E µκ (κ ( x)) µρ (κ ( x)) [P(κ (x)| ρ(κ (x)))]
+µx (κ ( x))
+
+µρ (x) = E µρ ( ρ ( x)) µκ ( ρ ( x)) [P(x | ρ(x))]
+µx ( ρ ( x))
+
+This has broadly the same structure as variational message passing but uses
+a recursive definition of messages such that each message ( μa(b) being the
+message to b from a) depends on other messages (the messages to a). ­There is
+a directional aspect to this, such that the message from a to b depends on all
+messages to a, except for that from b (hence the division in the expectations).
+NB: The slightly nonstandard use of the expectation operator ­here allows us to
+(1) cover both discrete and continuous variables and (2) highlight the formal
+similarity between variational message passing and belief propagation.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+77
+
+ε(i+2)
+
+Dynamics
+
+
+
+(i+1)
+σ(i+1)
+
+στ–1
+
+Hierarchy
+
+s(i+1)
+ε(i+1)
+
+ε(i)
+
+στ+1
+
+sτ+1
+
+sτ
+
+sτ
+
+sτ–1
+
+(i)
+
+s(i)
+
+στ
+5
+
+sτ–1
+
+σ(i)
+
+4
+
+1
+
+ετ–1
+
+ετ
+
+ετ+1
+
+oτ–1
+
+oτ
+
+oτ+1
+
+3
+
+sτ+1
+2
+
+õ
+Figure 4.4
+Bayesian message passing. Right: Dependencies between dif­fer­ent variables in the
+belief-­updating scheme outlined in the main text. Intuitively, current beliefs about
+states (­under each policy) at each time are compared with t­ hose that would be predicted given beliefs about states at other times (1) and current outcomes to calculate prediction errors. ­These errors then drive updating in ­these beliefs (2); given
+beliefs about states u
+­ nder each policy, we can then calculate the gradients of the
+expected f­ree energy (3). ­These are combined with the outcomes predicted ­under
+each policy (omitted from the figure) to compute beliefs about policies (4). Using a
+Bayesian model average, we can then compute posterior beliefs about states averaged
+over policies (5). This high-­level summary of message passing omits some intermediate connections that could be included (e.g., connection (4) could be unpacked to
+explic­itly include computation of the expected f­ ree energy). Left: This scheme could
+be expanded hierarchically (collapsing over time steps and policies for simplicity).
+The key idea is that a higher-­level network might predict the states and policies at the
+lower level and use t­ hese to draw inferences about the context in which t­ hese occur.
+We ­will unpack this idea further in chapter 7.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+78
+
+articulate a range of inference prob­lems, including ­those that underwrite
+planning and decision-­
+making. However, when it comes to interacting
+with a real environment, models described in discrete time with categorical variables fall short. This is b
+­ ecause sensory input and motor outputs are
+continuously evolving variables. To account for this, we now turn to a dif­
+fer­ent sort of generative model. We apply exactly the same idea, a gradient
+descent on variational ­free energy, to ­these models to find the analogous
+message passing schemes.
+4.5.1 A Generative Model for Predictive Coding
+To motivate the form of generative model used for continuous states, we
+start with the following pair of equations:
+.
+x = f (x,v) + ω x
+y = g(x,v) + ω y
+
+(4.15)
+
+The first of t­hese expresses the evolution of a hidden state over time,
+according to a deterministic function ( f (x, v)) and stochastic fluctuations
+(ω ). The second equation expresses the way in which data are generated
+from the hidden state. In each case, the fluctuations are assumed normally
+distributed, giving the following probability densities for the dynamics and
+likelihood:
+.
+p(x | x,v) = N (f (x,v), Π x )
+p(y | x,v) = N ( g(x,v), Π y )
+
+(4.16)
+
+The precision (Π) terms are the inverse covariance of the fluctuations.
+­These two equations form the generative model that underwrite Kalman-­
+Bucy filters in engineering. However, schemes of this sort are ­limited by the
+assumption of uncorrelated fluctuations over time (i.e., Wiener assumptions). This is inappropriate for inference in biological systems, where fluctuations are themselves generated by dynamical systems and have a degree
+of smoothness. We can account for this by considering not only the rate
+of change of the hidden state and the current value of the data but also
+their velocities, accelerations, and subsequent temporal derivatives—­that
+is, generalized coordinates of motion (Friston, Stephan et al. 2010; see
+box 4.2):
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+79
+
+Box 4.2
+Generalized coordinates of motion
+To represent a trajectory in continuous time, generalized coordinates of motion
+provide a s­ imple pa­ram­e­terization. This is based on a polynomial (Taylor series)
+expansion around the pre­sent time to give a function that lets us extrapolate
+to the recent past and near f­uture. The plots in figure 4.5 show a trajectory
+in some space (x) over time (τ) as a solid line. From left to right, they show
+the trajectory represented in generalized coordinates of motion with one, two,
+and three coordinates (successive temporal derivatives of x). This is the dashed
+line. The expansion ­here is around the initial time point. With each successive
+generalized coordinate, we get a more accurate approximation of the trajectory
+into the proximal ­future. For most applications, around six generalized coordinates are sufficient.
+
+x
+
+x
+
+x
+
+τ
+
+τ
+
+x(τ) ≈ x0 + τxʹ0
+
+x(τ) ≈ x0
+
+τ
+
+x(τ) ≈ x0 + τxʹ0 + 1–2 τ2 xʺ0
+
+Figure 4.5
+
+.
+x = f (x,v) + ω x
+.
+x′ = f ′( x′, v ′ ) + ω x′
+.
+x′′ = f ′′( x′′, v ′′ ) + ω x′′
+!
+
+. [i ]
+x = f [i ](x[i ], v[i ] ) + ω [ix ]
+!
+
+y = g(x,v) + ω y
+y ′ = g ′( x′, v ′ ) + ω ′y
+y ′′ = g ′′( x′′, v ′′ ) + ω ′′y
+!
+
+(4.17)
+
+y[i ] = g [i ](x[i ], v[i ] ) + ω [iy ]
+!
+
+­These generalized coordinates can be summarized more succinctly by
+representing a trajectory (again using the ~ symbol) as a vector with ele­
+ments corresponding to the successive derivatives above:
+!Π
+! x)
+! = N (D i f,
+! v)
+! + ω! x ⎫⎪
+p( x! | v)
+Dx! = f! ( x,
+⎬⇒
+! y)
+! x,
+! v)
+! + ω! y ⎪
+! v)
+! = N ( g,
+! Π
+y! = g(
+p( y! | x,
+⎭
+
+(4.18)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+80
+
+In equation 4.18, D is a matrix with ones above the leading diagonal and
+zeros elsewhere. This effectively shifts all ele­ments of the vector upward
+and may be thought of as a derivative operator. The generalized precision
+matrices may be constructed on the basis of the smoothness we assume for
+the fluctuations, as detailed in appendix B. Equipped with a prior over the
+hidden cause (v), whose relevance w
+­ ill become clearer below, this lets us
+write down the ­free energy for this generative model:
+! µ! x , µ! v )
+F[ µ , y] = −ln p( y,
+! ε!
+= 1 ε! i Π
+2
+
+(
+
+! y ε! y + ε! x i Π
+! xε! x + ε!v i Π
+! v ε!v
+= 21 ε! y i Π
+
+)
+
+! µ! x , µ! v ) ⎤
+⎡ ε! y ⎤ ⎡ y! − g(
+⎥
+⎢ ⎥ ⎢
+ε! = ⎢ ε! x ⎥ = ⎢ Dµ! x − f! ( µ! x , µ! v ) ⎥
+⎥
+⎢ ε! ⎥ ⎢ µ! − η!
+⎣ v⎦ ⎣ v
+⎦
+⎡Π
+!
+⎢ y
+! =⎢
+Π
+⎢
+⎢
+⎣
+
+!x
+Π
+
+(4.19)
+
+⎤
+⎥
+⎥
+⎥
+!v ⎥
+Π
+⎦
+
+In equation 4.19, the μ terms indicate the mode of the approximate posterior density for the x and v terms. The reason the ­free energy takes such
+a ­simple form in the first line is that we have employed a Laplace approximation, as detailed in box 4.3. In brief, this treats all probability densities
+as Gaussian, which—­through a Taylor series expansion—is equivalent to
+assuming we are operating close to the mode of the distribution. The second line of the equation expresses the log probability in terms of squared
+precision weighted prediction errors. This omits all terms that are constant
+with re­spect to the posterior mode. The third line unpacks this in terms of
+the log likelihood, log probability of x given v, and log prior of v.
+4.5.2 Active Inference as Predictive Coding with Motor Reflexes
+­Because the variance of the approximate posterior is an analytic function
+of the mode, u
+­ nder the Laplace approximation, we can optimize the f­ree
+energy with re­spect to the mode. A s­ imple way to think about this is that
+we need only find the maximum a posteriori (MAP) estimates5 for each state.
+­These are the means of the posterior distribution that may be equipped with
+its precision without need for further inference via the Laplace approximation (see box 4.3).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Generative Models of Active Inference
+
+81
+
+Box 4.3
+The Laplace approximation
+Laplace approximations rely on a princi­ple similar to the generalized coordinates of motion described in box 4.2. The idea is that the f­ ree energy may be
+approximated by a quadratic expansion around the posterior mode ( μ). In one
+dimension, this is as follows:
+F[y, q] = E q( x)[ ln q(x) − ln p(y,x)]
+⎡
+≈ E q(x) ⎢ln q( µ ) + (x − µ )∂x ln q(x) x = µ + 21 (x − µ )2 ∂2x ln q(x) x = µ
+⎢
+!##"##
+$
+⎢⎣
+=0
+
+⎤
+− ln p(y, µ ) − (x − µ )∂x ln p(y,x) x = µ − 21 (x − µ )2 ∂2x ln p(y,x) x = µ ⎥
+⎥
+⎦

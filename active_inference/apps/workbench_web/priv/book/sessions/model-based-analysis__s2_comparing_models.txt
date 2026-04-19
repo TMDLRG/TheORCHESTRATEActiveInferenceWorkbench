@@ -1,0 +1,296 @@
+ble to recover (i.e., identifiable).
+Fi­nally, we can construct a design matrix for a linear model, each row of
+which represents a computational phenotype (e.g., a posterior density over
+each subject’s preferences), with columns representing dif­fer­ent attributes
+of ­those subjects. ­These attributes are variables that could explain differences in a rat’s preferences. In addition to a column of ones indicating
+the average preferences over all rats, ­these ­will include ­things like their
+age, ­whether a drug has been administered, and so on. With this model of
+between-­subject effects, we now perform a PEB analy­sis to assess the contribution of t­ hese explanatory variables to prior preferences.
+9.6 Examples of Generative Models
+In this section, we leverage two examples in the lit­er­a­ture illustrating the
+use of continuous and discrete generative models. First, we briefly overview
+the methods used by Adams, Aponte et al. (2015) and Adams, Bauer et al.
+(2016) (hereafter in this section, Adams et al.) to model smooth pursuit
+eye movements as a way of quantifying the precision par­ameters of each
+subject’s generative models. An impor­tant aspect of this design was the
+simultaneous collection of electrophysiological data (via magnetoencephalography) that enabled the authors to ask questions about the neurobiological substrates of precision or confidence encoding. We then turn to an
+analy­sis of saccadic eye movements by Mirza et al. (2018; hereafter in this
+section, Mirza et al.) formulated as a POMDP model. Each of the associated
+experiments is cartooned in figure 9.3. Our hope is that ­these examples ­will
+help readers understand how the generic methods outlined above can be
+used empirically to answer scientific questions.
+In terms of the sequence of steps outlined in figure 9.2, Adams et al.
+collected data (step 1) from a task in which subjects had to maintain fixation on a moving visual target. The details are not impor­tant, but this task
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+183
+
+Time
+Target
+Eyes
+
+Target
+
+Eye-tracking
+Location
+
+Location
+
+Eye-tracking
+
+Time
+Eyes vertical
+Eyes horizontal
+
+Foveation
+Cat
+Bird
+
+Figure 9.3
+Two experiments outlined in section 9.5. The details are not impor­tant but highlight where meta-­Bayesian inference has been successfully exploited and the kinds of
+behavioral data it can be applied to. Left: Experiment of Adams et al., who mea­sured
+smooth pursuit eye movements as subjects tracked a moving target. Right: Experiment from Mirza et al., who mea­sured saccadic eye movements during an exploration task. The visual display was divided into four quadrants, two of which included
+stimuli (cat and bird). Dif­fer­ent scene categories involved dif­fer­ent configurations of
+stimuli, meaning participants had to select which quadrants to foveate to gain sufficient information to categorize the scene. The Adams task (left ) generates continuous
+eye-­tracking data, while the Mirza task (right ) leads to a sequence of fixations and
+may be discretized. ­These are the behavioral data (u) from step 1 in figure 9.2.
+
+comprised two conditions. In the first, the target moved according to a
+predictable sinusoid. In the second, it followed the same trajectory with
+additive Gaussian noise. The data collected included the eye-­movement
+trajectories. The authors formulated a subjective model (step 2). Unlike the
+POMDP model shown in figure 9.2, they opted for a continuous model of
+the sort described in chapter 8. In brief, the model predicted proprioceptive and visual input from the eyes, where the fixation point was assumed
+to be attracted to the target location. The likelihood (step 3) is constructed
+using the (active) predictive coding schemes outlined in chapter 4. This
+quantifies the probability of the actions (eye movements) u
+­ nder a set of
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+184
+
+log precision par­ameters and the model set out in step 2. Moving on to
+step 4, the authors specified prior beliefs as normal distributions over the
+log precisions. They inverted the model (step 5) to find posterior distributions over t­hese precision par­ameters. Step 6 did not use a PEB analy­sis
+but used the neuroimaging data collected concurrently with the behavioral
+task. The authors used dynamic causal modeling to estimate the gain of
+superficial pyramidal cells in the primary visual cortex. This means they
+had estimates of precision and synaptic gain for each subject. This allowed
+the authors to perform a group-­level analy­sis by assessing the correlation
+between par­ameters of the subjective model and their biological substrates.
+Their demonstration of this correlation provides an impor­tant example of
+how Active Inference formulations of be­hav­ior let us ask (and answer) questions about the relationship between belief updating and neurobiology.
+In our second example, Mirza et al. used the POMDP formulation of
+Active Inference to address the role of information gain in driving ­human
+be­hav­ior. Again, we unpack this in terms of figure 9.2’s steps. Mirza et al.
+collected behavioral data (step 1) while subjects performed a visual foraging
+task. ­Here, the aim was to classify a visual scene into one of several groups.
+Each ele­ment of the scene was only revealed once subjects fixated t­hose
+locations; this meant multiple fixations w
+­ ere required to acquire enough
+evidence for a given scene category. The data collected by the authors
+included the sequence of saccades (fast eye movements) performed. The
+model (step 2) used was a POMDP model described in Mirza et al. (2016)
+that predicted discretized proprioceptive, visual, and feedback outcomes,
+conditioned on the current fixation location and the scene category. Preferences (see chapter 7) ­were placed over the feedback outcome such that
+the model anticipates (and thus prefers) being correct in the categorization. The likelihood function (step 3) was obtained by solving the model
+using the scheme outlined in chapter 4 ­under dif­fer­ent pa­ram­et­ er settings.
+The par­ameters in question included (among ­others) a log scaling pa­ram­
+e­ter for the precision of the preference distribution. The authors specified
+prior distributions (step 4) over the log scaling (and other par­ameters) and
+inverted the model for each subject (step 5). They used the log evidence
+estimated for each subject to assess the evidence for models that did or did
+not motivate be­hav­ior using the epistemic component of the expected ­free
+energy, finding greater evidence for ­those models that included epistemic
+affordance in all subjects. They then employed a PEB analy­sis (step 6) to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+185
+
+assess changes in prior beliefs for subjects over the course of multiple ­trials,
+finding evidence in f­ avor of changes in belief par­ameters (i.e., active learning). Fi­nally, they used a canonical covariates analy­sis to assess the relationship between linear combinations of the phenotypic variables estimated
+for each subject (e.g., precision of preferences) and linear combinations of
+per­for­mance mea­sures (e.g., percentage correct and reaction time).
+9.7 Models of False Inference
+Men in general are quick to believe that which they wish to be true.
+—­Julius Caesar
+
+Given the relevance of ­these methods for fields like computational psychiatry (Friston, Stephan et al. 2014), we end with an overview of false inference,
+which is central to the notion of psychopathology as a failure of belief
+updating. One benefit of using an inferential framework like Active Inference is that it si­mul­ta­neously addresses multiple dimensions of psychiatric disorders, linking together maladaptive be­hav­ior (e.g., compulsions or
+addictions) and psychological-­level (e.g., false beliefs) and biological-­level
+phenomena (e.g., abnormalities of neuromodulators).
+As we cannot do justice h
+­ ere to the extensive lit­er­a­ture that uses Active
+Inference in the modeling of disease pro­cesses, this section provides the
+briefest of overviews to suggest a framework in which to think about computational pathologies. See ­table 9.1 for a nonexhaustive sampling of illustrative examples, which include models specified in discrete and continuous
+time (based on ­those in chapters 7 and 8, respectively). In our discussion,
+we w
+­ ill appeal to the structure of POMDP-­like models; the princi­ples that
+underwrite false inference in ­these settings are largely the same.
+The hypothesis under­lying inferential approaches (like Active Inference)
+is that psychopathological conditions may be conceptualized as disorders of
+inference. The term disorder does not necessarily imply that the inferential
+mechanism is flawed (e.g., generates incorrect posterior probabilities). In
+most of the studies reviewed in t­ able 9.1, the inferential mechanism operates normally, but based on a flawed generative model (i.e., a generative
+model endowed with aberrant prior beliefs). This means that, ultimately,
+pathology is a consequence of aberrant prior beliefs—­and one can recover
+­these priors using the model-­based data analy­sis outlined in this chapter.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+186
+
+­Table 9.1
+Computational pathology
+Pathology
+
+Sources
+
+Notes
+
+Addiction,
+impulsivity, and
+compulsivity
+
+FitzGerald, Schwartenbeck
+et al. 2015
+Schwartenbeck, FitzGerald,
+Mathys, Dolan, Wurst et al.
+2015
+Mirza et al. 2019
+Fradkin et al. 2020
+
+Addiction is an impor­tant example
+of be­hav­ior that appears aberrant but
+can be framed as optimal inference
+­under the right sort of generative
+model. Work by Schwartenbeck et al.
+illustrated this using a l­imited offer
+task wherein participants are more or
+less confident about ­whether they w
+­ ill
+receive a reward on waiting. Low confidence leads to compulsive be­hav­ior
+of the sort associated with addiction.
+Subsequent work on this theme looks
+at the prior beliefs associated with
+more or less impulsive be­hav­ior, using
+the patch-­leaving paradigm, and
+examines the role of attenuated prior
+precision in obsessive compulsive
+disorder.
+
+Delusions
+
+Brown et al. 2013
+Friston, Parr et al. 2020
+
+Delusions, characterized by fixed,
+false beliefs, are simply articulated in
+Active Inference as precise posterior probability distributions in the
+absence of supportive evidence. If
+sufficiently precise, they ­will be fixed
+even in the face of (subsequent)
+contradictory evidence. The mechanisms under­lying each delusion may
+be dif­fer­ent. For example, failures of
+sensory attenuation may be central
+to delusions of agency. Recent work
+provides an example of a shared delusion (folie à deux), which depends on
+two agents—­with no information—­
+reaching a confident consensus about
+the state of the world.
+
+Hallucinations
+
+Adams, Stephan et al. 2013
+Benrimoh et al. 2018
+Parr, Benrimoh et al. 2018
+Corlett et al. 2019
+
+­These simulations rest on imbalances
+between prior and likelihood precisions. Overinterpretation of spurious sensory data due to a failure of
+attenuation of likelihood precision,
+or a failure to correct prior beliefs
+due to excessive attenuation, each
+offer mechanisms for false perceptual
+inference.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+187
+
+­Table 9.1
+(continued)
+Pathology
+
+Sources
+
+Notes
+
+Interpersonal
+and personality
+disorders
+
+Moutoussis et al. 2014
+Prosser et al. 2018
+
+Interpersonal inference depends on
+having models about other p
+­ eople and
+how they may react to our decisions.
+This has prompted the development
+of models of trust games, which rely
+on interactions between two (or more)
+parties, and charity games. The latter
+have been used to reproduce the
+self-­aggrandizing and remorselessness
+associated with psychopathy. T
+­ hese
+traits are simulated by modulating
+the degree to which beliefs about
+self-­worth depend on decisions to be
+charitable versus selfish and sensitivity
+to the approval of o
+­ thers.
+
+Oculomotor
+syndromes
+
+Adams, Perrinet, and Friston
+2012
+Parr and Friston 2018a
+
+In ­these papers, continuous-­time
+generative models are employed
+to predict dynamic evolution of
+Newtonian systems. By rendering
+vari­ous aspects of the generative
+model conditionally in­de­pen­dent of
+­others, oculomotor syndromes such
+as internuclear ophthalmoplegias may
+be induced.
+
+Pharmacotherapy
+
+Parr and Friston 2019b
+
+Given the associations we proposed
+between precision par­ameters and neurochemicals in chapter 5, it should be
+pos­si­ble to simulate the consequences
+of pharmacological manipulation of
+­these systems. This work illustrates
+the consequences of several synthetic pharmacological interventions
+on per­for­mance of an oculomotor
+delay-­period task, providing a proof of
+princi­ple that ­these methods can be
+used to simulate not only pathology
+but also the influence of therapeutics.

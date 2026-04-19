@@ -1,0 +1,48 @@
+{
+  "slug": "preference-sculpt-trajectory",
+  "title": "Sculpting Trajectories with Waypoint Preferences",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 12,
+  "tags": ["preference", "trajectory", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 6,
+    "policy_depth": 4,
+    "preference_strength": 3.0,
+    "expected_outcome": "By preferring specific mid-path observations, you can push the agent through a chosen branch even when the goal is reachable by a shorter path."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=preference-sculpt-trajectory",
+    "labs_url": "/labs?recipe=preference-sculpt-trajectory&world=forked_paths"
+  },
+  "math": {
+    "latex": "C = \\lambda \\cdot \\text{one-hot}(o_{\\text{waypoint}}) + \\text{goal logits}",
+    "symbols": {
+      "waypoint preference": "temporary high logit on a mid-path observation",
+      "lambda": "scalar controlling how strongly the agent detours"
+    }
+  },
+  "audiences": {
+    "kid": "Tell the agent it would enjoy a particular stop on the way. It'll go that way even if the shortest route skips it.",
+    "real": "Adding a mid-path logit to C creates a waypoint attractor. The agent's policy posterior now prefers trajectories that pass through the waypoint.",
+    "equation": "C = waypoint_logits + goal_logits. Tune lambda to control detour strength relative to the goal.",
+    "derivation": "Waypoint preferences are a form of shaping: the pragmatic term becomes a sum of log-preferences each of which pulls the trajectory through its favoured observation. Standard constrained-optimisation intuition."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Make the agent take a detour by adding a mid-path preference to C.",
+    "role": "Advanced C-engineering tutor.",
+    "context": "forked_paths; c_preference_override adds a high logit on a mid-path tile observation plus the default goal logit."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4."
+  ]
+}

@@ -1,0 +1,3 @@
+# Local workbench — not indexed.
+User-agent: *
+Disallow: /

@@ -1,0 +1,48 @@
+{
+  "slug": "preference-precision-vs-strength",
+  "title": "Preference Precision vs. Strength",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 9,
+  "tags": ["preference", "precision", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 2,
+    "policy_depth": 2,
+    "preference_strength": 2.0,
+    "expected_outcome": "preference_strength scales C overall; precision scales observation likelihood. They are different axes -- recipe shows the distinction."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=preference-precision-vs-strength",
+    "labs_url": "/labs?recipe=preference-precision-vs-strength&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "C' = \\text{strength} \\cdot C,\\quad A' = \\text{softmax}(\\text{precision} \\cdot \\log A)",
+    "symbols": {
+      "preference strength": "scale on C (pragmatic term)",
+      "precision (G6 vector)": "scale on log A (likelihood)"
+    }
+  },
+  "audiences": {
+    "kid": "Do you want the snack more? Or do you just see it more clearly? Two different knobs, two different outcomes.",
+    "real": "Don't conflate preference strength with observation precision. Strength reshapes -ln p(o); precision reshapes p(o|s).",
+    "equation": "Pragmatic(pi) grows with strength. Accuracy grows with precision. Cookbook sweeps both independently.",
+    "derivation": "Preference strength scales the C vector; precision scales the log-likelihood. They enter G at different points: preference through the pragmatic term, precision through the KL term via accuracy."
+  },
+  "equation_refs": ["eq-4-10", "eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["message-passing/s3"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Disambiguate preference_strength and precision_vector in the bundle builder.",
+    "role": "Knob-disambiguation tutor.",
+    "context": "tiny_open_goal; sweep (strength, precision_vector scale) in a 3x3 grid."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4."
+  ]
+}

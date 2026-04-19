@@ -1,0 +1,174 @@
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+II
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+6
+
+AR
+­ ecipe for Designing Active Inference Models
+
+Give me six hours to chop down a tree and I ­will spend the first four sharpening
+the axe.
+—­Abraham Lincoln
+
+6.1 Introduction
+This chapter provides a four-­step r­ecipe to construct an Active Inference
+model, discussing the most impor­tant design choices one has to make to
+realize a model and providing some guidelines for t­ hose choices. It serves as
+an introduction to the second part of the book, which ­will illustrate several
+specific computational models using Active Inference and their applications in a variety of cognitive domains.
+As Active Inference is a normative approach, it tries to explain as much as
+pos­si­ble about be­hav­ior, cognitive, and neural pro­cesses from first princi­ples.
+Consistently, the design philosophy of Active Inference is top-­down. Unlike
+many other approaches to computational neuroscience, the challenge is
+not to emulate a brain, piece by piece, but to find the generative model that
+describes the prob­lem the brain is trying to solve. Once the prob­lem is appropriately formalized in terms of a generative model, the solution to the prob­
+lem emerges ­under Active Inference—­with accompanying predictions about
+brains and minds. In other words, the generative model provides a complete
+description of a system of interest. The resulting be­hav­ior, inference, and
+neural dynamics can all be derived from a model by minimizing ­free energy.
+The generative modeling approach is used in several disciplines for the realization of cognitive models, statistical modeling, experimental data analy­sis,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+106
+
+and machine learning (Hinton 2007b; Lee and Wagenmakers 2014; Pezzulo,
+Rigoli, and Friston 2015; Allen et al. 2019; Foster 2019). H
+­ ere, we are primarily interested in designing generative models that engender cognitive
+pro­cesses of interest. We have seen this design methodology in previous
+chapters. For example, using a generative model for predictive coding, perception was cast as an inference about the most likely cause of sensations;
+using a generative model that evolves in discrete time, planning was cast
+as an inference about the most likely course of action. Depending on the
+prob­lem of interest (e.g., planning during spatial navigation or planning
+saccades during visual search), one can adapt the form of ­these generative
+models to equip them with dif­fer­ent structures (e.g., shallow or hierarchical) and variables (e.g., beliefs about allocentric or egocentric spatial locations). Importantly, Active Inference may take on many dif­fer­ent guises
+­under dif­fer­ent assumptions about the form of the generative model being
+optimized. For example, assumptions about models that evolve in discrete
+or continuous time influence the form of the message passing (see chapter 4). This implies that the choice of a generative model corresponds to
+specific predictions about both be­hav­ior and neurobiology.
+This flexibility is useful as it allows us to use the same language to describe
+pro­cesses in multiple domains. However, it can also be confusing from a
+practical perspective, as ­there are a number of choices that must be made
+to find the appropriate level of description for the system of interest. In
+the second part of this book, we w
+­ ill try to resolve this confusion through
+a series of illustrative examples of Active Inference in silico. This chapter
+introduces a general r­ ecipe for the design of Active Inference models, highlighting some of the key design choices, distinctions, and dichotomies that
+­will appear in the numerical analy­sis of computational models described in
+subsequent chapters.
+6.2 Designing an Active Inference Model: A R
+­ ecipe in Four Steps
+Designing an Active Inference model requires four foundational steps, each
+resolving a specific design question:
+1. Which system are we modeling? The first choice to make is always the
+system of interest. This may not be as ­simple as it seems; it rests on
+the identification of the bound­aries (i.e., Markov blanket) of that system. What counts as an Active Inference agent (generative model), what
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+107
+
+counts as the external environment (generative pro­cess), and what is the
+interface (sensory data and actions) between them?
+2. What is the most appropriate form for the generative model? The first
+of the next three practical challenges is deciding ­whether it is appropriate to think of a pro­cess more in terms of categorical (discrete) inferences
+or continuous inferences, motivating the choice between discrete or
+continuous-­time implementations (or a hybrid) of Active Inference. Then
+we need to select the most appropriate hierarchical depth, motivating
+the choice between shallow versus deep models. Fi­nally, we need to consider w
+­ hether it is necessary to endow generative models with temporal
+depth and the ability to predict action-­contingent observations to support
+planning.
+3. How to set up the generative model? What are the generative model’s
+most appropriate variables and priors? Which parts are fixed and what
+must be learned? We emphasize the importance of choosing the right
+sort of variables and prior beliefs; furthermore, we emphasize a separation in timescales between the (faster) update of state variables that
+occurs during inference and the (slower) update of model par­ameters
+that occurs during learning.
+4. How to set up the generative pro­cess? What are the ele­ments of the
+generative pro­cess (and how do they differ from the generative model)?
+­These four steps (in most cases) suffice to design an Active Inference
+model. Once completed, the be­hav­ior of the system is determined by the
+standard schemes of Active Inference: the descent of the active and internal
+states on the ­free energy functional associated with the model. From a more
+practical perspective, once one has specified the generative model and generative pro­cess, one can use standard Active Inference software routines to
+obtain numerical results, as well as to perform data visualization, analy­sis,
+and fitting (e.g., model-­based data analy­sis). In what follows, we w
+­ ill review
+the four design choices in order.
+6.3 What System Are We Modeling?
+A useful first step in applying the formalism of Active Inference is to identify the bound­aries of the system of interest b
+­ ecause we are interested in
+characterizing the interaction between what is internal to a system and the
+external world via sensory receptors and effectors (e.g., muscles or glands). As
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+108
+
+discussed in chapter 3, a formal way to characterize the distinction between
+internal states of a system and external variables (and intermediate variables that mediate their interactions) is in terms of a Markov blanket (Pearl
+1988). To reiterate the argument, a Markov blanket may be subdivided into
+two sorts of variables (Friston 2013): t­ hose that mediate the influence of
+the external world on internal states of the system of interest (i.e., sensory
+states) and t­ hose that mediate the influence of internal states of the system
+of interest on the external world (i.e., active states). See figure 6.1.
+Importantly, ­there are many ways in which a boundary between internal
+and external may be defined. In most of the simulations we ­will discuss in
+the second part of this book, t­here w
+­ ill be a (Markov blanket) separation
+between an agent (roughly, a living organism) and its environment. This corresponds to the usual setup of cognitive models, where an agent implements
+cognitive pro­cesses such as perception and action se­lection on the basis of its
+internal (e.g., brain) states and is provided with sensors and effectors.
+
+GENERATIVE PROCESS
+
+GENERATIVE MODEL
+Active states
+u
+
+Internal states
+µ
+
+External states
+x
+
+Sensory states
+y
+
+Blanket states
+b = (u, y)
+Figure 6.1
+Action-­perception loop between an adaptive system (­here, the brain) and the environment, along with the Markov blanket (composed of active states and sensory
+states) that mediates their interaction. The figure implies that the adaptive system
+only affects the environment by performing actions (via active states) and that the
+environment only affects the adaptive system by producing observations (via sensory
+states). The figure exemplifies the distinction between the adaptive system’s generative model and the (external) generative pro­cess that produces its observations.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+109
+
+However, this is not the only possibility. From the perspective of neurobiology, we could draw a Markov blanket around a single neuron, around
+the brain, or around the entire body. In the first case, sensory states include
+postsynaptic receptor occupancies, and active states include the rate at
+which vesicles containing neurotransmitters fuse with the presynaptic
+membrane. The internal states of the neuron (e.g., membrane potentials,
+calcium concentrations) can then be thought of as inferring the c­ auses of its
+sensory states according to some (implicit) generative model (Palacios, Isomura et al. 2019). This setup treats the external states (that are being modeled) as including the neuronal network in which our neuron participates.
+This is very dif­fer­ent from the inference taking place when we assume our
+entire network is internal to the Markov blanket. For example, if we take a
+system whose sensory states are the photoreceptors in the ret­ina and whose
+active states are the oculomotor muscles, the inferences performed by the
+internal states are about ­things outside the brain. This speaks to the importance of scale, as the internal states of this Markov blanket include the
+internal states from the perspective of a single neuron. The latter ­internal
+states appear to make inferences about ­things within the brain when the

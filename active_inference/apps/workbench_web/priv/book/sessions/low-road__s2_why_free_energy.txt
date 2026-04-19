@@ -1,0 +1,216 @@
+DKL [ P(x | y) || P(x)]
+
+= P(x = frog | y = jumps) ( ln P(x = frog | y = jumps) − ln P(x = frog ))
+
++ P(x = apple | y = jumps) ( ln P(x = apple | y = jumps) − ln P(x = apple))
+
+(2.4)
+
+= 0.9 ( ln(0.9) − ln(0.1)) + 0.1( ln(0.1) − ln(0.9))
+≈ 1.8 nats
+
+This scores the amount of belief updating, as opposed to simply how
+unlikely the observation was. To highlight the distinction between surprise
+and Bayesian surprise, consider what happens if we commit to a prior belief
+that we ­will always see apples. The Bayesian surprise w
+­ ill be zero, as the prior
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+21
+
+Box 2.2
+Expectations
+It is useful to refer to the expectation of a random variable x, usually denoted
+E[ x ]. This is the weighted average of all the values that the variable can assume,
+weighted by their probability. For discrete random variables (that can only take
+a countable number of pos­si­ble values), this is given by a weighted sum:
+E[x] =
+
+∑ xP(x)
+x
+
+For example, for a discrete (numerical) variable that can only assume two
+values (1 and 2) with equal probability of 21 , this is E[x] = 1 i 21 + 2 i 21 = 23 .
+For continuous random variables (that can take infinitely many values),
+sums are replaced by integrals. Expectations can also be applied to functions
+of random variables, as opposed to the variables directly. For example, if we
+have a function f (x), where x has some continuous distribution, the expectation is defined as follows:
+
+∫
+
+E[ f (x)] = f (x)p(x)dx
+We w
+­ ill use this notation throughout this book, where the function f (x)
+­will often be a log probability, or log probability ratio.
+
+is so confident that we do not update it at all following our observations.
+However, the surprise is very large (4.6 nats) as it is highly unlikely that an
+apple ­will jump.
+Note that while we illustrated Bayesian inference on the basis of a very
+­simple generative model, it applies to generative models of any complexity.
+In chapter 4 we w
+­ ill highlight two forms of generative model that underwrite most applications in Active Inference.
+2.3 Biological Inference and Optimality
+­There are two impor­tant points that connect the above inferential scheme
+to biological and psychological theories of perception. First, the inferential procedure discussed requires the interplay of top-­down pro­cesses that
+encode predictions (from the prior) and bottom-up pro­cesses that encode
+sensory observations (as mediated by the likelihood). This interplay of top-­
+down and bottom-up pro­cesses distinguishes the inferential view from alternative approaches that only consider bottom-up pro­cesses. Furthermore, it
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+22
+
+is central in modern biological treatments of perception, such as predictive
+coding (discussed in chapter 4), which is a specific algorithmic (or process-­
+level) implementation of the more general (Bayesian) inference scheme discussed ­here.
+Second, Bayesian inference is optimal. Optimality is defined in relation
+to a cost function that is optimized (i.e., minimized), which, for Bayesian
+inference, is known as variational f­ ree energy—­closely related to surprise. We
+return to this in section 2.5. By explic­itly considering the full distribution
+over hidden states, it naturally h
+­ andles uncertainty, hence avoiding the limitations of alternative approaches that only consider point estimates of hidden
+states (e.g., the mean value of x). One such alternative would be maximum
+likelihood estimation, which simply selects the hidden state most likely to
+have generated the data at hand. The prob­lem with this is that such estimates
+ignore both the prior plausibility of the hidden state and the uncertainty
+surrounding the estimation. Bayesian inference does not suffer ­these limitations. However, despite the use of surprise in objectively assessing w
+­ hether
+the model is fit for purpose, it is impor­tant to appreciate that inference itself
+is subjective. The results of inference are not necessarily accurate in any objective sense (i.e., the organism’s belief may not actually correspond to real­ity)
+for at least two impor­tant reasons. First, biological creatures operate on the
+basis of l­imited computational and energetic resources, which render exact
+Bayesian inference intractable.4 This requires approximations that preclude
+guarantees of exact Bayesian optimality. T
+­ hese approximations include the
+notion of a variational posterior—­based on something called a mean field
+approximation—­which is central to chapter 4.
+The second reason optimality may be thought of as subjective is that
+organisms operate on the basis of a subject’s generative model of how their
+observations are generated, which may or may not correspond to the real
+generative pro­cess that generates their observations. This is not to say that the
+generative model should correspond to the generative pro­cess. In fact, ­there may
+be models that afford better (e.g., simpler) explanations of the data at hand
+than the pro­cesses that actually generated them—as quantified by their relative surprise. A nice example of this is illusions, for which someone finds
+a simpler explanation for their visual input in relation to how the visual
+stimuli have been carefully engineered by a mischievous psychophysicist.
+The generative model itself may be optimized as new experience is acquired.
+This may or may not converge to the generative pro­cess. Figure 2.2 illustrates
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+MODEL
+
+PROCESS
+
+Hidden
+state
+x
+
+Inferred
+state
+
+23
+
+y
+
+Observation
+
+Hidden
+state
+x*
+
+u
+Action
+
+Figure 2.2
+Generative pro­cess and generative model. Both represent ways in which sensory data
+( y) could be generated given hidden states (x) and are represented through arrows
+from x to y to indicate causality. The difference is that the pro­cess is the true causal
+structure by which data are generated, while the model is a construct used to draw
+inferences about the c­ auses of data (i.e., use observations to derive inferred states).
+The hidden states of the generative model and the generative pro­cess are not the
+same. The organism’s model includes a range of hypotheses (x) about the hidden
+state, which do not necessarily include the true value of the hidden state x∗ of the
+generative pro­cess. In other words, the models we use to explain our sensorium may
+include hidden states that do not exist in the outside world, and vice versa. Action
+(u) is generated on the basis of the inferences made ­under a generative model. Action is
+shown ­here as part of the generative pro­cess, making changes to the world, despite
+being selected from the inferences drawn ­under the model.
+
+this point and the difference between true environmental contingencies, or
+the generative pro­cess, which is inaccessible to the organism and the organism’s generative model of the world. In this par­tic­u­lar example, the generative
+pro­cess is in a true state x* that is inaccessible to the organism. However, the
+organism and world are reciprocally coupled, and x* generates an observation
+y, which the organism senses. The organism can use this observation y and
+Bayes’ rule to infer the (posterior probability of ) some explanatory variable
+or hidden state in the generative model. In the figure, we refer to both x*
+and x as hidden states, emphasizing that neither is observable. However, they
+are subtly dif­fer­ent: the former is part of the organism’s generative model,
+whereas the latter is part of the generative pro­cess and inaccessible to the
+organism. Furthermore, x* and x do not necessarily live in the same space. It
+might be that the hidden states in the external world take on values that lie
+outside the space of explanations available to the brain. Conversely, it might
+be that the brain’s explanations include variables that do not exist in the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+24
+
+outside world. For example, the former could be 5-­dimensional and the latter
+2-­dimensional, or one could be continuous and the other categorical.
+The distinction between the generative model and pro­cess is impor­tant
+to contextualize psychological claims about optimality of inference—to the
+extent that t­hese claims are valid—­which, on a Bayesian view, is always
+contingent on the organism’s resources. By resources, we mean its specific
+generative model, and bounded computational and mnemonic resources.
+2.4 Action as Inference
+The discussion to this point is common to all Bayesian brain theories. However, we now introduce the ­simple but fundamental advance offered by
+Active Inference. This starts from the same inferential perspective discussed
+above but extends it to consider action as inference. This idea stems from
+the concept that Bayesian inference minimizes surprise (or, equivalently,
+maximizes Bayesian model evidence). So far, we have considered what happens when we compute surprise by performing inference—­and select among
+models on the basis of their capacity to minimize surprise. However, surprise
+does not only depend on the model. It also depends on the data. By acting
+on the world to change the way in which data are generated, we can ensure
+a model is fit for purpose by choosing ­those data that are least surprising
+­under our model.
+Equipped with a mechanism to produce actions, an organism can engage
+in reciprocal exchanges with its environment; see figure 2.2. In animals,
+this mechanism takes the form of a motor reflex loop. Essentially, for each
+action-­perception cycle, the environment sends an observation to the
+organism. The organism uses (an approximation to) Bayesian inference to
+infer its most likely hidden states. It then generates an action and sends it
+to the environment in an attempt to make the environment less surprising.
+The environment executes the action, generates a new observation, and
+sends it to the organism. Then, a new cycle starts. The sequential description ­here is written for didactic purposes; it is impor­tant to realize that
+­these are not ­really discrete steps but are continuous dynamical pro­cesses.
+Active Inference goes beyond the recognition that perception and action
+have the same (inferential) nature. It also assumes that both perception and
+action cooperate to realize a single objective—or optimize just one function—­
+rather than having two distinct objectives, as more commonly assumed. In
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+25
+
+the Active Inference lit­er­a­ture, this common objective has been described in
+vari­ous (informal and formal) ways, including the minimization of surprise,
+entropy, uncertainty, prediction error, or (variational) ­free energy. T
+­ hese terms
+are related to one another but sometimes their relations are not immediately
+clear, causing some confusion. Furthermore, ­these terms are used in dif­fer­
+ent contexts; for example, prediction error minimization is used in biological
+contexts where the objective is explaining brain signals, while variational
+­free energy minimization is used in machine learning.
+In the next two sections, we w
+­ ill clarify that the single quantity that
+Active Inference agents minimize through perception and action is variational ­free energy. However, ­under some conditions, one can reduce variational
+­free energy to other notions, such as the discrepancy between the generative model and the world, or the difference between what one expects and

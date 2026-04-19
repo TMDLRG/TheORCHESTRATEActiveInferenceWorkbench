@@ -1,0 +1,252 @@
+hidden states and observations and whose numerical values can be ­either
+specified by hand or learned from data (see 6.5.2).
+Beyond this ­simple example, the ele­ments that need to be specified are
+fully determined by the form of the selected generative model. For example, the model for discrete-­time POMDP shown in figure 4.3 (top) requires
+specifying the A, B, C, D, and E matrices; continuous schemes use analogous
+(although less alphabetical) ele­ments, which w
+­ ill be dealt with in chapter 8.
+But even in ­these more complex cases, the exercise is not so dissimilar from
+above: namely, specifying prior beliefs about the variables of interest (e.g., in
+discrete-­time implementations, about hidden states at the first time step in
+the D-­vector and about observations in the C-­matrix) and their probabilistic
+mappings (e.g., likelihood mapping between hidden states and observations
+in the A-­matrix). However, in some cases, it is useful to think about factorizations of the state-­space of the generative model, which avoids considering
+­every pos­si­ble combination of variables if some are unnecessary. In chapter 7,
+we ­will discuss a biologically plausible example of factorization that occurs
+in perceptual pro­cessing between “what” and “where” streams (Ungerleider
+and Haxby 1994)—­namely, between variables that represent object identities
+and locations, respectively, which can be treated in­de­pen­dently in the model
+(hence simplifying it) as they are often invariant to one another.
+Deciding which variables are of interest and the ways they are related or
+factorized in the model is often the most challenging—­but also the most
+creative—­part of model design. It is an exercise of translating our cognitive hypotheses into a mathematical form that supports Active Inference.
+How should we select the “right” variables? Ultimately, this is a question
+of specifying plausible alternatives and picking ­those that have the lowest
+­free energy (cf. Bayesian model comparison). However, a practically useful perspective for most studies is that the generative model should be as
+similar as pos­si­ble to how we believe data are generated. When appealing
+to Active Inference in the setting of cognitive psy­chol­ogy, this often means
+thinking about how experimental psychologists would go about generating
+the stimuli they pre­sent to their experimental participants. On formalizing
+­these pro­cesses in terms of the requisite probability distributions, we arrive
+at a generative model whose f­ree energy minimizing dynamics naturally
+lead to per­for­mance of the task in question.
+­Here, we can draw an analogy with most Bayesian (or ideal observer)
+models of perception, in which the models are designed to mimic (to a
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+117
+
+Box 6.2
+Priors and empirical be­hav­ior
+Another perspective on the issue of selecting priors draws from a set of results
+known as the complete class theorems (Wald 1947, Daunizeau et al. 2010), which
+state that any statistical decision procedure (i.e., be­hav­ior) may be framed as
+Bayes optimal u
+­ nder the right set of prior beliefs. This means that if we are
+interested in explaining empirical be­hav­ior, our challenge is to identify the
+generative model (comprising prior beliefs) that would reproduce that be­hav­
+ior as simply as pos­si­ble. In short, priors are a statement of a hypothesis about
+the system in question. If other prior beliefs would be plausible, this offers an
+opportunity to put this to empirical data through Bayesian model comparison.
+This also has implications for computational phenotyping in clinical populations. That ­there ­will always be a set of prior beliefs that render be­hav­ior Bayes
+optimal implies the key question—in understanding the computational deficits that give rise to psychiatric or neurological syndromes—is what ­these priors
+are. This idea is slightly counterintuitive at first. However, the complete class
+theorem means that asking w
+­ hether a be­hav­ior is (Bayes) optimal is meaningless. The impor­tant question is, What are the prior beliefs that would make this
+optimal? In chapter 9, we w
+­ ill see how an appeal to f­ree energy minimization
+based on our own beliefs as scientists offers a way to answer this question.
+
+large extent) the structure of the task at hand, as in the example of recognizing a frog or an apple (chapter 2). This idea is sometimes equated
+with the good regulator theorem (Conant and Ashby 1970), which says that
+to regulate an environment effectively, a creature (­whether biological or
+synthetic) must be a good model of that system. From the perspective of
+eco-­niche construction, this is sometimes phrased in terms of the (statistical) fitness (Bruineberg et al. 2018) of a creature’s model to its environment
+(and vice versa). However, this does not mean that an agent’s generative
+model has to be identical to the generative pro­cess that actually generates
+data. For most practical applications, it can be simplified or dif­fer­ent. We
+­will return to this point ­later in this chapter (6.6).
+6.5.2 Which Parts of the Generative Model Are Fixed,
+and What Is Learned?
+Another design choice is deciding which parts of the generative model are fixed
+and which ones are updated over time as an effect of learning. In princi­ple,
+Active Inference allows e­ very part of the model—­and even its structure—to be
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+118
+
+updated (or learned) over time. This renders learning a design choice rather
+than something mandatory. In keeping with this, we ­will cover examples of
+Active Inference models that are completely designed by hand and examples
+in which some parts of the model (e.g., transition probabilities) remain fixed
+while o
+­ thers (e.g., likelihoods) are updated over time.
+In Active Inference, learning is cast as an aspect of inference, as a f­ree
+energy minimizing pro­cess. So far, we have described inference in terms of
+an update of beliefs about states of the generative model. In much the same
+way, we can describe learning as an update of beliefs about par­ameters of the
+generative model. For this, the generative model has to be endowed with
+prior beliefs about par­ameters of the distributions to be learned, where the
+specific par­ameters depend on probability distribution associated with each
+variable (e.g., mean and variance for a Gaussian distribution). ­These prior
+values are updated to form posterior beliefs whenever new data are encountered. As we w
+­ ill discuss in chapter 7, the algorithmic form of this update is
+the same as the update of state variables.
+The fact that both inference and learning use the same kind of Bayesian
+belief updates may seem confusing during model design—­partly ­because
+deciding what should be modeled as a state or a pa­ram­et­er is not always
+straightforward. However, when it comes to cognitive models, ­there is a
+clear difference between inference and learning. Inference describes (fast)
+changes of our beliefs about model states—­for example, how we update our
+belief that ­there is an apple in front of us ­after observing something red.
+Learning describes (slow) changes of our beliefs about model par­ameters—­
+for example, how we update our likelihood distribution to increase the value
+of the apples-­red mapping a
+­ fter observing several occurrences of red apples.
+Beliefs about par­ameters typically vary much more slowly than t­ hose about
+states, and they may only be updated ­after states have been inferred. From
+a neurobiological perspective, it is appealing to map inference to neuronal dynamics and learning to synaptic plasticity. Furthermore, as we ­will
+discuss in chapter 7, holding probabilistic beliefs about model par­ameters
+induces novelty-­seeking be­hav­iors so that creatures may select the best data
+to learn the causal structure of their worlds. This suggests that endowing
+Active Inference models with the ability to learn their par­ameters (or even
+their structure; see chapter 7) is an effective way to study the behavioral
+dynamics of active learning and curiosity-­based exploration.
+Before concluding this section, it is worth noting that in this book we
+exemplify rather ­simple generative models that are defined using tabular
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+119
+
+methods (e.g., with explicit matrices for priors and likelihoods) and that
+operate in small state-­
+spaces. In comparison, much more sophisticated
+kinds of generative models—­and associated learning schemes—­are being
+developed in fields like machine learning, deep learning, and robotics, such
+as, for example, variational autoencoders (Kingma and Welling 2014), generative adversarial networks (Goodfellow et al. 2014), recursive cortical networks (George et al. 2017), and world models (Ha and Schmidhuber 2018).
+In princi­ple, one could borrow any of ­these methods (and many ­others) to
+implement one or more parts of Active Inference models (e.g., likelihood
+or transition models). By leveraging the most up-­to-­date machine learning
+methods, it would be pos­si­ble to scale up Active Inference to increasingly
+more challenging domains and applications; see, for example, Ueltzhöffer
+(2018) and Millidge (2019).
+However, t­here are some impor­tant points to consider when designing
+Active Inference models that use sophisticated machine learning models,
+especially if one is interested in cognitive and neurobiological implications.
+One appeal of Active Inference is that it offers an integrative perspective on
+cognitive functions by assuming that (for example) perceptual inference,
+action planning, and learning all stem from the same ­free energy minimization pro­cess. This integrative power would be lost if (for example) one juxta­­
+posed generative models that operate or learn in­de­pen­dently from one
+another. Furthermore, the aforementioned machine learning methods correspond to pro­cess models that are distinct from Active Inference and have
+dif­fer­ent cognitive and neurobiological interpretations. Fi­nally, when using
+machine learning methods, some of the design choices discussed h
+­ ere (e.g.,
+about the choice of model variables) may be skipped, as they are emergent
+properties of learning; however, they may be replaced by dif­fer­ent design
+choices, about (for example) number of layers, par­ameters, and learning
+rates of a deep neural net. T
+­ hese design choices potentially have relevant
+cognitive and neurobiological implications, which are beyond the scope of
+what we address ­here.
+6.6 Setting Up the Generative Pro­cess
+In Active Inference, the generative pro­cess describes the dynamics of the world
+external to the Active Inference agent, which corresponds to the pro­cess
+that determines the agent’s observations (see figure 6.1). It may seem bizarre
+to have postponed defining the generative pro­cess u
+­ ntil ­after describing the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+120
+
+agent’s generative model. ­After all, a modeler would have some task (and
+generative pro­cess) in mind from the beginning, so it would make perfect
+sense to revert this order and design the generative pro­cess before the generative model, especially in applications where the generative model has to
+be learned during situated interactions, as in gamelike or robotic settings
+(Ueltzhöffer 2018, Millidge 2019, Sancaktar et al. 2020).
+The reason we postponed the design of the generative pro­cess is that, in
+many practical applications discussed in this book, we simply assume that
+the dynamics of the generative pro­cess are the same as, or very similar to,
+the generative model. In other words, we generally assume that the agent’s
+generative model closely mimics the pro­cess that generates its observations.
+This is not the same as saying that the agent has perfect knowledge of the
+environment. Indeed, even if the agent knows the pro­cess that generates its
+observations, it may be uncertain about (for example) its initial state in the
+pro­cess, as was the case in the apple versus frog example. In the language of
+discrete-­time Active Inference, one could design a model in which both the
+generative model and the generative pro­cess are characterized by the same
+A-­matrix but in which the agent’s belief about its initial state (D-­vector),
+which is part of its generative model, is dif­fer­ent from—or even inconsistent with—­the true initial state of the generative pro­cess. One subtle ­thing
+to notice is that even if both the generative model and the generative pro­
+cess are characterized by the same A-­ and B-­matrices, their semantics are
+dif­fer­ent. The A-­matrix of the generative pro­cess is an objective property of
+the environment (sometimes called a mea­sure­ment distribution in Bayesian
+models), whereas the A-­matrix of the generative model encodes an agent’s
+subjective belief (called a likelihood function in Bayesian models).
+Of course, except in the simplest cases, it is not mandatory that the generative model and generative pro­cess are the same. In practical implementations of Active Inference, one can always specify the generative pro­cess
+separately from the generative model, e­ ither using equations that differ
+from ­those of the generative model or using other methods, such as game
+simulators, which take actions as inputs and provide observations as outputs (Cullen et al. 2018), thereby following the usual action-­perception
+loop implied by the Markov blanket of figure 6.1.
+­There are some philosophical implications of designing generative models that are similar or dissimilar from the generative pro­cess (Hohwy 2013;
+Clark 2015; Pezzulo, Donnarumma et al. 2017; Nave et al. 2020, Tschantz
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+121
+
+et al. 2020). As discussed above, the good regulator theorem (Conant and
+Ashby 1970) says that an effective adaptive creature must have or be a good
+model of the system it regulates. However, this can be achieved in vari­ous
+ways. First, as discussed so far, the creature’s generative model can mimic
+(at least to a ­great extent) the generative pro­cess. Models developed in this
+way may be called explicit or environmental models, given the resemblance
+between their internal states and the environment’s external states. Second,
+the creature’s generative model can be much more parsimonious than (and
+even significantly dif­fer­ent from) the generative pro­cess, to the extent that
+it correctly manages ­those aspects of the environment that are useful to act
+adaptively in it and achieve the creature’s goals. Models developed in this
+way may be called sensorimotor or action oriented, as they mostly encode
+action-­observation (or sensorimotor) contingencies and their primary role
+is supporting goal-­directed actions as opposed to providing an accurate
+description of the environment.
+The difference between explicit and action-­
+oriented models can be
+appreciated if we consider dif­fer­ent ways one can model (for example) a
+rodent trying to escape from a maze in which some corridors are dead ends.
+An explicit generative model may resemble a cognitive map of the maze
+and provide a detailed characterization of external entities, such as specific locations, corridors, and dead ends. This model may permit the rodent
+to escape from the maze using map-­based navigation. An action-­oriented
+model may instead encode contingencies between whisker movements and
+touch sensations. This latter model would afford the se­lection of contextually appropriate strategies, such as moving forward (if no touch sensation
+is experienced or expected) or changing direction (in the opposite case)—­
+eventually permitting the rodent to escape from the maze without explic­
+itly representing locations, corridors, or dead ends. T
+­ hese two kinds of
+model prompt dif­fer­ent philosophical interpretations of Active Inference,
+considering generative models as ways to ­either reconstruct the external
+environment (explicit) or afford accurate action control (action oriented).
+Fi­nally, as discussed in the field of morphological computation (Pfeifer and
+Bongard 2006), some aspects of a creature’s or a robot’s control can be outsourced to the body and hence do not need to be encoded in its generative
+model. One example is the passive dynamic walker: a physical object resembling a h
+­ uman body, composed of two “legs” and two “arms,” which is able
+to walk an incline with no sensors, motors, or controllers (Collins et al.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+122
+
+2016). This example implies that at least some aspects of locomotion (or
+other abilities) can be achieved with body mechanics that are carefully tuned
+to exploit environmental contingencies (e.g., an appropriate body weight or
+size to walk without slipping); therefore, t­ hese contingencies do not need to
+be encoded in the creature’s generative model. This suggests an alternative

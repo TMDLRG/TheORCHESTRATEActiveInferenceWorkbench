@@ -1,0 +1,52 @@
+{
+  "slug": "pomdp-forked-epistemic-win",
+  "title": "Forked Paths: When Information Gain Wins",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 10,
+  "tags": ["pomdp", "epistemic", "exploration", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "shannon_entropy"],
+    "horizon": 5,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Agent takes the longer but more informative fork when the pragmatic term is weak; picks the shortcut once preferences dominate. Visible in EFE decomposition."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=pomdp-forked-epistemic-win",
+    "labs_url": "/labs?recipe=pomdp-forked-epistemic-win&world=forked_paths"
+  },
+  "math": {
+    "latex": "G(\\pi) = -\\mathbb{E}_{q(o|\\pi)}\\big[ D_{KL}[q(s|o,\\pi) \\| q(s|\\pi)] \\big] + \\mathbb{E}_{q(o|\\pi)}[-\\ln p(o)]",
+    "symbols": {
+      "D_KL": "Kullback-Leibler divergence",
+      "q(s|o,pi)": "posterior after the predicted observation",
+      "q(s|pi)": "predictive prior under the policy",
+      "-D_KL term": "epistemic value (information gain, negated sign)",
+      "-ln p(o)": "pragmatic value (expected surprise minimisation)"
+    }
+  },
+  "audiences": {
+    "kid": "Two ways to get to the goal: one is faster but you don't learn much; the other takes longer but you see a lot. The agent picks based on how hungry it is.",
+    "real": "On the forked-paths maze, epistemic and pragmatic terms compete. Low preference makes the agent take the information-rich long path; high preference collapses it to the shortcut.",
+    "equation": "Minimising G trades off -D_KL (epistemic value) vs. pragmatic loss -ln p(o). Same G, different weights produce different policies.",
+    "derivation": "Under q(o,s|pi) = q(s|o,pi) q(o|pi), the expected log ratio simplifies to the negative KL between posterior and prior predictive beliefs. This is the information-gain component of G (Friston 2015)."
+  },
+  "equation_refs": ["eq-4-10", "eq-b-9"],
+  "figure_refs": ["fig_4.2"],
+  "session_refs": ["high-road/s1", "high-road/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Show a preference-vs-information tradeoff in policy selection, observable in the EFE decomposition graph.",
+    "role": "Epistemic-value tutor using the forked-paths maze as the canonical fixture.",
+    "context": "forked_paths 7x5 maze; change preference_strength between 0.5 (epistemic wins) and 6.0 (pragmatic wins)."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Friston, Rigoli, Ognibene, Mathys, Fitzgerald & Pezzulo (2015), Active inference and epistemic value."
+  ]
+}

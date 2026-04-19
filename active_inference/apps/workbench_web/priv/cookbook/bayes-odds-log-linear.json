@@ -1,0 +1,50 @@
+{
+  "slug": "bayes-odds-log-linear",
+  "title": "Odds Form: Log-Odds Add Linearly",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 6,
+  "tags": ["bayes", "perception", "information-theory", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax", "kl_divergence"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Consecutive independent observations shift log-odds by an additive amount equal to the log-likelihood ratio; graph reads as a sum of independent contributions."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=bayes-odds-log-linear",
+    "labs_url": "/labs?recipe=bayes-odds-log-linear&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "\\log \\frac{P(s \\mid o_{1:n})}{P(\\neg s \\mid o_{1:n})} = \\log \\frac{P(s)}{P(\\neg s)} + \\sum_{i=1}^{n} \\log \\frac{P(o_i \\mid s)}{P(o_i \\mid \\neg s)}",
+    "symbols": {
+      "log-odds": "signed log of the posterior ratio",
+      "log-likelihood ratio": "evidence contributed by one observation",
+      "prior odds": "log ratio of P(s) to P(-s)"
+    }
+  },
+  "audiences": {
+    "kid": "Every clue adds or subtracts the same amount from a running score. If the score goes up, it means the clue pointed to yes; down means no.",
+    "real": "In log-odds space, Bayes updates are addition: each independent piece of evidence contributes a signed log-likelihood ratio. Makes batched updates trivial.",
+    "equation": "Define l_t = log P(s|o_{1:t}) / P(-s|o_{1:t}). Then l_t = l_0 + sum of log P(o_i|s) / P(o_i|-s). Linear in independent evidence.",
+    "derivation": "Take the log of the Bayes update for both s and -s; subtract. Conditional independence of observations given the state makes the log-likelihood ratios additive (Jaynes 2003, Ch 4)."
+  },
+  "equation_refs": ["eq-2-1"],
+  "figure_refs": [],
+  "session_refs": ["low-road/s1"],
+  "labs": ["bayes"],
+  "orchestrate": {
+    "objective": "Show that log-odds form turns Bayes into addition over independent evidence streams.",
+    "role": "Numerical-literacy tutor connecting probability to information-theoretic intuitions.",
+    "context": "A 3x3 maze where the agent accumulates several wall-signature observations without moving, so the log-odds graph stays interpretable."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 2.",
+    "Jaynes (2003), Probability Theory: The Logic of Science, Cambridge, Ch 4."
+  ]
+}

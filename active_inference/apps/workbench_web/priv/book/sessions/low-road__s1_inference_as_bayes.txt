@@ -1,0 +1,252 @@
+2012). However, all of this is based on one ­simple rule. To illustrate this rule,
+we consider an example of Bayesian perceptual inference (figure 2.1). Imagine a person who has a strong belief that she is confronted with an apple.
+This belief corresponds to a prior probability, or prior for short. This prior
+comprises the probability attributed to the apple hypothesis and the probability assigned to alternative hypotheses. In this example, our alternative
+hypothesis is that it is not an apple but a frog. Numerically, the prior probability distribution assigns 0.9 to apple and 0.1 to frog. Note that, as we have
+assumed that ­there are only two plausible (mutually exclusive) hypotheses,
+they must sum to one. The person is also equipped with a likelihood model,
+which assigns a high probability to the fact that frogs jump, whereas apples
+do not. This likelihood specifies the (probabilistic) mapping from the two
+hidden states (frog or apple) to the two observations (jumps or does not
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+17
+
+Box 2.1
+The sum and product rules of probability
+Probabilistic reasoning is underwritten by two key rules: the sum and product
+rules of probability, which are as follows (respectively):
+
+∑ P(x) = 1
+x
+
+P(x)P(y | x) = P(x, y)
+The sum rule says that the probability of all pos­si­ble events (x) must sum
+(or integrate) to one. The product rule says that the joint probability of two
+random variables (x and y) may be decomposed into the product of the probability of one variable (P(x)) and the conditional probability of the second variable given the first (P( y | x)). A conditional probability is the probability of one
+variable (­here, y) if we know the value that the other variable (­here, x) takes.
+We can develop two impor­tant results from ­these s­ imple rules. The first is
+the operation of marginalization. The second is Bayes’ rule. Marginalization
+allows us to obtain a distribution of just one of the two variables from a joint
+distribution:
+P(x, y) = ∑ P( y)P(x | y) = P( y)∑ P(x | y) = P( y)
+∑
+!#####"#####$ !####"####$
+x
+
+x
+
+x
+
+Product rule
+
+Sum rule
+
+The probability of y is referred to as a marginal probability, and we refer
+to this operation as marginalizing out x. Bayes’ rule may be obtained directly
+from the product rule:
+P(x)P(y | x) = P(x, y) = P( y)P(x | y)
+!##"##
+$
+!##"##
+$
+Product rule
+
+Product rule
+
+This lets us translate between a prior and conditional distribution (likeli­
+hood) and the associated marginal and the other conditional distribution
+(posterior). Put simply, Bayes’ rule just says that the probability of two ­things
+is the probability of the first, given the second, times the probability of the second, which is the same as the probability of the second, given the first, times
+the probability of the first.
+
+jump). Together, the prior and the likelihood form the person’s generative
+model.
+Now imagine that the person observes that her apple-­frog jumps. Bayes’
+rule tells us how to form a posterior belief from the prior, taking into
+account the likelihood of jumping. This rule is expressed as follows:
+P(x | y) =
+
+P(x)P(y | x)
+P(y)
+
+(2.1)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+18
+
+Prior beliefs
+P(x = frog)
+
+P(x = frog | y = jumps)
+
+P(x = apple)
+0.9
+
+Observe jumping
+
+P( y = jumps | x = apple)
+
+P(x = apple | y = jumps)
+0.9
+
+0.1
+
+Frogs
+
+Likelihood model
+
+Apples
+
+Generative model
+
+0.1
+
+Posterior beliefs
+
+0.01
+
+P( y = jumps | x = frog)
+
+0.99 0.81
+
+P( y = doesn't jump | x = apple)
+
+0.19 P( y = doesn't jump | x = frog)
+
+Figure 2.1
+A ­simple example of Bayesian inference. Upper left: The organism’s prior belief P(x)
+about the object it ­will see, before having made any observations, i.e., a categorical
+distribution over two possibilities, apple (with probability 0.9) and frog (with probability 0.1). Upper right: The organism’s posterior belief P(x | y ) ­after observing that the
+object jumps. Posterior beliefs can be computed using Bayes’ rule u
+­ nder a likelihood
+function P( y | x). This is shown below the prior and posterior, and specifies that if
+the object is an apple, ­there is a very small probability (0.01) that it ­will jump, while
+if it is a frog, the probability that it w
+­ ill jump is much higher (0.81). (The probability
+bars in this figure are not exactly to scale.) In this specific case, the update from prior
+to posterior is large.
+
+Under the likelihood model in figure 2.1, the posterior probability
+­
+assigned to the frog is 0.9, and the probability assigned to the apple is 0.1.
+As highlighted in box 2.1, the denominator of equation 2.1 may be computed by marginalizing the numerator. Using our apple-­frog example, we
+take the opportunity to unpack two dif­fer­ent notions of surprise—­both of
+which are impor­tant in Active Inference. The first, which we refer to simply
+as surprise, is the negative log evidence, where evidence is the marginal
+probability of observations. In our example, this is the negative log probability of observing anything jumping u
+­ nder the generative model. Surprise
+is a very impor­tant quantity from a Bayesian perspective. It is a mea­sure of
+how poorly a model fits the data it tries to explain. To put this intuitively,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+19
+
+we can work out the probability of the observed (jumping) be­hav­ior ­under
+our model. Remember that this assigns a very high prior probability to apples
+and a low prior probability to frogs. Thus, our marginal probability of jumping is as follows:
+
+∑ P(x, y = jumps)
+= ∑ P(x)P(y = jumps| x)
+
+P(y = jumps) =
+
+x
+
+x
+
+= P(x = frog )P(y = jumps|x = frog )
+
+(2.2)
+
++ P(x = apple)P(y = jumps|x = apple)
+= 0.1 × 0.81 + 0.9 × 0.01
+= 0.09
+This means that, ­under this model, we would only expect to observe
+jumping be­hav­ior about 9 times out of 100 observations. As such, we should
+be surprised to observe this if we subscribed to the model in figure 2.1. We
+can quantify this in terms of surprise (ℑ). This is given by ℑ( y = jumps) =​
+−ln P( y  = jumps) = −ln(0.09) = 2.4 nats.1 The bigger this number, the worse
+the model as an apt explanation for the observations at hand. This lets us
+compare models in relation to data. For example, consider an alternative
+model, where we have a prior belief that frogs are seen 100 ­percent of the
+time. Following the same steps as in equation 2.2, we calculate a surprise
+of about 0.2 nats. This is a better model of t­hese data, as the observation
+is much less surprising. The procedure of scoring models on the basis of
+their evidence (or surprise) is often referred to as Bayesian model comparison. For more complicated models, the form of the surprise may not be so
+­simple. ­Table 2.1 provides the form of the surprise (omitting constants) for
+a range of probability distributions—in addition to the categorical probability in our example. Crucially, this lets us talk about surprise for probability
+distributions whose support2 differs from the ­simple example used ­here.
+This is impor­tant ­because the way in which sensory data are generated by
+the world varies with the sort of data. We could be surprised by encountering the face of someone we did not expect to see (categorical distribution),
+or we could be surprised by it being colder outside than we anticipated
+(continuous distribution). T
+­ able 2.1 may be seen as a portfolio of the probability distributions at our disposal when we come to construct generative
+models in subsequent chapters. More generally, it makes the point that surprise is a concept that can be evaluated for any given f­ amily of probability
+distributions.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+20
+
+­Table 2.1
+Probability distributions and surprise3
+Distribution
+
+Support
+
+Surprise (ℑ)
+
+Gaussian
+
+x ∈!
+
+1
+i
+2 (x − µ ) Π(x − µ )
+
+Multinomial1
+
+xi ∈(0, . . . , N )
+i ∈{1, . . . , K}
+∑i xi = N
+
+− ∑ i xi ln di
+
+Dirichlet2
+
+xi ∈(0,1)
+i ∈{1, . . . , K}
+∑i xi = 1
+
+∑i (1 − α i )ln xi
+
+Gamma
+
+x ∈(0,∞)
+
+(bx + (1 − a) ln x)
+
+Notes: 1. Special cases include categorical (K  > 2, N  =  1), binomial (K = 2, N  > 1), and
+Bernoulli (K = 2, N = 1) distributions. 2. A special case is the beta distribution (K = 2).
+
+The second notion of surprise is (slightly confusingly) referred to as Bayesian surprise. This is a mea­sure of how much we have to update our beliefs
+following an observation. In other words, Bayesian surprise quantifies the
+difference between a prior and a posterior probability. This raises the question of how we quantify the dissimilarity of two probability distributions.
+One answer, from information theory, is to use a Kullback-­Leibler (KL) Divergence. This is defined as the average difference between two log probabilities:
+DKL [Q(x)||P(x)] ! EQ ( x) [ lnQ(x) − ln P(x)]
+
+
+
+(2.3)
+
+The E symbol ­here indicates an average (or expectation) as outlined in
+box 2.2. Using the KL-­Divergence, we can quantify the Bayesian surprise of
+our example:

@@ -1,0 +1,49 @@
+{
+  "slug": "preference-homeostatic-setpoint",
+  "title": "Homeostatic Preferences: Stay in the Band",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 9,
+  "tags": ["preference", "homeostasis", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "C with a band of high-value observations (e.g. any goal-adjacent tile) lets the agent settle in the band without requiring a specific goal tile."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=preference-homeostatic-setpoint",
+    "labs_url": "/labs?recipe=preference-homeostatic-setpoint&world=corridor_turns"
+  },
+  "math": {
+    "latex": "\\log p(o) \\text{ peaked over a set } O^* \\subset O",
+    "symbols": {
+      "O*": "preferred observation set (setpoint band)",
+      "C": "log-preference concentrated over O*"
+    }
+  },
+  "audiences": {
+    "kid": "Instead of one favourite spot, the agent has a whole comfy zone. It just has to stay inside.",
+    "real": "Homeostasis emerges naturally from a C vector with a multi-observation peak. No separate control loop needed.",
+    "equation": "Preference peaks over a set O* -> pragmatic term rewards policies that keep q(o|pi) supported on O*.",
+    "derivation": "Active inference subsumes homeostasis as a special case of surprise minimisation: the agent's preferences are just the vital set (Friston 2013). The C vector encodes the band."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["overview/s2"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Show that a multi-peaked C produces homeostatic behaviour without extra machinery.",
+    "role": "Homeostasis tutor.",
+    "context": "corridor_turns; c_preference_override assigns high logits to all tiles within 2 steps of the goal."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Friston (2013), Life as we know it."
+  ]
+}

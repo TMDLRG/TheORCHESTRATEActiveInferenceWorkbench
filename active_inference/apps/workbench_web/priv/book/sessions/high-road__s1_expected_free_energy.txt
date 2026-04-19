@@ -1,0 +1,255 @@
+example of this is a Markov chain, where the past ­causes the pre­sent ­causes the
+­future. In this scenario, the past may only influence the ­future via the pre­sent.
+This means no additional information about the f­uture is gained by finding
+out about the past (assuming we know the pre­sent).
+To identify a Markov blanket in a system wherein we know the conditional
+dependencies, we can follow a s­imple rule. The blanket for a given variable
+comprises its parents (the variables it depends on), its ­children (the variables
+that depend on it) and, in some settings, the other parents of its c­ hildren.
+
+In brief, a Markov blanket is the set of variables that mediate all (statistical)
+interactions between a system and its environment. Figure 3.1 illustrates an
+interpretation of a Markov blanket in a dynamic setting. ­Here the conditional
+in­de­pen­dences have been supplemented with dynamical constraints, so that
+the flows do not depend upon states on the opposite side of the blanket.
+The Markov blanket in figure 3.1 distinguishes states internal to the adaptive system (i.e., brain activity) from external states of the environment.
+Furthermore, it identifies two additional states, labeled sensory states and
+active states, which form the blanket that (statistically) separates internal and
+external states. Statistical separation means that if we knew about the active
+and sensory states, the external states would offer no additional information
+about internal states (and vice versa). In a dynamical setting, this is often
+interpreted as saying internal states cannot directly change external states
+but can do so vicariously by changing active states. Similarly, external states
+cannot directly change internal states but can do so indirectly by changing
+sensory states.
+This is a restatement of the classical action-­perception cycle, wherein an
+adaptive system and its environment can interact (only) through actions
+and observations, respectively. This reformulation has two main benefits.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+44
+
+Active states
+u· = fu (x, u, y) + ωu
+
+External states
+x· = fx (x, u, y) + ωx
+
+Internal states
+µ· = fµ (µ, u, y) + ωµ
+
+Sensory states
+y· = fy (µ, u, y) + ωy
+
+b = (u, y)
+Blanket states
+Figure 3.1
+A dynamic Markov blanket, which separates an adaptive system (­here, the brain)
+from the environment. The dynamics of each set of states are determined by a
+deterministic flow specified as a function ( f   ) giving the average rate of change and
+additional stochastic (random) fluctuations (ω ). The arrows indicate the direction of
+influence of each variable over the rates of change of other variables (technically, the
+nonzero ele­ments of the associated Jacobians). This is just one example; one can use
+a Markov blanket to separate an entire organism from the environment or nest multiple Markov blankets within one another. For example, brains, organisms, dyads,
+and communities can be conceived in terms of dif­fer­ent Markov blankets that are
+nested within one another (see Friston 2019a; Parr, Da Costa, and Friston 2020 for a
+formal treatment). Confusingly, dif­fer­ent fields use dif­fer­ent notations for the variables; sometimes, sensory states are denoted s, external states η, and active states a.
+­Here we have chosen variables for consistency with the other chapters in this book.
+
+First, it formalizes the fact that an adaptive system’s internal states are
+autonomous from environmental dynamics and can therefore resist their
+influences. Second, it scaffolds the way in which adaptive systems minimize their surprise: it highlights the internal, sensory, and active states they
+have access to. Specifically, surprise is defined in relation to sensory states,
+while internal and active state dynamics are the means by which the surprise of sensory states may be minimized.
+The key point to notice h
+­ ere is that the internal states of an adaptive
+system bear a formal relation to external states. This is due to a kind of symmetry across the Markov blanket as both influence and are influenced by
+blanket states. A consequence of this is that we can construct conditional
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+45
+
+probability distributions for the internal and external states, given the blanket states. ­Because ­these are conditioned on the same blanket states, we can
+associate pairs of expected internal and external states with one another. In
+other words, on average, the internal and external states acquire a kind of
+(generalized) synchrony—­just as we might anticipate on attaching a pendulum to each end of a wooden beam. Over time, as they synchronize, each
+pendulum becomes predictive of the other through the vicarious influence of the beam (Huygens 1673). Figure 3.2 offers a graphical intuition
+for this relationship. This means that if we can write down in­de­pen­dent
+60
+40
+
+150
+100
+
+x|b
+
+x
+
+µ
+
+20
+0
+
+0
+
+–20
+
+–50
+
+–40
+–10
+
+–5
+
+0
+b
+
+5
+
+10
+
+µ|b
+
+50
+
+–100
+–10
+
+–5
+
+0
+b
+
+60
+x|
+
+10
+
+P(µ|b) [µ]
+
+Probability
+
+x
+
+40
+
+5
+
+20
+0
+–20
+–40
+–100 –50
+
+0
+µ
+
+50
+
+100
+
+–8
+
+–7
+
+–6
+x
+
+–5
+
+–4
+
+Figure 3.2
+Association between average internal states of a Markov blanket and distributions
+of external states. Top: Assuming a linear Gaussian form for the conditional probabilities, ­these plots show samples from the conditional distribution over external
+and internal states, respectively, given blanket states. The thick black lines indicate
+the average of ­these variables given the associated blanket state. Bottom left: The
+same data are plotted to illustrate the synchronization of internal and external states
+afforded by sharing a Markov blanket—­here, an inverse synchronization. The dashed
+lines and black cross illustrate that if we knew the average internal state (vertical
+line), we could identify the average external state (horizontal line) and the spread
+around this point. Bottom right: We can associate the average internal state with a
+distribution over the external state.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+46
+
+distributions over external and internal states given their Markov blanket,
+the two states become informative about one another via this blanket.
+This synchrony gives internal states the appearance of representing (or
+modeling) external states—­which links back to the idea of surprise minimization introduced in chapter 2. This is ­because surprise depends on an
+internal model of how sensory data are generated. To recap, minimizing
+the surprise (negative log probability) of sensory observations becomes
+identical to maximizing the evidence (marginal likelihood) for the model,
+which is just the probability of sensory observations ­under that model. This
+notion of surprise minimization can be understood from two equivalent—­
+Bayesian and ­free energy—­perspectives, which we discuss next.
+3.3 Surprise Minimization and Self-­Evidencing
+­Under a Bayesian perspective, an agent with a Markov blanket appears to
+model the external environment in the sense that internal states correspond
+(on average) to a probabilistic representation—an approximate posterior
+belief—of external states of the system (figure 3.2). The dynamics of internal
+states correspond to a form of (approximate) Bayesian inference of external states, as their motion changes the associated probability distribution,
+which is afforded by an implicit generative model of how sensations (or
+sensory states in the Markov blanket jargon) are generated. If we reinstate
+the notion of an agent as constituted by internal and blanket states, we can
+talk about an agent’s generative model.
+Importantly, the agent’s generative model cannot simply mimic external dynamics (other­wise the agent would simply follow external dissipative
+dynamics). Rather, the model must also specify the preferred conditions
+for the agent’s existence, or the regions of states that the agent has to visit
+to maintain its existence, or satisfy the criteria for its existence in terms
+of occupying characteristic states. T
+­ hese preferred states (or observations)
+can be specified as the priors of the model—­which implies that the model
+implicitly assumes that its preferred (prior) sensations are more likely to
+occur (i.e., are less surprising) if it satisfies the criteria for existence. This
+means it has an implicit optimism bias. This optimism bias is necessary for
+the agent to go beyond the mere duplication of external dynamics to prescribe active states that underwrite its preferred or characteristic states.
+­Under this formulation, one can cast optimal be­hav­ior (with re­spect to
+prior preferences) as the maximization of model evidence by perception and
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+47
+
+action. Indeed, model evidence summarizes how well the generative model
+fits or explains sensations. A good fit indicates that the model successfully accounts for its sensations (this is the descriptive side of inference); at
+the same time, it realizes its preferred sensations, given that they are less
+surprising (this is the prescriptive side of the inference). Such good fit is a
+guarantee of surprise minimization, as maximizing model evidence P( y) is
+mathematically equivalent to minimizing surprise: ℑ( y) = −ln P( y).
+A way to reformulate the above arguments more succinctly consists in saying that any adaptive system engages in “self-­evidencing” (Hohwy 2016). Self-­
+evidencing ­here means acting to garner sensory data consistent with (i.e., that
+affords evidence to) an internal model, hence maximizing model evidence.
+3.3.1 Surprise Minimization as a Hamiltonian Princi­ple of Least Action
+In the preceding sections, we have asserted that surprise must be minimized
+but have not detailed why this is. Although the details of the under­lying physics of self-­evidencing are outside the scope of this book (see Friston 2019b for
+details), we ­here provide a brief overview of the princi­ples. ­These are underwritten by the idea that biological creatures—­with Markov blankets—­persist
+over time, resisting the dispersive effects of environmental fluctuations. The
+per­
+sis­
+tence of a Markov blanket implies that the distribution of blanket
+states remains constant over time. Simply put, this means that any deviation
+of sensory (or active) states from regions that are highly probable ­under this
+distribution must be corrected by the average flow of states (which is just
+the deterministic part of the flow in figure 3.1). Expressing this as a physicist
+might, stochastic (random) systems at steady state engage in dynamics that
+(on average) descend an energy function (or Hamiltonian) that is interpretable as a negative log evidence or surprise. This is like a ball rolling down
+a hill from high gravitational potential energy at the top of the hill to low
+energy in a basin. See figure 3.3.
+For the system shown on the left of figure 3.3, e­ very time a fluctuation ­causes a move to a less probable state, this is corrected by a move up
+the probability gradient, such that the system occupies probability-­dense
+regions a greater proportion of the time. The key insight ­here is that this
+system maintains sensory states within a narrow range by minimizing surprise (on average)—in contrast to the system on the right, for which surprise
+grows in­def­initely.
+Surprise minimization permits living organisms to (temporarily) resist
+the second law of thermodynamics, which states that entropy—or the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026

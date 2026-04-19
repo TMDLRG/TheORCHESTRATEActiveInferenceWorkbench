@@ -1,0 +1,390 @@
+Prefrontal
+syndromes
+
+Parr, Rikhye et al. 2019
+
+­These simulations set out a difference
+between medial and lateral prefrontal
+syndromes by attenuating the
+precision of transitions to impair the
+per­for­mance of a memory guided task
+(lateral) versus the precision of an
+interoceptive likelihood that determines motivation to engage in the
+task (medial).
+(continued)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+188
+
+­Table 9.1
+(continued)
+Pathology
+
+Sources
+
+Notes
+
+Visual neglect
+
+Parr and Friston 2017a
+
+Inattention to the left side of space
+may be induced by several alternative lesioned priors. Among ­these,
+an increase in Dirichlet par­ameters
+for this side of space reduces the
+novelty associated with saccades to
+the left, increasing visual sampling
+of the right instead. Alternatively,
+setting preferences consistent with
+right-­sided proprioceptive or visual
+outcomes or increasing habitual
+engagement in right-­sided saccades
+reproduces qualitatively similar
+be­hav­ior.
+
+Disorders of
+interoceptive
+inference
+
+Barrett et al. 2016
+Allen et al. 2019
+Maisto, Barca et al. 2019
+Pezzulo, Maisto et al. 2019
+Barca and Pezzulo 2020
+Tschantz et al. 2021
+
+Simulations of interoceptive inference
+(or active inference in the interoceptive domain) suggest that imbalances
+between prior and likelihood precisions about (for example) cardiac or
+gastric signals can cause false beliefs
+about the internal state of the body,
+misperceptions of bodily symptoms,
+and psychosomatic hallucinations.
+Furthermore, they can have cascading effects on autonomic regulation
+and action se­lection, causing vari­ous
+types of maladaptive be­hav­ior, such
+as hypervigilance, excessive medicine
+use, and excessive food restrictions.
+
+Aberrant priors may be about states or precisions, or they may be structural priors about the form of the generative model. A useful way of thinking
+about the ­causes of pathological be­hav­ior is to think about the prior belief
+used for policies and about how each part of this may be disrupted to give
+rise to abnormal policy se­lection. Policy priors depend on the expected ­free
+energy, which itself depends on posterior beliefs, the potential for information gain, and prior preferences (C). Priors over policies may additionally be
+equipped with a fixed form term (E ), representing habitual biases.
+Taking each of ­these in turn: Posterior beliefs depend on priors and likelihoods. To form an aberrant posterior belief, one or both must be disrupted.
+Typically, this disruption takes the form of under-­or overestimation of the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Model-­Based Data Analy­sis
+
+189
+
+balance of precisions. Excessively high likelihood, compared to prior, precision leads to overinterpretation of (potentially noisy) sensory input. This
+leads to overfitting in the sense that unwarranted conclusions may be drawn
+from spurious data. If the balance is disrupted in the opposite direction,
+favoring confidence in the prior, internally generated percepts become resistant to conflicting sensory input. Both mechanisms have been associated
+with the development of hallucinations, and the two can coexist when hierarchical models are employed. Given the association of vari­ous precisions
+with neuromodulatory chemicals (see chapter 5), it seems sensible that conditions such as Lewy body dementia, where cholinergic signaling is impaired,
+and schizo­phre­nia, with abnormalities of the dopaminergic system, pre­sent
+with hallucinatory phenomena—­that is, false perceptual inference.
+Next, we consider the role of information gain. H
+­ ere, the precision of
+the likelihood and the precision of prior beliefs tell us the degree to which
+uncertainty is resolvable and the amount of uncertainty t­ here is to resolve,
+respectively. The precision of the prior beliefs applies to ­either par­ameters
+of the generative model (i.e., influences novelty) or to the states (i.e., influences salience). Interpreting the par­ameters of conditional probabilities as
+synaptic efficacies or the precisions as synaptic gains suggests that synaptic
+disconnection syndromes may be thought of as disruption of one or both
+of ­these. Absent synapses cannot be modulated, so this is very much like
+having extremely confident prior beliefs about a conditional probability, as
+new data cannot update the associated efficacy. This has impor­tant implications for the potential information gain of dif­fer­ent policies, as has been
+exploited in modeling sensory neglect syndromes.
+Fi­nally, the preferences and policy priors provide a clear influence over
+be­hav­ior. ­These could underwrite the development of addictive habits or
+the apathy associated with vari­ous psychiatric and neurological syndromes
+(Hezemans, Wolpe, and Rowe 2020). In summary, defective prior beliefs
+at vari­ous places in the generative models described above provide a functional or teleological explanation for pathological be­hav­ior.
+9.8 Summary
+In this chapter, we outlined an approach that uses the theoretical models
+described in previous chapters to pose questions to empirical data. This lets
+us use Active Inference as a noninvasive tool to probe the computational
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+190
+
+pro­cesses that individuals use to make decisions. We have focused on a few
+­simple examples. However, Active Inference–­based models have been developed for more realistic and complicated tasks (Cullen et al. 2018) designed
+to evoke richer be­hav­ior for computational phenotyping. In addition to
+setting out a six-­step pro­cess for model-­based analy­sis, we highlighted two
+examples of the use of ­these methods. T
+­ hese bring out key variations in
+how this may proceed, including the kinds of be­hav­ior mea­sured (smooth
+trajectories or discrete choices), the choice of model (continuous or discrete), and the dif­fer­ent scientific questions being asked. The last of t­hese
+is the most impor­tant, as it determines the preceding choices. We saw the
+use of computational phenotyping in combination with neuroimaging
+(Adams, Bauer et al. 2016) to ask questions about the relationship between
+synaptic gain and precision. In addition, we saw how model inversion may
+be used to assess the contributions of alternative behavioral drives and
+predictors of per­for­mance (Mirza et al. 2018). Ultimately, the six steps in
+figure 9.1 provide a generic method for designing experiments to noninvasively interrogate the implicit generative models ­people (or other animals)
+use to drive be­hav­ior. This offers an opportunity to answer questions about
+the function of the ner­vous system in health and disease.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+10
+
+ Active Inference as a Unified Theory
+of Sentient Be­hav­ior
+
+In general we are least aware of what our minds do best.
+—­Marvin Minsky
+
+10.1 Introduction
+In this chapter, we wrap up Active Inference’s main theoretical points (from
+the first part of the book) and its practical implementations (from the second part). Then, we connect the dots: we abstract away from the specific
+Active Inference models discussed in previous chapters to focus on integrative
+aspects of the framework. One benefit of Active Inference is that it provides
+a complete solution to the adaptive prob­lems that sentient organisms have
+to solve. It therefore offers a unified perspective on prob­lems like perception,
+action se­lection, attention, and emotion regulation, which are usually treated
+in isolation in psy­chol­ogy and neuroscience—­and addressed using distinct
+computational approaches in artificial intelligence. We ­will discuss the Active
+Inference perspective on each of ­these prob­lems (and more) in the context
+of established theories, such as cybernetics, ideomotor theory of action, reinforcement learning, and optimal control. Fi­nally, we briefly discuss how the
+scope of Active Inference can be extended to cover other biological, social,
+and technological topics that are not discussed in depth in this book.
+10.2 Wrapping Up
+This book offers a systematic account of the theoretical under­pinnings and
+practical implementations of Active Inference. ­Here, we briefly summarize
+the discussion of the first nine chapters. This offers an opportunity to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+192
+
+rehearse the key constructs of Active Inference that w
+­ ill be useful in the
+remainder of this chapter.
+In chapter 1, we introduced Active Inference as a normative approach
+to understanding sentient creatures that form part of action-­perception
+loops with their environment (Fuster 2004). We explained that normative
+approaches start from first princi­ples to derive and test empirical predictions about the phenomenon of interest—­here, the ways living organisms
+persist while engaging in adaptive exchanges (action-­perception loops) with
+their environment. We also considered that one could arrive at Active Inference by following a low road or a high road.
+In chapter 2, we illustrated the low road to Active Inference. This road
+starts from the idea that the brain is a prediction machine, endowed with a
+generative model: a probabilistic repre­sen­ta­tion of how hidden c­ auses in the
+world generate sensations (e.g., how light reflected off an apple stimulates
+the ret­ina). By inverting this model, it infers the c­ auses of its sensations
+(e.g., ­whether I am seeing an apple, given that my ret­ina is stimulated in a
+certain way). This view of perception (aka perception-­as-­inference) has its
+historical roots in the Helmholtzian notion of unconscious inference and,
+more recently, in the Bayesian brain hypothesis. Active Inference extends
+this view by bringing action control and planning within the compass of
+inference (aka control-­
+as-­
+inference, planning-­
+as-­
+inference). Most importantly, it shows that perception and action are not quintessentially separable pro­cesses but fulfill the same objective. We first described this objective
+more informally, as the minimization of a discrepancy between one’s model
+and the world (which generally reduces to surprise or prediction error minimization). Put simply, one can minimize the discrepancy between a model
+and the world in two ways: by changing one’s mind to fit the world (perception) or by changing the world to fit the model (action). ­These can be
+described in terms of Bayesian inference. However, exact inference is often
+intractable, so Active Inference uses a (variational) approximation (noticing
+that exact inference may be seen as a special case of approximate inference).
+This leads to the second, more formal description of the common objective
+of perception and action, as variational ­free energy minimization. This is the
+core quantity used in Active Inference and may be unpacked in terms of
+its constituent parts (e.g., energy and entropy, complexity and accuracy,
+or surprise and divergence). Fi­nally, we introduced a second kind of f­ree
+energy: expected f­ree energy. This is particularly impor­tant during planning,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+193
+
+as it affords a way to score alternative policies by considering the ­future
+outcome that they are expected to generate. This too may be unpacked in
+terms of its constituent parts (e.g., information gain and pragmatic value,
+expected ambiguity and risk).
+In chapter 3, we illustrated the high road to Active Inference. This alternative road starts from the deflationary imperative for biological organisms
+to preserve their integrity and avoid dissipation, which can be described
+as avoiding surprising states. We then introduced the notion of a Markov
+blanket: a formalization of the statistical separation between the organism’s
+internal states and the world’s external states. Crucially, internal and external states can only influence each other vicariously via intermediate (active
+and sensory) variables, called blanket states. This statistical separation—­
+mediated by the Markov blanket—is crucial to endowing an organism with
+some degree of autonomy from the external world. To understand why this
+is a useful perspective, consider the following three consequences.
+First, an organism with a Markov blanket appears to model the external environment in a Bayesian sense: its internal states correspond—on
+­average—to an approximate posterior belief about external states of the
+world. Second, the autonomy is guaranteed by the fact that the organism’s
+model (its internal states) is not unbiased but prescribes some existential
+preconditions (or prior preferences) that must be maintained—­for example,
+for a fish, being in the w
+­ ater. Third, equipped with this formalism, it is pos­
+si­ble to describe optimal be­hav­ior (with re­spect to prior preferences) as the
+maximization of (Bayesian) model evidence by perception and action. By
+maximizing model evidence (i.e., self-­evidencing) an organism ensures that
+it realizes its prior preferences (e.g., a fish stays in the ­water) and avoids
+surprising states. In turn, the maximization of model evidence is (approximately) mathematically equivalent to the minimization of variational ­free
+energy—­hence we arrive again (in another way) at the same central construct of Active Inference discussed in chapter 2. Fi­nally, we detailed the
+relationship between minimizing surprise and Hamilton’s princi­ple of least
+Action. This evinces the formal relationship between Active Inference and
+first princi­ples in statistical physics.
+In chapter 4, we outlined the formal aspects of Active Inference. We focused
+on the passage from Bayesian inference to a tractable approximation—­
+variational inference—­and the resulting objective for organisms to minimize variational ­free energy via perception and action. The insight from this
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+194
+
+treatment is the importance of the generative model that creatures use to
+make sense of their world. We introduced two kinds of generative models
+that express our beliefs about how data are generated, using discrete or continuous variables. We explained that both afford the same Active Inference,
+but they apply when states of affairs are formulated in discrete time (as partially observed Markov decision prob­lems) or continuous time (as stochastic
+differential equations), respectively.
+In chapter 5, we remarked on the difference between the normative
+princi­ple of ­free energy minimization and a pro­cess theory about how this
+princi­ple may be implemented by the brain—­and explained that the latter generates testable predictions. We then outlined aspects of the pro­cess
+theories accompanying Active Inference, which encompass domains such
+as neuronal message passing, including neuroanatomical circuitry (e.g.,
+cortico-­subcortical loops) and neuromodulation. For example, at an anatomical level, message passing maps nicely to a canonical cortical microcircuit, with predictions that stem from deep cortical layers at one level and
+target superficial cortical layers at the level below (Bastos et al. 2012). At a
+more systemic level, we discussed how Bayesian inference, learning, and
+precision weighting correspond to neuronal dynamics, synaptic plasticity,
+and neuromodulation, respectively, and how the top-­down and bottom-up
+neural message passing of predictive coding maps to slower (e.g., alpha or
+beta) and faster (e.g., gamma) brain rhythms. T
+­ hese and other examples
+illustrate that ­after designing a specific Active Inference model, one can
+draw neurobiological implications from the form of its generative model.
+In chapter 6, we provided a ­recipe to design Active Inference models.
+We saw that while all creatures minimize their variational ­free energy, they
+behave in dif­fer­ent, sometimes opposite ways ­because they are endowed
+with dif­fer­ent generative models. Therefore, what distinguishes dif­fer­ent
+(e.g., simpler from more complex) creatures is just their generative model.
+­There is a rich repertoire of pos­si­ble generative models, which correspond to
+dif­fer­ent biological (e.g., neuronal) implementations and produce dif­fer­ent
+adaptive—or maladaptive—­be­hav­iors in dif­fer­ent contexts and ecological
+niches. This renders Active Inference equally appropriate for characterizing
+­simple creatures like bacteria that sense and seek nutrient gradients, complex creatures like us that pursue sophisticated goals and engage in rich
+cultural practices, or even dif­fer­ent individuals—to the extent that ones
+appropriately characterizes their respective generative models. Evolution
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+195
+
+appears to have discovered increasingly sophisticated design structures for
+brains and bodies that made organisms able to deal with (and shape) rich
+ecological niches. Modelers can reverse-­engineer this pro­cess and specify
+the designs for brains and bodies of creatures of interest, in terms of generative models, based on the kinds of niche they occupy. This corresponds to a
+series of design choices (e.g., models using discrete or categorical variables,
+shallow or hierarchical models)—­which we unpacked in the chapter.
+In chapters 7 and 8, we provided numerous examples of Active Inference models in discrete and continuous time, which address prob­lems of
+perceptual inference, goal-­directed navigation, model learning, action control, and more. T
+­ hese examples w
+­ ere designed to showcase the variety of
+emergent be­hav­iors ­under ­these models and to detail the princi­ples of how
+they are specified practically.
+In chapter 9, we discussed how to use Active Inference for model-­based
+data analy­sis and to recover the par­ameters of an individual’s generative
+model, which better explain the subject’s be­hav­ior in a task. This computational phenotyping uses the same form of Bayesian inference discussed in the
+rest of the book, but in a dif­fer­ent way: it helps design and evaluate (objective) models of ­others’ (subjective) models.
+10.3 Connecting the Dots: The Integrative Perspective
+of Active Inference
+Some de­cades ago, the phi­los­o­pher Dennett lamented that cognitive scientists devoted too much effort to modeling isolated subsystems (e.g., perception, language understanding) whose bound­aries are often arbitrary. He
+suggested to try instead modeling “the ­whole iguana”: a complete cognitive
+creature (perhaps a ­simple one) and an environmental niche for it to cope
+with (Dennett 1978).
+One benefit of Active Inference is that it offers a first princi­ple account of
+the ways in which organisms solve their adaptive prob­lems. The normative
+approach pursued in this book assumes that it is pos­si­ble to start from the
+princi­ple of variational ­free energy minimization and derive implications
+about specific cognitive pro­
+cesses, such as perception, action se­
+lection,
+attention and emotion regulation, and their neuronal under­pinnings.
+Imagine a ­simple creature that must solve prob­lems like finding food
+or shelter. When cast as Active Inference, the creature’s prob­lems can be
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+196
+
+described in enactive terms, as acting to solicit preferred sensations (e.g.,
+food-­related sensations). To the extent that t­hese preferred sensations are
+included (as prior beliefs) in its generative model, the organism is effectively
+gathering evidence for its model—or, more allegorically, for its existence
+(i.e., maximizing model evidence or self-­evidencing). This ­simple princi­
+ple has ramifications for psychological functions traditionally considered
+in isolation, such as perception, action control, memory, attention, intention, emotion, and more. For example, perception and action are both self-­
+evidencing, in the sense that a creature can align what it expects, given its
+generative model, with what it senses e­ ither by changing its beliefs (about
+the presence of food) or by changing the world (soliciting food-­related sensations). Memory and attention can also be thought of as optimizing the
+same objective. Long-­
+term memory develops through learning the par­
+ameters of a generative model. Working memory is belief updating when
+beliefs are about external states in the past and f­ uture. Attention is the optimization of beliefs about the precision of sensory input. Forms of planning
+(and intentionality) can be conceptualized by appealing to the capacity of
+(some) creatures to select among alternative ­futures, which in turn requires
+temporally deep generative models. T
+­ hese predict the outcomes that would
+result from a course of action and are optimistic about ­these outcomes. This
+optimism manifests as the belief that f­ uture outcomes w
+­ ill lead to preferred
+outcomes. Deep temporal models can also help us understand sophisticated
+forms of prospection (where beliefs about the pre­sent are used to derive
+beliefs about the f­uture) and retrospection (where beliefs about the pre­sent
+are used to update beliefs about the past). Forms of interoceptive regulation
+and emotion can be conceptualized by appealing to generative models of
+internal physiology that predict the allostatic consequences of f­ uture events.
+As the above examples illustrate, t­here is an impor­tant consequence
+of studying cognition and be­hav­ior from the perspective of a normative
+theory of sentient be­hav­ior. Such theory does not start by assembling separate cognitive functions, such as perception, decision-­making, and planning. Rather, it starts by providing a complete solution to the prob­lems
+that organisms have to solve and then analyzing the solution to derive
+implications about cognitive functions. For example, which mechanisms
+permit a living organism or artificial creature (e.g., a robot) to perceive the
+world, remember it, or plan (Verschure et al. 2003, 2014; Verschure 2012;
+Pezzulo, Barsalou et al. 2013; Krakauer et al. 2017)? This is an impor­tant
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+197
+
+move as the taxonomies of cognitive functions—­used in psy­chol­ogy and
+neuroscience textbooks—­largely inherit from early philosophical and psychological theories (sometimes called Jamesian categories). Despite their
+­great heuristic value, they may be quite arbitrary—or they may not correspond to separate cognitive and neural pro­cesses (Pezzulo and Cisek 2016,
+Buzsaki 2019, Cisek 2019). Indeed, t­hese Jamesian categories may be candidates for how our generative models explain our engagement with the
+sensorium—as opposed to explaining that engagement. For example, the
+solipsistic hypothesis that “I am perceiving” is just my explanation for current states of affairs that include my belief updating.
+Adopting a normative perspective may also help in identifying formal
+analogies between cognitive phenomena studied in dif­fer­ent domains.
+One example is the trade-­off between exploration and exploitation, which
+appears in vari­ous guises (Hills et al. 2015). This trade-­off is often studied
+during foraging, when creatures must choose between exploiting previous
+successful plans and exploring novel (potentially better) ones. However, the
+same trade-­off occurs during memory search and deliberation with l­imited
+resources (e.g., time limitations or search effort), when creatures have the
+choice between exploiting their current best plan versus investing more time
+and cognitive effort to explore additional possibilities. Characterizing ­these
+apparently disconnected phenomena in terms of ­free energy can potentially
+reveal deep similarities (Friston, Rigoli et al. 2015; Pezzulo, Cartoni et al. 2016;
+Gottwald and Braun 2020).
+Fi­nally, in addition to a unified perspective on psychological phenomena, Active Inference offers a principled means of understanding the corresponding neural computations. In other words, it offers a pro­cess theory
+that connects cognitive pro­cessing to (expected) neuronal dynamics. Active
+Inference assumes that every­thing that m
+­ atters about brains, minds, and

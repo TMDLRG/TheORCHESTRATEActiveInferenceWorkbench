@@ -1,0 +1,398 @@
+L
+
+O
+
+1
+
+O
+
+O
+
+R
+
+O
+
+O
+
+1
+
+O
+
+O
+
+O
+
+O
+
+1
+
+1
+
+1
+
+0
+
+0
+
+2
+
+0
+
+98
+
+0
+
+0
+100
+100
+
+0
+98
+2
+
+100
+
+100
+
+Figure 7.4
+Likelihood in context 1. Left: T-­maze configuration of cues and stimuli: the attractive
+stimulus is on the right and the aversive stimulus is on the left. Right: Likelihood or
+observation model specifies the probabilistic mapping from location to exteroceptive
+cues (A1) and to interoceptive cues (A2). Each ele­ment of ­these matrices is the probability of the outcome illustrated at the end of the row, conditioned on the context
+being one, and on being in the location indicated by the row. The exteroceptive
+outcomes are visual or proprioceptive input associated with each location, whereby
+the cue location can give rise to a rightward or a leftward cue. The interoceptive
+outcomes are absent (circle with dashed outline), attractive (filled circle), or aversive
+(unfilled circle).
+
+probability one. The cue location may be associated with a left or a right
+cue, depending on the context. The interoceptive modality (A2) associates
+a neutral outcome with the start and cue locations and a 98 ­percent chance
+of finding the attractive outcome when the context matches the arm of the
+maze the rat has entered. Technically, t­ hese A-­matrices are tensor quantities,
+­because their ele­ments are specified by three numbers (outcome, location,
+and context), while a matrix is only specified by two (row and column).
+We then need to specify transition probabilities. The B-­matrices specify
+the probability of transitioning from a state (column) to another state (row),
+depending on the choice of policy (π ). ­These specify the transitions pertaining to the position of the rat in the maze (B1) and transitions in the context
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+133
+
+1
+A
+
+L
+
+2
+A
+
+1
+
+O
+
+O
+
+O
+
+O
+
+1
+
+O
+
+O
+
+L
+
+O
+
+O
+
+O
+
+O
+
+R
+
+O
+
+O
+
+1
+
+O
+
+O
+
+O
+
+O
+
+1
+
+1
+
+1
+
+0
+
+0
+
+98
+
+0
+
+2
+
+0
+
+0
+100
+100
+
+0
+2
+98
+
+100
+
+100
+
+Figure 7.5
+Likelihood in context 2. Nearly identical to figure 7.4—in this context, the aversive
+and attractive stimuli have been swapped. This is reflected in the probability of the
+exteroceptive outcomes in the cue location and the probabilities of the interoceptive
+outcomes in the right and left arms of the maze.
+
+(B2). Figure 7.6 shows the controllable B1-­transitions. Each matrix shows
+the probabilities u
+­ nder a dif­fer­ent action choice (subscripted). T
+­ hese allow
+a move from any location to any other location, except for from the two
+arms of the maze, which are absorbing states. This means that once ­there,
+the rat must stay t­ here, regardless of the actions it chooses. In contrast, the
+rat has no control over the context (i.e., ­whether it is in context 1, shown
+in figure 7.4, or context 2, shown in figure 7.5). Context stays constant over
+time and can be represented as an identity matrix:
+⎡1 0⎤
+Bπ2 = ⎢
+⎥
+⎣0 1⎦
+
+(7.5)
+
+­Here each column (and row) refers to a state indexing ­either figure 7.4
+or figure 7.5. This means that whichever context we start in stays constant (transitions to itself ) over time. This is true regardless of the policy
+selected. The C1-­vector shows prior preferences for each of the outcomes in
+this modality, with uniform preferences except for a slight aversion (−1) to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+134
+
+1
+
+B (τ ) = 1 =
+
+B1(τ ) = 2 =
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+1
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+1
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+1
+
+0
+
+0
+
+0
+
+0
+
+1
+
+1
+
+1
+
+0
+
+1
+
+1
+
+B (τ ) = 3 =
+
+B1(τ ) = 4 =
+
+Figure 7.6
+Controllable transition probabilities for moving between the dif­fer­ent locations. Each
+of the four matrices corresponds to an alternative action the rat can choose. ­These
+allow for a move from any state (except the right and left arm) to any other state. The
+right and left arms are absorbing states, in which the rat must stay once entered.
+
+the start location. The C2-­vector specifies preferences (+6) for the attractive
+stimulus and aversion (−6) to the aversive stimulus. The absence of ­either is
+considered neutral (0).
+C1 = σ ([−1, 0, 0, 0, 0]T )
+C 2 = σ ([0, 6, − 6]T )
+
+(7.6)
+
+The order of ele­ments in t­ hese vectors corresponds to the order of rows
+in the corresponding A-­matrices. The softmax function (σ ) allows us to
+specify preferences in terms of positive and negative values (corresponding
+to unnormalized log probabilities), which are then converted to probabilities. This preserves the difference in log probabilities (or the relative probability) while ensuring normalization. Practically, this formulation means
+the attractive stimulus is considered e6 (≈ 400) times more probable than
+the neutral stimulus ­under the rat’s generative model. This is a very strong
+preference that means the rat believes its actions are much more likely to
+lead to the attractive outcome. This constraint on inference about action is
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+135
+
+crucial for the be­hav­ior that follows. Fi­nally, the D-­vectors specify the prior
+probabilities for the initial states:
+D1 = [1, 0, 0, 0 ]
+
+T
+
+(7.7)
+
+D2 = 21 [1,1]
+
+T
+
+The order of ele­ments in t­ hese vectors matches t­ hose of the B-­matrices. The
+D1-­vector indicates a confident belief in starting at the center of the maze.
+The D2-­vector indicates that the two contexts (figure 7.4 or 7.5) are considered equally probable at the start.
+Figure 7.7 shows what happens when we invert the generative model of
+figures 7.4–7.6. The upper row illustrates what we would see if observing
+the rat’s be­hav­ior. It starts in the center and then goes to the informative
+cue. This is due to the high epistemic value associated with this location (i.e.,
+the observations made at this location have the potential to resolve uncertainty about the context). On seeing the cue that indicates a left context
+(context 1), the rat chooses the left arm of the maze and finds the rewarding stimulus. This move is driven by the high pragmatic value attributed
+to this location. The lower plots illustrate the belief updating that occurs
+during this ­simple trial. As in figure 7.2, this is shown in the form we might
+expect to observe in an idealized rat if we ­were mea­sur­ing neuronal activity
+(i.e., firing rates and local field potentials [LFPs]). Note the rapid change in
+beliefs at the second time step, when the rat reaches the informative cue
+location, and associated LFP (dashed line).
+7.4 Information Seeking
+The simulation in section 7.2 illustrates a ­simple example of an exploration-­
+exploitation trade-­off, which is solved by foraging for information ­until
+uncertainty is resolved, then exploiting what has been inferred to fulfill
+prior preferences. In this section, we unpack the concept of epistemic value
+in greater detail. As we saw in equation 7.4, this comprises two terms:

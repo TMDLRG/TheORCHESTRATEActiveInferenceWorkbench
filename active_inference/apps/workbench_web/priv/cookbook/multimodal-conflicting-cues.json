@@ -1,0 +1,49 @@
+{
+  "slug": "multimodal-conflicting-cues",
+  "title": "Conflicting Cues: Who Wins?",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 10,
+  "tags": ["multi-modal", "precision", "conflict", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(frog_pond)",
+    "world": "frog_pond",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "When channels disagree, the more precise channel dominates the posterior. Precision is the knob for multimodal binding."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=multimodal-conflicting-cues",
+    "labs_url": "/labs?recipe=multimodal-conflicting-cues&world=frog_pond"
+  },
+  "math": {
+    "latex": "\\log q(s \\mid o_{1:K}) \\propto \\log q(s) + \\sum_k \\pi_k \\log P(o_k \\mid s)",
+    "symbols": {
+      "pi_k": "channel k's precision (from the G6 precision_vector)",
+      "conflict": "log-likelihoods disagree across k"
+    }
+  },
+  "audiences": {
+    "kid": "Your eyes say 'lily pad left' but your ears say 'right'. You trust whichever sense is clearer.",
+    "real": "Precision weights determine which channel wins under conflict. Raise visual precision -> vision wins; raise auditory -> hearing wins.",
+    "equation": "log q = log prior + sum_k pi_k * log P(o_k | s). Conflicting terms partially cancel; the larger pi_k wins.",
+    "derivation": "Precision-weighted inference collapses to a weighted-sum of log-likelihoods, whose variational optimum is a weighted average of channel-specific posteriors (Beierholm et al. 2009)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["message-passing/s3"],
+  "labs": ["frog"],
+  "orchestrate": {
+    "objective": "Demonstrate precision-weighted conflict resolution across two observation channels.",
+    "role": "Multi-modal precision tutor.",
+    "context": "frog_pond; sculpt precision_vector so that goal_cue has high precision and tile has low (or vice versa)."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Beierholm, Quartz & Shams (2009), Bayesian priors are encoded independently."
+  ]
+}

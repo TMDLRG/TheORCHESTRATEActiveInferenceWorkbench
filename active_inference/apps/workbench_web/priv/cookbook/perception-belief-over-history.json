@@ -1,0 +1,49 @@
+{
+  "slug": "perception-belief-over-history",
+  "title": "Belief Over History: Smoothing vs. Filtering",
+  "level": 3,
+  "tier_label": "Team Lead",
+  "minutes": 10,
+  "tags": ["perception", "smoothing", "history", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["softmax", "variational_free_energy"],
+    "horizon": 4,
+    "policy_depth": 2,
+    "preference_strength": 2.0,
+    "expected_outcome": "q(s_tau | o_{1:T}) for past tau gets sharper after future observations (smoothing effect) vs. filter-only beliefs."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=perception-belief-over-history",
+    "labs_url": "/labs?recipe=perception-belief-over-history&world=corridor_turns"
+  },
+  "math": {
+    "latex": "q(s_\\tau \\mid o_{1:T}) \\propto q(s_\\tau \\mid o_{1:\\tau}) \\sum_{s_{\\tau+1}} q(s_{\\tau+1} \\mid o_{\\tau+1:T}) \\, P(s_{\\tau+1} \\mid s_\\tau, a_\\tau)",
+    "symbols": {
+      "smoothed belief": "q(s_tau | o_{1:T}) using all observations, past and future",
+      "filtered belief": "q(s_tau | o_{1:tau}) using only past"
+    }
+  },
+  "audiences": {
+    "kid": "Sometimes a clue later helps you understand a clue you saw earlier. Looking back with new info makes the past clearer.",
+    "real": "The sweep_state_beliefs action in the POMDP bundle is a forward-backward smoother, not just a filter. Future observations retrospectively sharpen past beliefs.",
+    "equation": "q(s_tau | o_{1:T}) combines the forward filtered belief with the backward message. Minimising F at every tau is equivalent.",
+    "derivation": "The belief chain q(s_{1:T} | o_{1:T}) factorises under the mean-field assumption. Each marginal q(s_tau | o_{1:T}) is updated by the product of forward message alpha_tau and backward message beta_tau (Rauch-Tung-Striebel in the Gaussian case)."
+  },
+  "equation_refs": ["eq-4-13", "eq-b-5"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Show that the sweep_state_beliefs action produces smoothed, not just filtered, posteriors.",
+    "role": "Smoothing-vs-filtering tutor using the bundle's forward-backward sweep.",
+    "context": "corridor_turns 5x5, run the agent to the goal and compare q(s_1 | o_1) vs. q(s_1 | o_{1:T})."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4 & App B.",
+    "Rauch, Tung & Striebel (1965), Maximum likelihood estimates of linear dynamic systems."
+  ]
+}

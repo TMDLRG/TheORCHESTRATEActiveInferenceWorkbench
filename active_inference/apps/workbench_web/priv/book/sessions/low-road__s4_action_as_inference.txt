@@ -1,0 +1,432 @@
+evidence for a policy (P(  y~ | π )), or a ­free energy approximation to this quantity. In other words, knowing how policies influence state transitions lets
+us compute the likelihood of a sequence of observations ­under that policy.
+As we saw in equation 2.1, we need to combine this likelihood with a prior
+probability to calculate the posterior probability of pursuing a policy.
+Active Inference decomposes this planning prob­lem into two successive
+operations. The first is to compute a score for each policy. The second is
+to form posterior beliefs about which to pursue. The former defines the
+prior belief about the policies to pursue, where the best policies have high
+probability and the worst policies have low probability. ­Under Active Inference, the goodness of a policy is scored by the associated negative expected
+­free energy—­just as the goodness of a model fit is scored by the negative f­ree
+energy of that model. The expected f­ ree energy (G) of policy is dif­fer­ent from
+the variational f­ ree energy (F ), since calculating the former requires consideration of f­ uture, policy-­dependent observations. In contrast, the latter only
+considers pre­sent and past observations. Calculating expected ­free energy
+therefore engages the generative model to predict ­future observations that
+would stem from each policy—if it w
+­ ere to be executed—up to some planning horizon. Furthermore, ­because a policy unfolds over multiple time
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+33
+
+steps, the final mea­sure of expected f­ ree energy for each policy has to integrate over all f­ uture time steps of that policy.
+The expected ­free energy of each policy can be converted in a quality
+score (by taking its negative) and is directly available as a prior by agents
+engaging in Active Inference. This is b
+­ ecause—­consistent with the notion
+of potential energy in physics—­expected ­free energy is expressed in the
+space of log probabilities. Converting it into a belief (or probability distribution) over policies is then a m
+­ atter of exponentiating (to undo the log) and
+normalizing (to ensure consistency with the sum rule in box 2.1). Policies
+that are associated with a lower expected f­ree energy are assigned higher
+probability and become the policies that the organism expects to pursue.
+Ultimately, inferring that we are pursuing a par­tic­u­lar policy has consequences for the sensory data we predict. For example, a policy that includes
+flexing my elbow entails predictions about the proprioceptive input from
+the biceps and triceps muscles. This provides the link between planning and
+action, as the predictions associated with a plan translate into action that
+resolves discrepancies with mea­sured proprioceptive data (see section 2.3).
+2.8 What Is Expected ­Free Energy?
+So far, we have assumed that during planning, the organism scores its policies according to their expected f­ree energy. However, we have sidestepped
+what expected f­ ree energy actually is. Like variational f­ ree energy, the expected
+­free energy can be decomposed in several, mathematically equivalent ways.
+Each of ­these provides an alternative perspective on this quantity.
+! π ) || Q( x! | π )]] − EQ ( y! | π )[ln P( y! |C)]
+G(π ) = − EQ ( x,! y! | π )[ DKL[Q( x! | y,
+!######
+#"#######
+$ !###"###$
+Information gain
+
+Pragmatic value
+
+! + D [Q( y! |π ) || P( y! |C)]
+= EQ ( x|! π )[ H[ P( y! | x)]]
+####"####
+$
+!###"###$ !KL
+Expected ambiguity
+
+Risk (outcomes)
+
+! + D [Q( x! |π ) || P( x! |C)]
+≤ EQ ( x! |π )[ H[ P( y! | x)]]
+###
+#"####
+$
+!###"###$ !KL
+Expected ambiguity
+
+(2.6)
+
+Risk (states)
+
+! x! |C)] − H[Q( x! |π )]
+= − EQ ( x,! y! | π )[ln P( y,
+!####"####$ !#"#$
+Expected energy
+
+Entropy
+
+! y! | π ) ! Q( x! |π )P( y! | x)
+!
+Q( x,
+The first of ­these is perhaps the most useful, intuitively, as it expresses
+the value of seeking new information (i.e., exploration) in exactly the same
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+34
+
+units (nats) as the value of seeking preferred observations (i.e., exploitation),
+dissolving the classic exploit-­explore dilemma in behavioral psy­chol­ogy. By
+minimizing expected f­ ree energy, the relative balance between t­ hese terms
+determines ­whether be­hav­ior is predominantly explorative or exploitative.
+Note that pragmatic value emerges as a prior belief about observations,
+where the C-­parameter includes preferences. The (potentially unintuitive)
+link between prior beliefs and preferences is unpacked in chapter 7; for
+now, we note that this term can be treated as an expected utility or value,
+­under the assumption that valuable outcomes are the kinds of outcomes
+that characterize each agent (e.g., a body temperature of 37 °C).
+The information gain term inherits from the divergence we considered in
+section 2.5, which ensures that f­ree energy is an upper bound on surprise.
+However, ­there is a twist: instead of minimizing the divergence, we want to
+select policies that maximize the expected divergence—­hence, information
+gain. This switch is due to the fact that we are now taking an average of the
+log probabilities over outcomes that have yet to be observed. This is a subtle
+point that can be understood in terms of outcomes switching their roles.
+When evaluating the ­free energy of outcomes, the outcomes are the consequences. However, when evaluating the expected f­ ree energy, the outcomes
+play the role of ­causes in the sense they are variables that are hidden in the
+­future but explain decisions in the pre­sent.
+The ensuing information gain penalizes observations for which t­here
+is a many-­to-­one mapping from observations to states—in the sense that
+one can obtain the same observations in dif­fer­ent states—as this precludes
+precise belief updating. In artificial intelligence and robotics, states that
+bring the same observation (e.g., two T-­junctions of a maze that look identical) are sometimes called aliased and are generally hard to deal with using
+­simple methods (i.e., stimulus-­response, with no inference or memory).
+The prob­lem is that we cannot know which state we occupy from current
+observations alone. Active Inference avoids getting into such situations in
+the first place, given their low potential for information gain.
+A s­ imple example may help unpack the distinction between information
+gain (or epistemic value) and pragmatic value and highlight why, in most
+realistic situations, pragmatic and epistemic values need to be pursued in
+tandem. Imagine a person who wants an espresso and knows that ­there are
+two good cafes in the town: one that opens only from Monday to Friday and
+another that opens only during the weekend. If he does not know what day
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+35
+
+of the week it is, he has to first select an action that has epistemic value and
+resolves his uncertainty (i.e., an epistemic action to look at the calendar)—­
+and only ­after that select an action that carries pragmatic value and brings
+the reward (i.e., a pragmatic action to go to the correct cafe). This scenario
+illustrates the fact that in most uncertain situations, one must first perform
+epistemic actions to resolve uncertainty before confidently selecting a pragmatic action. Policy se­lection methods that fail to consider the epistemic
+affordance of choices can only select policies by using random number
+generators—­and ­will often miss out on their espresso. Therefore, schemes
+that consider only pragmatic value are generally restricted to situations with
+no epistemic uncertainty, such as in the case of a person who already knows
+the day of the week and hence can head directly to the correct cafe.
+The second decomposition in equation 2.6 is in terms of risk and expected
+ambiguity. ­These terms are the analogues of complexity and inaccuracy: risk
+is the expected complexity, and ambiguity is the expected inaccuracy. Risk,
+a common notion in economics, corresponds to the fact that ­there can be
+a one-­to-­many mapping between policies and their consequences—in the
+sense that one can obtain several dif­fer­ent outcomes (by chance) ­under the
+same policy. One example is a gambling scenario with stochastic rewards
+(e.g., a one-­armed bandit, aka a slot machine), wherein one could know the
+reward distribution—­say, that one w
+­ ill obtain reward 10 ­percent of the time.
+This is called a risky situation in economics b
+­ ecause, ­after the same move
+(pulling a lever), one could obtain two dif­fer­ent observations (reward or no
+reward). This means one has to choose policies or plans that accommodate
+uncertainty. In risk-­sensitive schemes—­like active inference—­the game is
+to choose policies whose probabilistic outcomes match, in the sense of a
+KL-­Divergence, one’s prior preferences. In short, minimizing complexity
+cost becomes minimizing risk when both are mea­sures of departure from
+prior beliefs.
+Similarly, ambiguity corresponds to the expected inaccuracy due to an
+ambiguous mapping between states and outcomes. A mapping is ambiguous if the distribution of outcomes anticipated is highly dispersed (or entropic) even if we know the states generating them with complete confidence.
+For instance, the probability of heads or tails in a coin flip, conditioned on
+­whether it is sunny or raining, ­will be maximally ambiguous as ­there is no
+relationship between the weather and the 50-50 chance of heads or tails.
+As such, it would not be pos­si­ble to gain information about the weather
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+36
+
+by observing tails. Note that most situations are endowed with both risk
+and ambiguity—­which implies a many-­to-­one mapping between states and
+outcomes and between policies and outcomes. Recall that outcomes (observations) are the only sort of variable that can be observed. Active Inference
+deals automatically with ­
+these situations, b
+­ ecause expected ­
+free energy
+comprises both risk and ambiguity terms.
+The third line of equation 2.6 highlights an alternative formulation of
+the expected f­ ree energy by reexpressing risk as a divergence between beliefs
+about states and preferences defined in terms of states. An appealing feature of this form is that it may be rearranged into an expected energy and
+entropy in analogy with variational ­free energy (equation 2.5). While this
+relationship is attractive, a downside of this formulation is that it assumes
+the state-­space is known a priori such that prior preferences may be associated with states. In most settings, this is not a prob­lem, and the choice
+between defining preferences in terms of states or outcomes has ­little
+practical relevance. However, common practice is to specify preferences in
+terms of outcomes—­allowing the state-­space itself to be learned while preserving extrinsic motivation.
+In summary, expected f­ree energy can be decomposed in terms of risk
+and ambiguity and in terms of pragmatic and epistemic values. ­These
+decompositions are in­ter­est­ing as they permit a formal understanding of
+the wide variety of situations that Active Inference deals with. Furthermore,
+they facilitate an appreciation of how Active Inference subsumes several
+decision schemes—­which may be obtained by ignoring one or more components of expected ­free energy (figure 2.6). If one removes prior preferences, the pragmatic value becomes irrelevant, and all action is motivated
+by epistemic affordances—­hence such schemes can only ­handle the resolution of uncertainty. Once prior preferences are removed, the (negative)
+expected ­free energy is variously known as expected Bayesian surprise (in
+the context of attentional exploration) or intrinsic motivation (in the context of autonomous learning). If one removes ambiguity, the resulting
+scheme corresponds to risk-­sensitive or KL control in control theory. Fi­nally,
+if one removes both ambiguity and prior preferences, the only remaining
+imperative is to maximize the entropy of observations (or states, if using
+the formulation in the third line of equation 2.6). This may be interpreted
+as uncertainty sampling (or keeping one’s options open). Active Inference
+evinces the formal relations between t­ hese schemes and the (­limited) situations in which they apply.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+37
+
+EXPECTED FREE ENERGY
+G() = – Q(ỹ | ) [ln P(ỹ | C )] – DKL [Q(ỹ | x) Q (x |) || Q (ỹ | ) Q (x | )]
+1
+
+2
+
+3
+
+4
+
+5
+
+DKL [Q(ỹ | x) Q (x | ) || Q (ỹ | ) Q (x | )]
+=
+
+Q(ỹ | )
+
+[DKL [Q(x | ỹ, ) || Q (x | )]]
+BAYESIAN SURPRISE
+
+OPTIMAL BAYESIAN DESIGN
+INTRINSIC MOTIVATION
+INFOMAX PRINCIPLE
+
+2
+
+3
+
+4
+
+1
+
+5
+
+3
+
+4
+
+5
+
+DKL [Q( ỹ | ) || P ( ỹ | C )]
+RISK-SENSITIVE POLICIES
+KL CONTROL
+
+1
+
+Q(ỹ | ) [ln P ( ỹ | C )]
+BAYESIAN DECISION THEORY
+EXPECTED UTILITY THEORY
+
+Figure 2.6
+Vari­ous schemes that can be derived by removing terms from the ­free energy equation.
+The upper panel shows the terms contributing to the expected f­ ree energy. The lower
+panels show the schemes that result from removing prior preferences (1), ambiguity
+(2), or every­thing except for the prior preferences. Each of ­these quantities appears in
+several dif­fer­ent fields ­under a variety of names, but all can be seen as components of
+the same expected ­free energy.
+
+Although we have carefully decomposed expected ­free energy in a way
+that dif­fer­ent ­people might read this functional, t­ here is no right or wrong
+way of carving it up. We w
+­ ill see in the second half of this book why autonomous systems of a certain kind must, in virtue of existing, choose actions
+that look as if they are minimizing expected f­ree energy. This perspective
+means ­there is no privileged role for epistemic (explorative) versus pragmatic
+(exploitative) imperatives—or for risk versus ambiguity. T
+­ hese (possibly
+false) dichotomies are just two sides of the same existential coin.
+2.9 At the End of the Low Road
+Having introduced the two distinct notions of variational f­ree energy and
+expected f­ ree energy, we are now in a position to consider what they achieve
+together. This represents an endpoint to the low road into Active Inference,
+starting from the notion of unconscious inference, via the Bayesian brain,
+the duality of perception and action, and fi­nally planning as inference.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+38
+
+Variational ­free energy is at the core of Active Inference. It mea­sures the fit
+between the internal generative model and (current and past) observations.
+By minimizing variational ­free energy, creatures maximize their model evidence. This ensures that the generative model becomes a good model of the
+environment and that the environment complies with the model.
+Expected ­free energy is a way to score alternative policies for planning.
+This is fundamentally prospective—it considers pos­si­ble ­future observations—­
+and counterfactual—­the pos­si­ble ­future observations are conditioned on the
+policies one could pursue. Expected ­free energy mea­sures the plausibility of
+action policies relative to preferred (­future) states and observations. By scoring policies in terms of their negative expected f­ ree energy, creatures engaging in Active Inference effectively believe that they pursue the course of
+action for which this quantity is lowest. In psychological terms, this implies
+that a creature’s belief about policies directly corresponds to its intention—­
+which it fulfills by acting.
+From a conceptual perspective, we can associate minimization of variational ­free energy and expected f­ree energy with two inferential loops,
+one nested within the other. Variational ­free energy minimization is the
+key (outside) loop of Active Inference, which is sufficient to optimize perception and beliefs about policies. An Active Inference agent can also be
+endowed with a generative model of the consequences of its action that
+entails an evaluation of expected ­free energy (the inside loop). This ability
+to plan into the ­future supports prospective forms of action se­lection by
+furnishing probability values for policies (Friston, Samothrakis, and Montague 2012; Pezzulo 2012).
+2.10 Summary
+Active Inference is a theory of how living artifacts underwrite their existence by minimizing surprise—or a tractable proxy to surprise, variational ­free
+energy—­via perception and action. In this chapter, we have sought to motivate
+this idea starting from a Bayesian treatment of perception as inference and
+extending this to the domain of action. Bayesian inference rests on a generative model of how sensory observations are generated, which encodes (probabilistically) the organism’s implicit knowledge of the world—­formalized as
+prior beliefs and the expected outcomes ­under alternative states and policies.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The Low Road to Active Inference
+
+39
+
+The specific take of Active Inference forces us to revisit the usual semantics of a prior in Bayesian inference. Expected states are preferred and
+include the organism’s conditions for survival (e.g., niche-­specific goal states),
+whereas their opposite—­surprising states—­are dis-­preferred. In this way,
+by fulfilling their expectations, Active Inference agents ensure their own
+survival. Given the impor­tant links between the notion of priors and the
+conditions that undergird an organism’s existence, we can also say that in
+Active Inference, the identity of an agent is isomorphic with its priors. This
+terminology ­will become more familiar l­ater in the book.
+Note that in this view, surprise (or sometimes surprisal ) is a formal construct of information theory and not necessarily equivalent to a (folk) psychological construct. Roughly, the more the organism’s state differs from
+the prior (which encodes the preferred states), the more it is surprising—­
+hence Active Inference amounts to the idea that an organism (or its brain)
+has to actively minimize its surprise to stay alive. ­Under certain conditions,
+surprise minimization can be construed as the reduction of the discrepancy
+between the model and the world. More generally, the quantity that is actually minimized in Active Inference is variational f­ree energy. Variational ­free
+energy is an (upper-­bound) approximation to surprise and can be minimized efficiently using chemical or neuronal message passing and information that is available to the organism’s generative model.
+Importantly, both perception and action minimize variational f­ ree energy
+in complementary ways: by refining their (posterior belief ) estimate and by
+performing actions that selectively sample what is expected. Furthermore,
+Active Inference also minimizes expected f­ree energy by following policies
+associated with minimal ambiguity and risk. Expected ­free energy then
+extends Active Inference to prospective and counterfactual forms of inference. This completes our journey along the low road to Active Inference. In
+chapter 3, we ­will travel the high road, which reaches the same conclusion
+on the basis of first princi­ples and self-­organization.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+3
+
+The High Road to Active Inference
+
+Survival machines that can simulate the ­future are one jump ahead of survival
+machines who can only learn on the basis of overt trial and error. The trou­ble
+with overt trial is that it takes time and energy. The trou­ble with overt error is that
+it is often fatal. Simulation is both safer and faster.
+—­Richard Dawkins
+
+3.1 Introduction
+In chapter 2, we motivated the introduction of f­ree energy as a means of
+performing approximate Bayesian inference (i.e., the low road to Active
+Inference). ­Here, we introduce f­ree energy from another perspective, that
+of the high road, which inverts that reasoning: it starts from first princi­ples
+in statistical physics and the central imperative that organisms must maintain their existence—­that is, avoid surprising states—­and then introduces
+the minimization of ­free energy as a computationally tractable solution to
+this prob­lem. The chapter discloses the formal equivalence between the
+minimization of variational ­free energy and the maximization of model
+evidence (or self-­evidencing) in approximate Bayesian inference, revealing
+a connection between ­free energy and Bayesian perspectives on adaptive
+systems. Fi­nally, it discusses how Active Inference provides a novel first
+princi­ple perspective to understand (optimal) be­hav­ior.
+Active Inference is a theory of how living organisms maintain their existence by minimizing surprise—or a tractable proxy to surprise, variational
+­free energy—­via perception and action. By starting from first princi­ples, it
+advances a novel belief-­based scheme to understand be­hav­ior and cognition, which has numerous empirical implications.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+42
+
+The high road to Active Inference starts from the premise that, to survive, any living organism has to maintain itself in a suitable set of preferred
+states, while avoiding other, dis-­preferred states of the environment. ­These
+preferred states are first and foremost defined by niche-­specific evolutionary adaptations. However, as we w
+­ ill see ­later, in advanced organisms ­these
+can also extend to learned cognitive goals. For example, to survive, a fish
+has to stay in a comfort zone that corresponds to a small subset of all the
+pos­si­ble states of the universe: it has to stay in w
+­ ater. Similarly, a h
+­ uman
+has to ensure that their internal states (e.g., physiological variables like
+body temperature and heart rate) always remain within acceptable ranges—­
+other­wise they w
+­ ill die (or more precisely ­will become something ­else, such
+as a corpse). This acceptable range or comfort zone stipulatively defines the
+characteristic states something has to be in to be that t­ hing.
+Living organisms resolve this fundamental biological prob­lem by exerting active control over their states (e.g., of body temperature) at many levels,
+which range from automatic regulatory mechanisms such as sweating (physiology) to cognitive mechanisms such as buying and consuming a drink (psy­
+chol­ogy) to cultural practices such as distributing air conditioning systems
+(social sciences).
+From a more formal perspective, Active Inference casts the biological
+prob­lem of—or explanation for—­survival as surprise minimization. This
+formulation rests on a technical definition of surprising states from information theory—­essentially, surprising states index t­hose outside the comfort
+zone of living organisms. It then proposes ­free energy minimization as a
+practical and biologically grounded way for organisms or adaptive systems
+to minimize the surprise of sensory encounters.
+3.2 Markov Blankets
+An impor­tant precondition for any adaptive system is that it must enjoy
+some separation and autonomy from the environment—­without which it
+would simply dissipate, dissolve, and thereby succumb to environmental
+dynamics. In the absence of this separation, ­there would be no surprise to
+minimize; t­here must be something to be surprised and something to be
+surprised about. In other words, t­here are at least two t­hings—­system and
+environment—­and t­hese can be disambiguated from one another. A formal
+way to express a separation between a system and the rest of the environment is the statistical construct of a Markov blanket (Pearl 1988); see box 3.1.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+The High Road to Active Inference
+
+43
+
+Box 3.1
+Markov blankets
+A Markov blanket is an impor­tant recurring concept in this book (Friston
+2019a, Kirchhoff et al. 2018, Palacios et al. 2020). Technically, a blanket (b) is
+defined as follows:
+
+µ ⊥ x |b ⇔ p( µ ,x |b) = p( µ |b)p(x |b)
+This says (in two dif­fer­ent but equivalent ways) that a variable μ is conditionally in­de­pen­dent of a variable x if b is known. In other words, if we know
+b, knowing x would give us no additional information about μ. A common

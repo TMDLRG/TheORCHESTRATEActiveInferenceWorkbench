@@ -1,0 +1,48 @@
+{
+  "slug": "preference-goal-vs-avoid",
+  "title": "Carrot vs. Stick: Goal-Seeking and Avoidance",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 8,
+  "tags": ["preference", "avoidance", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 3.0,
+    "expected_outcome": "A C with positive logits on 'goal' and negative logits on 'wall-hit' produces a clean, wall-avoidant path. Remove the penalty and the agent bumps into walls."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=preference-goal-vs-avoid",
+    "labs_url": "/labs?recipe=preference-goal-vs-avoid&world=corridor_turns"
+  },
+  "math": {
+    "latex": "\\log p(o_{\\text{goal}}) \\gg 0, \\quad \\log p(o_{\\text{wall-hit}}) \\ll 0",
+    "symbols": {
+      "positive logit": "preferred outcome",
+      "negative logit": "avoided outcome"
+    }
+  },
+  "audiences": {
+    "kid": "Give the agent a reward at the goal and a sting when it bumps a wall; it learns both lessons at once.",
+    "real": "Positive C entries attract; negative C entries repel. The agent's plan optimises for both simultaneously without any extra reward machinery.",
+    "equation": "Pragmatic(pi) = -E_q[ln p(o)]. Negative logits blow up -ln p(o) on avoided observations, driving the agent away.",
+    "derivation": "Avoidance emerges without a separate reward function because the C vector is already log-space. Penalties are negative log-probabilities, just another constraint on the generative model."
+  },
+  "equation_refs": ["eq-4-10"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s1"],
+  "labs": ["forge"],
+  "orchestrate": {
+    "objective": "Demonstrate attractive + aversive preferences encoded in a single C vector.",
+    "role": "Preference-engineering tutor extending the C-vector basics.",
+    "context": "corridor_turns; c_preference_override sets a high goal logit and a strong wall-hit penalty."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4."
+  ]
+}

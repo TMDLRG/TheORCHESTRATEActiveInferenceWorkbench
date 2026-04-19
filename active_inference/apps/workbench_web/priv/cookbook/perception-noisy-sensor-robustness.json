@@ -1,0 +1,50 @@
+{
+  "slug": "perception-noisy-sensor-robustness",
+  "title": "Noisy Sensors: Precision Buys Robustness",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 7,
+  "tags": ["perception", "noise", "precision", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "With the precision_vector opt set, noisy observations produce softer posteriors; raising precision recovers sharp inference."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=perception-noisy-sensor-robustness",
+    "labs_url": "/labs?recipe=perception-noisy-sensor-robustness&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "P(o \\mid s) = \\sigma(\\text{precision} \\cdot \\log A[o, s])",
+    "symbols": {
+      "precision": "per-observation precision multiplier (G6 bundle option)",
+      "A[o,s]": "observation-model column",
+      "sigma": "softmax over states"
+    }
+  },
+  "audiences": {
+    "kid": "If your eyes are blurry, you're less sure where you are. Sharper eyes means sharper answers.",
+    "real": "Precision-weighting the observation model sets how much the agent trusts noisy sensors. Cookbook uses the new :precision_vector bundle option (G6).",
+    "equation": "P(o|s) scales with exp(precision * log A). High precision -> sharp posterior; low precision -> soft posterior even on clean evidence.",
+    "derivation": "Precision acts as an inverse-variance on the observation likelihood. In variational terms, it rescales the accuracy term of F (Feldman & Friston 2010)."
+  },
+  "equation_refs": ["eq-4-11"],
+  "figure_refs": [],
+  "session_refs": ["message-passing/s3"],
+  "labs": ["bayes"],
+  "orchestrate": {
+    "objective": "Show how the G6 :precision_vector option trades observation robustness for uncertainty in the posterior.",
+    "role": "Precision tutor using the smallest maze for clarity.",
+    "context": "tiny_open_goal with precision in {0.5, 1.0, 3.0}."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 5.",
+    "Feldman & Friston (2010), Attention, uncertainty, and free-energy."
+  ]
+}

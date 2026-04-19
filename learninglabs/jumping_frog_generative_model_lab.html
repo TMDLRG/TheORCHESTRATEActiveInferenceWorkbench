@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jumping Frog Generative Model Lab</title>
+<style>
+:root{
+  --bg:#130f0d; --panel:#211b17; --panel2:#2b231e; --edge:#5e5044; --edge2:#8e7b66;
+  --text:#efe6db; --muted:#c9bbaa; --accent:#d7b26a; --accent2:#9bcfc6; --good:#9dc98f; --warn:#d98c74;
+  --shadow:0 10px 30px rgba(0,0,0,.35); --r:18px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; color:var(--text); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  background:
+    radial-gradient(circle at 14% 0%, #30261f 0, transparent 24%),
+    radial-gradient(circle at 88% 10%, #241d17 0, transparent 22%),
+    linear-gradient(180deg,#17120f,#0f0d0b 45%,#15110f);
+}
+.wrap{max-width:1700px;margin:0 auto;padding:18px}
+.title{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  border:1px solid #4e4338;border-radius:22px;padding:18px 22px;
+  background:linear-gradient(180deg,#2b241e,#1d1815);box-shadow:var(--shadow)
+}
+h1{margin:0;font-size:28px;letter-spacing:.06em}
+.sub{max-width:1120px;font-size:13px;line-height:1.5;color:var(--muted)}
+.badge{padding:8px 12px;border-radius:999px;background:#4a3f35;border:1px solid #8e7c67;font-size:12px;text-transform:uppercase}
+.grid{display:grid;grid-template-columns:430px 1fr;gap:16px;margin-top:16px}
+.col{display:flex;flex-direction:column;gap:16px}
+.panel{
+  background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid #52463a;border-radius:var(--r);padding:14px;box-shadow:var(--shadow);position:relative;overflow:hidden
+}
+.panel:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 28%);pointer-events:none}
+.panel h2{margin:0 0 10px 0;font-size:18px}
+.small{font-size:12px;color:var(--muted);line-height:1.45}
+.topbar,.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs{margin-top:14px}
+.tab{padding:10px 12px;border-radius:999px;background:#3b3128;border:1px solid #756551;cursor:pointer}
+.tab.active{background:linear-gradient(180deg,#745f43,#5a4836);border-color:#c9ab72;color:#fff0c7}
+.module{display:none}.module.active{display:block}
+button,select,input[type="number"]{
+  font:inherit;color:var(--text);background:linear-gradient(180deg,#655545,#4d4034);
+  border:1px solid #9a876f;border-radius:12px;padding:9px 11px
+}
+button{cursor:pointer}
+button:hover{filter:brightness(1.05)} button:active{transform:translateY(1px)}
+select,input[type="number"]{width:100%;background:#17120f}
+input[type="range"]{width:100%}
+.line{display:grid;grid-template-columns:96px 1fr 64px;gap:8px;align-items:center;margin:8px 0}
+.line span{font-size:12px}
+.group{border:1px solid #5a4d41;border-radius:14px;padding:10px;background:rgba(0,0,0,.12)}
+.group h3{margin:0 0 8px 0;font-size:14px;color:#ffeab9}
+.score{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.card{border:1px solid #5a4d41;border-radius:14px;padding:12px;background:rgba(0,0,0,.14)}
+.big{font-size:22px;color:#fff0cb;margin-top:6px}
+.meter{height:14px;border-radius:999px;border:1px solid #6e5d4c;background:#120f0d;overflow:hidden}
+.meter>span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--good),var(--accent),var(--warn))}
+.machine{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}
+canvas{
+  width:100%;height:620px;background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.01)),#17120f;
+  border:1px solid #594c40;border-radius:16px
+}
+.eq{
+  white-space:pre-wrap;font-size:12px;line-height:1.5;background:#14100d;border:1px solid #5b4d41;border-radius:14px;padding:12px
+}
+.ledger{max-height:620px;overflow:auto}
+.log{max-height:260px;overflow:auto;border:1px solid #594c40;border-radius:12px;padding:10px;background:#13100d}
+.entry{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,.07);font-size:12px}
+.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#3a3129;border:1px solid #7a6855;font-size:11px;color:#fff1c8}
+.lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.node-editor{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media (max-width:1240px){
+  .grid{grid-template-columns:1fr}
+  .machine{grid-template-columns:1fr}
+  .score{grid-template-columns:1fr 1fr}
+  .lesson-grid,.modgrid,.node-editor{grid-template-columns:1fr}
+}
+.stageStrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-bottom:12px;position:sticky;top:8px;z-index:5;background:linear-gradient(180deg,rgba(22,18,15,0.94),rgba(22,18,15,0.82));backdrop-filter:blur(8px);border:1px solid rgba(215,178,106,0.22);border-radius:14px;padding:9px}
+.stageStrip .cell{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 10px;min-width:0}
+.stageStrip .lab{font-size:10px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageStrip .val{font-size:18px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageStrip .sub2{font-size:10px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stageToolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:9px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:12px;align-items:center}
+.stageToolbar button,.stageToolbar select{padding:9px 12px;font-size:13px;flex:0 0 auto}
+.iconBtn{width:34px;padding:9px 0 !important;display:inline-flex;align-items:center;justify-content:center;font-weight:800}
+.introStrip{background:linear-gradient(180deg,rgba(155,207,198,0.10),rgba(155,207,198,0.04));border:1px solid rgba(155,207,198,0.28);border-radius:14px;padding:12px 14px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start}
+.introStrip .body{display:grid;gap:6px;font-size:13px;line-height:1.4}
+.introStrip .row{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.introStrip .tag{font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:rgba(155,207,198,0.24);color:#d5eae3;white-space:nowrap}
+.introStrip .dismiss{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);font-size:12px;padding:6px 10px}
+.introStrip.hidden{display:none}
+.tour-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px);z-index:9999;display:none;align-items:flex-end;justify-content:center;padding:24px}
+.tour-overlay.on{display:flex}
+.tour-card{background:linear-gradient(180deg,#2b241e,#1d1915);border:1px solid rgba(215,178,106,0.5);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;max-width:560px;width:100%;color:var(--text)}
+.tour-card h4{margin:0 0 8px;font-size:15px;color:var(--accent);letter-spacing:0.5px}
+.tour-card .step-line{font-size:13px;line-height:1.45;color:var(--text)}
+.tour-card .tour-actions{display:flex;justify-content:space-between;gap:10px;margin-top:12px}
+.tour-highlight{position:absolute;pointer-events:none;border:2px solid #e0c07a;border-radius:10px;box-shadow:0 0 0 9999px rgba(0,0,0,0.5),0 0 16px rgba(224,192,122,0.5);transition:top .2s ease,left .2s ease,width .2s ease,height .2s ease;z-index:9998}
+
+/* === Learning Shell === */
+.ls-pathbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:12px;padding:8px 10px;background:linear-gradient(180deg,rgba(215,178,106,0.08),rgba(215,178,106,0.02));border:1px solid rgba(215,178,106,0.22);border-radius:12px;font-size:13px}
+.ls-pathbar .ls-pathlabel{color:var(--muted);margin-right:4px}
+.ls-pathbar .ls-pathbtn{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text);cursor:pointer;font-size:12px;font-weight:600}
+.ls-pathbar .ls-pathbtn:hover{background:rgba(255,255,255,0.10)}
+.ls-pathbar .ls-pathbtn[aria-pressed="true"]{background:linear-gradient(180deg,rgba(215,178,106,0.32),rgba(215,178,106,0.12));border-color:rgba(215,178,106,0.5);color:#fff8e6}
+.ls-pathbar .ls-spacer{flex:1 1 auto}
+.ls-pathbar .ls-toolbtn{padding:6px 10px;border-radius:999px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);color:var(--muted);cursor:pointer;font-size:12px}
+.ls-pick-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);z-index:10000;display:none;align-items:center;justify-content:center;padding:20px}
+.ls-pick-overlay.on{display:flex}
+.ls-pick-card{background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(215,178,106,0.4);border-radius:16px;padding:22px 24px;max-width:720px;width:100%;color:var(--text)}
+.ls-pick-card h3{margin:0 0 6px;color:var(--accent);font-size:20px}
+.ls-pick-card .ls-pick-sub{color:var(--muted);font-size:13px;margin-bottom:14px;line-height:1.4}
+.ls-pick-grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.ls-pick-opt{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left;color:var(--text)}
+.ls-pick-opt .ls-pick-icon{font-size:22px;display:block;margin-bottom:6px}
+.ls-pick-opt .ls-pick-title{font-weight:700;font-size:14px;margin-bottom:4px}
+.ls-pick-opt .ls-pick-desc{font-size:12px;color:var(--muted);line-height:1.35}
+.ls-pick-card .ls-pick-actions{margin-top:14px;display:flex;justify-content:flex-end}
+.ls-pick-card .ls-pick-actions button{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);padding:6px 12px;border-radius:999px;font-size:12px;cursor:pointer}
+.ls-dock{position:fixed;right:18px;bottom:18px;z-index:200;display:flex;flex-direction:column;gap:8px}
+.ls-dock button{min-width:44px;height:44px;border-radius:22px;background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(215,178,106,0.35);color:var(--text);cursor:pointer;padding:0 14px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:8px;box-shadow:0 6px 18px rgba(0,0,0,0.45)}
+.ls-dock button:hover{filter:brightness(1.1)}
+.ls-dock .ls-dock-ic{font-size:17px}
+.ls-panel-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);display:none}
+.ls-panel-overlay.on{display:block}
+.ls-panel{position:fixed;top:0;right:0;bottom:0;width:min(460px,96vw);background:linear-gradient(180deg,#2b241d,#1d1714);border-left:1px solid rgba(215,178,106,0.3);box-shadow:-8px 0 24px rgba(0,0,0,0.45);z-index:310;display:none;flex-direction:column;color:var(--text)}
+.ls-panel.on{display:flex}
+.ls-panel-head{padding:14px 16px;border-bottom:1px solid rgba(215,178,106,0.2);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ls-panel-head h4{margin:0;font-size:15px;color:var(--accent)}
+.ls-panel-close{background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted);border-radius:999px;padding:5px 10px;font-size:12px;cursor:pointer}
+.ls-panel-body{padding:14px 16px;overflow:auto;flex:1 1 auto;font-size:13px;line-height:1.45}
+.ls-term{border-bottom:1px dotted rgba(215,178,106,0.55);cursor:help}
+.ls-tooltip{position:absolute;z-index:400;background:linear-gradient(180deg,#2b241d,#1d1714);border:1px solid rgba(215,178,106,0.45);border-radius:10px;padding:10px 12px;max-width:340px;min-width:220px;color:var(--text);font-size:12px;line-height:1.45;box-shadow:0 8px 22px rgba(0,0,0,0.5);display:none}
+.ls-tooltip.on{display:block}
+.ls-tooltip .ls-term-name{font-weight:800;color:var(--accent);font-size:13px;margin-bottom:4px}
+.ls-tooltip .ls-term-tier{margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.1);font-size:11px;color:var(--muted)}
+.ls-tooltip .ls-term-tier b{color:var(--text);font-weight:700}
+.ls-eqpanel .ls-eqtabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.ls-eqpanel .ls-eqtab{padding:5px 10px;border-radius:999px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--muted);cursor:pointer}
+.ls-eqpanel .ls-eqtab[aria-pressed="true"]{background:linear-gradient(180deg,rgba(215,178,106,0.32),rgba(215,178,106,0.12));border-color:rgba(215,178,106,0.5);color:#fff8e6}
+.ls-eqpanel .ls-eqbody{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:12px;font-size:13px;line-height:1.55;color:var(--text);min-height:60px}
+.ls-eqpanel .ls-eqbody .ls-eqmath{font-family:"Courier New",monospace;white-space:pre-wrap;color:#f1eadc}
+.ls-eqpanel .ls-eqbody .ls-eqpic{display:flex;flex-direction:column;gap:6px;font-family:"Courier New",monospace;font-size:12px;color:#f1eadc}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ls-eqpanel .ls-eqbody .ls-eqpic .ls-eqbox{padding:4px 8px;border:1px solid rgba(215,178,106,0.4);border-radius:6px;background:rgba(215,178,106,0.08)}
+.ls-analogy{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.ls-analogy h6{margin:0 0 4px;font-size:13px;color:var(--accent)}
+.ls-analogy .ls-analogy-persona{display:inline-block;font-size:10px;letter-spacing:0.6px;text-transform:uppercase;background:rgba(215,178,106,0.2);color:#fff8e6;border-radius:999px;padding:2px 7px;margin-right:6px}
+.ls-analogy .ls-analogy-scenario{color:var(--text);margin:6px 0;font-size:12px}
+.ls-analogy .ls-analogy-map{font-size:11px;color:var(--muted);background:rgba(0,0,0,0.2);border-radius:6px;padding:6px 8px;margin-top:6px}
+.ls-analogy .ls-analogy-map table{width:100%;border-collapse:collapse}
+.ls-analogy .ls-analogy-map td{padding:2px 4px;border-bottom:1px dashed rgba(255,255,255,0.06);font-size:11px}
+.ls-analogy .ls-analogy-map td:first-child{color:var(--accent);font-weight:700;white-space:nowrap}
+.ls-analogy .ls-analogy-ex{font-size:11px;color:var(--muted);margin-top:6px;border-top:1px dashed rgba(255,255,255,0.08);padding-top:6px}
+.ls-exercise{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-bottom:10px}
+.ls-exercise h6{margin:0 0 6px;color:var(--accent);font-size:13px}
+.ls-exercise .ls-ex-meta{font-size:11px;color:var(--muted);margin-bottom:8px}
+.ls-exercise .ls-ex-sect{margin-top:8px}
+.ls-exercise .ls-ex-sect b{color:var(--accent);font-size:11px;letter-spacing:.6px;text-transform:uppercase;display:block;margin-bottom:3px}
+.ls-exercise ol,.ls-exercise ul{margin:4px 0 4px 18px;padding:0}
+.ls-exercise li{margin-bottom:3px;font-size:12px}
+.ls-exercise .ls-ex-print{font-size:11px;background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.2);border-radius:999px;padding:4px 10px;cursor:pointer;margin-top:8px}
+@media print{body>*:not(.ls-print-root){display:none !important}.ls-print-root{display:block !important;color:#000 !important;background:#fff !important;padding:8px !important;font-size:11pt;max-width:5.5in}@page{size:letter;margin:0.4in}}
+.ls-beat{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;margin-bottom:12px;background:linear-gradient(180deg,rgba(152,200,143,0.10),rgba(152,200,143,0.04));border:1px solid rgba(152,200,143,0.28);border-radius:12px;font-size:13px}
+.ls-beat .ls-beat-body{flex:1 1 200px;line-height:1.4}
+.ls-beat .ls-beat-head{display:block;font-size:11px;letter-spacing:.8px;color:#9fc59b;text-transform:uppercase;margin-bottom:3px}
+.ls-beat .ls-beat-ctrl{display:inline-flex;gap:6px}
+.ls-beat .ls-beat-ctrl button{padding:6px 10px;font-size:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12)}
+.ls-beat .ls-beat-ctrl button.primary{background:linear-gradient(180deg,rgba(152,200,143,0.30),rgba(152,200,143,0.10));border-color:rgba(152,200,143,0.5)}
+.ls-beat .ls-beat-idx{font-weight:800;color:#d7e9c9;font-size:13px;font-variant-numeric:tabular-nums}
+.ls-glossary-entry{padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.02);margin-bottom:8px}
+.ls-glossary-entry .ls-glossary-sym{display:inline-block;font-weight:800;color:var(--accent);margin-right:8px;font-family:"Courier New",monospace}
+.ls-glossary-entry .ls-glossary-tier{display:block;font-size:11px;color:var(--muted);margin-top:4px}
+.ls-glossary-entry .ls-glossary-tier b{color:var(--text);font-weight:700}
+.ls-glossary-search{width:100%;box-sizing:border-box;padding:8px 10px;margin-bottom:10px;background:rgba(0,0,0,0.2);color:var(--text);border:1px solid rgba(255,255,255,0.1);border-radius:8px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:100ms !important}}
+body.ls-dys{font-family:"Verdana","Tahoma","Trebuchet MS",sans-serif;letter-spacing:0.03em;word-spacing:0.08em}
+@media (max-width:820px){.ls-pathbar{font-size:12px}.ls-pathbar .ls-pathbtn{padding:5px 8px;font-size:11px}.ls-dock{right:10px;bottom:10px}.ls-dock button{padding:0 10px;font-size:12px;min-width:40px;height:40px}}
+</style>
+<link rel="stylesheet" href="/assets/suite-tokens.css" data-mark="suite-tokens-link-v1">
+</head>
+<body>
+<div class="wrap">
+  <div class="ls-pathbar" role="region" aria-label="Learning path">
+    <a class="ls-pathbtn ls-crumb" href="/learn" target="_top" data-ls-mark="ls-pathbar-breadcrumb-v1">← Learn</a><a class="ls-pathbtn ls-crumb" href="/" target="_top">Workbench ▸</a><span class="ls-pathlabel" style="margin-left:6px;">·</span><span class="ls-pathlabel">Path:</span>
+    <button class="ls-pathbtn" data-ls-path="kid" aria-pressed="false">🌱 Story</button>
+    <button class="ls-pathbtn" data-ls-path="real" aria-pressed="true">🧭 Real-world</button>
+    <button class="ls-pathbtn" data-ls-path="equation" aria-pressed="false">🛠️ Equation</button>
+    <button class="ls-pathbtn" data-ls-path="derivation" aria-pressed="false">🎓 Derivation</button>
+    <span class="ls-spacer"></span>
+    <button class="ls-toolbtn" id="lsPickerBtn">♻ Switch audience</button>
+    <button class="ls-toolbtn" id="lsDysBtn" aria-pressed="false">🅰 Font</button>
+  </div>
+  <div class="title">
+    <div>
+      <h1>JUMPING FROG GENERATIVE MODEL LAB</h1>
+      <div class="sub">
+        A detailed educational sim game for the hierarchical generative model in the figure. Hidden states live inside the dotted circle, observations sit at the sensory boundary, and action changes tactile sensations. The simulator teaches the math of inference with a compact Bayesian teaching-world: posterior belief update from multiple sensory channels, precision weighting, modality-specific likelihoods, hidden-state priors, action contingencies, and cross-modal concept inference.
+      </div>
+    </div>
+    <div class="badge">Standalone HTML</div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="graph">Generative Graph</div>
+    <div class="tab" data-tab="bayes">Bayes Engine</div>
+    <div class="tab" data-tab="action">Action Loop</div>
+    <div class="tab" data-tab="lessons">Guided Lessons</div>
+  </div>
+
+  <div class="grid">
+    <div class="col">
+      <div class="panel">
+        <h2>Scenario Bay</h2>
+        <div class="small">Load a preset, then change hidden concepts, sensory observations, and action contingencies.</div>
+        <select id="presetSelect" style="margin-top:10px"></select>
+        <div class="topbar" style="margin-top:10px">
+          <button id="loadPresetBtn">Load preset</button>
+          <button id="randomObsBtn">Randomize observations</button>
+          <button id="resetBtn">Reset beliefs</button>
+        </div>
+        <div id="mission" style="margin-top:10px"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Inference Controls</h2>
+        <div class="line"><span>lr beliefs</span><input type="range" id="lrBelief" min="0.05" max="1.0" step="0.05" value="0.35"><input type="number" id="lrBeliefN" step="0.05" value="0.35"></div>
+        <div class="line"><span>lr action</span><input type="range" id="lrAction" min="0.05" max="1.0" step="0.05" value="0.35"><input type="number" id="lrActionN" step="0.05" value="0.35"></div>
+        <div class="line"><span>prior frog</span><input type="range" id="priorFrog" min="0.01" max="0.99" step="0.01" value="0.50"><input type="number" id="priorFrogN" step="0.01" value="0.50"></div>
+        <div class="topbar" style="margin-top:8px">
+          <button id="beliefStepBtn">Belief step</button>
+          <button id="actionStepBtn">Action step</button>
+          <button id="bothStepBtn">Belief + action</button>
+          <button id="autoBtn">Auto-run</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Observation Panel</h2>
+        <div class="small">Each channel is binary in this teaching-world. The concept node predicts modality-specific percepts and sensations.</div>
+        <div class="group">
+          <h3>Observed sensations</h3>
+          <div class="modgrid">
+            <div>
+              <div class="small">Visual sensation</div>
+              <select id="obsVisual">
+                <option value="jumping_green">green + jumping</option>
+                <option value="still_green">green + still</option>
+                <option value="blur">blur / unclear</option>
+              </select>
+            </div>
+            <div>
+              <div class="small">Auditory sensation</div>
+              <select id="obsAudio">
+                <option value="croak">croaking</option>
+                <option value="quiet">quiet</option>
+                <option value="unclear">unclear</option>
+              </select>
+            </div>
+            <div>
+              <div class="small">Interoceptive sensation</div>
+              <select id="obsIntero">
+                <option value="high_hr">high heart rate</option>
+                <option value="calm">calm</option>
+                <option value="unclear">unclear</option>
+              </select>
+            </div>
+            <div>
+              <div class="small">Tactile sensation</div>
+              <select id="obsTactile">
+                <option value="wrinkly">wrinkliness</option>
+                <option value="smooth">smooth</option>
+                <option value="unclear">unclear</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="group" style="margin-top:10px">
+          <h3>Action</h3>
+          <div class="small">Only tactile sensations are directly action-dependent here, following the dashed link in the figure.</div>
+          <select id="actionChoice">
+            <option value="touch">touch</option>
+            <option value="do_nothing">do nothing</option>
+            <option value="poke_fast">poke fast</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Likelihood Builder</h2>
+        <div class="small">Edit how likely each observation is under the hidden concept “jumping frog”. Non-frog uses the complementary alternative.</div>
+        <div id="likelihoodEditor"></div>
+      </div>
+
+      <div class="panel">
+        <h2>Session Log</h2>
+        <div class="log" id="log"></div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="stageStrip" role="region" aria-label="Inference state">
+        <div class="cell"><div class="lab">P(frog | data)</div><div class="val" id="stripPost">0.500</div><div class="sub2" id="stripPostTarget">target &gt; 0.90</div></div>
+        <div class="cell"><div class="lab">Action</div><div class="val" id="stripAction">do_nothing</div><div class="sub2">tactile-channel gain</div></div>
+        <div class="cell"><div class="lab">g(action)</div><div class="val" id="stripGain">1.00</div><div class="sub2">precision gain</div></div>
+        <div class="cell"><div class="lab">LLR sum</div><div class="val" id="stripLLR">0.000</div><div class="sub2">Σ log-likelihood ratios</div></div>
+        <div class="cell"><div class="lab">Best a (info)</div><div class="val" id="stripBestA">—</div><div class="sub2" id="stripBestAInfo">expected surprise</div></div>
+        <div class="cell"><div class="lab">Exact</div><div class="val" id="stripExact">0.500</div><div class="sub2">single source of truth</div></div>
+      </div>
+
+      <div class="introStrip" id="introStrip" role="note">
+        <div class="body">
+          <div class="row"><span class="tag">Goal</span><span>Raise <strong>P(frog | data)</strong> above 0.90 using multi-modal evidence.</span></div>
+          <div class="row"><span class="tag">Watch</span><span>Posterior card above the canvas. Action scales tactile precision g(a), not the sampled value.</span></div>
+          <div class="row"><span class="tag">First move</span><span>Click <strong>Belief step</strong>. When posterior stalls, try <strong>Action step</strong> — it picks the action with the most expected info gain.</span></div>
+        </div>
+        <button class="dismiss" id="introDismissBtn" aria-label="Dismiss intro">Got it ✕</button>
+      </div>
+
+      <div class="stageToolbar" role="toolbar" aria-label="Inference run controls">
+        <select id="toolbarPreset" style="width:auto;"></select>
+        <button id="tbLoadPreset">Load preset</button>
+        <button id="tbRandomize">Randomize observations</button>
+        <button id="tbReset">Reset beliefs</button>
+        <button id="tbBelief">Belief step</button>
+        <button id="tbAction">Action step</button>
+        <button id="tbBoth">Belief + action</button>
+        <button id="tbAuto">Auto-run</button>
+        <button class="iconBtn" id="tourOpenBtn" title="Open guided tour" aria-label="Open guided tour">?</button>
+      </div>
+
+      <div class="panel">
+        <h2>Status Deck</h2>
+        <div class="score">
+          <div class="card"><div class="small">Posterior frog</div><div class="big" id="postFrog">0.500</div><div class="meter"><span id="meterFrog"></span></div></div>
+          <div class="card"><div class="small">Posterior non-frog</div><div class="big" id="postOther">0.500</div><div class="small">1 - frog</div></div>
+          <div class="card"><div class="small">Visual evidence</div><div class="big" id="visEv">0.000</div><div class="small">log-like ratio</div></div>
+          <div class="card"><div class="small">Audio evidence</div><div class="big" id="audEv">0.000</div><div class="small">log-like ratio</div></div>
+          <div class="card"><div class="small">Intero evidence</div><div class="big" id="intEv">0.000</div><div class="small">log-like ratio</div></div>
+          <div class="card"><div class="small">Tactile evidence</div><div class="big" id="tacEv">0.000</div><div class="small">log-like ratio</div></div>
+        </div>
+      </div>
+
+      <div class="panel module active" id="module-graph">
+        <h2>Generative Graph</h2>
+        <div class="machine">
+          <canvas id="graphCanvas" width="1080" height="620"></canvas>
+          <div class="ledger">
+            <div class="eq" id="summaryEq"></div>
+            <div class="eq" id="ledger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-bayes">
+        <h2>Bayes Engine</h2>
+        <div class="machine">
+          <canvas id="bayesCanvas" width="1080" height="620"></canvas>
+          <div class="ledger">
+            <div class="eq" id="bayesEq"></div>
+            <div class="eq" id="bayesLedger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-action">
+        <h2>Action Loop</h2>
+        <div class="machine">
+          <canvas id="actionCanvas" width="1080" height="620"></canvas>
+          <div class="ledger">
+            <div class="eq" id="actionEq"></div>
+            <div class="eq" id="actionLedger" style="margin-top:12px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel module" id="module-lessons">
+        <h2>Guided Lessons</h2>
+        <div class="lesson-grid">
+          <div class="group"><h3>1. Hidden states and observations</h3><div class="small">Nodes inside the dotted circle are latent causes. Peripheral nodes are sensory data. Inference reverses the generative model.</div></div>
+          <div class="group"><h3>2. One concept, many modalities</h3><div class="small">The concept “jumping frog” predicts visual, auditory, interoceptive, and tactile outcomes. Multisensory agreement strengthens the posterior.</div></div>
+          <div class="group"><h3>3. Likelihoods</h3><div class="small">Each observation channel contributes a factor. The posterior is proportional to prior times the product of these factors.</div></div>
+          <div class="group"><h3>4. Percepts</h3><div class="small">Beliefs about hidden states correspond to percepts tied to each modality: visual percept, auditory percept, tactile percept, and interoceptive percept.</div></div>
+          <div class="group"><h3>5. Action contingencies</h3><div class="small">The dashed links show that action changes some sensory outcomes. Here action primarily changes tactile evidence.</div></div>
+          <div class="group"><h3>6. Simplification</h3><div class="small">This teaching-world omits horizontal dependencies and deeper temporal structure, just like the figure’s simplification notes.</div></div>
+        </div>
+        <div class="eq" id="lessonEq" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px;">
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px;color:var(--accent);font-size:14px;letter-spacing:1px;text-transform:uppercase;">Layered Equation Panel</h2>
+      <div class="ls-eqpanel" id="lsEqPanel">
+        <div class="ls-eqtabs"><button class="ls-eqtab" data-ls-tab="story">Story</button><button class="ls-eqtab" data-ls-tab="picture">Picture</button><button class="ls-eqtab" data-ls-tab="equation" aria-pressed="true">Equation</button><button class="ls-eqtab" data-ls-tab="derivation">Derivation</button></div>
+        <div class="ls-eqbody" id="lsEqBody"></div>
+      </div>
+    </section>
+    <section class="panel" style="padding:18px;">
+      <h2 style="margin:0 0 10px;color:var(--accent);font-size:14px;letter-spacing:1px;text-transform:uppercase;">Beat Script</h2>
+      <div id="lsBeatHost"></div>
+    </section>
+  </div>
+</div>
+
+<div class="ls-dock"><button id="lsDockGlossary"><span class="ls-dock-ic">📖</span> Glossary</button><button id="lsDockAnalogies"><span class="ls-dock-ic">🔀</span> Analogies</button><button id="lsDockExercises"><span class="ls-dock-ic">🎯</span> Exercises</button></div>
+<div class="ls-panel-overlay" id="lsPanelOverlay"></div>
+<aside class="ls-panel" id="lsPanel"><div class="ls-panel-head"><h4 id="lsPanelTitle">Panel</h4><button class="ls-panel-close" id="lsPanelClose">Close ✕</button></div><div class="ls-panel-body" id="lsPanelBody"></div></aside>
+<div class="ls-pick-overlay" id="lsPickerOverlay"><div class="ls-pick-card"><h3>Pick a learning path</h3><div class="ls-pick-sub">You can switch any time from the top bar. The math on the canvas is identical across paths.</div><div class="ls-pick-grid"><button class="ls-pick-opt" data-ls-path="kid"><span class="ls-pick-icon">🌱</span><div class="ls-pick-title">I want the story</div><div class="ls-pick-desc">Narrative + physical objects.</div></button><button class="ls-pick-opt" data-ls-path="real"><span class="ls-pick-icon">🧭</span><div class="ls-pick-title">I want real-world examples</div><div class="ls-pick-desc">Analogies + missions.</div></button><button class="ls-pick-opt" data-ls-path="equation"><span class="ls-pick-icon">🛠️</span><div class="ls-pick-title">I want the equations</div><div class="ls-pick-desc">Math tied to code.</div></button><button class="ls-pick-opt" data-ls-path="derivation"><span class="ls-pick-icon">🎓</span><div class="ls-pick-title">I want the full derivation</div><div class="ls-pick-desc">Proof sketches.</div></button></div><div class="ls-pick-actions"><button id="lsPickerDismiss">Skip — I'll default to real-world</button></div></div></div>
+<div class="ls-tooltip" id="lsTooltip"></div>
+<div class="ls-print-root" id="lsPrintRoot" style="display:none;"></div>
+
+<script>
+(()=>{
+const $ = id => document.getElementById(id);
+let autoTimer = null;
+
+function bindPair(a,b){
+  $(a).addEventListener('input',()=>{$(b).value=$(a).value; update();});
+  $(b).addEventListener('input',()=>{$(a).value=$(b).value; update();});
+}
+bindPair('lrBelief','lrBeliefN');
+bindPair('lrAction','lrActionN');
+bindPair('priorFrog','priorFrogN');
+
+const obsKeys = {
+  visual:['jumping_green','still_green','blur'],
+  audio:['croak','quiet','unclear'],
+  intero:['high_hr','calm','unclear'],
+  tactile:['wrinkly','smooth','unclear']
+};
+
+const presets = [
+  {
+    name:'Clear jumping frog',
+    mission:'Raise the frog posterior above 0.90 by using multisensory evidence.',
+    prior:0.5,
+    obs:{visual:'jumping_green',audio:'croak',intero:'high_hr',tactile:'wrinkly'},
+    action:'touch',
+    lik:{
+      visual:{jumping_green:0.85,still_green:0.10,blur:0.05},
+      audio:{croak:0.80,quiet:0.10,unclear:0.10},
+      intero:{high_hr:0.70,calm:0.15,unclear:0.15},
+      tactile:{wrinkly:0.75,smooth:0.10,unclear:0.15}
+    }
+  },
+  {
+    name:'Ambiguous animal',
+    mission:'Disambiguate the concept by choosing an action that improves tactile evidence.',
+    prior:0.5,
+    obs:{visual:'blur',audio:'quiet',intero:'unclear',tactile:'unclear'},
+    action:'do_nothing',
+    lik:{
+      visual:{jumping_green:0.75,still_green:0.15,blur:0.10},
+      audio:{croak:0.70,quiet:0.15,unclear:0.15},
+      intero:{high_hr:0.60,calm:0.20,unclear:0.20},
+      tactile:{wrinkly:0.80,smooth:0.10,unclear:0.10}
+    }
+  },
+  {
+    name:'Conflicting cues',
+    mission:'See how contradictory modalities compete in the posterior computation.',
+    prior:0.5,
+    obs:{visual:'jumping_green',audio:'quiet',intero:'calm',tactile:'smooth'},
+    action:'touch',
+    lik:{
+      visual:{jumping_green:0.88,still_green:0.07,blur:0.05},
+      audio:{croak:0.82,quiet:0.08,unclear:0.10},
+      intero:{high_hr:0.76,calm:0.14,unclear:0.10},
+      tactile:{wrinkly:0.78,smooth:0.12,unclear:0.10}
+    }
+  }
+];
+
+let model = {};
+
+function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+function fmt(x){ x = Math.abs(x)<1e-10 ? 0 : x; return Number(x).toFixed(3); }
+function log(msg){
+  const d = document.createElement('div');
+  d.className='entry';
+  d.textContent=`[${new Date().toLocaleTimeString()}] ${msg}`;
+  $('log').prepend(d);
+}
+
+function complementDist(d){
+  // Teaching heuristic for the alternative-hypothesis likelihood.
+  // P(obs | other) is derived from P(obs | frog) by inverting and renormalizing,
+  // so the learner only edits one likelihood table. This is a simplification,
+  // NOT a generic probabilistic identity. A full generative model would let the
+  // user specify both likelihoods independently.
+  return {
+    [Object.keys(d)[0]]: clamp(0.05 + (1-d[Object.keys(d)[0]])*0.70, 0.05, 0.90),
+    [Object.keys(d)[1]]: clamp(0.05 + (1-d[Object.keys(d)[1]])*0.70, 0.05, 0.90),
+    [Object.keys(d)[2]]: clamp(0.05 + (1-d[Object.keys(d)[2]])*0.70, 0.05, 0.90),
+  };
+}
+
+// Action contingency on the tactile channel: action does NOT change beliefs directly
+// and does NOT set the sampled observation as a function of current belief.
+// It changes the effective precision (reliability) of the tactile reading.
+//   touch       -> sharper tactile reading (gain > 1)
+//   do_nothing  -> unchanged (gain = 1)
+//   poke_fast   -> degraded tactile reading (gain < 1)
+function tactilePrecisionGain(action){
+  if(action === 'touch') return 1.5;
+  if(action === 'poke_fast') return 0.3;
+  return 1.0;
+}
+
+function normalizeDist(d){
+  const s = Object.values(d).reduce((a,b)=>a+b,0);
+  Object.keys(d).forEach(k=>d[k] /= s);
+  return d;
+}
+
+function loadPreset(i){
+  const p = presets[i];
+  model = JSON.parse(JSON.stringify(p));
+  normalizeDist(model.lik.visual);
+  normalizeDist(model.lik.audio);
+  normalizeDist(model.lik.intero);
+  normalizeDist(model.lik.tactile);
+  model.posterior = model.prior;
+  $('priorFrog').value = $('priorFrogN').value = model.prior.toFixed(2);
+  $('obsVisual').value = model.obs.visual;
+  $('obsAudio').value = model.obs.audio;
+  $('obsIntero').value = model.obs.intero;
+  $('obsTactile').value = model.obs.tactile;
+  $('actionChoice').value = model.action;
+  $('mission').innerHTML = `<div class="small">${p.mission}<br><span class="pill">Target posterior > 0.90</span></div>`;
+  renderLikelihoodEditor();
+  update();
+  log(`Loaded preset: ${p.name}.`);
+}
+
+function syncFromUI(){
+  model.prior = parseFloat($('priorFrog').value);
+  model.obs.visual = $('obsVisual').value;
+  model.obs.audio = $('obsAudio').value;
+  model.obs.intero = $('obsIntero').value;
+  model.obs.tactile = $('obsTactile').value;
+  model.action = $('actionChoice').value;
+}
+
+function likeGivenFrog(mod, obs){
+  return model.lik[mod][obs];
+}
+function likeGivenOther(mod, obs){
+  return normalizeDist(complementDist(model.lik[mod]))[obs];
+}
+function logLR(mod, obs){
+  return Math.log(likeGivenFrog(mod,obs)) - Math.log(likeGivenOther(mod,obs));
+}
+
+// Posterior given a set of log-likelihood ratios (one per modality).
+function posteriorFromLLRs(prior, llrSum){
+  const priorLogOdds = Math.log(prior/(1-prior));
+  return 1 / (1 + Math.exp(-(priorLogOdds + llrSum)));
+}
+
+function compute(){
+  syncFromUI();
+
+  // Tactile channel: user chose the observation; action scales its reliability.
+  // The tactile LLR is raised to the precision-gain power, which is algebraically
+  // equivalent to treating the tactile channel as "g copies of the same reading".
+  const tactileObs = model.obs.tactile;
+  const tactileGain = tactilePrecisionGain(model.action);
+
+  const llr = {
+    visual:  logLR('visual',  model.obs.visual),
+    audio:   logLR('audio',   model.obs.audio),
+    intero:  logLR('intero',  model.obs.intero),
+    tactile: tactileGain * logLR('tactile', tactileObs)
+  };
+  const llrSum = llr.visual + llr.audio + llr.intero + llr.tactile;
+  // Single exact posterior: log-odds form and product form agree by construction.
+  const exact = posteriorFromLLRs(model.prior, llrSum);
+  return {exact, tactileObs, tactileGain, llr, fromOdds: exact};
+}
+
+// Expected information gain (Bayesian surprise) on the tactile channel under a candidate action.
+// Used by actionStep to pick the action that SHARPENS the posterior most.
+function expectedInfoGain(action){
+  const gain = tactilePrecisionGain(action);
+  const pF = model.posterior;
+  const pO = 1 - pF;
+  if(pF <= 1e-9 || pO <= 1e-9) return 0;
+
+  // Marginal tactile outcome distribution under current belief and action.
+  // We reweight the raw likelihood by the gain to reflect effective precision.
+  const tactileKeys = obsKeys.tactile;
+  let sumMarginal = 0;
+  const marginals = {};
+  const likFrog = {}, likOther = {};
+  for(const o of tactileKeys){
+    likFrog[o]  = Math.pow(likeGivenFrog('tactile',  o), gain);
+    likOther[o] = Math.pow(likeGivenOther('tactile', o), gain);
+    marginals[o] = pF * likFrog[o] + pO * likOther[o];
+    sumMarginal += marginals[o];
+  }
+  if(sumMarginal < 1e-12) return 0;
+
+  let expectedKL = 0;
+  for(const o of tactileKeys){
+    const m = marginals[o] / sumMarginal;           // normalized predictive
+    if(m < 1e-12) continue;
+    const postF = (pF * likFrog[o]) / marginals[o]; // posterior if o were observed
+    if(postF <= 1e-9 || postF >= 1 - 1e-9) continue;
+    const kl = postF * Math.log(postF/pF) + (1-postF) * Math.log((1-postF)/pO);
+    expectedKL += m * kl;
+  }
+  return expectedKL;
+}
+
+function beliefStep(){
+  const c = compute();
+  const lr = parseFloat($('lrBelief').value);
+  model.posterior = clamp(model.posterior + lr * (c.exact - model.posterior), 0.001, 0.999);
+  update();
+  log(`Belief step toward exact posterior ${fmt(c.exact)}.`);
+}
+
+function actionStep(){
+  const lr = parseFloat($('lrAction').value);
+  // Active inference epistemic value: pick the action that maximizes expected
+  // Bayesian surprise on the tactile channel under the current posterior.
+  const utilities = {
+    touch:      expectedInfoGain('touch'),
+    do_nothing: expectedInfoGain('do_nothing'),
+    poke_fast:  expectedInfoGain('poke_fast')
+  };
+  const target = Object.keys(utilities).reduce((a,b)=> utilities[a] >= utilities[b] ? a : b);
+  if(Math.random() < lr) model.action = target;
+  $('actionChoice').value = model.action;
+  update();
+  log(`Action step: expected info gain (touch=${fmt(utilities.touch)}, do_nothing=${fmt(utilities.do_nothing)}, poke_fast=${fmt(utilities.poke_fast)}). Target=${target}. Selected=${model.action}.`);
+}
+
+function randomizeObs(){
+  $('obsVisual').value = obsKeys.visual[Math.floor(Math.random()*3)];
+  $('obsAudio').value = obsKeys.audio[Math.floor(Math.random()*3)];
+  $('obsIntero').value = obsKeys.intero[Math.floor(Math.random()*3)];
+  $('obsTactile').value = obsKeys.tactile[Math.floor(Math.random()*3)];
+  update();
+  log('Randomized observations.');
+}
+
+function resetBeliefs(){
+  model.posterior = model.prior;
+  $('actionChoice').value = model.action = 'do_nothing';
+  update();
+  log('Reset posterior and action.');
+}
+
+function renderLikelihoodEditor(){
+  const el = $('likelihoodEditor');
+  function block(mod, labels){
+    return `<div class="group" style="margin-top:10px">
+      <h3>${mod}</h3>
+      ${labels.map(k=>`
+        <div class="line"><span>${k}</span>
+          <input type="range" min="0.01" max="0.98" step="0.01" value="${model.lik[mod][k]}" data-mod="${mod}" data-key="${k}">
+          <input type="number" min="0.01" max="0.98" step="0.01" value="${model.lik[mod][k]}" data-modn="${mod}" data-keyn="${k}">
+        </div>`).join('')}
+    </div>`;
+  }
+  el.innerHTML =
+    block('visual', obsKeys.visual) +
+    block('audio', obsKeys.audio) +
+    block('intero', obsKeys.intero) +
+    block('tactile', obsKeys.tactile);
+  el.querySelectorAll('input[data-mod]').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const mod=e.target.dataset.mod, key=e.target.dataset.key, v=parseFloat(e.target.value);
+      model.lik[mod][key]=v;
+      el.querySelector(`input[data-modn="${mod}"][data-keyn="${key}"]`).value=v;
+      update();
+    });
+  });
+  el.querySelectorAll('input[data-modn]').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const mod=e.target.dataset.modn, key=e.target.dataset.keyn, v=parseFloat(e.target.value);
+      model.lik[mod][key]=v;
+      el.querySelector(`input[data-mod="${mod}"][data-key="${key}"]`).value=v;
+      update();
+    });
+  });
+}
+
+function roundRect(ctx,x,y,w,h,r,fill,stroke){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  if(fill) ctx.fill(); if(stroke) ctx.stroke();
+}
+function panelFrame(ctx,w,h,title){
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle='#15110e'; ctx.strokeStyle='#5e5145'; ctx.lineWidth=2;
+  roundRect(ctx,18,18,w-36,h-36,18,true,true);
+  ctx.fillStyle='#d1c6b8'; ctx.font='13px monospace'; ctx.fillText(title,24,36);
+}
+function node(ctx,x,y,r,main,sub,fill='#221b16',stroke='#8d7a65'){
+  // Enlarge outer radius slightly so the bold centre label fits and the
+  // 11-px sub label below never collides with an adjacent node.
+  r = Math.max(r, 26);
+  ctx.fillStyle=fill; ctx.strokeStyle=stroke; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle='#fff1cd'; ctx.font='bold 14px monospace'; ctx.textAlign='center'; ctx.fillText(main,x,y+4);
+  ctx.fillStyle='#d2c4b0'; ctx.font='11px monospace'; ctx.fillText(sub,x,y+r+14); ctx.textAlign='left';
+}
+function wire(ctx,x1,y1,x2,y2,mag,dashed=false,label=''){
+  ctx.strokeStyle='#655545'; ctx.lineWidth=8; ctx.lineCap='round';
+  ctx.setLineDash(dashed?[6,6]:[]);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.strokeStyle='#d1ae69'; ctx.lineWidth=4;
+  const t = Math.min(1,mag/2.2);
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x1+(x2-x1)*t, y1+(y2-y1)*t); ctx.stroke();
+  if(label){ ctx.fillStyle='#e8decd'; ctx.font='12px monospace'; ctx.fillText(label,(x1+x2)/2,(y1+y2)/2-6); }
+}
+
+function drawGraph(c){
+  const cv=$('graphCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  panelFrame(ctx,W,H,'Hierarchical generative graph for the concept');
+  ctx.strokeStyle='rgba(230,230,230,.45)'; ctx.lineWidth=2; ctx.setLineDash([2,6]);
+  ctx.beginPath(); ctx.arc(545,315,230,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+
+  node(ctx,545,315,30,fmt(model.posterior),'Jumping frog');
+  node(ctx,410,240,24,fmt(c.exact),'Tactile percept');
+  node(ctx,675,240,24,fmt(c.exact),'Auditory percept');
+  node(ctx,675,390,24,fmt(c.exact),'Visual percept');
+  node(ctx,410,135,22,fmt(c.exact),'Intero percept');
+  node(ctx,510,450,24,model.action,'Action');
+
+  node(ctx,230,240,22,model.obs.tactile,'Tactile sensation');
+  node(ctx,845,165,22,model.obs.audio,'Auditory sensation');
+  node(ctx,845,450,22,model.obs.visual,'Visual sensation');
+  node(ctx,410,75,22,model.obs.intero,'Intero sensation');
+
+  wire(ctx,545,315,410,240,Math.abs(c.llr.tactile));
+  wire(ctx,545,315,675,240,Math.abs(c.llr.audio));
+  wire(ctx,545,315,675,390,Math.abs(c.llr.visual));
+  wire(ctx,545,315,410,135,Math.abs(c.llr.intero));
+  wire(ctx,410,240,230,240,Math.abs(c.llr.tactile));
+  wire(ctx,675,240,845,165,Math.abs(c.llr.audio));
+  wire(ctx,675,390,845,450,Math.abs(c.llr.visual));
+  wire(ctx,410,135,410,75,Math.abs(c.llr.intero));
+  wire(ctx,510,450,410,240,1.4,true,'action contingency');
+  wire(ctx,510,450,675,390,0.9,true,'motor sampling');
+
+  ctx.fillStyle='#d8ccba'; ctx.font='13px monospace';
+  ctx.fillText('hidden states / percepts inside dotted circle', 370, 560);
+}
+
+function drawBayes(c){
+  const cv=$('bayesCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  panelFrame(ctx,W,H,'Bayes engine across modalities');
+  const mods = [
+    ['Prior', Math.log(model.prior/(1-model.prior))],
+    ['Visual', c.llr.visual],
+    ['Audio', c.llr.audio],
+    ['Intero', c.llr.intero],
+    ['Tactile', c.llr.tactile],
+    ['Posterior', Math.log(c.fromOdds/(1-c.fromOdds))]
+  ];
+  let x=120;
+  mods.forEach((m,i)=>{
+    node(ctx,x,310,35,fmt(m[1]),m[0], i===0||i===mods.length-1 ? '#272019' : '#221b16');
+    if(i<mods.length-1) wire(ctx,x+35,310,x+120-35,310,Math.abs(mods[i+1][1]),false,'+');
+    x+=120;
+  });
+  ctx.fillStyle='#d8ccba'; ctx.font='13px monospace';
+  ctx.fillText('posterior log-odds = prior log-odds + sum of modality log-likelihood ratios', 160, 130);
+  ctx.fillText('sigmoid(log-odds) gives posterior probability of the hidden concept', 240, 500);
+}
+
+function drawAction(c){
+  const cv=$('actionCanvas'), ctx=cv.getContext('2d'), W=cv.width, H=cv.height;
+  panelFrame(ctx,W,H,'Action loop and tactile sampling');
+  node(ctx,180,160,30,model.action,'Action');
+  node(ctx,420,160,30,c.tactileObs,'Tactile sample');
+  node(ctx,670,160,30,fmt(c.llr.tactile),'Tactile evidence');
+  node(ctx,900,160,30,fmt(model.posterior),'Belief');
+
+  node(ctx,300,420,30,'touch','Policy A');
+  node(ctx,540,420,30,'none','Policy B');
+  node(ctx,780,420,30,'poke','Policy C');
+
+  wire(ctx,180,190,420,160,1.2,false,'changes sample');
+  wire(ctx,420,190,670,160,Math.abs(c.llr.tactile),false,'likelihood');
+  wire(ctx,670,190,900,160,Math.abs(c.llr.tactile),false,'updates belief');
+  wire(ctx,900,190,300,420,model.posterior,false,'expected information');
+  wire(ctx,900,190,540,420,1-model.posterior,false,'stay still');
+  wire(ctx,900,190,780,420,0.5,true,'disturbing sample');
+}
+
+function update(){
+  const c = compute();
+  $('postFrog').textContent = fmt(model.posterior);
+  $('postOther').textContent = fmt(1-model.posterior);
+  $('visEv').textContent = fmt(c.llr.visual);
+  $('audEv').textContent = fmt(c.llr.audio);
+  $('intEv').textContent = fmt(c.llr.intero);
+  $('tacEv').textContent = fmt(c.llr.tactile);
+  $('meterFrog').style.width = (model.posterior*100).toFixed(1)+'%';
+
+  // Sticky status strip
+  $('stripPost').textContent = fmt(model.posterior);
+  $('stripExact').textContent = fmt(c.exact);
+  $('stripAction').textContent = model.action;
+  $('stripGain').textContent = c.tactileGain.toFixed(2);
+  const llrSum = c.llr.visual + c.llr.audio + c.llr.intero + c.llr.tactile;
+  $('stripLLR').textContent = fmt(llrSum);
+  // Best action by expected info gain
+  try {
+    const utilsByAction = {
+      touch: expectedInfoGain('touch'),
+      do_nothing: expectedInfoGain('do_nothing'),
+      poke_fast: expectedInfoGain('poke_fast')
+    };
+    const bestA = Object.keys(utilsByAction).reduce((a,b)=> utilsByAction[a] >= utilsByAction[b] ? a : b);
+    $('stripBestA').textContent = bestA;
+    $('stripBestAInfo').textContent = `info = ${utilsByAction[bestA].toFixed(3)}`;
+  } catch(e){ /* noop on edge cases */ }
+  $('stripPostTarget').textContent = model.posterior > 0.90 ? '✓ cleared (>0.90)' : 'target > 0.90';
+
+  $('summaryEq').textContent =
+`Core teaching equations
+
+Hidden concept:
+H ∈ { jumping frog, other }
+
+Posterior from multiple modalities:
+P(H | y_visual, y_audio, y_intero, y_tactile, a)
+  ∝ P(H) · P(y_visual | H) · P(y_audio | H) · P(y_intero | H) · P(y_tactile | H)^g(a)
+
+Log-odds form (used by the simulator):
+logit P(H | y, a) = logit P(H) + Σ_m log [ P(y_m | H) / P(y_m | other) ]
+                                + (g(a) - 1) · log [ P(y_tactile | H) / P(y_tactile | other) ]
+
+Action does not directly change beliefs. It scales the precision gain g(a)
+of the tactile channel:
+  touch g=1.5, do_nothing g=1.0, poke_fast g=0.3.
+Active-inference action selection then picks a to maximize
+  E_o[ KL( P(H | o, a) || P(H) ) ]   (expected Bayesian surprise).
+
+Teaching simplification: P(obs | other) is derived from P(obs | frog) by a
+fixed heuristic. Treat it as a didactic stand-in, not a general identity.`;
+
+  $('ledger').textContent =
+`Current prior
+P(frog)  = ${fmt(model.prior)}
+P(other) = ${fmt(1-model.prior)}
+
+Observed sensations
+visual  = ${model.obs.visual}
+audio   = ${model.obs.audio}
+intero  = ${model.obs.intero}
+tactile = ${c.tactileObs}
+action  = ${model.action}  →  tactile precision gain g = ${fmt(c.tactileGain)}
+
+Likelihood terms under frog
+P(vis | frog)    = ${fmt(likeGivenFrog('visual', model.obs.visual))}
+P(audio | frog)  = ${fmt(likeGivenFrog('audio', model.obs.audio))}
+P(intero | frog) = ${fmt(likeGivenFrog('intero', model.obs.intero))}
+P(tact | frog)   = ${fmt(likeGivenFrog('tactile', c.tactileObs))}
+
+Likelihood terms under other  (derived by heuristic)
+P(vis | other)    = ${fmt(likeGivenOther('visual', model.obs.visual))}
+P(audio | other)  = ${fmt(likeGivenOther('audio', model.obs.audio))}
+P(intero | other) = ${fmt(likeGivenOther('intero', model.obs.intero))}
+P(tact | other)   = ${fmt(likeGivenOther('tactile', c.tactileObs))}
+
+Log-likelihood ratios (tactile multiplied by action gain g)
+visual  = ${fmt(c.llr.visual)}
+audio   = ${fmt(c.llr.audio)}
+intero  = ${fmt(c.llr.intero)}
+tactile = ${fmt(c.llr.tactile)}  (raw × g)
+
+Exact posterior (single source of truth)
+P(frog | data, a) = ${fmt(c.exact)}
+
+Current simulator belief (smoothed toward exact by belief-step lr)
+belief = ${fmt(model.posterior)}`;
+
+  $('bayesEq').textContent =
+`Why the concept becomes a percept
+
+The figure says beliefs about hidden states, following inversion of the model,
+correspond to percepts tied to each modality.
+
+In this teaching-world, the hidden concept is inferred by multiplying modality-specific
+likelihood factors. Strong agreement across modalities sharpens the posterior quickly.`;
+
+  $('bayesLedger').textContent =
+`Posterior log-odds calculation
+
+prior log-odds = log( ${fmt(model.prior)} / ${fmt(1-model.prior)} )
+               = ${fmt(Math.log(model.prior/(1-model.prior)))}
+
+posterior log-odds
+  = prior log-odds
+    + visual log-like ratio
+    + audio log-like ratio
+    + intero log-like ratio
+    + tactile log-like ratio
+  = ${fmt(Math.log(model.prior/(1-model.prior)))} + ${fmt(c.llr.visual)} + ${fmt(c.llr.audio)} + ${fmt(c.llr.intero)} + ${fmt(c.llr.tactile)}
+  = ${fmt(Math.log(c.fromOdds/(1-c.fromOdds)))}
+
+posterior probability
+  = sigmoid(posterior log-odds)
+  = ${fmt(c.fromOdds)}`;
+
+  $('actionEq').textContent =
+`Action contingencies in the figure are dashed because action changes what gets sampled.
+
+Here:
+- touch tends to reveal wrinkliness when the hidden concept is frog-like
+- poke_fast tends to degrade tactile evidence
+- do_nothing leaves the tactile channel as-is
+
+So action does not directly change the concept.
+It changes the sensory evidence that updates the concept.`;
+
+  $('actionLedger').textContent =
+`Current action
+a = ${model.action}
+
+Resulting tactile observation used by inference
+tactile used = ${c.tactileObs}
+
+Qualitative action value
+- touch is best when more tactile information would help
+- do_nothing is best when current evidence is already clear
+- poke_fast is usually worse because it increases uncertainty`;
+
+  $('lessonEq').textContent =
+`How to learn this sim
+
+1) Start with clear multisensory frog evidence and watch posterior rise.
+2) Create a conflict: set visual to jumping_green but audio to quiet and tactile to smooth.
+3) Notice how the posterior becomes a compromise across channels.
+4) In the ambiguous preset, switch action from do_nothing to touch.
+5) Watch tactile evidence become more diagnostic and the posterior move.`;
+
+  drawGraph(c);
+  drawBayes(c);
+  drawAction(c);
+
+  if(model.posterior > 0.90){
+    $('mission').innerHTML = `<div class="small">${presets[$('presetSelect').value || 0].mission}<br><span class="pill">Mission cleared</span></div>`;
+  }
+}
+
+document.querySelectorAll('.tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.module').forEach(m=>m.classList.remove('active'));
+    tab.classList.add('active');
+    $('module-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+presets.forEach((p,i)=>{
+  const o = document.createElement('option');
+  o.value = i;
+  o.textContent = p.name;
+  $('presetSelect').appendChild(o);
+});
+
+$('loadPresetBtn').addEventListener('click',()=>loadPreset(parseInt($('presetSelect').value,10)));
+$('randomObsBtn').addEventListener('click',randomizeObs);
+$('resetBtn').addEventListener('click',resetBeliefs);
+$('beliefStepBtn').addEventListener('click',beliefStep);
+$('actionStepBtn').addEventListener('click',actionStep);
+$('bothStepBtn').addEventListener('click',()=>{beliefStep(); actionStep(); log('Ran belief + action cycle.');});
+$('autoBtn').addEventListener('click',()=>{
+  if(autoTimer){
+    clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Stopped auto-run.'); return;
+  }
+  autoTimer=setInterval(()=>{
+    const before = model.posterior;
+    beliefStep(); actionStep();
+    if(Math.abs(model.posterior - before) < 1e-4){
+      clearInterval(autoTimer); autoTimer=null; $('autoBtn').textContent='Auto-run'; log('Auto-run converged.');
+    }
+  }, 350);
+  $('autoBtn').textContent='Stop auto';
+  log('Started auto-run.');
+});
+
+['obsVisual','obsAudio','obsIntero','obsTactile','actionChoice'].forEach(id=>$(id).addEventListener('input',update));
+
+// Populate toolbar preset dropdown
+presets.forEach((p,i)=>{const o=document.createElement('option');o.value=i;o.textContent=p.name;$('toolbarPreset').appendChild(o);});
+
+// Primary-toolbar wiring
+$('tbLoadPreset').addEventListener('click',()=>{const i=parseInt($('toolbarPreset').value,10);$('presetSelect').value=$('toolbarPreset').value;loadPreset(i);});
+$('tbRandomize').addEventListener('click',randomizeObs);
+$('tbReset').addEventListener('click',resetBeliefs);
+$('tbBelief').addEventListener('click',beliefStep);
+$('tbAction').addEventListener('click',actionStep);
+$('tbBoth').addEventListener('click',()=>{beliefStep();actionStep();log('Toolbar: belief + action.');});
+$('tbAuto').addEventListener('click',()=>$('autoBtn').click());
+
+// Intro strip persistence
+const INTRO_KEY='learninglabs.JumpingFrog.introDismissed';
+const introEl=$('introStrip');
+if(localStorage.getItem(INTRO_KEY)==='1')introEl.classList.add('hidden');
+$('introDismissBtn').addEventListener('click',()=>{introEl.classList.add('hidden');localStorage.setItem(INTRO_KEY,'1');});
+
+// Guided tour
+const tourSteps=[
+  {sel:'#toolbarPreset',title:'Load a scenario',body:'Clear jumping frog is the easiest. Ambiguous animal is where action-as-info really matters.'},
+  {sel:'#stripPost',title:'Posterior card',body:'Your target is to drive P(frog | data, a) above 0.90 using the evidence and chosen action.'},
+  {sel:'#stripBestA',title:'Best-action hint',body:'Live computation of expected Bayesian surprise for each action. The top-scorer is the info-seeking move right now.'},
+  {sel:'#tbBelief',title:'Belief step',body:'Smooths the simulator belief toward the exact posterior. Use repeatedly.'},
+  {sel:'#tbAction',title:'Action step',body:'Picks the action that maximizes expected info gain on the tactile channel (active inference epistemic value).'},
+  {sel:'#actionChoice',title:'Override action',body:'You can also force an action from the sidebar. The tactile gain g(a) updates immediately in the sticky strip.'}
+];
+let tourIndex=0;
+const tourOverlay=document.createElement('div');tourOverlay.className='tour-overlay';
+tourOverlay.innerHTML=`<div class="tour-card"><h4 id="tourTitle"></h4><div class="step-line" id="tourBody"></div><div class="tour-actions"><button id="tourSkipBtn">Close</button><div style="display:flex;gap:8px;align-items:center;"><span id="tourProgress" class="small"></span><button id="tourNextBtn">Next →</button></div></div></div>`;
+document.body.appendChild(tourOverlay);
+const tourHighlight=document.createElement('div');tourHighlight.className='tour-highlight';
+function showTourStep(i){const s=tourSteps[i];if(!s){closeTour();return;}tourOverlay.querySelector('#tourTitle').textContent=s.title;tourOverlay.querySelector('#tourBody').textContent=s.body;tourOverlay.querySelector('#tourProgress').textContent=`${i+1} / ${tourSteps.length}`;tourOverlay.querySelector('#tourNextBtn').textContent=i===tourSteps.length-1?'Finish ✓':'Next →';const t=document.querySelector(s.sel);if(t){t.scrollIntoView({behavior:'smooth',block:'center'});setTimeout(()=>{const r=t.getBoundingClientRect();tourHighlight.style.left=(window.scrollX+r.left-6)+'px';tourHighlight.style.top=(window.scrollY+r.top-6)+'px';tourHighlight.style.width=(r.width+12)+'px';tourHighlight.style.height=(r.height+12)+'px';if(!tourHighlight.parentNode)document.body.appendChild(tourHighlight);},220);}}
+function openTour(){tourIndex=0;tourOverlay.classList.add('on');showTourStep(0);}
+function closeTour(){tourOverlay.classList.remove('on');if(tourHighlight.parentNode)tourHighlight.parentNode.removeChild(tourHighlight);}
+$('tourOpenBtn').addEventListener('click',openTour);
+tourOverlay.querySelector('#tourSkipBtn').addEventListener('click',closeTour);
+tourOverlay.querySelector('#tourNextBtn').addEventListener('click',()=>{tourIndex+=1;if(tourIndex>=tourSteps.length){closeTour();return;}showTourStep(tourIndex);});
+tourOverlay.addEventListener('click',(e)=>{if(e.target===tourOverlay)closeTour();});
+
+loadPreset(0);
+})();
+</script>
+
+<script>
+/* Learning Shell — isolated */
+(function(){
+  const LS=window.LS={};const state={path:'real',cfg:null,eqTab:'equation',beatIdx:0};
+  const $=id=>document.getElementById(id);
+  const pathbar=document.querySelector('.ls-pathbar'),picker=$('lsPickerOverlay'),pickerDismiss=$('lsPickerDismiss'),pickerBtn=$('lsPickerBtn'),dysBtn=$('lsDysBtn');
+  const dockG=$('lsDockGlossary'),dockA=$('lsDockAnalogies'),dockX=$('lsDockExercises');
+  const panel=$('lsPanel'),panelOv=$('lsPanelOverlay'),panelTitle=$('lsPanelTitle'),panelBody=$('lsPanelBody'),panelClose=$('lsPanelClose');
+  const eqBody=$('lsEqBody'),eqTabs=[...document.querySelectorAll('[data-ls-tab]')],beatHost=$('lsBeatHost'),tooltip=$('lsTooltip'),printRoot=$('lsPrintRoot');
+  LS.init=function(cfg){state.cfg=cfg;const key='ls.'+cfg.simKey+'.path',dysKey='ls.'+cfg.simKey+'.dys';/* ls-params-compact-v1 */try{var _qs=new URLSearchParams(window.location.search);var _qp=_qs.get('path');if(_qp && ['kid','real','equation','derivation'].indexOf(_qp)!==-1){localStorage.setItem(key,_qp);}var _cm=document.cookie && document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);if(_cm && !_qp){var _cv=decodeURIComponent(_cm[1]);if(['kid','real','equation','derivation'].indexOf(_cv)!==-1 && !localStorage.getItem(key)){localStorage.setItem(key,_cv);}}var _qb=parseInt(_qs.get('beat')||'',10);if(!isNaN(_qb) && _qb>0){setTimeout(function(){if(window.LS && window.LS.setBeat) window.LS.setBeat(_qb-1);},80);}}catch(_){}const saved=localStorage.getItem(key);if(localStorage.getItem(dysKey)==='1'){document.body.classList.add('ls-dys');if(dysBtn)dysBtn.setAttribute('aria-pressed','true');}if(!saved){if(picker)picker.classList.add('on');state.path='real';}else state.path=saved;applyPathButtons();renderEqPanel();renderBeat();wireTooltipTerms(document.body);if(cfg.onPathChange)cfg.onPathChange(state.path);};
+  LS.setPath=function(p){state.path=p;if(state.cfg)localStorage.setItem('ls.'+state.cfg.simKey+'.path',p);applyPathButtons();renderEqPanel();renderBeat();if(state.cfg&&state.cfg.onPathChange)state.cfg.onPathChange(p);};
+  LS.getPath=function(){return state.path;};
+  function applyPathButtons(){document.querySelectorAll('[data-ls-path]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lsPath===state.path?'true':'false'));}
+  if(pathbar)pathbar.addEventListener('click',e=>{const b=e.target.closest('[data-ls-path]');if(b)LS.setPath(b.dataset.lsPath);});
+  if(picker)picker.addEventListener('click',e=>{const b=e.target.closest('[data-ls-path]');if(b){picker.classList.remove('on');LS.setPath(b.dataset.lsPath);}});
+  if(pickerDismiss)pickerDismiss.addEventListener('click',()=>{picker.classList.remove('on');LS.setPath('real');});
+  if(pickerBtn)pickerBtn.addEventListener('click',()=>picker.classList.add('on'));
+  if(dysBtn)dysBtn.addEventListener('click',()=>{document.body.classList.toggle('ls-dys');const on=document.body.classList.contains('ls-dys');dysBtn.setAttribute('aria-pressed',on?'true':'false');if(state.cfg)localStorage.setItem('ls.'+state.cfg.simKey+'.dys',on?'1':'0');});
+  function openPanel(title,body){panelTitle.textContent=title;panelBody.innerHTML=body;panel.classList.add('on');panelOv.classList.add('on');wireTooltipTerms(panelBody);}
+  function closePanel(){panel.classList.remove('on');panelOv.classList.remove('on');}
+  if(panelClose)panelClose.addEventListener('click',closePanel);
+  if(panelOv)panelOv.addEventListener('click',closePanel);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closePanel();if(picker)picker.classList.remove('on');hideTooltip();}});
+  function esc(s){return(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function tierFor(t){return(state.cfg&&state.cfg.terms&&state.cfg.terms[t])||null;}
+  function showTooltip(el){const term=el.dataset.term,entry=tierFor(term);if(!entry){tooltip.innerHTML=`<div class="ls-term-name">${esc(term)}</div><div class="ls-term-tier">No glossary entry yet.</div>`;}else{const order={kid:['kid','adult','phd'],real:['adult','kid','phd'],equation:['adult','phd','kid'],derivation:['phd','adult','kid']}[state.path]||['adult','phd','kid'];const labels={kid:'For a 5th grader',adult:'For a curious adult',phd:'For a PhD'};let html=`<div class="ls-term-name">${esc(entry.name||term)}</div>`;for(const t of order)if(entry[t])html+=`<div class="ls-term-tier"><b>${labels[t]}:</b> ${esc(entry[t])}</div>`;tooltip.innerHTML=html;}const r=el.getBoundingClientRect(),tw=320,th=140;let left=window.scrollX+r.left,top=window.scrollY+r.bottom+6;if(left+tw>window.scrollX+window.innerWidth-8)left=window.scrollX+window.innerWidth-tw-8;if(top+th>window.scrollY+window.innerHeight-8)top=window.scrollY+r.top-th-6;tooltip.style.left=Math.max(8,left)+'px';tooltip.style.top=Math.max(8,top)+'px';tooltip.classList.add('on');}
+  function hideTooltip(){if(tooltip)tooltip.classList.remove('on');}
+  function wireTooltipTerms(root){if(!root)return;root.querySelectorAll('[data-term]:not([data-ls-wired])').forEach(el=>{el.classList.add('ls-term');el.setAttribute('tabindex','0');el.setAttribute('data-ls-wired','1');el.setAttribute('aria-label','Definition of '+el.dataset.term);el.addEventListener('mouseenter',()=>showTooltip(el));el.addEventListener('mouseleave',hideTooltip);el.addEventListener('focus',()=>showTooltip(el));el.addEventListener('blur',hideTooltip);el.addEventListener('click',e=>{e.stopPropagation();showTooltip(el);});});}
+  document.addEventListener('click',e=>{if(!e.target.closest('[data-term]')&&!e.target.closest('.ls-tooltip'))hideTooltip();});
+  LS.wireTooltipTerms=wireTooltipTerms;
+  if(dockG)dockG.addEventListener('click',()=>{const terms=(state.cfg&&state.cfg.terms)||{};const rows=Object.keys(terms).sort();let html='<input class="ls-glossary-search" id="lsGSearch" placeholder="Search terms…" />';html+='<div id="lsGList">'+rows.map(k=>gRow(k,terms[k])).join('')+'</div>';openPanel('Glossary · '+rows.length+' terms',html);const input=$('lsGSearch'),list=$('lsGList');input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase();list.innerHTML=rows.filter(k=>{const e=terms[k];const hay=(k+' '+(e.name||'')+' '+(e.kid||'')+' '+(e.adult||'')+' '+(e.phd||'')).toLowerCase();return q===''||hay.includes(q);}).map(k=>gRow(k,terms[k])).join('');});});
+  function gRow(k,e){return`<div class="ls-glossary-entry"><span class="ls-glossary-sym">${esc(e.name||k)}</span><div class="ls-glossary-tier"><b>Kid:</b> ${esc(e.kid||'—')}</div><div class="ls-glossary-tier"><b>Adult:</b> ${esc(e.adult||'—')}</div><div class="ls-glossary-tier"><b>PhD:</b> ${esc(e.phd||'—')}</div></div>`;}
+  if(dockA)dockA.addEventListener('click',()=>{const an=(state.cfg&&state.cfg.analogies)||[];const html=an.map(a=>`<div class="ls-analogy"><h6><span class="ls-analogy-persona">${esc(a.persona||'')}</span>${esc(a.title||'')}</h6><div class="ls-analogy-scenario">${a.scenario||''}</div>${a.map?`<div class="ls-analogy-map"><b style="color:var(--accent);font-size:11px;display:block;margin-bottom:2px;">Variable map</b><table>${Object.entries(a.map).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(v)}</td></tr>`).join('')}</table></div>`:''}${a.exercise?`<div class="ls-analogy-ex"><b>Micro-exercise:</b> ${esc(a.exercise)}</div>`:''}</div>`).join('');openPanel('Analogy library · '+an.length+' analogies',html||'<div>No analogies defined.</div>');});
+  if(dockX)dockX.addEventListener('click',()=>{const ex=(state.cfg&&state.cfg.exercises)||[];const html=ex.map((e,i)=>`<div class="ls-exercise"><h6>${esc(e.title||'Exercise '+(i+1))}</h6><div class="ls-ex-meta">${esc(e.time||'2–5 minutes')} · ${esc(e.materials||'Household objects')}</div><div class="ls-ex-sect"><b>What you need</b><ul>${(e.need||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div class="ls-ex-sect"><b>Do this</b><ol>${(e.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div class="ls-ex-sect"><b>What you should see</b><div style="font-size:12px;color:var(--text)">${esc(e.outcome||'')}</div></div><div class="ls-ex-sect"><b>Back to the sim</b><div style="font-size:12px;color:var(--muted)">${esc(e.back||'')}</div></div><button class="ls-ex-print" data-ex-print="${i}">Print this card (half-letter)</button></div>`).join('');openPanel('Physical exercises · '+ex.length+' cards',html||'<div>No exercises defined.</div>');panelBody.addEventListener('click',e=>{const b=e.target.closest('[data-ex-print]');if(!b)return;printEx(ex[parseInt(b.dataset.exPrint,10)]);});});
+  function printEx(e){if(!e||!printRoot)return;printRoot.style.display='block';printRoot.innerHTML=`<h3 style="margin:0 0 4px;font-size:14pt;">${esc(e.title||'Exercise')}</h3><div style="font-size:10pt;margin-bottom:8px;">${esc(e.time||'')} · ${esc(e.materials||'')}</div><div style="margin-bottom:8px;"><b>What you need</b><ul style="margin:2px 0 0 18px;">${(e.need||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div><div style="margin-bottom:8px;"><b>Do this</b><ol style="margin:2px 0 0 18px;">${(e.steps||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div style="margin-bottom:8px;"><b>What you should see</b><div>${esc(e.outcome||'')}</div></div><div><b>Back to the sim</b><div>${esc(e.back||'')}</div></div>`;setTimeout(()=>{window.print();printRoot.style.display='none';},50);}
+  eqTabs.forEach(t=>t.addEventListener('click',()=>{state.eqTab=t.dataset.lsTab;renderEqPanel();}));
+  function renderEqPanel(){eqTabs.forEach(t=>t.setAttribute('aria-pressed',t.dataset.lsTab===state.eqTab?'true':'false'));const ep=(state.cfg&&state.cfg.equationPanel)||{};const body=ep[state.eqTab];if(!eqBody)return;if(!body){eqBody.innerHTML='<div style="color:var(--muted)">(no content)</div>';return;}if(typeof body==='string')eqBody.innerHTML=body;else if(body.html)eqBody.innerHTML=body.html;wireTooltipTerms(eqBody);}
+  function renderBeat(){if(!beatHost)return;const beats=(state.cfg&&state.cfg.beats)||[];if(!beats.length){beatHost.innerHTML='<div style="color:var(--muted);font-size:13px;">No beats defined.</div>';return;}state.beatIdx=Math.max(0,Math.min(beats.length-1,state.beatIdx));const b=beats[state.beatIdx];const text=(b.text&&(b.text[state.path]||b.text.adult||b.text.real||b.text.kid))||b.hero||'';beatHost.innerHTML=`<div class="ls-beat"><div class="ls-beat-body"><span class="ls-beat-head">Beat <span class="ls-beat-idx">${state.beatIdx+1} / ${beats.length}</span> · ${esc(b.hero||'')}</span><span>${text}</span></div><div class="ls-beat-ctrl"><button id="lsBeatPrev">◀</button><button class="primary" id="lsBeatDo">${esc(b.action||'Do this')}</button><button id="lsBeatNext">▶</button></div></div>`;wireTooltipTerms(beatHost);$('lsBeatPrev').addEventListener('click',()=>{state.beatIdx--;renderBeat();});$('lsBeatNext').addEventListener('click',()=>{state.beatIdx++;renderBeat();});$('lsBeatDo').addEventListener('click',()=>{if(b.do){try{b.do();}catch(_){}}});}
+  LS.renderBeat=renderBeat;LS.setBeat=function(i){state.beatIdx=i;renderBeat();};
+})();
+
+/* ---- Per-sim content: Jumping Frog ---- */
+const FROG_TERMS = {
+  'H':{name:'H',kid:'The hidden thing you\u2019re trying to name (frog vs other).',adult:'Hypothesis: the identity of the object in the box.',phd:'Categorical random variable over concept classes.'},
+  'LLR':{name:'LLR',kid:'How much each clue tips the scales toward frog.',adult:'Log-likelihood ratio per modality.',phd:'log P(y_m|H) − log P(y_m|¬H); additive in log-space.'},
+  'g(a)':{name:'g(a)',kid:'How much we trust the touch-clue depending on the action.',adult:'Tactile precision gain per action: touch 1.5, do_nothing 1.0, poke_fast 0.3.',phd:'Action-conditioned scalar on tactile LLR.'},
+  'Bayesian surprise':{name:'Bayesian surprise',kid:'How much a clue changes your mind.',adult:'KL(P(H|obs,a) ‖ P(H)); drives info-gain action selection.',phd:'E_o[KL(posterior || prior)] is the epistemic value of action a.'},
+  'modality':{name:'modality',kid:'A kind of clue: see, hear, feel, sense inside.',adult:'Sensory channel (visual, auditory, tactile, interoceptive).',phd:'Independent likelihood factor in the product / sum.'},
+  'complement':{name:'complement',kid:'A didactic shortcut that guesses how non-frogs look.',adult:'Heuristic P(obs|other) derived from P(obs|frog) for teaching.',phd:'Teaching stand-in for an independent alternative likelihood.'},
+  'posterior':{name:'posterior',kid:'Your updated guess about the hidden thing.',adult:'P(H | observations, action).',phd:'Single LLR-sum computation; exact = fromOdds by construction.'},
+  'precision gain':{name:'precision gain',kid:'How sharp the touch info is.',adult:'Multiplier on tactile LLR; action modulates sensory trust, not the observation.',phd:'Action-conditioned precision weighting on an observation channel.'},
+  'information gain':{name:'information gain',kid:'Pick the action that makes your guess change most.',adult:'Action that maximises expected Bayesian surprise.',phd:'argmax_a E_o[KL(P(H|o,a) ‖ P(H))]; epistemic value of action.'}
+};
+const FROG_ANALOGIES = [
+  {persona:'P1 · Kid',title:'Guess the animal',scenario:'Something is hiding in a box. You can see a colour through a slit, hear a sound, or feel its skin. Which clue tells you most?',map:{'H':'Which animal is inside','modality':'Which sense you use','posterior':'Your best guess','information gain':'The clue that splits maybes into definitely'},exercise:'Hide a toy in a shoebox; offer touch/smell/sound; guess.'},
+  {persona:'P2 · Pre-algebra',title:'20 questions',scenario:'The best question halves the remaining possibilities. Your next action is the one that discriminates most.',map:{'information gain':'Best question','LLR':'How much one yes/no tips it','modality':'Which question to ask'},exercise:'Play 20 questions; write down how much each question narrowed the space.'},
+  {persona:'P3 · Adult',title:'Plant ID app',scenario:'A plant-ID app votes across photo + sound + smell. Each vote is an LLR. Deciding which sense to use next is active inference: pick the one that best splits the remaining possibilities.',map:{'modality':'Camera, mic, or sniff','LLR':'Per-sense evidence','posterior':'App confidence','precision gain':'Which sense to weight higher'},exercise:'Use any ID app on an ambiguous plant; note which additional input finally tips the verdict.'},
+  {persona:'P4 · Quantitative',title:'Log-odds Bayes + action-as-precision-gain',scenario:'Posterior log-odds = prior log-odds + Σ LLR_m + (g(a)−1)·LLR_tactile. Active inference picks a maximising expected Bayesian surprise E_o[KL(P(H|o,a) ‖ P(H))].',map:{'LLR':'per-channel evidence','g(a)':'tactile precision gain','information gain':'max E_o[KL(post||prior)]'},exercise:'Derive the expected-surprise expression and check numerically against the sim\u2019s live utilities.'},
+  {persona:'P5 · PhD',title:'Factor graph + epistemic value',scenario:'The generative model is a small factor graph over H and 4 modalities; action modulates sensory precision (not the sample). Best action = max epistemic value. See Parr–Pezzulo–Friston §6 and Friston 2015 on epistemic value.',map:{'LLR':'log-factor','g(a)':'precision scalar','posterior':'single LLR-sum','Bayesian surprise':'epistemic utility'},exercise:'Sketch the factor graph; verify the gradient of the objective against the sim.'}
+];
+const FROG_EXERCISES = [
+  {title:'E1 · Mystery box',time:'3 minutes',materials:'A shoebox + a hidden object',need:['Shoebox with a small hole','A hidden object (sponge, toy, fruit)','Blindfold optional'],steps:['One person picks the object and hides it.','The other chooses one action per round: look/listen/touch.','Guess after each action.','Reveal and score.'],outcome:'The best first action is usually the one that most narrows possibilities, not the one with strongest single LLR.',back:'Load the sim; set the action precision gains and watch g(a) shape the posterior.'},
+  {title:'E2 · 4-card discriminator',time:'4 minutes',materials:'Index cards',need:['4 index cards with hypotheses on each','4 "clue" cards'],steps:['Place 4 hypothesis cards face down.','Each clue card discriminates differently.','For each clue, compute how many hypotheses it eliminates.','Pick the clue that most halves the remaining options.'],outcome:'Maximum information gain ≈ the clue that splits possibilities evenly.',back:'In the sim, click through action choices; read the utilities in the log.'},
+  {title:'E3 · Blindfold texture',time:'3 minutes',materials:'Household objects',need:['3 household items','A blindfold'],steps:['Feel each item without looking.','Rank in order of tactile distinctiveness.','Do the same with sight only.','Which sense was most informative?'],outcome:'Touch can dominate when other modalities are weak; raise g(touch) in the sim to see this numerically.',back:'Set touch gain high; see tactile LLR dominate.'}
+];
+const FROG_BEATS = [
+  {hero:'Load preset',text:{kid:'Start with a simple world where a frog hides in a box.',real:'Load the preset to get prior + modality likelihoods.',equation:'Set P(H), P(y_m|H), P(y_m|¬H).',derivation:'Generative model parameters for a 1-step categorical inference.'},action:'Load preset',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/load preset/i.test(x.textContent));if(b)b.click();}},
+  {hero:'See one clue',text:{kid:'Look at a colour through the slit.',real:'Sample a visual observation.',equation:'y_visual ~ P(y|H).',derivation:'Single draw from visual channel likelihood.'},action:'Belief step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/belief step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Add sound',text:{kid:'Also listen.',real:'Add auditory LLR to the running sum.',equation:'logit P(H|y) += LLR_audio.',derivation:'Independent modality factor.'},action:'Belief step'},
+  {hero:'Touch with precision gain',text:{kid:'Now feel the texture — this action sharpens the touch clue.',real:'Choose "touch" action; tactile LLR scaled by g(a)=1.5.',equation:'logit += g(a)·LLR_tactile.',derivation:'Action-as-precision-gain; does not change the sample.'},action:'Action step',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/action step/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Compute posterior',text:{kid:'Read the answer — how sure are you it is the frog?',real:'Single-path posterior from the LLR sum.',equation:'P(H|data) = σ(logit).',derivation:'Exact = fromOdds by construction.'},action:'Belief step'},
+  {hero:'Pick best action',text:{kid:'Pick the move that would change your mind most.',real:'Scan actions; pick argmax of expected Bayesian surprise.',equation:'a* = argmax_a E_o[KL(post||prior)].',derivation:'Epistemic value; see Friston 2015.'},action:'Full cycle',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/full cycle/i.test(x.textContent));if(b)b.click();}},
+  {hero:'Try poke_fast',text:{kid:'What if we rushed the touch? It gets worse at telling.',real:'g(poke_fast)=0.3; tactile channel down-weighted.',equation:'logit += 0.3·LLR_tactile.',derivation:'Lower gain ↔ lower information.'},action:'Action step'},
+  {hero:'Reset',text:{kid:'Start fresh to try another scenario.',real:'Reset to prior and new observation.',equation:'Reset: P(H)←prior.',derivation:'Fresh draw from the generative model.'},action:'Reset',do:()=>{const b=[...document.querySelectorAll('button')].find(x=>/^reset/i.test(x.textContent));if(b)b.click();}}
+];
+const FROG_EQ_PANEL = {
+  story:`<div class="ls-eqmath">A <span data-term="H">frog</span> might be in the box. You can see a colour, hear a sound, or feel the skin. Every clue nudges your best guess; the best <span data-term="modality">action</span> is the one that would change your mind most.</div>`,
+  picture:`<div class="ls-eqpic">
+    <div class="ls-eqrow"><span class="ls-eqbox">prior</span><span class="ls-eqarrow">+</span><span class="ls-eqbox" data-term="LLR">LLR_visual</span><span class="ls-eqarrow">+</span><span class="ls-eqbox" data-term="LLR">LLR_audio</span></div>
+    <div class="ls-eqrow"><span class="ls-eqarrow">+</span><span class="ls-eqbox" data-term="g(a)">g(a)·LLR_tactile</span><span class="ls-eqarrow">+</span><span class="ls-eqbox">LLR_intero</span></div>
+    <div class="ls-eqrow"><span class="ls-eqarrow">=</span><span class="ls-eqbox" data-term="posterior">logit P(H|data,a)</span></div>
+  </div>`,
+  equation:`<div class="ls-eqmath">logit <span data-term="posterior">P(H|y,a)</span> = logit <span data-term="H">P(H)</span> + Σ_m <span data-term="LLR">LLR_m</span> + (<span data-term="g(a)">g(a)</span> − 1) · LLR_tactile
+
+Action picker:
+a* = argmax_a E_o[KL(<span data-term="posterior">P(H|o,a)</span> ‖ P(H))]  ← <span data-term="information gain">expected Bayesian surprise</span></div>`,
+  derivation:`<div class="ls-eqmath">Hierarchical Bayesian concept inference from multi-modal observations. Each modality contributes an <span data-term="LLR">LLR</span>; log-odds are additive (conditional independence given H). Action modulates only sensory precision (g(a) on tactile), never the sample value — the circular "action sets obs" bug is fixed. Action selection maximises <span data-term="Bayesian surprise">expected Bayesian surprise</span>, i.e. the epistemic value per Friston 2015. <span data-term="complement">complementDist</span> is a didactic stand-in for an independent alternative likelihood.</div>`
+};
+LS.init({simKey:'JumpingFrog',terms:FROG_TERMS,analogies:FROG_ANALOGIES,exercises:FROG_EXERCISES,beats:FROG_BEATS,equationPanel:FROG_EQ_PANEL,onPathChange:(p)=>LS.renderBeat&&LS.renderBeat()});
+</script>
+</body>
+</html>

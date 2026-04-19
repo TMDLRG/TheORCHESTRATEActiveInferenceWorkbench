@@ -1,0 +1,49 @@
+{
+  "slug": "dirichlet-learn-a-matrix",
+  "title": "Learning the A Matrix from Observations",
+  "level": 4,
+  "tier_label": "Strategic Director",
+  "minutes": 12,
+  "tags": ["dirichlet", "learning", "a-matrix", "wave-3"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive", "plan", "act", "dirichlet_update_a"],
+    "skills_used": ["expected_free_energy", "softmax"],
+    "horizon": 4,
+    "policy_depth": 3,
+    "preference_strength": 2.0,
+    "expected_outcome": "Over repeated episodes with learning_enabled=true, the A-matrix concentration parameters accumulate and the likelihood sharpens toward the empirical distribution."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=dirichlet-learn-a-matrix",
+    "labs_url": "/labs?recipe=dirichlet-learn-a-matrix&world=corridor_turns"
+  },
+  "math": {
+    "latex": "a_{i,j}' = a_{i,j} + q(s=j) \\cdot [o=i],\\quad A_{i,j} = \\frac{a_{i,j}}{\\sum_i a_{i,j}}",
+    "symbols": {
+      "a_{i,j}": "Dirichlet pseudo-counts (concentration parameters)",
+      "A_{i,j}": "observation-model entry derived from a via normalisation"
+    }
+  },
+  "audiences": {
+    "kid": "Every time you see a clue at a spot, you add a tally. The spot's clue-count tells you what clue to expect next time.",
+    "real": "DirichletUpdateA bumps per-column concentration parameters. Over episodes, the A matrix approaches the true observation statistics.",
+    "equation": "a' = a + sum_t q(s_t) o_t^T (outer product). Normalise columns to get A. Prior concentration controls learning rate.",
+    "derivation": "Dirichlet-categorical conjugacy: observations are counts over categories, prior is Dirichlet(a), posterior is Dirichlet(a + counts). In active inference this is the structure-learning step (Friston et al. 2016)."
+  },
+  "equation_refs": ["eq-7-10"],
+  "figure_refs": [],
+  "session_refs": ["discrete-time/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Show A-matrix learning across episodes using the existing DirichletUpdateA action.",
+    "role": "Structure-learning tutor.",
+    "context": "corridor_turns, learning_enabled=true; run 5+ episodes and log the A-matrix column norms."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 7.",
+    "Friston, FitzGerald, Rigoli, Schwartenbeck, O'Doherty & Pezzulo (2016), Active inference and learning."
+  ]
+}

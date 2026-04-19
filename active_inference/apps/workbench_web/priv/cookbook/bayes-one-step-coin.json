@@ -1,0 +1,51 @@
+{
+  "slug": "bayes-one-step-coin",
+  "title": "One-Step Bayes: The Biased Coin",
+  "level": 1,
+  "tier_label": "Skeptical Supervisor",
+  "minutes": 5,
+  "tags": ["bayes", "perception", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(tiny_open_goal)",
+    "world": "tiny_open_goal",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "After one observation the agent's belief mass concentrates near the tile whose wall signature matches the obs; posterior is recognisably non-uniform."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=bayes-one-step-coin",
+    "labs_url": "/labs?recipe=bayes-one-step-coin&world=tiny_open_goal"
+  },
+  "math": {
+    "latex": "P(s \\mid o) = \\frac{P(o \\mid s) \\, P(s)}{\\sum_{s'} P(o \\mid s') \\, P(s')}",
+    "symbols": {
+      "s": "hidden state (which tile the agent is on)",
+      "o": "observation (wall signature + goal cue + wall-hit)",
+      "P(s)": "prior over states (uniform before first obs)",
+      "P(o|s)": "observation model (A matrix column)",
+      "P(s|o)": "posterior over states"
+    }
+  },
+  "audiences": {
+    "kid": "You've just peeked at a clue and now you can narrow down which room you're in. Bayes is the arithmetic that tells you how much to shift your guess.",
+    "real": "Bayesian update in one step: prior times likelihood, divided by the total. The agent observes a wall-signature and reweights tiles accordingly.",
+    "equation": "P(s|o) \\propto P(o|s) P(s). Concretely, take the column of A indexed by the observed o; multiply by the prior D; renormalise.",
+    "derivation": "Starting from the joint P(o,s) = P(o|s)P(s) and the sum rule for the marginal P(o) = sum_s P(o|s)P(s), the posterior follows by Bayes' theorem. In the POMDP bundle this reduces to a single softmax over log-likelihoods plus log-prior."
+  },
+  "equation_refs": ["eq-2-1"],
+  "figure_refs": [],
+  "session_refs": ["low-road/s1"],
+  "labs": ["bayes"],
+  "orchestrate": {
+    "objective": "Show a single Bayes update in the POMDP bundle's perceive action, producing a recognisably non-uniform posterior over tiles.",
+    "role": "Concept tutor and sanity-check for the simplest belief update.",
+    "context": "A tiny 3x3 maze where the agent has a uniform prior and updates it once on the wall-signature observation at the start tile."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 2."
+  ]
+}

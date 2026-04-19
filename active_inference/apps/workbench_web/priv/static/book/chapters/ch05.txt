@@ -1,0 +1,926 @@
+SP
+
+II
+
+εv(i+1)
+
+IV
+
+SS
+
+II
+
+εv(i)
+
+εx(i)
+
+ε(i)
+
+
+V
+
+DP
+
+µv(1)
+
+µx(1)
+
+o(i)
+
+
+VI
+
+DP
+
+µv(i)
+
+µx(i)
+
+s(i)
+
+εv(i) g (i)
+Primary thalamus Basal ganglia
+Lower cortical
+Secondary thalamus
+regions
+Spinal motor neurons
+
+s(i)
+
+g (1) A(i) .s(i–1) s(i)
+
+σ(i)
+
+G(i)
+
+Figure 5.1
+Canonical cortical microcircuits illustrating the relationship between inferential message passing and the architecture of the ce­re­bral cortex. Left: Simplified schematic
+based on a synthesis of Miller 2003; Haeusler and Maass 2007; Shipp 2007, 2016; and
+Bastos et al. 2012 (refer to t­ hese papers for a summary of the neuroanatomical observations from which this synthesis is derived). Round arrowheads indicate inhibition;
+normal arrowheads indicate excitatory connections. The neural populations divide
+coarsely into superficial pyramidal (SP), deep pyramidal (DP), spiny stellate (SS), and
+inhibitory interneurons (II). ­Middle: Message passing that underwrites hierarchical
+predictive coding. Right: Message passing needed to solve a partially observable Markov decision pro­cess (POMDP).
+
+in the dynamics at a specific timescale—­consistent with their role in the
+intrinsic (within-­column) connectivity in figure 5.1.
+Asymmetry in message passing is impor­tant, as it offers empirical predictions about the difference between ascending and descending activity.
+One of t­ hese predictions is that we might expect t­ hese messages to be communicated by neural activity at dif­fer­ent temporal frequencies. The reason for this is that the operations required to compute a prediction error
+from an expectation are nonlinear (Friston 2019b). This nonlinearity is
+due to the computation of predictions using nonlinear functions ( g) that
+tend to increase the frequency of a signal (e.g., a doubling of frequency
+on squaring a sine wave). A prediction arising from this is that ascending
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+89
+
+Superficial
+
+Ascending prediction error
+
+εv(i)
+εx(i–1)
+
+εv(i+1)
+
+εv(i+1)
+εx(i+1)
+
+εx(i)
+
+Deep
+
+IV
+
+µx(i–1)
+
+µv(i+1)
+
+µv(i)
+
+µv(i–1)
+µx(i)
+
+µx(i+1)
+
+Descending predictions
+
+Figure 5.2
+Simplified version of the predictive coding scheme shown in the ­middle of figure 5.1,
+unpacked to show the message passing between three cortical regions. Emphasis is
+on the asymmetry in message passing, with dotted lines showing ascending messages (prediction errors) and solid lines showing descending messages (predictions).
+Figure 5.1 is a finer-­grained version of this schematic, including the intermediate
+neurons in the polysynaptic connections shown h
+­ ere. In this figure, coarse-­graining
+the laminar specificity and dividing the cortex into Superficial and Deep relative to
+layer IV recovers a predictive coding scheme that ­will be familiar to many readers.
+
+messages—­originating from error units—­may be mea­sur­able in higher frequency bands than descending messages—­
+originating from expectation
+units (see figure 5.2). This is consistent with mea­sured spectral asymmetries, wherein ascending connections are typically associated with gamma
+frequencies and descending connections with alpha or beta bands (Arnal
+and Giraud 2012; Bastos, Litvak et al. 2015).
+The schematic on the right in figure 5.1 shows an interpretation of the
+message passing for a POMDP model as a cortical microcircuit. This has a
+structure similar to the predictive coding architecture, with expectations (s)
+represented in superficial and deep pyramidal cells and propagated up and
+down cortical hierarchies. In addition, error units (ε) in layer IV are in receipt
+of ascending signals. In contrast to predictive coding–­style architectures, the
+messages passed between regions are mixtures of expectations as opposed to
+errors (Friston, Rosch et al. 2017; Parr, Markovic et al. 2019). However, the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+90
+
+overall structure of minimizing an error (i.e., f­ ree energy gradient) by updating expectations is preserved. This message passing distinguishes between
+expectations conditioned on a policy (subscript π) and ­those averaged ­under
+policies. To translate from the former to the latter, we also need posterior
+­ ill return to this in section 5.4, but for now
+beliefs about policies (π). We w
+it is worth highlighting the consistency of this message passing with the
+targeting of superficial cortical layers by subcortical structures that could
+compute t­ hese beliefs.
+In figure 5.1, note the absence of a one-­to-­one mapping between the
+architecture on the left and the message passing schemes in the m
+­ iddle and
+right. For example, ­there appears to be a discrepancy between the ­middle
+and left: the descending input in the column on the left arrives at layers II
+and IV, but that in the m
+­ iddle graphic targets layer III. This highlights that
+the connections implied by message passing schemes may not manifest as
+single synapses. The descending inhibitory connection targeting layer III
+could be mediated by the combination of an excitatory projection to layer
+IV inhibitory interneurons, and the projection of ­these interneurons to layer
+III. This disynaptic pathway resolves the apparent discrepancy between the
+two architectures.
+In sections 5.3 and 5.4, we deal with the layer V neurons’ role in movement and planning, corresponding to their spinal (or brain stem) and subcortical projections, respectively. In sections 5.5 and 5.6, we deal with the ways
+neural message passing is modulated over time and then return to the relationship between the microcircuits for categorical and continuous inference.
+5.3 Motor Commands
+The schematic on the left in figure 5.1 shows that layer V of the cortex
+proj­ects to spinal pyramidal neurons and that this can be interpreted as a
+prediction (Adams, Shipp, and Friston 2013). This is unpacked in figure 5.3,
+which shows the spinal components of this cir­cuit; we see a prediction
+based on the expectations encoded by Betz cells in layer V of the primary
+motor cortex. This is subtracted from the incoming proprioceptive input to
+the dorsal horn of the spinal cord, resulting in a proprioceptive prediction
+error. This error drives muscle activity that results in its own suppression—as
+proprioceptive data change to comply with predictions. The idea of a motor
+command as a prediction is central to Active Inference, as it highlights the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+91
+
+µx(1)
+
+µv(1)
+
+Decussation
+
+Pyra
+m
+
+idal
+
+tract
+
+Betz cells
+
+Proprioceptive
+afferent
+
+g (1)
+Dorsal horn
+
+y
+
+εy
+
+Ventral horn
+
+Lower motor neuron
+Figure 5.3
+Neuroanatomy associated with Active Inference in modulating spinal motor reflexes.
+Starting from the Betz cells (upper motor neurons) in layer V of the motor cortex,
+the pyramidal tract carries predictions of proprioceptive input u
+­ nder the movement entailed by motor cortical expectations. The tract decussates (crosses over) and
+synapses—­sometimes polysynaptically—on lower motor neurons in the ventral horn
+of the spinal cord. Subtracting the predictions from proprioceptive afferent signals
+arriving at the dorsal horn of the spinal cord results in an error that says how much
+muscle contraction would be required to meet the prediction. Lower motor neurons
+then cause this muscle contraction (or relaxation), ensuring that the resulting proprioceptive data match descending predictions.
+
+duality of action and perception. The action part is the minimization of any
+discrepancy between predictions and sensory data by changing the data.
+This says that the only ­thing we should need to generate a movement is a
+prediction of the sensory consequences anticipated if that movement ­were
+to be executed. The fact that proprioceptive prediction errors can always be
+resolved by reflexes (as opposed to belief updating) offers a pos­si­ble explanation for the paucity of granular cells in layer IV of the primary motor
+cortex (Shipp, Adams, and Friston 2013).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+92
+
+An impor­tant aspect of this sort of motor control is the notion of sensory
+attenuation (Brown et al. 2013). Consider the prob­lem of initiating a new
+movement. To do this, we need to be able to predict that we are moving.
+However, ­until we are moving, the proprioceptive data to hand contradicts
+this hypothesis and could prompt its revision. Therefore, we need a way
+to preclude sensory data from updating our expectations, so that we can
+entertain the (initially false) belief that we are moving so that this belief
+can be realized through action (cf. ideomotor phenomena). The implication is that we need to be able to attend away from proprioceptive data by
+turning down their gain. Technically, this gain is given by the precision
+(inverse variance) with which t­ hese data are predicted. To attenuate this, we
+need descending motor tracts to predict not just the data but the precision
+of—or confidence placed in—­those data, decreasing this precision to initiate movement. This is known as sensory attenuation and can be thought
+of as the complement to sensory attention, equipping us with the capacity
+to ignore certain prediction errors, such as ­those generated by saccadic eye
+movements (­here sensory attenuation is known as saccadic suppression).
+Failures to attenuate are thought to be central to a range of neurological
+and psychiatric syndromes, including passivity phenomena (Pareés et al.
+2014) and—at its most extreme—­catatonic states in schizo­phre­nia and the
+failure to initiate movements in Parkinson’s disease.
+5.4 Subcortical Structures
+In addition to its projections to the spinal cord, cortical layer V targets several other structures. Among t­hese is the striatum (Shipp 2007, Wall et al.
+2013)—­a structure deep within the cerebrum comprising the caudate nucleus
+and putamen. The striatum is the input nucleus of a complex network of
+structures known as the basal ganglia. Medium spiny neurons are the functional units of the striatum, taking input from the cortex and projecting to
+other nuclei of the basal ganglia. T
+­ hese divide into two types—­those that
+express D1 dopamine receptors and t­ hose that express D2 receptors—­where
+dopamine enhances activity of the former and attenuates it for the latter.
+The former cells are the origin of the direct pathway through the basal
+ganglia, connected by a single inhibitory synapse to the output nuclei (the
+internal globus pallidus and substantia nigra pars reticulata). The D2 cells
+give rise to the indirect pathway, a slightly more complex course with two
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+93
+
+inhibitory and one excitatory synapse. The striatum inhibits the external
+globus pallidus, which itself inhibits the subthalamic nucleus (STN). The
+STN proj­ects to the basal ganglia outputs, meaning that the output nuclei
+are inhibited by the direct pathway and disinhibited by the indirect pathway. As t­ hese nuclei are themselves inhibitory, the net result of activating
+D1-­expressing striatal neurons is disinhibition of be­hav­ior, which would be
+suppressed by D2-­expressing neurons (Freeze et al. 2013).
+Given that we have associated proprioceptive predictions with the projections to the spinal cord, which messages should we associate with the
+layer V projections to the striatum? Inspection of figure 5.1 offers a pos­si­
+ble solution. Predicted outcomes (o) and the differences between preferred
+and predicted outcomes (ς ) are shown in this layer, combining to compute
+the expected ­free energy (G) of a policy. Computing the last of t­ hese in the
+striatum is consistent with the notion that the basal ganglia are involved in
+planning—­that is, evaluating alternative courses of action. Figure 5.4 shows
+one pos­si­ble mapping of the message passing for policy evaluation onto the
+anatomy of the basal ganglia.
+The key t­ hing to draw from figure 5.4 is that, as described in chapter 4,
+­ ere in the internal gloposterior probabilities over policies (π)—­shown h
+bus pallidus—­are computed on the basis of their expected f­ ree energy. This
+pattern follows the direct pathway from layer V of the cortex through the
+striatum to the basal ganglia output nuclei. However, ­there are a few additional subtleties. In the hierarchical scheme shown on the left in figure 4.4,
+we see that expectations about states at higher levels can influence beliefs
+about policies at lower levels. Figure 5.4 shows this on the left, where the
+expected observations ­under high-­level states are used to form empirical
+priors (E) that influence policy se­lection in­de­pen­dently of the expected f­ ree
+energy. We ­will return to this in chapter 7, but the main idea is that we have
+beliefs about how we act in par­tic­u­lar contexts. ­These prior expectations
+tend to bias policy evaluation when we find ourselves in the same context
+again—­much like habit formation. In this sense, the influences of E and G
+can be seen as habitual and goal-­directed drives, respectively. In reinforcement learning (Lee et al. 2014), ­these are sometimes referred to as “model-­
+free” and “model-­based” systems.1 Associating t­hese with the direct and
+indirect pathways of the basal ganglia has an in­ter­est­ing consequence: it
+implies that dopamine modulates the balance of the two. Remember that
+dopamine tends to promote the direct pathway and execution of specific
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+94
+
+policies (Moss and Bolam 2008)—­presumably ­those associated with the
+lowest expected ­free energy. In contrast, low dopamine might be expected
+to ­favor context-­sensitive priors in the indirect pathway, whose role is to
+suppress implausible policies in a given context. In a sense, striatal dopamine can be thought of as modulating the balance between inferring what
+to do and what not to do (Parr 2020).
+The above is consistent with perturbations of the dopaminergic system;
+its depletion in severe Parkinson’s disease c­ auses akinesia—­a failure to enact
+specific policies—­while exogenous dopamine agonists promote impulsive
+be­hav­iors (Frank 2005; Galea et al. 2012; Friston, Schwartenbeck et al. 2014).
+In addition, it is consistent with conceptual models of basal ganglia function. For example, Nambu (2004) suggests that the direct pathway mediates
+a fast and focused inhibition of the internal globus pallidus, followed by a
+broad and slow excitation, which c­ auses excitation and inhibition of the
+targets of the basal ganglia, respectively. This is thought to ensure a “centre-­
+surround” pattern that facilitates motor programs with a high specificity,
+which is consistent with the fast pro­cesses computing the expected f­ree
+energy facilitating action and the broader contextualization of the slower
+pathway communicating empirical priors.
+The final observation to make about figure 5.4 is that ­there are two levels
+of a cortical hierarchy (superscripted) contributing to the same basal ganglia cir­cuit. This suggests temporally slower regions in targeting of indirect
+pathway neurons, but both fast and slow influences over the direct pathway. As we ascend cortical hierarchies, neurons tend to represent slower
+dynamics. For example, we may expect frontal cortical regions to represent
+longer timescales than parietal regions. This is consistent with the anatomical distribution of cortical inputs to the basal ganglia pathways (Wall et al.
+2013). This temporal coarse graining in the indirect pathway is complemented by spatial coarseness, with the direct pathway medium spiny neurons exhibiting larger dendritic arbors (Gertler et al. 2008), enabling finer
+tuning. Therefore, the anatomy of figure 5.4 is endorsed by evidence from
+both clinical pathology (e.g., Parkinsonism) and cellular morphology.
+In addition to the basal ganglia, many other impor­tant subcortical
+structures contribute to neuronal message passing. In the next section, we
+­will discuss ­those from which neuromodulatory systems originate; we ­will
+conclude this section by briefly touching on the thalamus. We ­will not
+be able to do this highly complex structure full justice; however, we can
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+95
+
+outline some basic princi­ples. The thalamus is often divided into primary
+and secondary nuclei. Figure 5.1 shows that primary thalamic nuclei can
+play the same role as lower cortical regions, in the sense that they target
+layer IV of the cortex and receive input from layer VI deep pyramidal cells
+(Thomson 2010, Olsen et al. 2012). An example is the lateral geniculate
+nucleus in the visual system, often thought of as a relay between the eye
+and the visual cortex. Like t­ hose neurons representing prediction errors,
+this receives both sensory information from the eye and backward projections from the cortex, which could be construed as predictions. Second
+order thalamic nuclei include the mediodorsal nucleus and the pulvinar,
+which interact with frontal and posterior cortices, respectively. ­These may
+have a role in predicting second order statistics (i.e., precision and variance) of sensory or higher order inputs and have been associated with
+figure-­ground discrimination tasks (Kanai et al. 2015). Simplistically, this
+suggests that the division of the thalamus into primary and secondary
+nuclei may be a manifestation of the division into first and second order
+statistics.
+5.5 Neuromodulation and Learning
+Structural neuroanatomy is impor­tant, but it only gives us part of the picture of neural pro­cessing ­because the presence of a connection does not tell
+us much about the way it is used. As an example, consider the role of the
+substantia nigra shown in figure 5.4. The modulatory effect this has on striatal connectivity underwrites very dif­fer­ent outputs from the basal ganglia,
+depending on the amount of dopamine released. Fast modulation of synaptic efficacy of this form can be contrasted with the slower but more per­sis­tent
+changes that occur with learning. In this section, we focus on t­ hese two ways
+in which synaptic efficacy can change.
+Precision is an impor­tant concept in understanding neuromodulation
+(Feldman and Friston 2010). We touched on this in chapter 4 and in our
+discussion of sensory attenuation above, where we saw that it acts as a
+multiplicative weight on the prediction errors. More broadly, precision
+is a mea­sure of confidence in a probability distribution. The relationship
+between the two is s­ imple. If we have very precise beliefs about how data
+are generated from hidden states, then our beliefs about hidden states can
+be updated by observing data more than if we are not confident in ­those
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+96
+
+o(i+1)
+
+o(i)
+
+Cerebral cortex
+
+σ(i)
+
+Striatum
+E(i)
+
+G(i)
+
+Globus pallidus
+
+(i)
+
+(i)
+Indirect pathway
+
+Direct pathway
+STN
+
+γ(i)
+SNpc
+
+Figure 5.4
+Direct and indirect pathways of the message passing for policy se­lection associated
+with Active Inference through the basal ganglia using a POMDP generative model.
+Pathways from the ce­re­bral cortex culminate in estimation of policies. The direct
+pathway (right ) goes from cortex to striatum to internal globus pallidus. The indirect pathway (left ) goes from cortex to striatum to external globus pallidus to subthalamic nucleus (STN) to internal globus pallidus. Both pathways exist bilaterally; in
+addition, the substantia nigra pars compacta (SNpc) is shown modulating the balance between the two. (Note: This is a simplification of basal ganglia connectivity.)
+
+beliefs. When belief updates manifest as changes in neuronal firing, a more
+precise likelihood distribution manifests as an increased neural response
+to a given sensory stimulus. This is essential for cognitive functions from
+attention (Parr and Friston 2019a) to multisensory integration (Limanowski
+and Friston 2019).
+This perspective on synaptic gain control tells us something ­simple but
+impor­tant. If precision is an attribute of some distribution in a generative
+model, then ­there should be dif­fer­ent precisions associated with dif­fer­ent
+distributions. This is intuitively sensible, as we can be more or less confident in the reliability of our sensations, in how t­hings ­will dynamically
+evolve, and even in how we might act (Parr and Friston 2017b). We have
+seen the last of t­ hese in the context of dopaminergic signaling in the basal
+ganglia. The greater the associated precision, the more confident we are
+that our policies ­will minimize expected f­ ree energy.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+97
+
+If one of the roles of the dopaminergic system—­originating in the substantia nigra pars compacta and the ventral tegmental area of the midbrain—is
+to signal confidence in what to do, then do other neuromodulatory systems
+play similar roles? ­Table 5.1 summarizes the evidence associating precisions
+with neuromodulatory systems—­with the symbols sometimes used for ­these
+precisions. Specifically, the cholinergic system arising from the basal nucleus
+of Meynert appears to signal the precision of some likelihood distributions.
+The noradrenergic system, from the locus coeruleus, seems to play a role
+in signaling the precision of transitions over time. The serotonergic system
+seems less clear but may relate to the precision of prior preferences.
+Why is it useful to be able to associate t­ hese precisions with neuromodulatory systems? The answer is threefold: it lets us explain observed biology,
+form hypotheses, and develop noninvasive methods to mea­sure precision.
+We ­will highlight one example of each of t­hese. First, regarding explanations of observed biology, empirical mea­sure­ments of dopamine signals
+famously look like “reward prediction errors” (Schultz 1997)—­with animals’
+dopamine increasing on receiving unexpected fruit juice or seeing a cue
+signaling imminent fruit juice. Active Inference offers an alternative explanation of t­hese findings (Schwartenbeck, FitzGerald, Mathys, Dolan, and
+Friston 2015). Achieving a reward (or fulfilling our preferences) or encountering a cue indicative of a f­ uture reward enhances our confidence that we
+are pursuing a policy that minimizes expected f­ ree energy. This increase in
+confidence manifests as a spike in dopamine.
+Second, regarding formation of hypotheses, an example concerns the
+decrease in cholinergic signaling associated with Lewy body dementia (Parr,
+Benrimoh et al. 2018)—­a condition that leads to complex visual hallucinations. One plausible explanation for this is that accumulation of pathology in higher visual cortices prompts a mismatch between the predictions
+from ­these areas and the activity in primary visual cortices. Such a mismatch downgrades confidence in the associated likelihood distributions
+and ­causes loss of cholinergic signaling. The consequence of this loss of
+precision is a failure to update beliefs on the basis of sensory data, meaning
+perception loses the constraints afforded by sensation. This could explain
+the development of hallucinatory percepts in this condition.
+Third, regarding noninvasive mea­
+sure­
+ment of precision par­
+ameters,
+an example is the identification of computational phenotypes. ­There are
+a number of peripheral manifestations of central neurochemical activity,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+98
+
+­Table 5.1
+Putative roles of neurotransmitters in Active Inference
+Neurotransmitter
+
+Precision
+
+Evidence
+
+Acetylcholine
+
+Likelihood (ζ  )
+
+• ​Presence of presynaptic receptors on
+
+thalamocortical afferents (Sahin et al. 1992,
+Lavine et al. 1997)
+• ​Modulation of gain of visually evoked
+responses (Gil et al. 1997, Disney et al.
+2007)
+• ​Changes in effective connectivity with
+pharmacological manipulations
+(Moran et al. 2013)
+• ​Modeling of behavioral responses ­under
+pharmacological manipulation (Vossel
+et al. 2014, Marshall et al. 2016)
+Noradrenaline
+
+Transitions (ω )
+
+• ​Maintenance of per­sis­tent prefrontal
+
+(delay-­period) activity (requiring precise
+transition probabilities) depends on
+noradrenaline (Arnsten and Li 2005,
+Zhang et al. 2013)
+• ​Pupillary responses to surprising (i.e.,
+imprecise) sequences (Nassar et al. 2012,
+Lavín et al. 2013, Liao et al. 2016, Krishna­
+murthy et al. 2017, Vincent et al. 2019)
+• ​Modeling of behavioral responses ­under
+pharmacological manipulation (Marshall
+et al. 2016)
+Dopamine
+
+Policies (γ )
+
+• ​Expressed postsynaptically on striatal
+
+medium spiny neurons (Freund et al. 1984,
+Yager et al. 2015)
+• ​Computational fMRI reveals midbrain
+activity with changes in precision
+(Schwartenbeck, FitzGerald, Mathys,
+Dolan, and Friston 2015)
+• ​Modeling of behavioral responses ­under
+pharmacological manipulation (Marshall
+et al. 2016)
+Serotonin
+
+Preferences or
+interoceptive
+likelihood (χ )
+
+• ​Receptors expressed on layer V pyramidal
+
+cells (Aghajanian and Marek 1999, Lambe
+et al. 2000, Elliott et al. 2018) in medial
+prefrontal cortex
+• ​Medial prefrontal cortical regions heavi­ly
+implicated in interoceptive pro­cessing and
+autonomic regulation (Marek et al. 2013,
+Mukherjee et al. 2016)
+
+Source: Parr and Friston 2018.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+99
+
+including the relationship between spontaneous blink rate and dopamine
+(Karson 1983) and between pupillary size and noradrenaline (Koss 1986).
+Recent work exploring the latter (Vincent et al. 2019) has demonstrated a
+relationship between the transition precision expected to be inferred by an
+ideal Bayesian observer and the dynamics of pupillary constriction and dila­­
+tation. The implication is that we could probe someone’s implicit generative model (i.e., empirical prior beliefs) through peripheral mea­sure­ments
+of this sort.
+While fast changes in precision are impor­tant, this is a crude way of
+optimizing effective connectivity; it leads to an increase or decrease in the
+gain of a signal, but nothing more subtle. If we want to change the way
+the signal is interpreted, we need to rely on learning. We w
+­ ill return to this
+in detail in chapter 7. However, the basic idea is that we hold beliefs not
+just about states of the world but also about the fixed (or slowly varying)
+par­ameters that determine the dependencies between variables (Friston,
+FitzGerald et al. 2016). The substrate of ­these beliefs is the efficacy of synaptic connections between the neural populations representing time-­varying
+variables (like hidden states or outcomes). When we observe an outcome
+that we believe was generated by a given state, we can update beliefs about
+the pa­ram­e­ter connecting the two, reflecting an increase in the probability
+of them co-­occurring in the ­future. In other words, we get a strengthening of the synapses between the two populations of neurons. The result is
+Hebb’s famous edict (paraphrased): “Cells that fire together, wire together.”
+An impor­tant feature of figure 5.1 is that, in both predictive coding and
+marginal message passing schemes, the connections entering and leaving
+a cortical column relate to likelihood distributions. In contrast, transition
+probabilities and continuous dynamics depend on connections within a
+microcircuit. This suggests that learning dynamics should lead to changes
+in intrinsic connectivity, while learning observation models should modify
+extrinsic connectivity. Using techniques like dynamic causal modeling—­
+which allow for evaluation of effective connectivity mea­sures from neuroimaging data—it is pos­si­ble to put ­these hypotheses to the test (Tsvetanov
+et al. 2016, Zhou et al. 2018). This highlights the role of pro­cess theories of
+this sort: they let us go beyond abstract theorizing to form specific testable
+hypotheses.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+100
+
+5.6 Continuous and Discrete Hierarchies
+Fi­nally, it is worth highlighting the move from continuous repre­sen­ta­tions
+at low levels of a neural hierarchy to categorical variables at higher levels.
+The point is that the discrete and continuous message passing schemes we
+have considered likely coexist in the brain ­because we are able to hold beliefs
+of a categorical sort (e.g., in identifying what an object is or who a person
+is) in addition to being able to interface with continuously varying sensory
+receptors and effectors (e.g., muscle length or visual luminance contrast).
+This is reflected in neurophysiology, where some neurons are selective to
+specific stimuli and ­others vary in proportion to the intensity of a stimulus.
+An in­ter­est­ing observation is that our interface with the world around
+us is in the continuous domain, the implication of which is that the lowest
+level of any hierarchy in the brain must be continuous. Having said this, we
+saw in figure 5.4 that policy se­lection in the basal ganglia may be framed
+as a discrete pro­cess, selecting between alternative movements. This tells us
+that we can think of movements as a composition of discrete trajectories
+into purposeful action. Where the lowest level might deal with the requisite
+changes in muscle length, descending input is based on decisions about
+which movement to make. From the perspective of a generative model,
+this means associating alternative (discrete) hypotheses about the world
+with the (continuous) dynamics entailed by t­ hose hypotheses. In chapter 8,
+we ­will return to the question of how to put t­ hese together from a computational perspective. H
+­ ere, we simply note that the further we move from
+sensory receptors, the more we tend to find discretized repre­sen­ta­tions in
+neural systems. Indeed, the very existence of classical receptive fields in
+neurophysiology could be interpreted as a probabilistic repre­sen­ta­tion that
+the world is in some par­tic­u­lar regime of a perceptual state-­space—­a state-­
+space that is tiled by receptive fields and consequently partitioned into lots
+of ­little categories. Figure 5.5 brings together t­hese schemes and acts as a
+summary of the ideas set out in this chapter.
+5.7 Summary
+This chapter has sought to outline the points of connection between the
+message passing schemes implied by the generative models of chapter 4 and
+the neurobiology of inference, action, and planning. What do we gain by
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Message Passing and Neurobiology
+
+101
+
+Prediction
+
+s(3)
+
+s(3)
+ε(3)
+
+o(3)
+
+
+εv(2)
+εv(1) εx(1)
+µv(1) µx(1)
+
+σ(2)
+
+s(2)
+
+G(3)
+
+Goals
+
+E(2)
+
+(3)
+γ(3)
+
+s(2)
+
+o(2)
+
+
+Habits
+
+(3)
+
+µv(1) µx(1)
+
+ε(2)
+
+
+σ(3)
+
+s(3)
+
+E(3)
+
+s(2)
+
+
+y
+
+G(2)
+(2)
+
+(2)
+
+Planning
+
+o2
+
+Action
+
+εy
+
+γ(2)
+
+Figure 5.5
+Anatomy of inference (based on Friston, Parr, and de Vries 2017) connects schematics
+from figures 5.1–5.4, providing a summary of the ideas in this chapter. Two hierarchical loops through the cortex and basal ganglia highlight the distinction between
+habits—­
+based on input from higher levels—­
+and the more context-­
+sensitive, goal-­
+directed (explorative and exploitative) be­hav­ior resulting from expected ­free energy
+minimization. Note the influence of inferences about policies on s, implementing
+the Bayesian model averaging u
+­ nder policies referred to in the main text. This projection from basal ganglia to cortex may be mediated by intermediate structures, such as
+the thalamus. On the right, the categorical POMDP-­based messages are relayed into
+a continuous predictive-­coding network, involved in generation of action. Each categorical state is associated with an alternative prediction of continuous variables and
+contributes to a prediction error. The message in the opposite direction computes the
+posterior probability of the associated categorical outcome (o), which depends on priors based on the policy-­dependent outcome (oπ ), beliefs about the policy (π ), and the
+likelihood of the continuous trajectory that may be computed from posterior expectations (  μ ) and variances (not shown) at the continuous level. More connections could
+be included ­here; for instance, in addition to habits (E), the se­lection of goals (C from
+chapter 4) is itself likely to depend on higher hierarchical levels, leading to hierarchical
+control of motivation (see Pezzulo, Rigoli, and Friston 2018 for details).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+102
+
+relating message passing to neuronal communication? It allows us to make
+empirical predictions based on the generative model that we hypothesize
+the brain is inverting. This may take the form of an evoked response—­the
+change in potential that is mea­sur­able at the scalp on presenting the brain
+with a sensory stimulus—­whose time course ­will depend on the amount
+of belief updating induced by that stimulus. Alternatively, computational
+neuroimaging methods can be used to associate simulated inferences with
+­those brain regions exhibiting similar temporal dynamics (Schwartenbeck,
+FitzGerald, Mathys, Dolan, and Friston 2015). Making this association is
+impor­tant in understanding pathology—­and therapeutics—­for computational (i.e., neurological and psychiatric) disorders, allowing for expression
+of functional pathologies in terms of their biology.
+Fi­
+nally, it is worth acknowledging that much of the brain has been
+conspicuously absent in this chapter—­partly for reasons of space but also
+­because neuroscience is a work in pro­gress. T
+­ here are many opportunities to
+extend (or even replace) the account given in this chapter. To some degree
+we can extrapolate from what we have seen ­here. For example, parts of the
+amygdala are cytoarchitecturally equivalent to basal ganglia nuclei. Does
+this mean t­here is a class of policies evaluated by the amygdala? Could
+this structure be to autonomic policies what the basal ganglia are to t­ hose
+in the skeletomotor domain? Might other structures (like the pulvinar)
+play similar roles for other (e.g., ­mental) classes of policy? How should we
+understand cortical architectures that differ from the six-­layered structure
+in figure 5.1? The cerebellum and the hippocampal formation each exhibit
+distinct but ste­reo­typed microcircuitry (Wesson and Wilson 2011). Should
+we see ­these as anatomical rearrangements of the same Bayesian message
+passing schemes, or do they deal with dif­fer­ent aspects of a generative model
+(Pezzulo, Kemere, and van der Meer 2017; Stoianov et al. 2020)? We raise
+­these questions not to offer any answers but to highlight some of the exciting ave­nues of ­future research in theoretical neurobiology. Active Inference
+and its associated pro­cess theories offer a rigorous formal and conceptual
+framework in which to address t­ hese questions.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+II
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+6
+
+AR
+­ ecipe for Designing Active Inference Models
+
+Give me six hours to chop down a tree and I ­will spend the first four sharpening
+the axe.
+—­Abraham Lincoln
+
+6.1 Introduction
+This chapter provides a four-­step r­ecipe to construct an Active Inference
+model, discussing the most impor­tant design choices one has to make to
+realize a model and providing some guidelines for t­ hose choices. It serves as
+an introduction to the second part of the book, which ­will illustrate several
+specific computational models using Active Inference and their applications in a variety of cognitive domains.
+As Active Inference is a normative approach, it tries to explain as much as
+pos­si­ble about be­hav­ior, cognitive, and neural pro­cesses from first princi­ples.
+Consistently, the design philosophy of Active Inference is top-­down. Unlike
+many other approaches to computational neuroscience, the challenge is
+not to emulate a brain, piece by piece, but to find the generative model that
+describes the prob­lem the brain is trying to solve. Once the prob­lem is appropriately formalized in terms of a generative model, the solution to the prob­
+lem emerges ­under Active Inference—­with accompanying predictions about
+brains and minds. In other words, the generative model provides a complete
+description of a system of interest. The resulting be­hav­ior, inference, and
+neural dynamics can all be derived from a model by minimizing ­free energy.
+The generative modeling approach is used in several disciplines for the realization of cognitive models, statistical modeling, experimental data analy­sis,
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+106
+
+and machine learning (Hinton 2007b; Lee and Wagenmakers 2014; Pezzulo,
+Rigoli, and Friston 2015; Allen et al. 2019; Foster 2019). H
+­ ere, we are primarily interested in designing generative models that engender cognitive
+pro­cesses of interest. We have seen this design methodology in previous
+chapters. For example, using a generative model for predictive coding, perception was cast as an inference about the most likely cause of sensations;
+using a generative model that evolves in discrete time, planning was cast
+as an inference about the most likely course of action. Depending on the
+prob­lem of interest (e.g., planning during spatial navigation or planning
+saccades during visual search), one can adapt the form of ­these generative
+models to equip them with dif­fer­ent structures (e.g., shallow or hierarchical) and variables (e.g., beliefs about allocentric or egocentric spatial locations). Importantly, Active Inference may take on many dif­fer­ent guises
+­under dif­fer­ent assumptions about the form of the generative model being
+optimized. For example, assumptions about models that evolve in discrete
+or continuous time influence the form of the message passing (see chapter 4). This implies that the choice of a generative model corresponds to
+specific predictions about both be­hav­ior and neurobiology.
+This flexibility is useful as it allows us to use the same language to describe
+pro­cesses in multiple domains. However, it can also be confusing from a
+practical perspective, as ­there are a number of choices that must be made
+to find the appropriate level of description for the system of interest. In
+the second part of this book, we w
+­ ill try to resolve this confusion through
+a series of illustrative examples of Active Inference in silico. This chapter
+introduces a general r­ ecipe for the design of Active Inference models, highlighting some of the key design choices, distinctions, and dichotomies that
+­will appear in the numerical analy­sis of computational models described in
+subsequent chapters.
+6.2 Designing an Active Inference Model: A R
+­ ecipe in Four Steps
+Designing an Active Inference model requires four foundational steps, each
+resolving a specific design question:
+1. Which system are we modeling? The first choice to make is always the
+system of interest. This may not be as ­simple as it seems; it rests on
+the identification of the bound­aries (i.e., Markov blanket) of that system. What counts as an Active Inference agent (generative model), what
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+107
+
+counts as the external environment (generative pro­cess), and what is the
+interface (sensory data and actions) between them?
+2. What is the most appropriate form for the generative model? The first
+of the next three practical challenges is deciding ­whether it is appropriate to think of a pro­cess more in terms of categorical (discrete) inferences
+or continuous inferences, motivating the choice between discrete or
+continuous-­time implementations (or a hybrid) of Active Inference. Then
+we need to select the most appropriate hierarchical depth, motivating
+the choice between shallow versus deep models. Fi­nally, we need to consider w
+­ hether it is necessary to endow generative models with temporal
+depth and the ability to predict action-­contingent observations to support
+planning.
+3. How to set up the generative model? What are the generative model’s
+most appropriate variables and priors? Which parts are fixed and what
+must be learned? We emphasize the importance of choosing the right
+sort of variables and prior beliefs; furthermore, we emphasize a separation in timescales between the (faster) update of state variables that
+occurs during inference and the (slower) update of model par­ameters
+that occurs during learning.
+4. How to set up the generative pro­cess? What are the ele­ments of the
+generative pro­cess (and how do they differ from the generative model)?
+­These four steps (in most cases) suffice to design an Active Inference
+model. Once completed, the be­hav­ior of the system is determined by the
+standard schemes of Active Inference: the descent of the active and internal
+states on the ­free energy functional associated with the model. From a more
+practical perspective, once one has specified the generative model and generative pro­cess, one can use standard Active Inference software routines to
+obtain numerical results, as well as to perform data visualization, analy­sis,
+and fitting (e.g., model-­based data analy­sis). In what follows, we w
+­ ill review
+the four design choices in order.
+6.3 What System Are We Modeling?
+A useful first step in applying the formalism of Active Inference is to identify the bound­aries of the system of interest b
+­ ecause we are interested in
+characterizing the interaction between what is internal to a system and the
+external world via sensory receptors and effectors (e.g., muscles or glands). As
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+108
+
+discussed in chapter 3, a formal way to characterize the distinction between
+internal states of a system and external variables (and intermediate variables that mediate their interactions) is in terms of a Markov blanket (Pearl
+1988). To reiterate the argument, a Markov blanket may be subdivided into
+two sorts of variables (Friston 2013): t­ hose that mediate the influence of
+the external world on internal states of the system of interest (i.e., sensory
+states) and t­ hose that mediate the influence of internal states of the system
+of interest on the external world (i.e., active states). See figure 6.1.
+Importantly, ­there are many ways in which a boundary between internal
+and external may be defined. In most of the simulations we ­will discuss in
+the second part of this book, t­here w
+­ ill be a (Markov blanket) separation
+between an agent (roughly, a living organism) and its environment. This corresponds to the usual setup of cognitive models, where an agent implements
+cognitive pro­cesses such as perception and action se­lection on the basis of its
+internal (e.g., brain) states and is provided with sensors and effectors.
+
+GENERATIVE PROCESS
+
+GENERATIVE MODEL
+Active states
+u
+
+Internal states
+µ
+
+External states
+x
+
+Sensory states
+y
+
+Blanket states
+b = (u, y)
+Figure 6.1
+Action-­perception loop between an adaptive system (­here, the brain) and the environment, along with the Markov blanket (composed of active states and sensory
+states) that mediates their interaction. The figure implies that the adaptive system
+only affects the environment by performing actions (via active states) and that the
+environment only affects the adaptive system by producing observations (via sensory
+states). The figure exemplifies the distinction between the adaptive system’s generative model and the (external) generative pro­cess that produces its observations.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+109
+
+However, this is not the only possibility. From the perspective of neurobiology, we could draw a Markov blanket around a single neuron, around
+the brain, or around the entire body. In the first case, sensory states include
+postsynaptic receptor occupancies, and active states include the rate at
+which vesicles containing neurotransmitters fuse with the presynaptic
+membrane. The internal states of the neuron (e.g., membrane potentials,
+calcium concentrations) can then be thought of as inferring the c­ auses of its
+sensory states according to some (implicit) generative model (Palacios, Isomura et al. 2019). This setup treats the external states (that are being modeled) as including the neuronal network in which our neuron participates.
+This is very dif­fer­ent from the inference taking place when we assume our
+entire network is internal to the Markov blanket. For example, if we take a
+system whose sensory states are the photoreceptors in the ret­ina and whose
+active states are the oculomotor muscles, the inferences performed by the
+internal states are about ­things outside the brain. This speaks to the importance of scale, as the internal states of this Markov blanket include the
+internal states from the perspective of a single neuron. The latter ­internal
+states appear to make inferences about ­things within the brain when the

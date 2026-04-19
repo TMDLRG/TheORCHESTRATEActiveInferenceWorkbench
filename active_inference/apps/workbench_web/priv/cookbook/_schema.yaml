@@ -1,0 +1,55 @@
+# Cookbook Recipe Schema — AUTHORITATIVE REFERENCE for authors.
+#
+# NOTE ON FORMAT: recipes themselves ship as `*.json` (see sibling files).
+# This file is YAML only because it is human documentation; the authoritative
+# recipe files under `priv/cookbook/*.json` are JSON, matching the rest of
+# the suite's state-file convention (scripts/.suite/state/*.json,
+# librechat.agents.json, etc.) and avoiding a new YAML dependency.
+#
+# The `mix cookbook.validate` task enforces this shape on every recipe.
+#
+# slug:            required, unique, kebab-case
+# title:           required, human-readable
+# level:           required, integer 1..5 (AI-UMM tier)
+# tier_label:      required, e.g. "Quality Controller"
+# minutes:         required, rough read-+-run time
+# tags:            required, non-empty list of strings
+#
+# runtime: {
+#   agent_module:        module name, e.g. "AgentPlane.ActiveInferenceAgent"
+#   bundle:              how to build the bundle (BundleBuilder call or fixture path)
+#   world:               world id string, e.g. "tiny_open_goal"
+#   actions_used:        [string]    -- e.g. ["perceive", "plan", "act"]
+#   skills_used:         [string]    -- e.g. ["expected_free_energy", "softmax"]
+#   horizon:             integer
+#   policy_depth:        integer
+#   preference_strength: float
+#   expected_outcome:    string
+# }
+#
+# runnable: {
+#   builder_url:         string  -- e.g. "/builder/new?recipe=<slug>"
+#   labs_url:            string  -- e.g. "/labs?recipe=<slug>&world=tiny_open_goal"
+# }
+#
+# math: {
+#   latex:               string     -- LaTeX block for MathJax
+#   symbols:             {symbol: gloss, ...}
+# }
+#
+# audiences: {
+#   kid, real, equation, derivation:  all four required, each non-empty string
+# }
+#
+# equation_refs:  [string]   optional
+# figure_refs:    [string]   optional
+# session_refs:   [string]   optional
+# labs:           [string]   optional
+#
+# orchestrate: {             required
+#   objective:  string   (O / SMART)
+#   role:       string   (R / PRO)
+#   context:    string   (C / WORLD)
+# }
+#
+# credits:        [string]   required, non-empty

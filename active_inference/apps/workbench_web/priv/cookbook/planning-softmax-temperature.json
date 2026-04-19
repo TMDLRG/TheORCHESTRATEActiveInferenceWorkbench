@@ -1,0 +1,50 @@
+{
+  "slug": "planning-softmax-temperature",
+  "title": "Softmax Temperature: From Deterministic to Stochastic",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 7,
+  "tags": ["planning", "softmax", "temperature", "wave-1"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(forked_paths)",
+    "world": "forked_paths",
+    "actions_used": ["perceive", "plan", "act"],
+    "skills_used": ["softmax", "expected_free_energy"],
+    "horizon": 3,
+    "policy_depth": 2,
+    "preference_strength": 3.0,
+    "expected_outcome": "Policy posterior concentrates as temperature falls toward 0 (pi* -> argmin G); flattens toward uniform at high temperature."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=planning-softmax-temperature",
+    "labs_url": "/labs?recipe=planning-softmax-temperature&world=forked_paths"
+  },
+  "math": {
+    "latex": "q(\\pi) = \\sigma_\\beta(-G(\\pi)) = \\frac{\\exp(-\\beta \\, G(\\pi))}{\\sum_{\\pi'} \\exp(-\\beta \\, G(\\pi'))}",
+    "symbols": {
+      "sigma_beta": "softmax at inverse-temperature beta",
+      "beta": "precision (inverse temperature); larger beta -> sharper posterior",
+      "q(pi)": "policy posterior"
+    }
+  },
+  "audiences": {
+    "kid": "Turn the dial up: the agent almost always picks the best plan. Turn it down: it starts trying other plans too.",
+    "real": "Softmax temperature is the knob between greedy and stochastic planning. Precision beta scales the gap between policies before the softmax.",
+    "equation": "q(pi) = exp(-beta G) / Z. Beta -> infinity collapses on argmin G; beta -> 0 gives the uniform.",
+    "derivation": "Softmax is the max-entropy distribution given a constraint on E[-G]. Beta is the Lagrange multiplier on that constraint (Ortega & Braun 2013)."
+  },
+  "equation_refs": ["eq-4-14", "eq-b-9"],
+  "figure_refs": [],
+  "session_refs": ["high-road/s3"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Demonstrate how beta reshapes the policy posterior between deterministic and uniform.",
+    "role": "Planning-precision tutor; shows the softmax temperature effect on committed-policy probability.",
+    "context": "forked_paths with fixed preference_strength=3.0; sweep softmax beta to visualise the policy-posterior entropy."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4.",
+    "Ortega & Braun (2013), Thermodynamics as a theory of decision-making with information-processing costs."
+  ]
+}

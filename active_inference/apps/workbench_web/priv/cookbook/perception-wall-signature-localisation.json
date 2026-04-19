@@ -1,0 +1,48 @@
+{
+  "slug": "perception-wall-signature-localisation",
+  "title": "Wall Signature: Localisation by Observation",
+  "level": 2,
+  "tier_label": "Quality Controller",
+  "minutes": 7,
+  "tags": ["perception", "localisation", "wave-2"],
+  "runtime": {
+    "agent_module": "AgentPlane.ActiveInferenceAgent",
+    "bundle": "BundleBuilder.for_maze(corridor_turns)",
+    "world": "corridor_turns",
+    "actions_used": ["perceive"],
+    "skills_used": ["softmax", "shannon_entropy"],
+    "horizon": 1,
+    "policy_depth": 1,
+    "preference_strength": 0.0,
+    "expected_outcome": "Given the 4-bit wall signature observed at each tile, entropy of the posterior drops from log(N) toward ~0 within a few steps."
+  },
+  "runnable": {
+    "builder_url": "/builder/new?recipe=perception-wall-signature-localisation",
+    "labs_url": "/labs?recipe=perception-wall-signature-localisation&world=corridor_turns"
+  },
+  "math": {
+    "latex": "H[q(s|o)] = -\\sum_s q(s|o) \\ln q(s|o)",
+    "symbols": {
+      "H[q]": "Shannon entropy of the posterior",
+      "wall signature": "4-bit code (N,E,S,W) used as part of the observation"
+    }
+  },
+  "audiences": {
+    "kid": "Every wall around you is a clue. When the clues line up, you know exactly where you are.",
+    "real": "Each tile's 4-bit wall signature is usually unique in the corridor maze, so a single observation is often enough to localise.",
+    "equation": "Entropy H drops toward 0 as the posterior q(s|o) concentrates. The speed of drop is a measurable diagnostic.",
+    "derivation": "Conditional entropy H[s|o] = H[s] - I[s;o]. The mutual information between state and wall-signature observation determines how fast uncertainty collapses."
+  },
+  "equation_refs": ["eq-4-13"],
+  "figure_refs": [],
+  "session_refs": ["generative-models/s2"],
+  "labs": ["pomdp"],
+  "orchestrate": {
+    "objective": "Quantify how fast the posterior entropy collapses under wall-signature observations.",
+    "role": "Perception + information-theory tutor.",
+    "context": "corridor_turns 5x5 maze; 1 observation per tile, no action."
+  },
+  "credits": [
+    "Parr, Pezzulo & Friston (2022), Active Inference, MIT Press (CC BY-NC-ND), Ch 4."
+  ]
+}

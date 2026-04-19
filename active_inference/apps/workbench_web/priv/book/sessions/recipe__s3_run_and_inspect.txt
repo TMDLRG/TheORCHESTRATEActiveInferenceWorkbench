@@ -1,0 +1,249 @@
+way to design Active Inference agents (and their bodies) that are—as opposed
+to have—­good models of their environment. Yet all the ways to design Active
+Inference models are not mutually alternative but can be appropriately combined, depending on the prob­lem of interest.
+6.7 Simulating, Visualizing, Analyzing, and Fitting Data
+Using Active Inference
+In most practical applications, once the generative model and generative
+pro­cess have been defined, one only needs to use the standard procedure
+of Active Inference—­the descent of the active and internal states on the
+free energy functional associated with the model—to obtain numerical
+­
+results. Arguably, modelers’ goals are to simulate, visualize, analyze, and fit
+data (e.g., conduct model-­based data analy­sis). Standard routines for Active
+Inference that provide support for all ­these functions are freely available
+(https://­www​.­fil​.­ion​.­ucl​.­ac​.­uk​/­spm​/­); an annotated example of using ­these
+routines is provided in appendix C.
+Although in most cases Active Inference procedures function off-­the-­
+shelf, in some practical applications one may consider specific fine-­tunings
+or changes. For example, specifying the temporal depth of planning defines
+how many ­future states are considered during expected ­free energy computations. Setting up a ­limited temporal depth, along with other approximations to exhaustive search such as sampling (Fountas et al. 2020), may be
+useful in practical applications of Active Inference in large state-­spaces.
+Another example of adapting the standard functioning of Active Inference is the selective removal of parts of the expected ­free energy equation.
+This ablation may be useful to compare standard Active Inference (that uses
+expected ­free energy) with reduced versions, in which some parts of the
+expected ­free energy are suppressed to render them formally analogous to
+(for example) KL control or utility maximization systems (Friston, Rigoli
+et al. 2015). Furthermore, one can also augment Active Inference models
+with additional mechanisms, such as habitual learning (Friston, FitzGerald
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+A ­Recipe for Designing Active Inference Models
+
+123
+
+et al. 2016) or learning rate modulation (Sales et al. 2019), with the caveat
+that maintaining the normative character of Active Inference would require
+casting ­these additional mechanisms in terms of ­free energy minimization.
+Fi­nally, other fine-­tunings or changes to Active Inference may be useful
+to characterize disorders of inference and psychopathological conditions—­
+for example, to explore the behavioral and neuronal consequences of endowing a creature’s generative model with excessively strong (or weak) priors
+via excessively high (or low) levels of neuromodulators. We ­will provide
+some examples of Active Inference models that are relevant for psychopathology in chapter 9.
+6.8 Summary
+In this chapter, we have outlined the most impor­tant design choices that
+must be made in setting up an Active Inference model. We provided a ­recipe
+in four steps and some guidelines to address the usual challenges that model
+designers face. Of course, it is not necessary to follow the r­ ecipe in a rigid manner. Some steps can be inverted (e.g., design the generative pro­cess before the
+generative model) or combined. But in general, ­these steps are all required.
+This sets up the remainder of this book, which puts ­these ideas into practice
+through a series of illustrative examples designed to showcase the theoretical
+princi­ples presented in the first half of the book. In every­thing that follows,
+the only differences among the examples rest on the design choices we have
+highlighted ­here. Part 2 illustrates systems with dif­fer­ent bound­aries, with
+discrete or continuous dynamics at dif­fer­ent timescales, for which the choice
+of prior beliefs is fundamental in reproducing be­hav­ior across many dif­fer­ent
+domains—­but all implementing the same Active Inference.
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+7
+
+Active Inference in Discrete Time
+
+What I cannot create, I do not understand.
+—­Richard Feynman
+
+7.1 Introduction
+So far, we have discussed the princi­ples of Active Inference at a relatively
+abstract level. This chapter deals with specific examples—­and how they may
+be specified in a practical setting. We focus on models of categorical variables in discrete time. Through a series of examples, building in complexity,
+we illustrate models of perceptual pro­cessing, decision-­making, information
+seeking, learning, and hierarchical inference. ­These examples are chosen to
+highlight as simply as pos­si­ble emergent properties—­including mea­sur­able
+physiology and be­hav­ior—of Active Inference schemes.
+7.2 Perceptual Pro­cessing
+We begin by considering perceptual pro­cessing and the inversion of the
+sort of discrete-­time models introduced in chapter 4. L
+­ ater in this chapter,
+we build to a full partially observable Markov decision pro­cess (POMDP).
+However, we start with a special case of a POMDP in which we can ignore
+choices and be­hav­ior: a hidden Markov model (HMM), which may be used
+for perceptual inference of a sequential and categorical sort (see figure 7.1).
+To motivate this, we w
+­ ill appeal to a s­ imple example. Imagine listening to
+a per­for­mance of a short piece of ­music. The sequence of notes that are
+written in the score may be thought of as hidden (unobserved) states, while
+the sequence of notes we actually hear are the (observable) outcomes. If
+the performer is a professional musician, the correspondence between the
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+126
+
+sτ–1
+
+D
+
+B
+
+sτ
+
+B
+
+sτ+1
+
+D P(s1)
+
+A
+
+A
+
+A
+
+A P(oτ | sτ)
+
+oτ–1
+
+oτ
+
+oτ+1
+
+B P(sτ+1 | sτ)
+
+Figure 7.1
+This hidden Markov model uses the same notation introduced in chapter 4 to express
+a sequence of states (s) that evolve through time. At each time, they give rise to an
+observable outcome (o). The state at one time depends only on the state at the previous time (with this de­pen­dency expressed in B). The first state in the sequence has
+prior probability D. The generation of outcomes from states depends on the likelihood distribution (A). This specification of an HMM is generic, with specific generative
+models depending on specific choices for A, B, and D.
+
+hidden states and the outcomes may be very close. However, if an a
+­ mateur,
+­there may be an additional degree of stochasticity in the (likelihood) mapping from the note that should be played to that which is heard. In this scenario, it may still be pos­si­ble to infer which note should have been heard,
+given prior beliefs about the probability that each note is preceded or succeeded by another.
+The example of listening to the amateur musician may be formalized in
+the following way. First, we decide on how reliably our musician actually
+plays the note (outcome) she intends to (hidden state). We can express this
+through the A-­matrix, whose ele­ments indicate the probability of an outcome
+(rows) given a state (columns). In our toy example, we set this as follows:
+⎡ 7
+1 ⎢⎢ 1
+A=
+10 ⎢ 1
+⎢ 1
+⎣
+
+1
+7
+1
+1
+
+1
+1
+7
+1
+
+1 ⎤
+⎥
+1 ⎥
+1 ⎥
+7 ⎥⎦
+
+(7.1)
+
+This says that 70 ­percent of the time, our musician hits her intended note.
+We then specify the transition probabilities in the B-­matrix, which account
+for the probability of the next state (rows) given the current state (columns):
+⎡ 1 1 1 97 ⎤
+1 ⎢⎢ 97 1 1 1 ⎥⎥
+B=
+100 ⎢ 1 97 1 1 ⎥
+⎢ 1 1 97 1 ⎥
+⎦
+⎣
+
+(7.2)
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference in Discrete Time
+
+127
+
+This says that t­here is a 97 ­percent probability of the first note being followed by the second, the second by the third, and so on. If we know that
+the sequence always begins with the first note, we set the prior probability:
+⎡1 ⎤
+⎢0 ⎥
+D=⎢ ⎥
+⎢0 ⎥
+⎢ ⎥
+⎣⎢ 0 ⎦⎥
+
+(7.3)
+
+Together, equations 7.1–7.3 completely specify the HMM generative
+model shown in figure 7.1. In other words, they provide a description of our
+beliefs about how the ­music we hear is generated by our amateur musician.
+Using equation 4.12 and substituting in our generative model, we can simulate the dynamics of the Bayesian belief updating induced by a sequence
+of outcomes. This is shown in figure 7.2. Note the increase in confidence
+shown in the upper-­left plot as more data are accumulated over time, except
+for the third time step, where an unexpected outcome has occurred. This
+outcome could be explained in two ways. First, it may be that the intended
+note ­really was an unusual note ­under our prior beliefs in equation 7.2. This
+is made less likely by the rarity of such transitions ­under the B-­matrix of
+this model. The alternative, more plausible explanation is that the musician
+played the wrong note by m
+­ istake. As shown in the third column of the
+upper-­right plot, this is the explanation that our simulated listener s­ettles
+on. However, a nonzero probability is assigned to the possibility that it was
+the right note ­after all. The capacity to report this sort of uncertainty is a key
+feature of the Bayesian perspective afforded by Active Inference.
+The model shown ­here may be made more sophisticated in many ways,
+but perhaps the simplest relies on the factorization of the state-­space (Mirza
+et al. 2016). An example might be the pitch and dynamics of the note (with
+a similar distinction in the outcomes). In a visual inference task, the factorization may be into what and where, which has a ­great deal of currency
+in neurobiology (Ungerleider and Haxby 1994). In subsequent sections, we
+­will appeal to this sort of factorization to separate ­those states that can be
+influenced by the creature in question from ­those that cannot. For further
+reading on this sort of model (without actions in play) and the kinds of
+neuronal message passing scheme that might be used to invert it through
+minimizing f­ ree energy, see Parr, Markovic et al. (2019).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+128
+
+1
+
+sτ
+
+0.8
+0.6
+0.4
+0.2
+0
+
+1
+
+2
+
+3
+
+4
+
+5
+
+s1

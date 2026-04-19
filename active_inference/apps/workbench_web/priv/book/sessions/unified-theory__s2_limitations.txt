@@ -1,0 +1,389 @@
+terms of the expected return of being in a state (or performing an action in
+a state) following a specific policy—­that is, the sum of ­future (discounted)
+rewards obtained by starting in the state and then executing the policy.
+In contrast, in Active Inference, priors do not usually sum ­future rewards,
+nor do they discount them. Rather, something analogous to the expected
+return only emerges in Active Inference when the expected f­ree energy
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+207
+
+of a policy is calculated. The implication is that expected ­free energy is
+the closest analogue to the value function. However, even this differs in
+the sense that expected f­ree energy is a functional of beliefs about states,
+not a function of states. Having said this, it is pos­si­ble to construct priors that resemble value functions of states in RL—­for example, by caching
+expected ­free energy calculations in t­hese states (Friston, FitzGerald et al.
+2016; Maisto, Friston, and Pezzulo 2019).
+Furthermore, absorbing the notion of utility into the prior has an impor­
+tant theoretical consequence: priors play the role of goals and render the
+generative model biased—or optimistic, in the sense that the creature
+believes it w
+­ ill encounter preferred outcomes. It is this optimism that underwrites inferred plans that achieve desired outcomes in Active Inference; a
+failure of this sort of optimism may correspond to apathy (Hezemans et al.
+2020). This stands in contrast with other formal approaches to decision-­
+making, such as Bayesian decision theory, which separate the probability
+of events from their utility. Having said this, this distinction is somewhat
+superficial, as a utility function can always be rewritten as encoding a prior
+belief, consistent with the fact that be­hav­iors that maximize a utility function are a priori (and by design) more probable. From one (slightly tautological) deflationary perspective, this is the definition of utility.
+10.7.1 Bayesian Decision Theory
+Bayesian decision theory is a mathematical framework that extends the ideas
+of the Bayesian brain (discussed above) to the domains of decision-­making,
+sensorimotor control, and learning (Kording and Wolpert 2006, Shadmehr
+et al. 2010, Wolpert and Landy 2012). Bayesian decision theory describes
+decision-­making in terms of two distinct pro­cesses. The first pro­cess uses
+Bayesian computations to predict the probability of f­ uture (action-­or policy-­
+dependent) outcomes, and the second pro­cess defines the preference over
+plans, using a (fixed or learned) utility or cost function. The final decision
+(or action se­lection) pro­cess integrates both streams, thus selecting (with
+higher probability) the action plan that has the higher probability of yielding the higher reward. This stands in contrast to Active Inference, in which
+the prior distribution directly signals what is valuable for the organism (or
+what has been valuable during evolutionary history). However, parallels
+could be drawn between the two streams of Bayesian decision theory and
+the optimization of variational and expected f­ ree energy, respectively. U
+­ nder
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+208
+
+Active Inference, the minimization of variational ­free energy affords accurate (and s­ imple) beliefs about the state of the world and its likely evolution.
+The prior belief that expected ­free energy ­will be minimized through policy
+se­lection incorporates the notion of preferences.
+In some circles, ­there are concerns about the status of Bayesian decision
+theory. This follows from the complete class theorems (Wald 1947, Brown
+1981) that say for any given pair of decisions and cost functions, t­here
+exist some prior beliefs that render the decisions Bayes optimal. This means
+that ­there is an implicit duality or degeneracy when dealing separately with
+prior beliefs and cost functions. In one sense, Active Inference resolves this
+degeneracy by absorbing utility or cost functions into prior beliefs in the
+form of preferences.
+10.7.2 Reinforcement Learning
+Reinforcement learning (RL) is an approach to solving Markov decision
+prob­lems that is popu­lar in both artificial intelligence and the cognitive sciences (Sutton and Barto 1998). It focuses on how agents learn a policy (e.g.,
+pole balancing strategy) by trial and error: by trying out actions (e.g., move
+to the left) and receiving positive or negative reinforcements, depending on
+action success (e.g., pole balanced) or failure (e.g., pole fallen).
+Active Inference and RL address overlapping sets of prob­lems but differ
+in many re­spects mathematically and conceptually. As noted above, Active
+Inference dispenses with the notions of reward, value functions, and Bellman optimality that are key to reinforcement learning approaches. Furthermore, the notion of policy is used differently in the two frameworks. In RL a
+policy denotes a set of stimulus-­response mappings that need to be learned.
+In Active Inference, a policy is part of the generative model: it denotes a
+sequence of control states that need to be inferred.
+Reinforcement learning approaches are plentiful, but they can be subdivided into three main families. The first two methods try to learn good
+(state or state-­action) value functions, albeit in two dif­fer­ent ways.
+Model-­free methods of RL learn value functions directly from experience:
+they perform actions, collect rewards, update their value functions, and
+use them to update their policies. The reason they are called model-­free is
+­because they do not use a (transition) model that permits predicting ­future
+states—of the sort used in Active Inference. Instead, they implicitly appeal
+to simpler kinds of models (e.g., state-­action mappings). Learning value
+functions in model-­free RL often involves computing reward prediction
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+209
+
+errors, as in the popu­lar temporal-­difference rule. While Active Inference
+often appeals to prediction errors, ­these are state prediction errors (as ­there
+is no notion of reward in Active Inference).
+Model-­based methods of RL do not learn value functions or policies directly
+from experience. Rather, they learn a model of the task from experience,
+use the model to plan (simulate pos­si­ble experiences), and update value
+functions and policies from ­these simulated experiences. While both Active
+Inference and reinforcement learning appeal to model-­based planning, they
+use it differently. In Active Inference, planning is the computation of the
+expected ­free energy for each policy, not a means to update value functions.
+Arguably, if the expected f­ree energy is seen as a value functional, it could
+be said that inferences drawn using the generative model are used to update
+this functional—­offering a point of analogy between ­these approaches.
+The third ­family of RL approaches, policy gradient methods, tries to optimize
+policies directly, without intermediate value functions, which are central to
+both model-­based and model-­free RL. ­These methods start from pa­ram­e­
+terized policies, able to generate (for example) movement trajectories, and
+then optimizes them by changing the par­ameters to increase (decrease) the
+likelihood of a policy if the trajectory results in a high (low) positive reward.
+This approach relates policy gradient methods to Active Inference, which
+also dispenses with value functions (Millidge 2019). However, the general
+objective of policy gradients (maximizing long-­term cumulative reward) differs from Active Inference.
+Besides the formal differences between Active Inference and RL, ­there
+are also several impor­tant conceptual differences. One difference regards
+how the two approaches interpret goal-­directed and habitual be­hav­ior. In
+the animal learning lit­er­a­ture, goal-­directed choices are mediated by the
+(prospective) knowledge of the contingency between an action and its outcome (Dickinson and Balleine 1990), whereas habitual choices are not prospective and depend on simpler (e.g., stimulus-­response) mechanisms. A
+popu­lar idea in RL is that goal-­directed and habitual choices correspond to
+model-­based and model-­free RL, respectively, and that t­hese are acquired in
+parallel and continuously compete to control be­hav­ior (Daw et al. 2005).
+Active Inference instead maps goal-­directed and habitual choices to dif­
+fer­ent mechanisms. In Active Inference (in discrete time), policy se­lection is
+quintessentially model-­based and hence fits the definition of goal-­directed,
+deliberative choices. This is similar to what happens in model-­based RL, but
+with a difference. In model-­based RL, actions are selected in a prospective
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+210
+
+manner (using a model) but are controlled in a reactive way (using stimulus-­
+response policies); in Active Inference, actions can be controlled in a proactive way—­through fulfilling proprioceptive predictions (on action control,
+see section 10.6).
+In Active Inference, habits can be acquired by executing goal-­directed
+policies and then caching information about which policies are successful
+in which contexts. The cached information can be incorporated as a prior
+value of policies (Friston, FitzGerald et al. 2016; Maisto, Friston, and Pezzulo
+2019). This mechanism permits executing policies that have a high prior
+value (in a given context) without deliberation. This can be thought of simply as observing “what I do” and learning that “I am the sort of creature that
+tends to do this” over multiple exposures to a task. In contrast to model-­free
+RL, where habits are acquired in­de­pen­dently of goal-­directed policy se­lection,
+in Active Inference habits are acquired by repeatedly pursuing goal-­directed
+policies (e.g., by caching their results).
+In Active Inference, goal-­directed and habitual mechanisms can cooperate rather than only compete. This is ­because the prior belief over policies
+depends on both a habitual term (a prior value of policies) and a deliberative term (expected f­ ree energy). Hierarchical elaborations of Active Inference
+suggest that reactive and goal-­directed mechanisms could be arranged in a
+hierarchy rather than as parallel pathways (Pezzulo, Rigoli, and Friston 2015).
+Fi­nally, it is worth noting that Active Inference and RL differ subtly in
+how they conceive be­hav­ior and its ­causes. RL originates from behaviorist theory and the idea that be­hav­ior results from trial-­and-­error learning
+mediated by reinforcement. Active Inference assumes instead that be­hav­ior
+is the result of an inference. This leads us to the next point.
+10.7.3 Planning as Inference
+In the same way that it is pos­si­ble to cast perceptual prob­lems as prob­
+lems of inference, it is also pos­si­ble to cast control prob­lems in terms of
+(approximate) Bayesian inference (Todorov 2008). In keeping with this, in
+Active Inference, planning is seen as an inferential pro­cess: the inference of
+a sequence of control states of the generative model.
+This idea is closely related to other approaches, which include control-­as-­
+inference (Rawlik et al. 2013, Levine 2018), planning-­as-­inference (Attias 2003,
+Botvinick and Toussaint 2012), and risk-­sensitive and KL control ­(Kappen et al.
+2012). In t­ hese approaches, planning proceeds through inferring a posterior
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+211
+
+distribution over actions, or sequences of actions, using a dynamic generative model that encodes probabilistic contingencies between states, actions,
+and ­future (expected) states. The best action or plan can be inferred by
+conditioning the generative model on observing ­future rewards (Pezzulo
+and Rigoli 2011, Solway and Botvinick 2012) or optimal ­future trajectories
+(Levine 2018). For example, it is pos­si­ble to clamp (i.e., fix the value of ) the
+­future desired state in the model and then infer the sequence of actions that
+is more likely to fill the gap from the current state to the f­ uture desired state.
+Active Inference, planning-­as-­inference, and other related schemes use
+a prospective form of control, which starts from an explicit repre­sen­ta­tion
+of f­ uture, to-­be-­observed states rather than from a set of stimulus-­response
+rules or policies, as is more typically done in optimal control theory and
+RL. However, the specific implementations of control-­and planning-­as-­
+inference vary along at least three dimensions—­namely, what form of inference they use (e.g., sampling or variational inference), what they infer (e.g.,
+a posterior distribution over actions or action sequences), and the goal of
+inference (e.g., maximizing the marginal likelihood of an optimality condition or the probability of getting reward).
+Active Inference takes a unique perspective on each of ­these dimensions.
+First, it uses a scalable approximate scheme—­variational inference—to solve
+the challenging computational prob­
+lems that arise during planning-­
+as-­
+inference. Second, it affords model-­based planning, or the inference of a
+posterior over control states—­
+which correspond to action sequences or
+policies, not single actions.2 Third, to infer action sequences, Active Inference considers the expected f­ree energy functional, which mathematically
+subsumes other widely used planning-­as-­inference schemes (e.g., KL control) and can ­handle ambiguous situations (Friston, Rigoli et al. 2015).
+10.8 Be­hav­ior and Bounded Rationality
+The wise are instructed by reason, average minds by experience, the stupid by
+necessity and the brute by instinct.
+—­Marcus Tullius Cicero
+
+Be­hav­ior in Active Inference automatically combines multiple components:
+deliberative, perseverative, and habitual (Parr 2020). Imagine a person who
+is walking to a shop close to her h
+­ ouse. If she predicts the consequences
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+212
+
+of her actions (e.g., turning left or right), she can elaborate a good plan to
+reach the shop. This deliberative aspect of be­hav­ior is provided by expected
+­free energy, which is minimized when one acts in a way to achieve preferred
+observations (e.g., being in the shop). Note that expected ­free energy also
+includes a drive to reduce uncertainty, which can manifest in deliberation.
+For example, if the person is unsure about the best direction, she can move
+to an appropriate vantage point, from which she can find the way to the
+shop easily, even if this implies a longer route. In short, her plans acquire
+epistemic affordance.
+If the person is less able to engage in deliberation (e.g., b
+­ ecause she is distracted), she may continue walking a
+­ fter reaching the shop. This perseverative
+aspect of be­hav­ior is provided by variational ­free energy, which is minimized
+when one gathers observations that are compatible with current beliefs,
+including beliefs about the current course of actions. The sensory and proprioceptive observations that the person gathers provide evidence for “walking” and hence may determine perseveration in the absence of deliberation.
+Fi­nally, another ­thing the person could do—­when she is less able to
+deliberate—is select the usual plan to go home, without thinking about
+it. This habitual component is provided by the prior value of policies.
+This could allocate high probability to a plan to go home—­a plan she has
+observed herself enacting multiple times in the past—­
+and can become
+dominant if not superseded by deliberation.
+Note that deliberative, perseverative, and habitual aspects of be­hav­ior
+coexist and can be combined in Active Inference. In other words, one can
+infer that, in this situation, a habit is the most likely course of action. This
+is dif­fer­ent from “dual theories,” which assume that we are driven by two
+separate systems, one rational and one intuitive (Kahneman 2017). The
+mixture of deliberative, perseverative, and habitual aspects of be­
+hav­
+ior
+plausibly depends on contextual conditions, such as the amount of experience and the amount of cognitive resources one can invest in deliberative
+pro­cesses that may have a high complexity cost.3
+The impact of cognitive resources on decision-­making has been widely
+studied ­under the rubric of bounded rationality (Simon 1990). The core idea
+is that while an ideal rational agent should always fully consider the outcomes of its actions, a bounded rational agent has to balance the costs, effort,
+and timeliness of computation—­for example, the information-­processing
+costs of deliberating the best plan (Todorov 2009, Gershman et al. 2015).
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+213
+
+10.8.1 ­Free Energy Theory of Bounded Rationality
+Bounded rationality has been cast in terms of Helmholtz f­ree energy minimization: a thermodynamic construct that is strictly related to the notion of
+variational f­ ree energy as used in Active Inference; see Gottwald and Braun
+(2020) for details. The “­free energy theory of bounded rationality” formulates the trade-­offs of action se­lection with ­limited information-­processing
+capabilities in terms of two components of f­ ree energy: energy and entropy
+(see chapter 2). The former represents the expected value of a choice (an
+accuracy term), and the latter represents the costs of deliberation (a complexity term). What is costly during deliberation is decreasing the entropy (or
+complexity) of one’s beliefs before a choice to render them more precise
+(Ortega and Braun 2013, Zénon et al. 2019). Intuitively, the choice would
+be more accurate (and potentially entail higher utility) with a more precise posterior belief, but ­because increasing the precision of beliefs has a
+cost, a bounded decision-­maker has to find a compromise—by minimizing
+­free energy. The same trade-­offs emerge in Active Inference, thus producing forms of bounded rationality. The notion of bounded rationality also
+resonates with the use of a variational bound on evidence (or marginal
+likelihood) that is a definitive aspect of Active Inference. In sum, Active
+Inference provides a model of (bounded) rationality and optimality, where
+the best solution to a given prob­lem results from the compromise between
+complementary objectives: accuracy and complexity. T
+­ hese objectives stem
+from a normative (­free energy minimization) imperative that is richer than
+classical objectives (e.g., utility maximization) usually considered in economic theory.
+10.9 Valence, Emotion, and Motivation
+Consider your origins: you ­were not made to live as brutes, but to follow virtue
+and knowledge.
+—­Dante Alighieri
+
+Active Inference focuses on (negative) ­free energy as a mea­sure of fitness
+and the capacity of an organism to realize its goals. While Active Inference proposes that creatures act to minimize their ­free energy, this does
+not mean that they ever have to compute it. Generally, it is sufficient to
+deal with the gradients of the f­ree energy. By analogy, we do not need to
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+214
+
+know our altitude to find the top of a hill but can simply follow the slope
+upward. However, some have suggested creatures may model how their f­ ree
+energy changes over time. Proponents of this hypothesis suggest that it
+might permit characterizations of phenomena like valence, emotion, and
+motivation.
+On this view, it has been proposed that emotional valence, or the positive
+or negative character of emotions, can be conceived as the rate of change
+(first time-­derivative) of ­free energy over time ( Joffily and Coricelli 2013).
+Specifically, when a creature experiences an increase in its ­free energy over
+time, it may assign a negative valence to the situation; whereas when it
+experiences a decrease of its f­ ree energy over time, it may assign it a positive
+valence. Extending this line of thought to long-­term dynamics of ­free energy
+(and second time-­derivatives), it may be pos­si­ble to characterize sophisticated emotional states; for example, the relief of passing from a phase of low
+valence to a phase of high valence, or the disappointment of passing from
+a phase of high valence to a phase of low valence. Monitoring f­ree energy
+dynamics (and the emotional states they elicit) may permit adapting the
+behavioral strategies or learning rates to long-­term environmental statistics.
+It may seem a bit of a leap to assume a second generative model whose
+role is to monitor the f­ree energy of the first. However, t­here is another
+way in which t­hese ideas can be interpreted. An in­ter­est­ing formalization
+of t­hese perspectives rests on thinking about what c­ auses rapid changes
+in ­free energy. As it is a functional of beliefs, a rapid change in ­free energy
+must be due to fast belief updating. The key determinant of this speed is
+precision, which acts as a time-­constant in the dynamics of predictive coding. Interestingly, this ties in with the notion of higher derivatives of the
+­free energy, as precision is the negative of the second derivative (i.e., the
+curvature of a ­free energy landscape). However, this begs the question as to
+why we should associate precision with valence. The answer comes from
+noticing that precision is inversely related to ambiguity. The more precise
+something is, the less ambiguous its interpretation. Choosing a course of
+action that minimizes expected f­ree energy also means minimizing ambiguity and therefore maximizing precision. ­Here we see a direct association
+between high order derivatives of the ­free energy, its rate of change, and
+motivated be­hav­ior.
+Expectations about (increases or decreases of ) ­free energy may play motivational roles and incentivize be­hav­ior, too. In Active Inference, a surrogate
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
+
+215
+
+expectation about changes (increases or decreases) of ­free energy is the precision of beliefs about policies. This again highlights the importance of this
+second order statistic. For example, a highly precise belief signals that one
+has found a good policy—­that is, a policy that can be confidently expected
+to minimize ­free energy. Interestingly, the precision of (beliefs about) policies has been linked to dopamine signaling (FitzGerald, Dolan, and Friston
+2015). From this perspective, stimuli that increase the precision of beliefs
+about policies trigger dopamine bursts—­which may indicate their incentive salience (Berridge 2007). This perspective may help shed light on the
+neurophysiological mechanisms linking expectations of goal or reward
+achievement to increases in attention (Anderson et al. 2011) and motivation (Berridge and Kringelbach 2011).
+10.10 Homeostasis, Allostasis, and Interoceptive Pro­cessing
+­There is more wisdom in your body than in your deepest philosophy.
+—­Friedrich Nietz­sche
+
+A creature’s generative model is not just about the external world but also—­
+and perhaps even more importantly—­about the internal milieu. A generative model of a body’s inside (or interoceptive schema) has a dual role: to
+explain how interoceptive (bodily) sensations are generated and to ensure
+the correct regulation of physiological par­ameters (Iodice et al. 2019), like
+body temperature or sugar levels in the blood. Cybernetic theories (touched
+on in section 10.6.2) assume that a central objective of living organisms is
+maintaining homeostasis (Cannon 1929)—­ensuring that physiological par­
+ameters remain within ­viable ranges (e.g., body temperature never becomes
+too high)—­and that homeostasis can only be achieved by exerting a successful control over the environment (Ashby 1952).
+This form of homeostatic regulation can be achieved in Active Inference by specifying the ­viable ranges of physiological par­ameters as priors
+over interoceptive observations. Interestingly, homeostatic regulation can
+be achieved in multiple, nested ways. The simplest regulatory loop is the
+engagement of autonomic reflexes (e.g., vasodilation), when certain par­
+ameters are (expected to be) out of range—­for example, when body temperature is too high. This autonomic control can be constructed as interoceptive
+inference: an Active Inference pro­cess that operates on interoceptive streams
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+216
+
+rather than proprioceptive streams, as in the case of externally directed
+actions (Seth et al. 2012, Seth and Friston 2016, Allen et al. 2019). For this,
+the brain may use a generative model that predicts interoceptive and physiological streams and triggers autonomic reflexes to correct interoceptive
+prediction errors (e.g., a surprisingly high body temperature). This is analogous to the way motor reflexes are activated to correct proprioceptive prediction errors and steer externally directed actions.
+Active Inference extends beyond s­ imple autonomic loops: it can correct
+the same interoceptive prediction error (high body temperature) in increasingly sophisticated ways (Pezzulo, Rigoli, and Friston 2015). It can use
+predictive, allostatic strategies (Sterling 2012, Barrett and Simmons 2015,
+Corcoran et al. 2020) that go beyond homeostasis and preemptively control
+physiology in an allostatic fashion before interoceptive prediction errors
+are triggered—­for example, finding shade before overheating. Another
+predictive strategy entails mobilizing resources before expected excursions
+from physiological setpoints—­for example, increasing cardiac output before
+a long run in anticipation of increased oxygen demands. That requires
+modifying the priors over interoceptive observations dynamically, g
+­ oing
+beyond homeostasis (Tschantz et al. 2021). Eventually, predictive brains
+can develop sophisticated goal-­directed strategies, such as ensuring that
+one brings cold w
+­ ater to the beach, meeting the same imperative (controlling body temperature) in richer and more effective ways.
+Biological and interoceptive regulation may be crucial for affect and emotional pro­cessing (Barrett 2017). During situated interactions, the brain’s
+generative model constantly predicts not just what ­will happen next but
+also what the consequences for interoception and allostasis are. Interoceptive streams—­elicited during the perception of external objects and events—­
+imbue them with an affective dimension, which signals how good or bad they
+are for the creature’s allostasis and survival, hence making them “meaningful.” If this view is correct, then disorders of this interoceptive and allostatic
+pro­cessing may engender emotional dysregulation and vari­ous psychopathological conditions (Pezzulo 2013; Barrett et al. 2016; Maisto, Barca et al. 2019;
+Pezzulo, Maisto et al. 2019).
+­There is an emerging bedfellow for interoceptive inference—­namely, emotional inference. In this application of Active Inference, emotions are considered part of the generative model: they are just another construct or
+hypothesis that the brain employs to deploy precision in deep generative
+
+Downloaded from http://direct.mit.edu/books/oa-monograph-pdf/2246566/book_9780262369978.pdf by guest on 24 March 2026
+
+Active Inference as a Unified Theory of Sentient Be­hav­ior
