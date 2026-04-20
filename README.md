@@ -347,6 +347,12 @@ See `/guide/features` (in-app) or [`active_inference/DELIVERABLE.md`](active_inf
 
 ---
 
+## License
+
+This repository's **code** is released under the [MIT License](LICENSE) — Copyright © 2026 Michael Polzin. See [`LICENSE`](LICENSE) for the full text.
+
+The MIT license applies to the source code only. Third-party content referenced by the suite keeps its original license (see **Copyright & citation** below).
+
 ## Copyright & citation
 
 **Apply the frameworks, never reproduce book prose.** Three books inform the suite, all cited wherever referenced, never reproduced:
@@ -355,7 +361,7 @@ See `/guide/features` (in-app) or [`active_inference/DELIVERABLE.md`](active_inf
 2. **LEVEL UP — The AI Usage Maturity Model** (Polzin, 2026) — learner-level taxonomy. Commercial; gitignored. [Buy](https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ).
 3. **Active Inference — The Free Energy Principle in Mind, Brain, and Behavior** (Parr, Pezzulo, Friston; MIT Press 2022; CC BY-NC-ND 4.0) — the subject taught. Attributed derivative extracts live in `priv/book/`; the original file is gitignored.
 
-The repository code is released under the license in this repo. See [`BRANDING.md`](BRANDING.md) for canonical citation strings and [`BOOK_SOURCES.md`](BOOK_SOURCES.md) for how contributors supply the book sources locally.
+See [`BRANDING.md`](BRANDING.md) for canonical citation strings and [`BOOK_SOURCES.md`](BOOK_SOURCES.md) for how contributors supply the book sources locally.
 
 ---
 
