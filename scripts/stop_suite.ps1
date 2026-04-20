@@ -43,4 +43,17 @@ if ((Test-Path (Join-Path $libreDir "docker-compose.yml")) -and (Get-Command doc
   Write-Host "  stopped LibreChat Docker stack"
 }
 
+# Also stop the root orcworkbench container (prod Docker release), if any.
+if ((Test-Path (Join-Path $root "docker-compose.yml")) -and (Get-Command docker -ErrorAction SilentlyContinue)) {
+  Push-Location $root
+  docker compose stop 2>&1 | Out-Null
+  Pop-Location
+}
+
+# Nuclear sweep: any lingering BEAM / Elixir / epmd processes. Mnesia locks
+# held by a half-dead node will block the next boot, so we err on aggressive.
+Get-Process -Name 'beam','beam.smp','erl','erlsrv','werl','epmd' -ErrorAction SilentlyContinue |
+  Stop-Process -Force -ErrorAction SilentlyContinue
+Write-Host "  swept any lingering BEAM/erl/epmd processes"
+
 Write-Host "Suite stopped."

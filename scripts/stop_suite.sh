@@ -45,4 +45,23 @@ if [[ -f "$ROOT/Qwen3.6/librechat/docker-compose.yml" ]] && command -v docker >/
   echo "  stopped LibreChat Docker stack"
 fi
 
+# Also kill any orcworkbench Docker container from the root compose (prod release).
+if command -v docker >/dev/null 2>&1 && [[ -f "$ROOT/docker-compose.yml" ]]; then
+  ( cd "$ROOT" && docker compose stop 2>/dev/null || true )
+fi
+
+# Nuclear: sweep any lingering BEAM / Elixir / epmd processes. The port
+# kills above usually cover this, but a BEAM node that never opened :4000
+# (e.g. a stalled `mix phx.server` during boot, or an iex left open) can
+# hang around and hold Mnesia locks for the next run.
+if command -v powershell >/dev/null 2>&1; then
+  powershell -Command "Get-Process -Name 'beam','beam.smp','erl','erlsrv','werl','epmd' -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue" 2>/dev/null || true
+  echo "  swept any lingering BEAM/erl/epmd processes"
+elif command -v pkill >/dev/null 2>&1; then
+  pkill -f "beam.smp" 2>/dev/null || true
+  pkill -x "erl" 2>/dev/null || true
+  pkill -x "epmd" 2>/dev/null || true
+  echo "  swept any lingering BEAM/erl/epmd processes"
+fi
+
 echo "Suite stopped."
