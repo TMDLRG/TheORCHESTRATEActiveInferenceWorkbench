@@ -1,0 +1,14 @@
+{
+  "n": 62,
+  "kicker_main": "The Learn Arc · 62/100",
+  "foot": "LAB CLIP · BAYES CHIPS · PART 62",
+  "hook_headline": "Bayes Chips.<br><br>Sequential<br><em>evidence</em>.",
+  "hook_sub": "One by one<br>by one.",
+  "slides": [
+    {"kind":"text","label":"accumulate","kicker":"How certainty builds","headline":"Each sample<br>multiplies the<br>likelihood.","coral":"10 samples →<br>confident.<br>100 → certain.","coral_size":60},
+    {"kind":"split","label":"everyday","kicker":"Where you see this","columns":1,"cells":[{"h":"Neurons","p":"Accumulate evidence."},{"h":"Juries","p":"Weigh testimony."},{"h":"Meeting people","p":"Build confidence over time."}]},
+    {"kind":"image","label":"sequential","screenshot":"../../series-01/15-session-2-1.png","kicker":"Click Sample 10 times","headline":"Watch the<br>posterior<br><em>sharpen</em>."},
+    {"kind":"text","label":"simple","kicker":"The payoff","headline":"Sequential Bayes.","coral":"One multiplication<br>per observation.","coral_size":72,"sub":"Nothing more<br>complicated."}
+  ],
+  "durations":[4,10,10,9,7,4]
+}

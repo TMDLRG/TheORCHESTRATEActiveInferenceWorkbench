@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 5
+file 'slides/slide-02-workflow.png'
+duration 15
+file 'slides/slide-03-workflow-2.png'
+duration 14
+file 'slides/slide-04-payoff.png'
+duration 13
+file 'slides/slide-05-workbench.png'
+duration 8
+file 'slides/slide-06-cta.png'
+duration 5
+file 'slides/slide-06-cta.png'

@@ -1,0 +1,14 @@
+{
+  "n": 79,
+  "kicker_main": "The Learn Arc · 79/100",
+  "foot": "EQ 4.10 · DISCRETE F · PART 79",
+  "hook_headline": "Eq 4.10.<br><br>F at a<br>single<br>step.",
+  "hook_sub": "Abstract →<br><em>computable</em>.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"The per-step form","equation":"F_t = log A·o − log Q·Q − log prior","sub":"Three dot products.<br>One scalar.","coral":"Each term<br>interpretable."},
+    {"kind":"split","label":"breakdown","kicker":"What each term is","columns":1,"cells":[{"h":"log A · o","p":"Likelihood of<br>this observation."},{"h":"log Q · Q","p":"Entropy of<br>current belief."},{"h":"log prior","p":"Consistency with<br>predicted prior."}]},
+    {"kind":"text","label":"numpy","kicker":"What it enables","headline":"Chapter 2's F →","coral":"something you<br>can write in<br><em>NumPy</em>.","coral_size":70},
+    {"kind":"image","label":"feeds","screenshot":"../../series-01/36-session-7-2.png","kicker":"Feeds Eq 4.13","headline":"Minimise it<br>with a softmax.<br><em>Belief update</em>."}
+  ],
+  "durations":[4,11,14,9,7,4]
+}

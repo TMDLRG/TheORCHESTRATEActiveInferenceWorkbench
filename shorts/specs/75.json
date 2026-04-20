@@ -1,0 +1,14 @@
+{
+  "n": 75,
+  "kicker_main": "The Learn Arc · 75/100",
+  "foot": "LAB CLIP · FREE ENERGY FORGE · PART 75",
+  "hook_headline": "Free Energy<br>Forge.<br><br>Term <em>ablation</em>.",
+  "hook_sub": "Remove one.<br>See what breaks.",
+  "slides": [
+    {"kind":"split","label":"ablations","kicker":"Ablate and watch","columns":1,"cells":[{"h":"Remove dynamical","p":"Can't track<br>moving targets."},{"h":"Remove state prior","p":"Gets lost in<br>novel situations."},{"h":"Remove sensory","p":"Ignores observations."}]},
+    {"kind":"text","label":"method","kicker":"The scientific method","headline":"Don't just<br><em>trust</em> the terms.","coral":"Remove one.<br>Watch it fail.","coral_size":72},
+    {"kind":"image","label":"lab","screenshot":"../../series-01/41-session-8-2.png","kicker":"In the lab","headline":"Click the<br>ablation<br>toggle.","sub":"Watch the agent<br>lose a specific<br>capability."},
+    {"kind":"text","label":"understand","kicker":"The payoff","headline":"You now<br><em>understand</em><br>your model.","coral":"Not just run it.","coral_size":76}
+  ],
+  "durations":[4,11,9,10,7,4]
+}

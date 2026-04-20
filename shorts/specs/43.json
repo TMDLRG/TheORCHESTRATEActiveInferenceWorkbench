@@ -1,0 +1,14 @@
+{
+  "n": 43,
+  "kicker_main": "The Learn Arc · 43/100",
+  "foot": "ACTIVE INFERENCE · PART 43",
+  "hook_headline": "§6.3<br><br>Run and<br><em>inspect</em>.",
+  "hook_sub": "The debugging loop.",
+  "slides": [
+    {"kind":"split","label":"read1","kicker":"What to read first","columns":1,"cells":[{"h":"Belief Q","p":"Sharp where expected?<br>Flat where it shouldn't be?"},{"h":"Policy posterior","p":"Winner makes sense?<br>Suspicious? Trace G."}]},
+    {"kind":"text","label":"surprise","kicker":"The diagnostic","headline":"Surprise: the<br>observation<br>probability.","coral":"High and<br>persistent?","sub":"Your <em style=\"color:#FF6F61;font-style:normal;font-weight:900\">A</em> is wrong.<br>Go fix it."},
+    {"kind":"text","label":"loop","kicker":"The loop","headline":"Run.<br>Print.<br>Read.<br>Fix one matrix.","coral":"Run again.","coral_size":72},
+    {"kind":"image","label":"workbench","screenshot":"../../series-01/34-session-6-3.png","kicker":"One screen, one glance","headline":"Belief.<br>Policies.<br>G.<br>Surprise.","sub":"All live."}
+  ],
+  "durations":[4,14,14,11,9,5]
+}

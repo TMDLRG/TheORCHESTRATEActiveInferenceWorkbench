@@ -1,0 +1,9 @@
+{
+  "snippet": {
+    "title": "Expected Free Energy in one page | §3.1 · #28 #Shorts",
+    "description": "Part 28 of 100 — The Learn Arc. Session §3.1.\n\nThe decision rule: pick a policy, roll it forward, predict future states, predict future observations, compute F at each step, average. G = expected free energy, one scalar per policy. Softmax with precision γ picks the action. One page. One equation. One decision procedure.\n\n— — —\n🤝 Let's connect: https://www.linkedin.com/in/mpolzin/\n\n📝 Full blog series: https://dev.to/tmdlrg\n🤖 Workbench: https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n📚 Books: ORCHESTRATE Prompting (https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V) · LEVEL UP (https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ)\n\n#ActiveInference #ExpectedFreeEnergy #Shorts",
+    "tags": ["Active Inference","Expected Free Energy","EFE","Policy","Karl Friston","Shorts"],
+    "categoryId": "27"
+  },
+  "status": {"privacyStatus": "public", "selfDeclaredMadeForKids": false}
+}

@@ -1,0 +1,14 @@
+{
+  "n": 73,
+  "kicker_main": "The Learn Arc · 73/100",
+  "foot": "LAB CLIP · LAPLACE TOWER · PART 73",
+  "hook_headline": "Laplace<br>Tower.<br><br>Order<br><em>truncation</em>.",
+  "hook_sub": "How many levels<br>do you need?",
+  "slides": [
+    {"kind":"split","label":"levels","kicker":"Toggle the truncation","columns":1,"cells":[{"h":"2 levels","p":"Can't handle<br>acceleration changes."},{"h":"3 levels","p":"Smooth + accel."},{"h":"4+ levels","p":"Diminishing returns."}]},
+    {"kind":"text","label":"choice","kicker":"Principled, not arbitrary","headline":"Pick order<br>by world<br>wiggliness.","coral":"Smooth world<br>→ few levels.<br>Jerky world<br>→ more.","coral_size":52},
+    {"kind":"split","label":"tradeoff","kicker":"The trade-off","cells":[{"h":"Fewer","p":"Faster compute.<br>Less memory."},{"h":"More","p":"Robust to<br>noisy derivatives."}]},
+    {"kind":"image","label":"lab","screenshot":"../../series-01/43-session-8-4.png","kicker":"In the lab","headline":"One slider.<br>One decision.","sub":"See the lag<br><em>yourself</em>."}
+  ],
+  "durations":[4,11,11,9,7,4]
+}

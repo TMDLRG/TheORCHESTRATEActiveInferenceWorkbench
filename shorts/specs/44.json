@@ -1,0 +1,14 @@
+{
+  "n": 44,
+  "kicker_main": "The Learn Arc · 44/100",
+  "foot": "ACTIVE INFERENCE · PART 44",
+  "hook_headline": "§7.1<br><br>Discrete-time<br><em>refresher</em>.",
+  "hook_sub": "Before Ch 7<br>adds weight.",
+  "slides": [
+    {"kind":"split","label":"loop","kicker":"The basic loop","columns":1,"cells":[{"h":"Believe","p":"Q over states."},{"h":"Observe + Update","p":"Eq 4.13.<br>Belief sharpens."},{"h":"Score + Pick","p":"G per policy.<br>Softmax · γ."}]},
+    {"kind":"text","label":"test","kicker":"Test yourself","headline":"What's in Q?<br>What's in the<br>policy posterior?","coral":"What's in G?","coral_size":72,"sub":"Recite it."},
+    {"kind":"text","label":"why-refresh","kicker":"Why this session exists","headline":"Ch 7 adds<br>learning.<br>Hierarchy.<br>Depth.","coral":"Make sure the<br><em>simple loop</em><br>is solid first.","coral_size":62},
+    {"kind":"image","label":"workbench","screenshot":"../../series-01/35-session-7-1.png","kicker":"In the workbench","headline":"Run one step.<br>Print every<br><em>scalar</em>."}
+  ],
+  "durations":[4,14,12,13,8,5]
+}

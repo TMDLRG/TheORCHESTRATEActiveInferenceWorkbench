@@ -1,0 +1,14 @@
+{
+  "n": 48,
+  "kicker_main": "The Learn Arc · 48/100",
+  "foot": "ACTIVE INFERENCE · PART 48",
+  "hook_headline": "§7.5<br><br>The worked<br><em>example</em>.",
+  "hook_sub": "Chapter 7's capstone.",
+  "slides": [
+    {"kind":"split","label":"all","kicker":"Everything in one agent","columns":1,"cells":[{"h":"Two layers","p":"Hierarchical."},{"h":"Dirichlet A + B","p":"Learning live."},{"h":"Live EFE","p":"Policy scoring<br>every tick."}]},
+    {"kind":"text","label":"pulling","kicker":"Why this matters","headline":"Every concept<br>from Ch 4 – 7<br>pulls its weight.","coral":"Belief · Policy<br>Dirichlet · Hierarchy.","coral_size":62,"sub":"All running together."},
+    {"kind":"text","label":"shift","kicker":"The payoff","headline":"Framework →<br><em>runnable<br>system</em>.","sub":"If you've followed<br>this far, you have a<br>complete agent<br>in your head."},
+    {"kind":"image","label":"live","screenshot":"../../series-01/39-session-7-5.png","kicker":"In the workbench","headline":"Watch every scalar.<br>Every tick.","sub":"Fully assembled."}
+  ],
+  "durations":[4,14,12,12,8,5]
+}

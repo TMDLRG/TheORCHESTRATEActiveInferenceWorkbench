@@ -1,0 +1,14 @@
+{
+  "n": 64,
+  "kicker_main": "The Learn Arc · 64/100",
+  "foot": "LAB CLIP · JUMPING FROG · PART 64",
+  "hook_headline": "Jumping Frog.<br><br>EFE scores<br>the next <em>hop</em>.",
+  "hook_sub": "Four choices.<br>One equation.",
+  "slides": [
+    {"kind":"split","label":"four-options","kicker":"Four candidate hops","columns":1,"cells":[{"h":"Familiar","p":"Low pragmatic.<br>Low epistemic."},{"h":"Toward goal","p":"High pragmatic.<br>Low information."},{"h":"Unexplored","p":"Low pragmatic.<br>High <em>information</em>."}]},
+    {"kind":"text","label":"winner","kicker":"The winner","headline":"Balances<br>both terms.","coral":"Not pure greed.<br>Not pure explore.","coral_size":72},
+    {"kind":"image","label":"table","screenshot":"../../series-01/19-session-3-1.png","kicker":"The policy table","headline":"Per policy:<br>G · subterms<br>· softmax.","sub":"One LiveView row<br>per plan."},
+    {"kind":"text","label":"visible","kicker":"What you see","headline":"Active Inference<br>planning —<br><em>visible</em>.","coral":"Five lines.<br>One table.","coral_size":76}
+  ],
+  "durations":[4,11,8,10,7,4]
+}

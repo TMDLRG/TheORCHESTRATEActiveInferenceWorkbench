@@ -1,0 +1,14 @@
+{
+  "n": 90,
+  "kicker_main": "The Learn Arc · 90/100",
+  "foot": "MYTH-BUSTING · PART 90",
+  "hook_headline": "Myth.<br><br>\"Active Inference<br>explains<br><em>consciousness</em>.\"",
+  "hook_sub": "It doesn't.<br>And that's OK.",
+  "slides": [
+    {"kind":"text","label":"agnostic","kicker":"The truth","headline":"The framework<br>is <em>agnostic</em><br>about<br>consciousness.","coral":"It explains<br>perception, action,<br>learning.","coral_size":58},
+    {"kind":"text","label":"thermostat","kicker":"The counterexample","headline":"A thermostat<br>could, at a stretch,<br>be an AI agent.","coral":"A thermostat is<br>not conscious.","coral_size":68},
+    {"kind":"text","label":"tool-not-theory","kicker":"What it actually is","headline":"A tool<br>consciousness<br>research might<br>USE.","coral":"Not a theory<br>that SOLVES<br>consciousness.","coral_size":58},
+    {"kind":"image","label":"silent","screenshot":"../../series-01/48-session-10-2.png","kicker":"The framework","headline":"Can stay silent<br>on consciousness.","sub":"Still be<br><em>enormously useful</em>."}
+  ],
+  "durations":[5,12,11,11,7,4]
+}

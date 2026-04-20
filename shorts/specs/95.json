@@ -1,0 +1,14 @@
+{
+  "n": 95,
+  "kicker_main": "The Learn Arc · 95/100",
+  "foot": "MYTH-BUSTING · PART 95",
+  "hook_headline": "Myth.<br><br>\"Can't fit<br><em>real data</em>.\"",
+  "hook_sub": "Chapter 9.<br>For a decade.",
+  "slides": [
+    {"kind":"text","label":"proof","kicker":"It can","headline":"Fit parameters<br>of your<br>generative model<br>to real<br>trajectories.","coral":"Variational or<br>MCMC.","coral_size":62},
+    {"kind":"text","label":"gives","kicker":"What you get","headline":"Per-subject:","sub":"Precision profile.<br>Preference structure.<br>Hierarchy depth.","coral":"Then compare<br>across subjects<br>and across models."},
+    {"kind":"split","label":"published","kicker":"Published fits","columns":1,"cells":[{"h":"OCD","p":"Specific precision<br>deviations."},{"h":"Psychosis","p":"Prior vs likelihood<br>imbalance."},{"h":"ADHD","p":"Precision<br>on attention."}]},
+    {"kind":"image","label":"ongoing","screenshot":"../../series-01/44-session-9-1.png","kicker":"Not theoretical","headline":"<em>Ongoing</em><br>empirical<br>program."}
+  ],
+  "durations":[4,12,11,12,8,4]
+}

@@ -1,0 +1,14 @@
+{
+  "n": 92,
+  "kicker_main": "The Learn Arc · 92/100",
+  "foot": "MYTH-BUSTING · PART 92",
+  "hook_headline": "Myth.<br><br>\"The brain<br>minimises<br>prediction<br>error.\"",
+  "hook_sub": "Close. Not quite.",
+  "slides": [
+    {"kind":"text","label":"refine","kicker":"The precise statement","headline":"The brain<br>minimises<br>free energy.","coral":"Which <em>includes</em><br>prediction error<br>as one term.","coral_size":60},
+    {"kind":"text","label":"why-matters","kicker":"Why the distinction matters","headline":"Prediction error<br>alone →","coral":"<em>overfit</em>.","coral_size":96,"sub":"Perfect replica<br>of last obs.<br>Useless."},
+    {"kind":"text","label":"complexity","kicker":"The missing piece","headline":"Free energy has<br>the complexity<br>cost built in.","coral":"Keeps the agent<br>from overfitting.","coral_size":68},
+    {"kind":"image","label":"ask","screenshot":"../../series-01/17-session-2-3.png","kicker":"Ask the critic","headline":"\"What about<br>the <em>complexity<br>term</em>?\"","sub":"Often the missing piece."}
+  ],
+  "durations":[5,11,12,11,8,4]
+}

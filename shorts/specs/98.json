@@ -1,0 +1,14 @@
+{
+  "n": 98,
+  "kicker_main": "The Learn Arc · 98/100",
+  "foot": "THE BOOK IN FIVE MINUTES · PART 98",
+  "hook_headline": "The book<br>in five minutes.",
+  "hook_sub": "Or less.",
+  "slides": [
+    {"kind":"text","label":"citation","kicker":"Active Inference","headline":"Parr,<br>Pezzulo,<br>Friston.","sub":"MIT Press · 2022.","coral":"12 chapters.<br>~240 pages."},
+    {"kind":"split","label":"arc1","kicker":"Chapters 1–4","columns":1,"cells":[{"h":"1–3","p":"The case.<br>Unity, Bayes, F."},{"h":"4","p":"The matrices."}]},
+    {"kind":"split","label":"arc2","kicker":"Chapters 5–10","columns":1,"cells":[{"h":"5","p":"Math ↔ brain."},{"h":"6","p":"Designing agents."},{"h":"7","p":"The muscle. Ch 7."},{"h":"8","p":"Continuous time."},{"h":"9","p":"Data fitting."},{"h":"10","p":"Synthesis + limits."}]},
+    {"kind":"text","label":"route","kicker":"If you only have one sitting","headline":"Preface →<br>skim 1–3 →<br>read 4 carefully<br>→ skim 5 →<br>work 7 in detail.","coral":"~3 hours.<br>You have the <em>spine</em>.","coral_size":52}
+  ],
+  "durations":[4,11,10,14,10,4]
+}

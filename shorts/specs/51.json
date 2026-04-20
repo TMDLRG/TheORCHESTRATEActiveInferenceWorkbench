@@ -1,0 +1,14 @@
+{
+  "n": 51,
+  "kicker_main": "The Learn Arc · 51/100",
+  "foot": "ACTIVE INFERENCE · PART 51",
+  "hook_headline": "§8.3<br><br>Action on<br><em>sensors</em>.",
+  "hook_sub": "How the agent<br>moves the world.",
+  "slides": [
+    {"kind":"equation","label":"variable","kicker":"A new variable","headline":"Action enters F","equation":"F(s, s', a)","sub":"Sensory error<br>depends on<br>state AND action."},
+    {"kind":"equation","label":"gradient","kicker":"Gradient on action","equation":"∂F/∂a","sub":"How should I twitch,<br>right now,<br>to reduce error?","coral":"That's a reflex arc."},
+    {"kind":"text","label":"biology","kicker":"In your body","headline":"Hand toward<br>the glass —<br>not because a<br>planner said.","coral":"Because ∂F/∂a<br><em>said</em>.","coral_size":70},
+    {"kind":"image","label":"two-faces","screenshot":"../../series-01/42-session-8-3.png","kicker":"Same math, two scales","headline":"Low-level reflex<br>and<br>high-level plan.","sub":"Two faces of the<br><em>same gradient</em>."}
+  ],
+  "durations":[4,13,12,10,8,5]
+}

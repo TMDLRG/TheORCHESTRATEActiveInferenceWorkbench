@@ -1,0 +1,14 @@
+{
+  "n": 40,
+  "kicker_main": "The Learn Arc · 40/100",
+  "foot": "ACTIVE INFERENCE · PART 40",
+  "hook_headline": "§5.4<br><br>The <em>brain<br>map</em>.",
+  "hook_sub": "Which role<br>lives where.",
+  "slides": [
+    {"kind":"split","label":"percept","kicker":"Perception + memory","cells":[{"h":"Visual cortex","p":"Hierarchical<br>perception."},{"h":"Hippocampus","p":"Place + time<br>backbone."}]},
+    {"kind":"split","label":"plan","kicker":"Policy + action","cells":[{"h":"Prefrontal","p":"Policy scoring.<br>Which plan is<br>best <em>now</em>?"},{"h":"Basal ganglia","p":"The <em>softmax</em>.<br>Dopamine sets γ."}]},
+    {"kind":"split","label":"gain","kicker":"Global gain","cells":[{"h":"Subthalamic","p":"Global braking<br>when conflicts arise."},{"h":"Midbrain","p":"Arousal.<br>Via NE and ACh."}]},
+    {"kind":"image","label":"testable","screenshot":"../../series-01/31-session-5-4.png","kicker":"Testable","headline":"Predicts lesions.<br>Predicts<br>pharmacology.<br>Predicts<br>imaging."}
+  ],
+  "durations":[4,12,12,11,7,5]
+}

@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 5
+file 'slides/slide-02-steps.png'
+duration 22
+file 'slides/slide-03-workbench.png'
+duration 8
+file 'slides/slide-04-sharpen.png'
+duration 10
+file 'slides/slide-05-samef.png'
+duration 9
+file 'slides/slide-06-cta.png'
+duration 5.5
+file 'slides/slide-06-cta.png'

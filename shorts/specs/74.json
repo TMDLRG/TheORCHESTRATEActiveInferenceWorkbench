@@ -1,0 +1,14 @@
+{
+  "n": 74,
+  "kicker_main": "The Learn Arc · 74/100",
+  "foot": "LAB CLIP · FREE ENERGY FORGE · PART 74",
+  "hook_headline": "Free Energy<br>Forge.<br><br>Build F<br><em>piece by piece</em>.",
+  "hook_sub": "Add one term<br>at a time.",
+  "slides": [
+    {"kind":"split","label":"terms","kicker":"Add terms from a dropdown","columns":1,"cells":[{"h":"Sensory pred. err","p":"Obs vs prediction."},{"h":"Dynamical pred. err","p":"Model vs actual change."},{"h":"State prior","p":"Belief vs prior."}]},
+    {"kind":"text","label":"precision","kicker":"Layer precision on top","headline":"Weight any<br>term by π.","coral":"Watch F<br>update live.","coral_size":80},
+    {"kind":"image","label":"gradient","screenshot":"../../series-01/41-session-8-2.png","kicker":"See the gradient","headline":"Per-term<br>contribution<br>to the update.","sub":"Visible."},
+    {"kind":"text","label":"debug","kicker":"Why it matters","headline":"Add or remove<br>terms<br>systematically.","coral":"Until behaviour<br>matches intuition.","coral_size":66}
+  ],
+  "durations":[4,11,8,9,7,4]
+}

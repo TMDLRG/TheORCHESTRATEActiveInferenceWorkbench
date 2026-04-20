@@ -1,0 +1,14 @@
+{
+  "n": 34,
+  "kicker_main": "The Learn Arc · 34/100",
+  "foot": "ACTIVE INFERENCE · PART 34",
+  "hook_headline": "§4.3<br><br>Expected<br>Free Energy,<br><em>introduced</em>.",
+  "hook_sub": "The decision core.",
+  "slides": [
+    {"kind":"split","label":"two-terms","kicker":"G has two terms","cells":[{"h":"Epistemic","p":"How much<br>uncertainty will<br>I <em>reduce</em>?"},{"h":"Pragmatic","p":"Will the obs I see<br>match my<br>preferences <em>C</em>?"}]},
+    {"kind":"text","label":"C","kicker":"Where preferences live","headline":"C is the only<br>place preferences<br><em>live</em>.","sub":"Not a reward function.<br>Not a value estimator.","coral":"A distribution<br>over what you<br>want to see."},
+    {"kind":"equation","label":"rule","kicker":"The decision rule","equation":"π ∝ exp(−γ · G)","sub":"Softmax over policies.<br>Precision γ = commitment.","coral":"Lower G = better plan."},
+    {"kind":"image","label":"proof","screenshot":"../../series-01/25-session-4-3.png","kicker":"By end of Ch 4","headline":"You can derive G<br>for a simple POMDP<br>on <em>one page</em>."}
+  ],
+  "durations":[5,13,13,12,9,5]
+}

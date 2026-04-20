@@ -1,0 +1,14 @@
+{
+  "n": 70,
+  "kicker_main": "The Learn Arc · 70/100",
+  "foot": "LAB CLIP · ATLAS · PART 70",
+  "hook_headline": "Atlas.<br><br>Click a<br>brain<br>region.",
+  "hook_sub": "See its <em>math</em>.",
+  "slides": [
+    {"kind":"split","label":"clicks","kicker":"What you click, what you get","columns":1,"cells":[{"h":"Visual cortex","p":"Hierarchical perception."},{"h":"Hippocampus","p":"Place + time backbone."},{"h":"Basal ganglia","p":"Softmax + γ."}]},
+    {"kind":"text","label":"per-region","kicker":"Per region","headline":"One paragraph.<br>One math role.","sub":"One experimental<br>signature.","coral":"Links to<br>the sessions."},
+    {"kind":"image","label":"browse","screenshot":"../../series-01/31-session-5-4.png","kicker":"Browse the map","headline":"Neuroscience<br>concept →<br>math role.","sub":"Instant."},
+    {"kind":"text","label":"teach","kicker":"Good for teaching","headline":"Show students the<br>mathematical role.","coral":"Of any region.","coral_size":80}
+  ],
+  "durations":[4,12,9,8,7,4]
+}

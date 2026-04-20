@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 4
+file 'slides/slide-02-granted.png'
+duration 11
+file 'slides/slide-03-extensions.png'
+duration 12
+file 'slides/slide-04-whole.png'
+duration 10
+file 'slides/slide-05-confusion.png'
+duration 8
+file 'slides/slide-06-cta.png'
+duration 4
+file 'slides/slide-06-cta.png'

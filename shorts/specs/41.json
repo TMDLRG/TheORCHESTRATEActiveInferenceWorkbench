@@ -1,0 +1,14 @@
+{
+  "n": 41,
+  "kicker_main": "The Learn Arc · 41/100",
+  "foot": "ACTIVE INFERENCE · PART 41",
+  "hook_headline": "§6.1<br><br>The design<br>session.",
+  "hook_sub": "How to <em>carve</em><br>a new problem.",
+  "slides": [
+    {"kind":"text","label":"rule1","kicker":"Rule 1 — States","headline":"What you're<br>uncertain about<br>AND what <em>persists</em>.","sub":"Not every fluctuation<br>needs a state.","coral":"Only what you<br>track across time."},
+    {"kind":"text","label":"rule2","kicker":"Rule 2 — Observations","headline":"Concrete.<br><em>Operational</em>.","sub":"Not \"hunger.\"<br>\"Blood glucose<br>below threshold.\"","coral":"A sensor reading.<br>A pixel."},
+    {"kind":"text","label":"rule3","kicker":"Rule 3 — Actions","headline":"Atomic.","sub":"Not \"get lunch.\"<br>\"Move one step east.\"","coral":"One primitive<br>at a time."},
+    {"kind":"image","label":"joints","screenshot":"../../series-01/32-session-6-1.png","kicker":"The discipline","headline":"Operational<br>definitions.","sub":"The math only works<br>if you've carved the<br>problem at its <em>joints</em>."}
+  ],
+  "durations":[4,12,12,12,8,5]
+}

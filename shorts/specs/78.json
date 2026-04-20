@@ -1,0 +1,14 @@
+{
+  "n": 78,
+  "kicker_main": "The Learn Arc · 78/100",
+  "foot": "EQ 2.6 · SURPRISE BOUND · PART 78",
+  "hook_headline": "Eq 2.6.<br><br>The surprise<br><em>bound</em>.",
+  "hook_sub": "Most important<br>inequality in AI.",
+  "slides": [
+    {"kind":"equation","label":"ineq","kicker":"The inequality","equation":"F ≥ −log P(o)","sub":"F is always<br>at least surprise.","coral":"Tight when Q<br>= true posterior."},
+    {"kind":"text","label":"consequence","kicker":"The consequence","headline":"Minimise F →<br>bound surprise<br>from <em>above</em>.","coral":"Not always zero.<br>Always shrinking.","coral_size":64},
+    {"kind":"text","label":"gap","kicker":"The gap","headline":"Gap = KL(Q ∥ true posterior).","coral":"Close the gap →<br>F = surprise.","coral_size":72,"sub":"Until then, F is<br>a proxy you can<br>actually optimise."},
+    {"kind":"image","label":"whole","screenshot":"../../series-01/16-session-2-2.png","kicker":"The whole framework","headline":"Hangs on this<br>one line."}
+  ],
+  "durations":[4,11,11,12,7,4]
+}

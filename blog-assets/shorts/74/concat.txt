@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 4
+file 'slides/slide-02-terms.png'
+duration 11
+file 'slides/slide-03-precision.png'
+duration 8
+file 'slides/slide-04-gradient.png'
+duration 9
+file 'slides/slide-05-debug.png'
+duration 7
+file 'slides/slide-06-cta.png'
+duration 4
+file 'slides/slide-06-cta.png'

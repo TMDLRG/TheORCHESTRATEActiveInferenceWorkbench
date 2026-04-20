@@ -1,0 +1,14 @@
+{
+  "n": 55,
+  "kicker_main": "The Learn Arc · 55/100",
+  "foot": "ACTIVE INFERENCE · PART 55",
+  "hook_headline": "§9.3<br><br>Case study.",
+  "hook_sub": "End-to-end<br>empirical project.",
+  "slides": [
+    {"kind":"text","label":"task","kicker":"The task","headline":"Subjects explore<br>a grid.","sub":"Press buttons.<br>Hesitate. Learn.<br>Make mistakes.","coral":"You record their<br><em>trajectories</em>."},
+    {"kind":"split","label":"three-models","kicker":"Three candidate models","columns":1,"cells":[{"h":"Model 1","p":"Low precision on A."},{"h":"Model 2","p":"Sharp preferences C."},{"h":"Model 3","p":"Deep hierarchy."}]},
+    {"kind":"text","label":"compare","kicker":"Fit + compare","headline":"Compute F<br>for each.","coral":"Lowest F <em>wins</em>.","coral_size":80},
+    {"kind":"image","label":"psychiatry","screenshot":"../../series-01/46-session-9-3.png","kicker":"Why this matters","headline":"Computational<br>psychiatry<br>as a workflow.","sub":"Winning model tells you<br>which internal parameter<br>is <em>unusual</em>."}
+  ],
+  "durations":[4,12,12,10,10,5]
+}

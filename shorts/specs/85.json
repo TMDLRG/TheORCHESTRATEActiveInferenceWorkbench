@@ -1,0 +1,14 @@
+{
+  "n": 85,
+  "kicker_main": "The Learn Arc · 85/100",
+  "foot": "EQ B.5 · MESSAGE PASSING · PART 85",
+  "hook_headline": "Eq B.5.<br><br>The <em>primitive</em>.",
+  "hook_sub": "Message passing<br>in the general form.",
+  "slides": [
+    {"kind":"text","label":"general","kicker":"The pattern","headline":"A message<br>factor → variable<br>sums over<br>every other<br>variable the<br>factor touches.","coral":"That's it.","coral_size":80},
+    {"kind":"split","label":"special-cases","kicker":"Every AI equation is this","columns":1,"cells":[{"h":"Eq 4.13","p":"Belief update."},{"h":"Eq 4.14","p":"Policy posterior."},{"h":"Eq 7.10","p":"Dirichlet learning."}]},
+    {"kind":"text","label":"flavors","kicker":"Choose your flavor","headline":"Belief propagation.","coral":"Sum-product.<br>Max-product.","sub":"Same machinery.","coral_size":76},
+    {"kind":"image","label":"old-tool","screenshot":"../../series-01/28-session-5-1.png","kicker":"The appendix's truth","headline":"Not a new trick.","sub":"Old tool. Applied<br><em>with discipline</em>."}
+  ],
+  "durations":[4,13,12,10,8,4]
+}

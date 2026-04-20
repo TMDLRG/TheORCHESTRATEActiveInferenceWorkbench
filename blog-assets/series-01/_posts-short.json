@@ -1,0 +1,302 @@
+[
+  {
+    "n": 1,
+    "id": 3524382,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-1-why-i-built-a-beam-native-workbench-for-the-free-energy-4jge",
+    "short": "Part 1: Why I built a BEAM-native workbench for the Free Energy Principle"
+  },
+  {
+    "n": 2,
+    "id": 3524399,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-2-chapter-1-perception-action-learning-as-one-loop-4lh1",
+    "short": "Part 2: Chapter 1 — Perception, Action, Learning as One Loop"
+  },
+  {
+    "n": 3,
+    "id": 3524408,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-3-chapter-2-the-low-road-from-bayes-to-free-energy-3j11",
+    "short": "Part 3: Chapter 2 — The Low Road from Bayes to Free Energy"
+  },
+  {
+    "n": 4,
+    "id": 3524414,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-4-chapter-3-the-high-road-where-a-plan-has-two-columns-4m6d",
+    "short": "Part 4: Chapter 3 — The High Road, Where a Plan Has Two Columns of Cost"
+  },
+  {
+    "n": 5,
+    "id": 3524422,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-5-chapter-4-a-b-c-d-and-the-generative-model-you-can-5375",
+    "short": "Part 5: Chapter 4 — A, B, C, D and the Generative Model You Can Actually Build"
+  },
+  {
+    "n": 6,
+    "id": 3524513,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-6-chapter-5-the-cortex-as-a-factor-graph-neuromodulators-1nig",
+    "short": "Part 6: Chapter 5 — The Cortex as a Factor Graph, Neuromodulators as Precision Knobs"
+  },
+  {
+    "n": 7,
+    "id": 3524514,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-7-chapter-6-ship-your-first-agent-in-six-steps-4b3l",
+    "short": "Part 7: Chapter 6 — Ship Your First Agent, in Six Steps"
+  },
+  {
+    "n": 8,
+    "id": 3524517,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-8-chapter-7-pomdps-sophisticated-planning-and-dirichlet-3en2",
+    "short": "Part 8: Chapter 7 — POMDPs, Sophisticated Planning, and Dirichlet Learning"
+  },
+  {
+    "n": 9,
+    "id": 3524521,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-9-chapter-8-continuous-time-or-motion-of-the-mode-is-50i3",
+    "short": "Part 9: Chapter 8 — Continuous Time, or \"Motion of the Mode is the Mode of the Motion\""
+  },
+  {
+    "n": 10,
+    "id": 3524527,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-10-chapter-9-model-based-data-analysis-free-energy-as-1dk7",
+    "short": "Part 10: Chapter 9 — Model-Based Data Analysis, Free Energy as Log Evidence"
+  },
+  {
+    "n": 11,
+    "id": 3524534,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-11-chapter-10-unified-theory-of-sentient-behavior-where-1gll",
+    "short": "Part 11: Chapter 10 — Unified Theory of Sentient Behavior, Where the Theory Bends"
+  },
+  {
+    "n": 12,
+    "id": 3524537,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-12-session-ss11-what-active-inference-actually-claims-470n",
+    "short": "Part 12: Session §1.1 — What Active Inference Actually Claims (Session-Depth)"
+  },
+  {
+    "n": 13,
+    "id": 3524540,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-13-session-ss12-perception-and-action-one-loop-up-close-79i",
+    "short": "Part 13: Session §1.2 — Perception and Action, One Loop Up Close"
+  },
+  {
+    "n": 14,
+    "id": 3524542,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-14-session-ss13-why-one-theory-and-what-the-book-covers-1lnp",
+    "short": "Part 14: Session §1.3 — Why One Theory, and What the Book Covers"
+  },
+  {
+    "n": 15,
+    "id": 3524547,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-15-session-ss21-inference-as-bayes-rule-and-the-hole-5ffo",
+    "short": "Part 15: Session §2.1 — Inference as Bayes' Rule, and the Hole Free Energy Fills"
+  },
+  {
+    "n": 16,
+    "id": 3524553,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-16-session-ss22-why-free-energy-and-what-the-bound-buys-1hl9",
+    "short": "Part 16: Session §2.2 — Why Free Energy, and What the Bound Buys You"
+  },
+  {
+    "n": 17,
+    "id": 3524554,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-17-session-ss23-the-cost-of-being-wrong-c67",
+    "short": "Part 17: Session §2.3 — The Cost of Being Wrong"
+  },
+  {
+    "n": 18,
+    "id": 3524558,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-18-session-ss24-action-as-inference-the-flip-that-sets-1i2h",
+    "short": "Part 18: Session §2.4 — Action as Inference, the Flip That Sets Up Chapter 3"
+  },
+  {
+    "n": 19,
+    "id": 3524562,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-19-session-ss31-expected-free-energy-in-one-page-an4",
+    "short": "Part 19: Session §3.1 — Expected Free Energy in One Page"
+  },
+  {
+    "n": 20,
+    "id": 3524565,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-20-session-ss32-epistemic-vs-pragmatic-value-2lgj",
+    "short": "Part 20: Session §3.2 — Epistemic vs Pragmatic Value"
+  },
+  {
+    "n": 21,
+    "id": 3524567,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-21-session-ss33-the-softmax-policy-and-its-precision-knob-5ghk",
+    "short": "Part 21: Session §3.3 — The Softmax Policy and Its Precision Knob"
+  },
+  {
+    "n": 22,
+    "id": 3524569,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-22-session-ss34-what-actually-makes-an-agent-active-2g51",
+    "short": "Part 22: Session §3.4 — What Actually Makes an Agent \"Active\""
+  },
+  {
+    "n": 23,
+    "id": 3524572,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-23-session-ss41-states-observations-actions-the-three-1000",
+    "short": "Part 23: Session §4.1 — States, Observations, Actions — The Three Lists"
+  },
+  {
+    "n": 24,
+    "id": 3524578,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-24-session-ss42-the-a-matrix-where-perception-lives-4nkg",
+    "short": "Part 24: Session §4.2 — The A Matrix, Where Perception Lives"
+  },
+  {
+    "n": 25,
+    "id": 3524581,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-25-session-ss43-expected-free-energy-introduced-3moi",
+    "short": "Part 25: Session §4.3 — Expected Free Energy, Introduced Concretely"
+  },
+  {
+    "n": 26,
+    "id": 3524600,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-26-session-ss44-the-mdp-world-where-the-abcd-stack-2cml",
+    "short": "Part 26: Session §4.4 — The MDP World, Where the A/B/C/D Stack Meets Reality"
+  },
+  {
+    "n": 27,
+    "id": 3524601,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-27-session-ss45-practice-or-how-you-actually-ship-one-4p1h",
+    "short": "Part 27: Session §4.5 — Practice, or How You Actually Ship One"
+  },
+  {
+    "n": 28,
+    "id": 3524603,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-28-session-ss51-the-cortex-as-a-factor-graph-1b2n",
+    "short": "Part 28: Session §5.1 — The Cortex as a Factor Graph"
+  },
+  {
+    "n": 29,
+    "id": 3524607,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-29-session-ss52-predictive-coding-where-the-gradient-46na",
+    "short": "Part 29: Session §5.2 — Predictive Coding, Where the Gradient Lives"
+  },
+  {
+    "n": 30,
+    "id": 3524611,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-30-session-ss53-neuromodulation-the-precision-knobs-1mff",
+    "short": "Part 30: Session §5.3 — Neuromodulation, the Precision Knobs"
+  },
+  {
+    "n": 31,
+    "id": 3524613,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-31-session-ss54-the-brain-map-2c2l",
+    "short": "Part 31: Session §5.4 — The Brain Map"
+  },
+  {
+    "n": 32,
+    "id": 3524615,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-32-session-ss61-states-observations-actions-the-design-1c01",
+    "short": "Part 32: Session §6.1 — States, Observations, Actions (the Design Recipe)"
+  },
+  {
+    "n": 33,
+    "id": 3524616,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-33-session-ss62-a-b-c-d-filling-the-four-matrices-4doa",
+    "short": "Part 33: Session §6.2 — A, B, C, D — Filling the Four Matrices"
+  },
+  {
+    "n": 34,
+    "id": 3524618,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-34-session-ss63-run-and-inspect-the-closing-workflow-56kh",
+    "short": "Part 34: Session §6.3 — Run and Inspect, the Closing Workflow"
+  },
+  {
+    "n": 35,
+    "id": 3524622,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-35-session-ss71-discrete-time-refresher-1n0",
+    "short": "Part 35: Session §7.1 — Discrete-time refresher"
+  },
+  {
+    "n": 36,
+    "id": 3524630,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-36-session-ss72-message-passing-and-eq-413-in-depth-5b6o",
+    "short": "Part 36: Session §7.2 — Message passing and Eq 4.13 in depth"
+  },
+  {
+    "n": 37,
+    "id": 3524633,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-37-session-ss73-learning-a-and-b-2llh",
+    "short": "Part 37: Session §7.3 — Learning A and B"
+  },
+  {
+    "n": 38,
+    "id": 3524638,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-38-session-ss74-hierarchical-active-inference-op0",
+    "short": "Part 38: Session §7.4 — Hierarchical active inference"
+  },
+  {
+    "n": 39,
+    "id": 3524640,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-39-session-ss75-worked-example-the-chapter-7-capstone-2mj7",
+    "short": "Part 39: Session §7.5 — Worked example (the Chapter 7 capstone)"
+  },
+  {
+    "n": 40,
+    "id": 3524641,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-40-session-ss81-generalized-coordinates-5c53",
+    "short": "Part 40: Session §8.1 — Generalized coordinates"
+  },
+  {
+    "n": 41,
+    "id": 3524642,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-41-session-ss82-eq-419-the-quadratic-free-energy-44j",
+    "short": "Part 41: Session §8.2 — Eq 4.19, the quadratic free energy"
+  },
+  {
+    "n": 42,
+    "id": 3524643,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-42-session-ss83-action-on-sensors-1d32",
+    "short": "Part 42: Session §8.3 — Action on sensors"
+  },
+  {
+    "n": 43,
+    "id": 3524645,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-43-session-ss84-continuous-play-4bk1",
+    "short": "Part 43: Session §8.4 — Continuous play"
+  },
+  {
+    "n": 44,
+    "id": 3524648,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-44-session-ss91-fit-to-data-68c",
+    "short": "Part 44: Session §9.1 — Fit to data"
+  },
+  {
+    "n": 45,
+    "id": 3524650,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-45-session-ss92-comparing-models-h59",
+    "short": "Part 45: Session §9.2 — Comparing models"
+  },
+  {
+    "n": 46,
+    "id": 3524656,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-46-session-ss93-case-study-1f0i",
+    "short": "Part 46: Session §9.3 — Case study"
+  },
+  {
+    "n": 47,
+    "id": 3524657,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-47-session-ss101-perception-action-learning-4934",
+    "short": "Part 47: Session §10.1 — Perception, action, learning"
+  },
+  {
+    "n": 48,
+    "id": 3524658,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-48-session-ss102-limitations-1gh8",
+    "short": "Part 48: Session §10.2 — Limitations"
+  },
+  {
+    "n": 49,
+    "id": 3524661,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-49-session-ss103-where-next-2cf4",
+    "short": "Part 49: Session §10.3 — Where next"
+  },
+  {
+    "n": 50,
+    "id": 3524666,
+    "url": "https://dev.to/tmdlrg/active-inference-the-learn-arc-part-50-series-capstone-4ha3",
+    "short": "Part 50: Series capstone"
+  }
+]

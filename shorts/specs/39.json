@@ -1,0 +1,14 @@
+{
+  "n": 39,
+  "kicker_main": "The Learn Arc · 39/100",
+  "foot": "ACTIVE INFERENCE · PART 39",
+  "hook_headline": "§5.3<br><br>Neuromodulation.",
+  "hook_sub": "The <em>precision</em> knobs.",
+  "slides": [
+    {"kind":"split","label":"pair1","kicker":"Two of the four","cells":[{"h":"Dopamine","p":"Precision of<br>reward-related<br>prediction errors."},{"h":"Acetylcholine","p":"Precision of<br>bottom-up<br>sensory evidence."}]},
+    {"kind":"split","label":"pair2","kicker":"Two more","cells":[{"h":"Noradrenaline","p":"Precision, <em>globally</em>.<br>The arousal dial."},{"h":"Serotonin","p":"Longer-horizon<br>confidence.<br>Slower timescale."}]},
+    {"kind":"text","label":"what-they-are","kicker":"What they really are","headline":"Not mysterious<br>transmitters.","coral":"The concrete<br>implementation of<br><em>γ</em> — precision.","coral_size":68},
+    {"kind":"image","label":"map","screenshot":"../../series-01/30-session-5-3.png","kicker":"Across hierarchies","headline":"Different γ<br>per layer.<br>Per modality.","sub":"Different chemical."}
+  ],
+  "durations":[4,13,13,12,7,5]
+}

@@ -1,0 +1,14 @@
+{
+  "n": 68,
+  "kicker_main": "The Learn Arc · 68/100",
+  "foot": "LAB CLIP · ANATOMY STUDIO · PART 68",
+  "hook_headline": "Anatomy<br>Studio.<br><br>EFE<br><em>decomposed</em>.",
+  "hook_sub": "One policy.<br>Unpacked.",
+  "slides": [
+    {"kind":"split","label":"subterms","kicker":"What Anatomy shows","columns":1,"cells":[{"h":"Risk terms","p":"State + observation."},{"h":"Ambiguity terms","p":"State + observation."},{"h":"Info gain","p":"States + parameters."}]},
+    {"kind":"text","label":"debug","kicker":"What it buys you","headline":"Trace <em>why</em><br>this policy got<br>this score.","coral":"Large term?<br>Does it make sense?","coral_size":56},
+    {"kind":"split","label":"questions","kicker":"Debugging questions","cells":[{"h":"Over-prioritising?","p":"Check C."},{"h":"Under-counting ambiguity?","p":"Check horizon."}]},
+    {"kind":"image","label":"dash","screenshot":"../../series-01/22-session-3-4.png","kicker":"The turn","headline":"G from a<br>black box.","sub":"Into a <em>dashboard</em>."}
+  ],
+  "durations":[4,11,10,10,8,4]
+}

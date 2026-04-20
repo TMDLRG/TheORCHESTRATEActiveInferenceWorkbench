@@ -1,0 +1,14 @@
+{
+  "n": 65,
+  "kicker_main": "The Learn Arc · 65/100",
+  "foot": "LAB CLIP · POMDP MACHINE · PART 65",
+  "hook_headline": "PoMDP<br>Machine.<br><br>Beat 1.",
+  "hook_sub": "A, B, C, D<br>from scratch.",
+  "slides": [
+    {"kind":"split","label":"setup","kicker":"Step 1 — define","columns":1,"cells":[{"h":"States","p":"What's hidden?"},{"h":"Observations","p":"What's seen?"},{"h":"Actions","p":"What can you do?"}]},
+    {"kind":"split","label":"fill","kicker":"Step 2 — fill","cells":[{"h":"A + B","p":"Likelihood +<br>transitions."},{"h":"C + D","p":"Preferences +<br>initial prior."}]},
+    {"kind":"image","label":"editor","screenshot":"../../series-01/23-session-4-1.png","kicker":"In the workbench","headline":"Every cell<br>editable.","sub":"Every row<br>normalise-able."},
+    {"kind":"text","label":"ready","kicker":"End of beat 1","headline":"Fully specified.<br>Not yet running.","coral":"Ready to <em>run</em>.","coral_size":80}
+  ],
+  "durations":[4,12,10,10,7,4]
+}

@@ -1,0 +1,14 @@
+{
+  "n": 49,
+  "kicker_main": "The Learn Arc · 49/100",
+  "foot": "ACTIVE INFERENCE · PART 49",
+  "hook_headline": "§8.1<br><br>Generalized<br><em>coordinates</em>.",
+  "hook_sub": "The move that<br>makes continuous<br>time tractable.",
+  "slides": [
+    {"kind":"text","label":"tower","kicker":"Bundle the derivatives","headline":"Position.<br>Velocity.<br>Acceleration.<br>Jerk.","coral":"One tower.<br>One instant.","coral_size":68},
+    {"kind":"text","label":"why","kicker":"Why you need them","headline":"To predict<br>what happens next,","sub":"you predict the<br>dynamics, not<br>just the state.","coral":"Velocity → future position.<br>Accel → future velocity.","coral_size":44},
+    {"kind":"equation","label":"integration","kicker":"What falls out","equation":"s(t+dt) = s(t) + s'·dt","sub":"Integrate one<br>differential equation.","coral":"No discrete steps."},
+    {"kind":"image","label":"tower-vis","screenshot":"../../series-01/40-session-8-1.png","kicker":"In the workbench","headline":"Watch the tower.<br>Live."}
+  ],
+  "durations":[5,12,13,12,8,5]
+}

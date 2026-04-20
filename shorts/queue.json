@@ -1,0 +1,1316 @@
+[
+  {
+    "n": 28,
+    "file_path": "/app/content/media/shorts/28/short-28.mp4",
+    "title": "Expected Free Energy in one page | §3.1 · #28 #Shorts",
+    "description": "Part 28 of 100 — The Learn Arc.\n\nEFE in one page — G per policy, softmax picks.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 29,
+    "file_path": "/app/content/media/shorts/29/short-29.mp4",
+    "title": "Epistemic vs pragmatic — exploration for free | §3.2 · #29 #Shorts",
+    "description": "Part 29 of 100 — The Learn Arc.\n\nEFE splits into pragmatic + epistemic value.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 30,
+    "file_path": "/app/content/media/shorts/30/short-30.mp4",
+    "title": "The softmax policy and its precision knob γ | §3.3 · #30 #Shorts",
+    "description": "Part 30 of 100 — The Learn Arc.\n\nπ ∝ exp(-γG); γ = dopamine.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 31,
+    "file_path": "/app/content/media/shorts/31/short-31.mp4",
+    "title": "What makes an agent actually active | §3.4 · #31 #Shorts",
+    "description": "Part 31 of 100 — The Learn Arc.\n\nAgent picks its own observations; curiosity for free.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 32,
+    "file_path": "/app/content/media/shorts/32/short-32.mp4",
+    "title": "States, observations, actions — the three sets | §4.1 · #32 #Shorts",
+    "description": "Part 32 of 100 — The Learn Arc.\n\nThe primitives you write first.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 33,
+    "file_path": "/app/content/media/shorts/33/short-33.mp4",
+    "title": "The A matrix — where perception lives | §4.2 · #33 #Shorts",
+    "description": "Part 33 of 100 — The Learn Arc.\n\nA = likelihood; engine of belief update.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 34,
+    "file_path": "/app/content/media/shorts/34/short-34.mp4",
+    "title": "Expected Free Energy, introduced | §4.3 · #34 #Shorts",
+    "description": "Part 34 of 100 — The Learn Arc.\n\nG decomposed; derive on one page.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 35,
+    "file_path": "/app/content/media/shorts/35/short-35.mp4",
+    "title": "The MDP world — where ABCD runs together | §4.4 · #35 #Shorts",
+    "description": "Part 35 of 100 — The Learn Arc.\n\nClassical MDP + AI's preferences swap.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 36,
+    "file_path": "/app/content/media/shorts/36/short-36.mp4",
+    "title": "Ship your first agent — the 9-step workflow | §4.5 · #36 #Shorts",
+    "description": "Part 36 of 100 — The Learn Arc.\n\nSketch, fill, step, iterate.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 37,
+    "file_path": "/app/content/media/shorts/37/short-37.mp4",
+    "title": "The cortex as a factor graph | §5.1 · #37 #Shorts",
+    "description": "Part 37 of 100 — The Learn Arc.\n\nColumns, synapses, spikes = variables, factors, messages.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 38,
+    "file_path": "/app/content/media/shorts/38/short-38.mp4",
+    "title": "Predictive coding — where the gradient lives | §5.2 · #38 #Shorts",
+    "description": "Part 38 of 100 — The Learn Arc.\n\nDescending predictions, ascending errors.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 39,
+    "file_path": "/app/content/media/shorts/39/short-39.mp4",
+    "title": "Neuromodulation — the precision knobs | §5.3 · #39 #Shorts",
+    "description": "Part 39 of 100 — The Learn Arc.\n\nDopamine, ACh, NE, 5-HT = precision.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 40,
+    "file_path": "/app/content/media/shorts/40/short-40.mp4",
+    "title": "The brain map — which role lives where | §5.4 · #40 #Shorts",
+    "description": "Part 40 of 100 — The Learn Arc.\n\nVisual cortex, hippocampus, BG, midbrain.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 41,
+    "file_path": "/app/content/media/shorts/41/short-41.mp4",
+    "title": "States, obs, actions — the design session | §6.1 · #41 #Shorts",
+    "description": "Part 41 of 100 — The Learn Arc.\n\nOperational definitions; carve at joints.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 42,
+    "file_path": "/app/content/media/shorts/42/short-42.mp4",
+    "title": "Fill the four matrices A,B,C,D | §6.2 · #42 #Shorts",
+    "description": "Part 42 of 100 — The Learn Arc.\n\nOne column at a time; probabilities.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 43,
+    "file_path": "/app/content/media/shorts/43/short-43.mp4",
+    "title": "Run and inspect — the debugging loop | §6.3 · #43 #Shorts",
+    "description": "Part 43 of 100 — The Learn Arc.\n\nRead belief, policy, surprise; fix matrix; iterate.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 44,
+    "file_path": "/app/content/media/shorts/44/short-44.mp4",
+    "title": "Discrete-time refresher before the muscle | §7.1 · #44 #Shorts",
+    "description": "Part 44 of 100 — The Learn Arc.\n\nCh 7 begins; recite Q, π, G.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 45,
+    "file_path": "/app/content/media/shorts/45/short-45.mp4",
+    "title": "Eq 4.13 in depth — softmax derived | §7.2 · #45 #Shorts",
+    "description": "Part 45 of 100 — The Learn Arc.\n\nBelief propagation → exact Eq 4.13.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 46,
+    "file_path": "/app/content/media/shorts/46/short-46.mp4",
+    "title": "Learn A and B — Dirichlet updates Eq 7.10 | §7.3 · #46 #Shorts",
+    "description": "Part 46 of 100 — The Learn Arc.\n\nCounts as memory; conjugate update.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 47,
+    "file_path": "/app/content/media/shorts/47/short-47.mp4",
+    "title": "Hierarchical — stack two POMDPs | §7.4 · #47 #Shorts",
+    "description": "Part 47 of 100 — The Learn Arc.\n\nUpper = intent, lower = step; messages both ways.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 48,
+    "file_path": "/app/content/media/shorts/48/short-48.mp4",
+    "title": "Chapter 7 worked example — the capstone | §7.5 · #48 #Shorts",
+    "description": "Part 48 of 100 — The Learn Arc.\n\nTwo layers + Dirichlet + live EFE.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 49,
+    "file_path": "/app/content/media/shorts/49/short-49.mp4",
+    "title": "Generalized coordinates — the tower | §8.1 · #49 #Shorts",
+    "description": "Part 49 of 100 — The Learn Arc.\n\nState + derivatives; bundled.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 50,
+    "file_path": "/app/content/media/shorts/50/short-50.mp4",
+    "title": "Eq 4.19 — quadratic free energy | §8.2 · #50 #Shorts",
+    "description": "Part 50 of 100 — The Learn Arc.\n\nWeighted squared prediction errors.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 51,
+    "file_path": "/app/content/media/shorts/51/short-51.mp4",
+    "title": "Action on sensors — ∂F/∂a | §8.3 · #51 #Shorts",
+    "description": "Part 51 of 100 — The Learn Arc.\n\nReflex arcs, motor cortex, same gradient.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 52,
+    "file_path": "/app/content/media/shorts/52/short-52.mp4",
+    "title": "Continuous play — turn the knobs | §8.4 · #52 #Shorts",
+    "description": "Part 52 of 100 — The Learn Arc.\n\nLaplace Tower hands-on.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 53,
+    "file_path": "/app/content/media/shorts/53/short-53.mp4",
+    "title": "Fit the model to real data | §9.1 · #53 #Shorts",
+    "description": "Part 53 of 100 — The Learn Arc.\n\nPromote parameters to latents.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 54,
+    "file_path": "/app/content/media/shorts/54/short-54.mp4",
+    "title": "Comparing models — Occam's razor in F | §9.2 · #54 #Shorts",
+    "description": "Part 54 of 100 — The Learn Arc.\n\nLower F wins; complexity built in.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 55,
+    "file_path": "/app/content/media/shorts/55/short-55.mp4",
+    "title": "Case study — the empirical workflow | §9.3 · #55 #Shorts",
+    "description": "Part 55 of 100 — The Learn Arc.\n\nThree candidate models, one winner.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 56,
+    "file_path": "/app/content/media/shorts/56/short-56.mp4",
+    "title": "Synthesis — perception, action, learning | §10.1 · #56 #Shorts",
+    "description": "Part 56 of 100 — The Learn Arc.\n\nOne equation, three minimisations.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 57,
+    "file_path": "/app/content/media/shorts/57/short-57.mp4",
+    "title": "Honest limitations of Active Inference | §10.2 · #57 #Shorts",
+    "description": "Part 57 of 100 — The Learn Arc.\n\nScalability, interpretability, falsifiability.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 58,
+    "file_path": "/app/content/media/shorts/58/short-58.mp4",
+    "title": "Where next — the frontier | §10.3 · #58 #Shorts",
+    "description": "Part 58 of 100 — The Learn Arc.\n\nContinuous, deep gen, multi-agent, clinical.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 59,
+    "file_path": "/app/content/media/shorts/59/short-59.mp4",
+    "title": "Chapters 4–7 recap in one minute | #59 #Shorts",
+    "description": "Part 59 of 100 — The Learn Arc.\n\nRecap the core.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 60,
+    "file_path": "/app/content/media/shorts/60/short-60.mp4",
+    "title": "The capstone — 50 sessions in one takeaway | #60 #Shorts",
+    "description": "Part 60 of 100 — The Learn Arc.\n\nOne equation, three jobs, one place to stand.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 61,
+    "file_path": "/app/content/media/shorts/61/short-61.mp4",
+    "title": "Bayes Chips — one-step belief update | Lab · #61 #Shorts",
+    "description": "Part 61 of 100 — The Learn Arc.\n\nTwo urns, one sample.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 62,
+    "file_path": "/app/content/media/shorts/62/short-62.mp4",
+    "title": "Bayes Chips — sequential evidence | Lab · #62 #Shorts",
+    "description": "Part 62 of 100 — The Learn Arc.\n\nEvidence accumulates.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 63,
+    "file_path": "/app/content/media/shorts/63/short-63.mp4",
+    "title": "Jumping Frog — perception loop closing | Lab · #63 #Shorts",
+    "description": "Part 63 of 100 — The Learn Arc.\n\nNoisy grid world; belief sharpens.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 64,
+    "file_path": "/app/content/media/shorts/64/short-64.mp4",
+    "title": "Jumping Frog — EFE scores the next hop | Lab · #64 #Shorts",
+    "description": "Part 64 of 100 — The Learn Arc.\n\nFour candidate hops scored.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 65,
+    "file_path": "/app/content/media/shorts/65/short-65.mp4",
+    "title": "PoMDP Machine — set up A,B,C,D | Lab · #65 #Shorts",
+    "description": "Part 65 of 100 — The Learn Arc.\n\nBeat 1: build the agent.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 66,
+    "file_path": "/app/content/media/shorts/66/short-66.mp4",
+    "title": "PoMDP Machine — EFE policy choice | Lab · #66 #Shorts",
+    "description": "Part 66 of 100 — The Learn Arc.\n\nBeat 5: live softmax over policies.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 67,
+    "file_path": "/app/content/media/shorts/67/short-67.mp4",
+    "title": "PoMDP Machine — Dirichlet learning | Lab · #67 #Shorts",
+    "description": "Part 67 of 100 — The Learn Arc.\n\nBeat 7: matrices adapt.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 68,
+    "file_path": "/app/content/media/shorts/68/short-68.mp4",
+    "title": "Anatomy Studio — EFE decomposed | Lab · #68 #Shorts",
+    "description": "Part 68 of 100 — The Learn Arc.\n\nEvery subterm visible.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 69,
+    "file_path": "/app/content/media/shorts/69/short-69.mp4",
+    "title": "Anatomy Studio — swap C, watch behaviour change | Lab · #69 #Shorts",
+    "description": "Part 69 of 100 — The Learn Arc.\n\nC shapes behaviour without retraining.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 70,
+    "file_path": "/app/content/media/shorts/70/short-70.mp4",
+    "title": "Atlas — click a brain region, see its math | Lab · #70 #Shorts",
+    "description": "Part 70 of 100 — The Learn Arc.\n\nClickable brain map → AI role.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 71,
+    "file_path": "/app/content/media/shorts/71/short-71.mp4",
+    "title": "Atlas — neuromodulator precision sliders | Lab · #71 #Shorts",
+    "description": "Part 71 of 100 — The Learn Arc.\n\nγ made physical.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 72,
+    "file_path": "/app/content/media/shorts/72/short-72.mp4",
+    "title": "Laplace Tower — generalised coords live | Lab · #72 #Shorts",
+    "description": "Part 72 of 100 — The Learn Arc.\n\nPosition, velocity, acceleration live.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 73,
+    "file_path": "/app/content/media/shorts/73/short-73.mp4",
+    "title": "Laplace Tower — order truncation | Lab · #73 #Shorts",
+    "description": "Part 73 of 100 — The Learn Arc.\n\nHow many levels do you need?.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 74,
+    "file_path": "/app/content/media/shorts/74/short-74.mp4",
+    "title": "Free Energy Forge — build F piece by piece | Lab · #74 #Shorts",
+    "description": "Part 74 of 100 — The Learn Arc.\n\nAdd/remove F terms with a dropdown.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 75,
+    "file_path": "/app/content/media/shorts/75/short-75.mp4",
+    "title": "Free Energy Forge — term ablation | Lab · #75 #Shorts",
+    "description": "Part 75 of 100 — The Learn Arc.\n\nRemove one; see what breaks.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 76,
+    "file_path": "/app/content/media/shorts/76/short-76.mp4",
+    "title": "Eq 2.1 Bayes' rule in plain English | Equation · #76 #Shorts",
+    "description": "Part 76 of 100 — The Learn Arc.\n\nThe identity everything inherits.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 77,
+    "file_path": "/app/content/media/shorts/77/short-77.mp4",
+    "title": "Eq 2.5 Variational free energy | Equation · #77 #Shorts",
+    "description": "Part 77 of 100 — The Learn Arc.\n\nF = E_Q[log Q − log P].\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 78,
+    "file_path": "/app/content/media/shorts/78/short-78.mp4",
+    "title": "Eq 2.6 The surprise bound | Equation · #78 #Shorts",
+    "description": "Part 78 of 100 — The Learn Arc.\n\nF ≥ surprise; the key inequality.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 79,
+    "file_path": "/app/content/media/shorts/79/short-79.mp4",
+    "title": "Eq 4.10 Per-step free energy | Equation · #79 #Shorts",
+    "description": "Part 79 of 100 — The Learn Arc.\n\nF_t as three dot products.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 80,
+    "file_path": "/app/content/media/shorts/80/short-80.mp4",
+    "title": "Eq 4.11 Trajectory free energy | Equation · #80 #Shorts",
+    "description": "Part 80 of 100 — The Learn Arc.\n\nF summed across time.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 81,
+    "file_path": "/app/content/media/shorts/81/short-81.mp4",
+    "title": "Eq 4.13 Perception in one line | Equation · #81 #Shorts",
+    "description": "Part 81 of 100 — The Learn Arc.\n\nSoftmax of log A·o + log prior.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 82,
+    "file_path": "/app/content/media/shorts/82/short-82.mp4",
+    "title": "Eq 4.14 Policy posterior | Equation · #82 #Shorts",
+    "description": "Part 82 of 100 — The Learn Arc.\n\nπ ∝ exp(−γG); utility → probability.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 83,
+    "file_path": "/app/content/media/shorts/83/short-83.mp4",
+    "title": "Eq 4.19 Quadratic free energy | Equation · #83 #Shorts",
+    "description": "Part 83 of 100 — The Learn Arc.\n\nContinuous-time, Gaussian beliefs.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 84,
+    "file_path": "/app/content/media/shorts/84/short-84.mp4",
+    "title": "Eq 7.10 Dirichlet update — learning in one line | Equation · #84 #Shorts",
+    "description": "Part 84 of 100 — The Learn Arc.\n\na = A + n; conjugate prior magic.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 85,
+    "file_path": "/app/content/media/shorts/85/short-85.mp4",
+    "title": "Eq B.5 Message passing primitive | Equation · #85 #Shorts",
+    "description": "Part 85 of 100 — The Learn Arc.\n\nThe general form behind all of it.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 86,
+    "file_path": "/app/content/media/shorts/86/short-86.mp4",
+    "title": "Myth: it's just RL rebranded — no | Myths · #86 #Shorts",
+    "description": "Part 86 of 100 — The Learn Arc.\n\nDifferent primitives, different commitments.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 87,
+    "file_path": "/app/content/media/shorts/87/short-87.mp4",
+    "title": "Myth: FEP is unfalsifiable — careful | Myths · #87 #Shorts",
+    "description": "Part 87 of 100 — The Learn Arc.\n\nFramework vs specific model.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 88,
+    "file_path": "/app/content/media/shorts/88/short-88.mp4",
+    "title": "Myth: only works on toy mazes | Myths · #88 #Shorts",
+    "description": "Part 88 of 100 — The Learn Arc.\n\nIntros ≠ research frontier.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 89,
+    "file_path": "/app/content/media/shorts/89/short-89.mp4",
+    "title": "Myth: predictive coding is just Kalman | Myths · #89 #Shorts",
+    "description": "Part 89 of 100 — The Learn Arc.\n\nKalman inside, but not the whole story.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 90,
+    "file_path": "/app/content/media/shorts/90/short-90.mp4",
+    "title": "Myth: Active Inference explains consciousness — it doesn't | Myths · #90 #Shorts",
+    "description": "Part 90 of 100 — The Learn Arc.\n\nFramework is agnostic.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 91,
+    "file_path": "/app/content/media/shorts/91/short-91.mp4",
+    "title": "Myth: free will disappears — agency doesn't | Myths · #91 #Shorts",
+    "description": "Part 91 of 100 — The Learn Arc.\n\nHomunculus dies; agency survives.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 92,
+    "file_path": "/app/content/media/shorts/92/short-92.mp4",
+    "title": "Myth: the brain minimises prediction error — close | Myths · #92 #Shorts",
+    "description": "Part 92 of 100 — The Learn Arc.\n\nComplexity term matters.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 93,
+    "file_path": "/app/content/media/shorts/93/short-93.mp4",
+    "title": "Myth: dopamine = reward — actually precision | Myths · #93 #Shorts",
+    "description": "Part 93 of 100 — The Learn Arc.\n\nDopamine is trust in reward.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 94,
+    "file_path": "/app/content/media/shorts/94/short-94.mp4",
+    "title": "Myth: hierarchy is a scaling trick — no | Myths · #94 #Shorts",
+    "description": "Part 94 of 100 — The Learn Arc.\n\nSame equation on deeper model.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 95,
+    "file_path": "/app/content/media/shorts/95/short-95.mp4",
+    "title": "Myth: can't fit real data — it does | Myths · #95 #Shorts",
+    "description": "Part 95 of 100 — The Learn Arc.\n\nOCD, psychosis, ADHD studies.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 96,
+    "file_path": "/app/content/media/shorts/96/short-96.mp4",
+    "title": "The Learn Arc — series trailer | #96 #Shorts",
+    "description": "Part 96 of 100 — The Learn Arc.\n\n100 videos, 10 chapters, one equation.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 97,
+    "file_path": "/app/content/media/shorts/97/short-97.mp4",
+    "title": "Five things to keep from Active Inference | #97 #Shorts",
+    "description": "Part 97 of 100 — The Learn Arc.\n\nThe takeaways worth keeping.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 98,
+    "file_path": "/app/content/media/shorts/98/short-98.mp4",
+    "title": "The Active Inference book in 5 minutes | #98 #Shorts",
+    "description": "Part 98 of 100 — The Learn Arc.\n\nParr, Pezzulo, Friston — reading guide.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 99,
+    "file_path": "/app/content/media/shorts/99/short-99.mp4",
+    "title": "Fork the workbench — three directions | #99 #Shorts",
+    "description": "Part 99 of 100 — The Learn Arc.\n\nSample efficiency, multi-agent, clinical sandbox.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  },
+  {
+    "n": 100,
+    "file_path": "/app/content/media/shorts/100/short-100.mp4",
+    "title": "Thank you — The Learn Arc, part 100 | #100 #Shorts",
+    "description": "Part 100 of 100 — The Learn Arc.\n\nThe arc is done; the work continues.\n\nPrior parts (recent):\n· Part 18: https://www.youtube.com/shorts/hpUjlQyfTTY\n· Part 19: https://www.youtube.com/shorts/W1vozjivDtU\n· Part 20: https://www.youtube.com/shorts/SmlRNkCSTFI\n· Part 21: https://www.youtube.com/shorts/3OKx3bgZ_Kw\n· Part 22: https://www.youtube.com/shorts/qUA2uNJRKAk\n· Part 23: https://www.youtube.com/shorts/sqcYG_UrBks\n· Part 24: https://www.youtube.com/shorts/B9AsIZnO1io\n· Part 25: https://www.youtube.com/shorts/u-fFsDKQsB0\n· Part 26: https://www.youtube.com/shorts/uTgqv_L-x1U\n· Part 27: https://www.youtube.com/shorts/jvd3VjPb7RI\n\n— — —\n📚 Books by Michael Polzin:\n· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V\n· LEVEL UP — AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ\n\n📝 Full 50-post blog series: https://dev.to/tmdlrg\n🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):\n   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench\n🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/\n\nBook reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)\n\n#ActiveInference #Shorts",
+    "tags": [
+      "Active Inference",
+      "Free Energy Principle",
+      "Neuroscience",
+      "AI",
+      "Karl Friston",
+      "ORCHESTRATE",
+      "Shorts"
+    ],
+    "privacy": "public",
+    "category_id": "27",
+    "status": "pending"
+  }
+]

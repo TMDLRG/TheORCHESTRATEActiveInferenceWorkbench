@@ -1,0 +1,14 @@
+{
+  "n": 86,
+  "kicker_main": "The Learn Arc · 86/100",
+  "foot": "MYTH-BUSTING · PART 86",
+  "hook_headline": "Myth.<br><br>\"It's just<br>RL<br>rebranded.\"",
+  "hook_sub": "<em>Not quite</em>.",
+  "slides": [
+    {"kind":"split","label":"primitives","kicker":"Different primitives","cells":[{"h":"RL","p":"Scalar reward.<br>Value function."},{"h":"Active<br>Inference","p":"Free energy.<br>Generative model.<br>Preferences as<br>a distribution."}]},
+    {"kind":"split","label":"exploration","kicker":"Exploration","cells":[{"h":"RL","p":"Hyperparameter.<br>ε-greedy, UCB, etc."},{"h":"Active<br>Inference","p":"Free.<br>From the<br>epistemic term."}]},
+    {"kind":"text","label":"overlap","kicker":"The overlap","headline":"If C is a<br>Boltzmann<br>over one scalar,","coral":"AI reduces to<br>something RL-like.","coral_size":66,"sub":"Only in that limit."},
+    {"kind":"image","label":"different-tools","screenshot":"../../series-01/48-session-10-2.png","kicker":"Different tools, different jobs","headline":"Don't dismiss<br>one as a<br>rebranding of<br>the other."}
+  ],
+  "durations":[5,12,11,11,8,4]
+}

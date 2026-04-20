@@ -1,0 +1,14 @@
+{
+  "n": 52,
+  "kicker_main": "The Learn Arc · 52/100",
+  "foot": "ACTIVE INFERENCE · PART 52",
+  "hook_headline": "§8.4<br><br>Continuous<br><em>play</em>.",
+  "hook_sub": "Where you turn<br>the knobs.",
+  "slides": [
+    {"kind":"text","label":"lab","kicker":"The Laplace Tower lab","headline":"Play with<br>generalised<br>coordinates.","sub":"Crank velocity precision.<br>Drop sensory precision.","coral":"Feel the<br>trade-offs."},
+    {"kind":"text","label":"why-play","kicker":"Why play","headline":"Continuous-time<br>math is more<br>abstract.","coral":"You have to<br><em>see</em> it to<br>feel it.","coral_size":72},
+    {"kind":"split","label":"regimes","kicker":"What you'll see","columns":1,"cells":[{"h":"Agile","p":"Balanced precisions.<br>Tracks the world."},{"h":"Rigid","p":"Model precision too high.<br>Ignores new data."},{"h":"Hallucinating","p":"Motion that isn't there."}]},
+    {"kind":"image","label":"tower","screenshot":"../../series-01/43-session-8-4.png","kicker":"Laplace Tower — live","headline":"Turn the knobs.<br><em>Watch</em>."}
+  ],
+  "durations":[4,12,11,13,8,5]
+}

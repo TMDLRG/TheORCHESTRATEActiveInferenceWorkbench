@@ -1,0 +1,14 @@
+{
+  "n": 87,
+  "kicker_main": "The Learn Arc · 87/100",
+  "foot": "MYTH-BUSTING · PART 87",
+  "hook_headline": "Myth.<br><br>\"FEP is<br><em>unfalsifiable</em>.\"",
+  "hook_sub": "A careful<br>distinction.",
+  "slides": [
+    {"kind":"text","label":"granted","kicker":"What's true","headline":"At the most<br>general level,","sub":"whatever an agent<br>does, SOME F<br>explains it.","coral":"That's the criticism.<br>Fair at that level.","coral_size":52},
+    {"kind":"text","label":"specific","kicker":"But the real work","headline":"Commit to<br>specific A, B,<br>C, D, precisions.","coral":"Now you have<br>testable<br>predictions.","coral_size":70},
+    {"kind":"split","label":"levels","kicker":"Two levels","cells":[{"h":"Framework","p":"Always applicable.<br>Like probability."},{"h":"Specific model","p":"Tested against data.<br>Revised when wrong."}]},
+    {"kind":"image","label":"mature","screenshot":"../../series-01/48-session-10-2.png","kicker":"Mature theories","headline":"Work this way.<br>All of them."}
+  ],
+  "durations":[5,12,12,12,8,4]
+}

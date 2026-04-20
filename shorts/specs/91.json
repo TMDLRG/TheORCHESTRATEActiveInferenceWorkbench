@@ -1,0 +1,14 @@
+{
+  "n": 91,
+  "kicker_main": "The Learn Arc · 91/100",
+  "foot": "MYTH-BUSTING · PART 91",
+  "hook_headline": "Myth.<br><br>\"Free will<br>disappears.\"",
+  "hook_sub": "A careful<br><em>distinction</em>.",
+  "slides": [
+    {"kind":"text","label":"what-goes","kicker":"What actually disappears","headline":"The homunculus<br>picking from<br>a menu.","coral":"Not compatible with<br><em>any</em> physics.","coral_size":60},
+    {"kind":"text","label":"what-stays","kicker":"What survives","headline":"Agency.","coral":"Systems steering<br>themselves toward<br>preferred observations.","coral_size":60},
+    {"kind":"text","label":"you-are","kicker":"The identity","headline":"You ARE<br>the generative<br>model + beliefs<br>+ preferences.","coral":"You ARE the thing<br>doing the choosing.","coral_size":62},
+    {"kind":"image","label":"agency","screenshot":"../../series-01/22-session-3-4.png","kicker":"What stays","headline":"Just not<br>the <em>homunculus</em>."}
+  ],
+  "durations":[4,11,10,12,9,4]
+}

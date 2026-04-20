@@ -1,0 +1,14 @@
+{
+  "n": 38,
+  "kicker_main": "The Learn Arc · 38/100",
+  "foot": "ACTIVE INFERENCE · PART 38",
+  "hook_headline": "§5.2<br><br>Predictive<br>coding.",
+  "hook_sub": "Where the<br><em>gradient</em> lives.",
+  "slides": [
+    {"kind":"split","label":"flow","kicker":"The flow of information","cells":[{"h":"Descending","p":"Predictions.<br><em>Top-down.</em>"},{"h":"Ascending","p":"Prediction errors.<br><em>Bottom-up.</em>"}]},
+    {"kind":"text","label":"loop","kicker":"The update rule","headline":"Error large?<br>The higher level<br>updates.","coral":"Error small?<br>The model is<br><em>satisfied</em>.","coral_size":68},
+    {"kind":"text","label":"math","kicker":"Where it comes from","headline":"Continuous-time F.<br>Gradient descent.","sub":"Take Chapter 8's<br>quadratic F.<br>Take the gradient.","coral":"You get <em>this<br>exact circuit</em>.","coral_size":66},
+    {"kind":"image","label":"circuit","screenshot":"../../series-01/29-session-5-2.png","kicker":"The anatomical prediction","headline":"Two cell types<br>per area.","sub":"One predicts.<br>One carries error.<br><em>Laminar-specific</em>."}
+  ],
+  "durations":[4,13,12,14,9,5]
+}

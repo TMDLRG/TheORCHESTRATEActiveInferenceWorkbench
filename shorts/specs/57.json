@@ -1,0 +1,14 @@
+{
+  "n": 57,
+  "kicker_main": "The Learn Arc · 57/100",
+  "foot": "ACTIVE INFERENCE · PART 57",
+  "hook_headline": "§10.2<br><br>Limitations.",
+  "hook_sub": "Where the<br>framework is<br><em>honest</em>.",
+  "slides": [
+    {"kind":"text","label":"scale","kicker":"1 · Scalability","headline":"Eq 4.14<br>blows up.","coral":"Long horizons.<br>Big action spaces.","coral_size":72,"sub":"Amortised policies<br>help. Still open."},
+    {"kind":"text","label":"interp","kicker":"2 · Interpretability","headline":"Posterior over<br>precision<br>tells you<br><em>what</em>.","coral":"Rarely tells you<br>why.","coral_size":76,"sub":"Mapping to symptoms<br>is still in progress."},
+    {"kind":"text","label":"falsif","kicker":"3 · Falsifiability","headline":"When F fits badly,<br>we often enrich<br>the model.","coral":"When does theory<br>become universal<br>fitter?","coral_size":60,"sub":"Honest question."},
+    {"kind":"image","label":"nodogde","screenshot":"../../series-01/48-session-10-2.png","kicker":"Chapter 10","headline":"Doesn't dodge.","sub":"That's the mark<br>of a <em>mature</em> theory."}
+  ],
+  "durations":[4,13,13,13,8,5]
+}

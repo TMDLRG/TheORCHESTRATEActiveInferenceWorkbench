@@ -1,0 +1,14 @@
+{
+  "n": 53,
+  "kicker_main": "The Learn Arc · 53/100",
+  "foot": "ACTIVE INFERENCE · PART 53",
+  "hook_headline": "§9.1<br><br>Fit the<br>model<br>to <em>data</em>.",
+  "hook_sub": "Your first<br>empirical step.",
+  "slides": [
+    {"kind":"text","label":"setup","kicker":"The setup","headline":"Observed<br>trajectories.","sub":"Real button presses.<br>Real reaction times.","coral":"What parameters<br>best <em>explain</em><br>this data?"},
+    {"kind":"text","label":"move","kicker":"The move","headline":"Promote every<br>parameter to<br>a <em>latent</em>.","coral":"Flat prior — agnostic.<br>Peaked prior — you know.","coral_size":56},
+    {"kind":"equation","label":"posterior","kicker":"Same equation","equation":"min F over {s, θ}","sub":"Variational for large.<br>MCMC for small.","coral":"Posterior over θ<br>is what you want."},
+    {"kind":"image","label":"unified","screenshot":"../../series-01/44-session-9-1.png","kicker":"The unification","headline":"One framework.<br>Simulate AND<br>fit.","sub":"Don't switch tools."}
+  ],
+  "durations":[4,13,13,12,8,5]
+}

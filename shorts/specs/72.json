@@ -1,0 +1,14 @@
+{
+  "n": 72,
+  "kicker_main": "The Learn Arc · 72/100",
+  "foot": "LAB CLIP · LAPLACE TOWER · PART 72",
+  "hook_headline": "Laplace<br>Tower.<br><br>Generalised<br>coords, <em>live</em>.",
+  "hook_sub": "A Kalman filter<br>you can see.",
+  "slides": [
+    {"kind":"split","label":"tower","kicker":"What you see","columns":1,"cells":[{"h":"Base","p":"State."},{"h":"Up one","p":"Velocity."},{"h":"Up two","p":"Acceleration."},{"h":"Higher","p":"Jerk, snap, …"}]},
+    {"kind":"text","label":"propagate","kicker":"Noisy observation arrives","headline":"Velocity<br>reacts first.","coral":"Acceleration<br>reacts next.","coral_size":72,"sub":"Each level<br>smooths more."},
+    {"kind":"image","label":"track","screenshot":"../../series-01/40-session-8-1.png","kicker":"The target moves","headline":"The tower<br><em>tracks</em>."},
+    {"kind":"text","label":"inside","kicker":"What's under the hood","headline":"Kalman filter<br>inside each<br>column.","coral":"Generalised<br>coordinates<br>on the outside.","coral_size":56}
+  ],
+  "durations":[5,12,9,8,8,4]
+}

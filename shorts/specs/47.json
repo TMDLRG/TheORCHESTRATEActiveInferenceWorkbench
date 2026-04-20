@@ -1,0 +1,14 @@
+{
+  "n": 47,
+  "kicker_main": "The Learn Arc · 47/100",
+  "foot": "ACTIVE INFERENCE · PART 47",
+  "hook_headline": "§7.4<br><br>Hierarchical.",
+  "hook_sub": "<em>Stack</em> two POMDPs.",
+  "slides": [
+    {"kind":"split","label":"layers","kicker":"Two layers","cells":[{"h":"Upper","p":"Slow.<br>Abstract <em>intentions</em>.<br>\"Go to kitchen.\""},{"h":"Lower","p":"Fast.<br>Concrete <em>steps</em>.<br>Left. Forward. Right."}]},
+    {"kind":"text","label":"coupling","kicker":"How they couple","headline":"Upper state<br>→ lower's C.","coral":"Upper picks<br>intent.<br>Lower picks<br><em>moves</em>.","coral_size":62},
+    {"kind":"text","label":"twoway","kicker":"Messages both ways","headline":"Upper refined<br>by what the<br>lower achieves.","sub":"Lower preferences<br>shaped by what<br>the upper wants."},
+    {"kind":"image","label":"scale","screenshot":"../../series-01/38-session-7-4.png","kicker":"How it scales","headline":"Not more matrices.","sub":"Stacked simpler<br>agents.<br><em>Each one timescale</em>."}
+  ],
+  "durations":[4,12,10,11,8,5]
+}

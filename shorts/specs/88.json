@@ -1,0 +1,14 @@
+{
+  "n": 88,
+  "kicker_main": "The Learn Arc · 88/100",
+  "foot": "MYTH-BUSTING · PART 88",
+  "hook_headline": "Myth.<br><br>\"Only works<br>on <em>toy<br>mazes</em>.\"",
+  "hook_sub": "Confusing intro<br>material with<br>the frontier.",
+  "slides": [
+    {"kind":"text","label":"why-toy","kicker":"Why the intros are small","headline":"Tiny grid worlds<br>for clarity.","coral":"So you see the<br>math <em>work</em>.","coral_size":74},
+    {"kind":"split","label":"scaling","kicker":"The real scaling work","columns":1,"cells":[{"h":"Tree search","p":"Over policies."},{"h":"Amortised policies","p":"Neural nets."},{"h":"Hierarchical abstraction","p":"State compression."},{"h":"Stochastic VI","p":"High-D parameters."}]},
+    {"kind":"text","label":"frontier","kicker":"The frontier","headline":"Continuous states.<br>Images.<br>Audio.","coral":"Long planning<br>horizons.","coral_size":72},
+    {"kind":"image","label":"dont-confuse","screenshot":"../../series-01/43-session-8-4.png","kicker":"Don't confuse","headline":"Intros show<br>the equations.","sub":"Research applies them<br>at <em>scale</em>."}
+  ],
+  "durations":[4,10,14,9,8,4]
+}

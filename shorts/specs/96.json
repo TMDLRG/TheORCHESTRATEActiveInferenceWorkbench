@@ -1,0 +1,14 @@
+{
+  "n": 96,
+  "kicker_main": "The Learn Arc · 96/100",
+  "foot": "SERIES TRAILER · PART 96",
+  "hook_headline": "The Learn Arc.<br><br>100 videos.<br>10 chapters.<br><em>One</em> equation.",
+  "hook_sub": "The series trailer.",
+  "slides": [
+    {"kind":"split","label":"path","kicker":"What you walked through","columns":1,"cells":[{"h":"Hooks (1–10)","p":"Counter-intuitive claims<br>about your brain."},{"h":"Chapter heroes (11–20)","p":"The spine of the book."},{"h":"Sessions (21–58)","p":"Every derivation."}]},
+    {"kind":"split","label":"path2","kicker":"…continued","columns":1,"cells":[{"h":"Labs (61–75)","p":"Runnable intuition."},{"h":"Equations (76–85)","p":"One per key formula."},{"h":"Myths (86–95)","p":"Honest framing."}]},
+    {"kind":"text","label":"arrived","kicker":"If you made it","headline":"You don't just<br><em>know about</em><br>Active Inference.","coral":"You can<br>build with it.","coral_size":76},
+    {"kind":"image","label":"pin","screenshot":"../../series-01/50-capstone.png","kicker":"If you're new","headline":"Pin this.<br>Start at Part 1.","sub":"Everything <em>builds</em>."}
+  ],
+  "durations":[6,13,11,9,7,4]
+}

@@ -1,0 +1,14 @@
+{
+  "n": 54,
+  "kicker_main": "The Learn Arc · 54/100",
+  "foot": "ACTIVE INFERENCE · PART 54",
+  "hook_headline": "§9.2<br><br>Comparing<br><em>models</em>.",
+  "hook_sub": "Which one<br>explains the data?",
+  "slides": [
+    {"kind":"equation","label":"bound","kicker":"What F gives you","equation":"−F ≤ log P(data | M)","sub":"F is a lower bound<br>on log evidence.","coral":"Lower F → better model."},
+    {"kind":"text","label":"decompose","kicker":"The decomposition","headline":"F = Complexity<br>− Accuracy.","coral":"Complexity grows<br>with more parameters.","coral_size":66,"sub":"Every extra knob costs."},
+    {"kind":"text","label":"razor","kicker":"Occam's razor","headline":"A simpler model<br>that fits<br>almost as well","coral":"<em>often wins</em>.","sub":"Because it didn't<br>have to stretch as far.","coral_size":76},
+    {"kind":"image","label":"builtin","screenshot":"../../series-01/45-session-9-2.png","kicker":"The elegance","headline":"Occam's razor<br>built into the<br>equation.","sub":"No separate penalty term.<br>No BIC. No AIC."}
+  ],
+  "durations":[5,13,12,11,8,5]
+}

@@ -1,0 +1,14 @@
+{
+  "n": 71,
+  "kicker_main": "The Learn Arc · 71/100",
+  "foot": "LAB CLIP · ATLAS · PART 71",
+  "hook_headline": "Atlas.<br><br>Neuromodulator<br><em>sliders</em>.",
+  "hook_sub": "γ — made<br>physical.",
+  "slides": [
+    {"kind":"text","label":"dopamine","kicker":"Dopamine ↑","headline":"Softmax<br>sharpens.","coral":"The agent<br><em>commits</em>.","coral_size":80,"sub":"Close policies now<br>lose decisively."},
+    {"kind":"text","label":"ach","kicker":"Acetylcholine ↑","headline":"Sensory<br>precision<br>rises.","coral":"Observations<br>dominate.","coral_size":76},
+    {"kind":"split","label":"three","kicker":"Three chemicals, three confidences","columns":1,"cells":[{"h":"Dopamine","p":"Reward-related γ."},{"h":"Acetylcholine","p":"Sensory γ."},{"h":"Noradrenaline","p":"Global arousal γ."}]},
+    {"kind":"image","label":"bridge","screenshot":"../../series-01/30-session-5-3.png","kicker":"The bridge","headline":"Math ↔<br>pharmacology."}
+  ],
+  "durations":[4,10,9,12,9,4]
+}

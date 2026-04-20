@@ -1,0 +1,14 @@
+{
+  "n": 89,
+  "kicker_main": "The Learn Arc · 89/100",
+  "foot": "MYTH-BUSTING · PART 89",
+  "hook_headline": "Myth.<br><br>\"Predictive<br>coding is<br>just <em>Kalman</em>.\"",
+  "hook_sub": "Partly true,<br>partly misleading.",
+  "slides": [
+    {"kind":"text","label":"granted","kicker":"What's true","headline":"Linear-Gaussian<br>case → Kalman<br>filter.","coral":"Exactly the<br>same equations.","coral_size":72},
+    {"kind":"split","label":"extensions","kicker":"But predictive coding also has","cells":[{"h":"Hierarchy","p":"Layered.<br>Kalman doesn't<br>stack cleanly."},{"h":"Action","p":"Motor side.<br>Kalman is<br>estimation only."}]},
+    {"kind":"text","label":"whole","kicker":"So","headline":"Kalman is<br>inside.","coral":"But Kalman<br>doesn't include<br>everything PC does.","coral_size":66},
+    {"kind":"image","label":"confusion","screenshot":"../../series-01/29-session-5-2.png","kicker":"The source of confusion","headline":"People recognise<br>Kalman.<br>Assume that's<br>the whole story."}
+  ],
+  "durations":[4,11,12,10,8,4]
+}

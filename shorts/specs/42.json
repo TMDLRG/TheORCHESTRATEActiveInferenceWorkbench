@@ -1,0 +1,14 @@
+{
+  "n": 42,
+  "kicker_main": "The Learn Arc · 42/100",
+  "foot": "ACTIVE INFERENCE · PART 42",
+  "hook_headline": "§6.2<br><br>Fill the<br><em>four<br>matrices</em>.",
+  "hook_sub": "One column at a time.",
+  "slides": [
+    {"kind":"split","label":"ab","kicker":"A and B","cells":[{"h":"A","p":"Per state:<br>what obs<br>does it produce?<br>Write a column."},{"h":"B","p":"Per action:<br>where does this<br>take the state?<br>One slice per action."}]},
+    {"kind":"split","label":"cd","kicker":"C and D","cells":[{"h":"C","p":"Which obs<br>do I prefer<br>to see?<br><em>Higher = better</em>."},{"h":"D","p":"At t = 0,<br>where am I?<br>Uniform, or<br>a known spike."}]},
+    {"kind":"text","label":"invariant","kicker":"The invariant","headline":"All four are<br>probability<br>distributions.","coral":"Every column<br>sums to <em>one</em>.","coral_size":70},
+    {"kind":"image","label":"done","screenshot":"../../series-01/33-session-6-2.png","kicker":"Done","headline":"Fully specified.","sub":"No other parameters.<br>Run inference."}
+  ],
+  "durations":[4,13,13,11,8,5]
+}

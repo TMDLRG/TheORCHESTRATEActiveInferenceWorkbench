@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 4
+file 'slides/slide-02-layers.png'
+duration 12
+file 'slides/slide-03-coupling.png'
+duration 10
+file 'slides/slide-04-twoway.png'
+duration 11
+file 'slides/slide-05-scale.png'
+duration 8
+file 'slides/slide-06-cta.png'
+duration 5
+file 'slides/slide-06-cta.png'

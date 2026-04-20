@@ -1,0 +1,14 @@
+{
+  "n": 93,
+  "kicker_main": "The Learn Arc · 93/100",
+  "foot": "MYTH-BUSTING · PART 93",
+  "hook_headline": "Myth.<br><br>\"Dopamine<br>= <em>reward</em>.\"",
+  "hook_sub": "Actually —<br>precision on reward.",
+  "slides": [
+    {"kind":"text","label":"what","kicker":"The Active Inference account","headline":"Dopamine =<br>precision<br>on reward-<br>related errors.","coral":"Not the<br>reward itself.","coral_size":64},
+    {"kind":"split","label":"effects","kicker":"What it does","cells":[{"h":"DA high","p":"Trust the error.<br>Update hard."},{"h":"DA low","p":"Downweight.<br>Ignore."}]},
+    {"kind":"text","label":"phenomena","kicker":"Explains + extends","headline":"Reward sensitivity.<br>Extinction.<br>Blocking.","coral":"Plus novelty<br>responses classical<br>RL can't explain.","coral_size":52},
+    {"kind":"image","label":"oneline","screenshot":"../../series-01/30-session-5-3.png","kicker":"One line","headline":"Dopamine isn't<br>reward.","sub":"It's how much<br>you <em>trust</em> your reward."}
+  ],
+  "durations":[4,12,11,11,8,4]
+}

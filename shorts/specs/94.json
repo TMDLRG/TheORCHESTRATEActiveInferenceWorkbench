@@ -1,0 +1,14 @@
+{
+  "n": 94,
+  "kicker_main": "The Learn Arc · 94/100",
+  "foot": "MYTH-BUSTING · PART 94",
+  "hook_headline": "Myth.<br><br>\"Hierarchy is<br>a scaling<br><em>trick</em>.\"",
+  "hook_sub": "Framing<br>matters.",
+  "slides": [
+    {"kind":"text","label":"same-eq","kicker":"Actually","headline":"Hierarchy is<br>the SAME<br>free energy","coral":"on a deep<br>generative model.","coral_size":68},
+    {"kind":"split","label":"levels","kicker":"How levels couple","cells":[{"h":"Bottom → Top","p":"Bottom's state<br>is top's<br>observation."},{"h":"Top → Bottom","p":"Top's state<br>is bottom's<br>prior."}]},
+    {"kind":"text","label":"same-rule","kicker":"Same rule","headline":"Same update<br>applies at<br>every level.","coral":"No hack.<br>Natural fit.","coral_size":72},
+    {"kind":"image","label":"depth","screenshot":"../../series-01/38-session-7-4.png","kicker":"What hierarchy is","headline":"What you get<br>when the model<br>has <em>depth</em>."}
+  ],
+  "durations":[4,11,11,10,9,4]
+}

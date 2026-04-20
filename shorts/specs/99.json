@@ -1,0 +1,14 @@
+{
+  "n": 99,
+  "kicker_main": "The Learn Arc · 99/100",
+  "foot": "FORK THE WORKBENCH · PART 99",
+  "hook_headline": "Fork the<br>workbench.",
+  "hook_sub": "MIT licensed.<br><em>Yours</em> to extend.",
+  "slides": [
+    {"kind":"text","label":"one","kicker":"Direction 1","headline":"Sample-efficient<br>learning.","coral":"Replace tabular<br>Dirichlet with a<br>neural amortised<br>posterior.","coral_size":52},
+    {"kind":"text","label":"two","kicker":"Direction 2","headline":"Multi-agent.","coral":"Two AI agents<br>share a world.<br>Model each other.","coral_size":68,"sub":"Cooperate. Compete."},
+    {"kind":"text","label":"three","kicker":"Direction 3","headline":"Clinical sandbox.","coral":"Hand-sculpt parameter<br>profiles for specific<br>psychiatric conditions.","coral_size":52,"sub":"Watch the<br>simulated behaviour."},
+    {"kind":"image","label":"open","screenshot":"../../series-01/01-overview.png","kicker":"Open issues","headline":"Pull requests<br>welcome.","sub":"Link in description."}
+  ],
+  "durations":[4,12,11,11,9,4]
+}

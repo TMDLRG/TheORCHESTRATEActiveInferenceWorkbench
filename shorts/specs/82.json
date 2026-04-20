@@ -1,0 +1,14 @@
+{
+  "n": 82,
+  "kicker_main": "The Learn Arc · 82/100",
+  "foot": "EQ 4.14 · POLICY POSTERIOR · PART 82",
+  "hook_headline": "Eq 4.14.<br><br>Action selection.<br>In <em>one line</em>.",
+  "hook_sub": "G → probability<br>over plans.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"The rule","equation":"π ∝ exp(−γ · G)","sub":"G = expected free energy.<br>γ = precision.","coral":"Low G → high π."},
+    {"kind":"split","label":"gamma","kicker":"What γ does","cells":[{"h":"High γ","p":"Near-argmax.<br>Commits hard."},{"h":"Low γ","p":"Flat softmax.<br>Explores."}]},
+    {"kind":"text","label":"utility","kicker":"What it buys","headline":"Turns a<br>utility-like G<br>into a<br>probability.","coral":"Elegant. Tractable.<br>Derivable.","coral_size":64},
+    {"kind":"image","label":"gamma-dopamine","screenshot":"../../series-01/21-session-3-3.png","kicker":"γ = dopamine","headline":"Commitment is<br>a <em>chemical</em>."}
+  ],
+  "durations":[4,12,12,10,8,4]
+}

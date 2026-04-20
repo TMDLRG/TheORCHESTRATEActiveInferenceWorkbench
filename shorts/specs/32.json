@@ -1,0 +1,14 @@
+{
+  "n": 32,
+  "kicker_main": "The Learn Arc · 32/100",
+  "foot": "ACTIVE INFERENCE · PART 32",
+  "hook_headline": "§4.1<br><br>States.<br>Observations.<br>Actions.",
+  "hook_sub": "The <em>three sets</em><br>you write first.",
+  "slides": [
+    {"kind":"split","label":"three-sets","kicker":"The primitives","columns":1,"cells":[{"h":"States","p":"Hidden facts<br>about the world."},{"h":"Observations","p":"What sensors<br>deliver."},{"h":"Actions","p":"What the agent<br>can <em>do</em>."}]},
+    {"kind":"text","label":"mappings","kicker":"The two mappings","headline":"A — states → obs.","sub":"Obs depend on states<br>but don't reveal them<br>directly.","coral":"B — actions move<br>the state.","coral_size":68},
+    {"kind":"text","label":"whiteboard","kicker":"Where it all starts","headline":"Before math.<br>Before code.","coral":"Stand at the<br>whiteboard.<br><em>Write these down</em>.","coral_size":68},
+    {"kind":"image","label":"example","screenshot":"../../series-01/23-session-4-1.png","kicker":"One worked example","headline":"Get them right:<br>the agent<br>almost writes itself.","sub":"Get them wrong:<br>nothing works."}
+  ],
+  "durations":[5,13,13,12,8,5]
+}

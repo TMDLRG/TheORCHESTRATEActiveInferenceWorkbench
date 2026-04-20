@@ -1,0 +1,11 @@
+— — —
+📚 The books behind this series (by Michael Polzin):
+· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V
+· LEVEL UP — the AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ
+
+📝 Full 50-post blog series: https://dev.to/tmdlrg
+🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):
+   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench
+🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/
+
+Book reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)

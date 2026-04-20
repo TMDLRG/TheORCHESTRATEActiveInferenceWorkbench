@@ -1,0 +1,14 @@
+{
+  "n": 80,
+  "kicker_main": "The Learn Arc · 80/100",
+  "foot": "EQ 4.11 · TRAJECTORY F · PART 80",
+  "hook_headline": "Eq 4.11.<br><br>Trajectory F.",
+  "hook_sub": "F, <em>summed<br>across time</em>.",
+  "slides": [
+    {"kind":"equation","label":"sum","kicker":"The sum","equation":"F = Σ_t F_t","sub":"Per-step F,<br>integrated.","coral":"The whole episode."},
+    {"kind":"text","label":"why","kicker":"Why the sum","headline":"Beliefs<br>propagate.","sub":"A good step-1<br>belief leads to<br>a better step-2.","coral":"The trajectory<br>captures<br>the dependency."},
+    {"kind":"text","label":"minimised","kicker":"What uses it","headline":"Hierarchical<br>agents<br>minimise this.","coral":"Not just one step.<br>The whole <em>episode</em>.","coral_size":62},
+    {"kind":"image","label":"bridges","screenshot":"../../series-01/39-session-7-5.png","kicker":"Bridges to G","headline":"Extend to<br>expected future<br>obs →","sub":"You get<br><em>G</em> (Eq 4.14)."}
+  ],
+  "durations":[4,11,11,10,9,4]
+}

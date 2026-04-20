@@ -1,0 +1,14 @@
+{
+  "n": 81,
+  "kicker_main": "The Learn Arc · 81/100",
+  "foot": "EQ 4.13 · BELIEF UPDATE · PART 81",
+  "hook_headline": "Eq 4.13.<br><br>Perception,<br>in <em>one line</em>.",
+  "hook_sub": "The workhorse<br>of Active Inference.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"The whole update","equation":"Q(s) = softmax( log A·o + log prior )","sub":"Log-likelihood<br>plus predicted prior.<br>Normalise.","coral":"That's the whole<br>belief update."},
+    {"kind":"split","label":"parts","kicker":"What each piece is","columns":1,"cells":[{"h":"log A · o","p":"Log-likelihood of<br>obs given each state."},{"h":"log prior","p":"Predicted prior from<br>B · Q of prev."},{"h":"softmax","p":"Exponentiate.<br>Normalise."}]},
+    {"kind":"text","label":"derived","kicker":"Where it comes from","headline":"Bayes' rule<br>via F minimisation.","coral":"One line.<br>Pages of derivation.","coral_size":64},
+    {"kind":"image","label":"every-tick","screenshot":"../../series-01/36-session-7-2.png","kicker":"The agent's heartbeat","headline":"Run every tick.<br><em>Forever</em>."}
+  ],
+  "durations":[4,12,15,8,8,4]
+}

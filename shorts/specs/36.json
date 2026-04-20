@@ -1,0 +1,14 @@
+{
+  "n": 36,
+  "kicker_main": "The Learn Arc · 36/100",
+  "foot": "ACTIVE INFERENCE · PART 36",
+  "hook_headline": "§4.5<br><br>How you<br>actually<br><em>ship one</em>.",
+  "hook_sub": "Not a reveal. A loop.",
+  "slides": [
+    {"kind":"split","label":"workflow","kicker":"The six-step workflow","columns":1,"cells":[{"h":"1 — Sketch","p":"Paper. States, obs, actions. No math."},{"h":"2 — Fill","p":"A, B, C, D."},{"h":"3 — One step","p":"Notebook. Pass obs. Print belief."}]},
+    {"kind":"split","label":"workflow-2","kicker":"…continued","columns":1,"cells":[{"h":"4 — Ten steps","p":"Watch the trajectory."},{"h":"5 — Ask","p":"Does this behave right?"},{"h":"6 — Fix + repeat","p":"Each fix has meaning."}]},
+    {"kind":"text","label":"payoff","kicker":"The payoff","headline":"Each error has<br>a semantic name.","sub":"A miscalibrated.<br>C too sharp.<br>B off-by-one transition.","coral":"The math becomes<br><em>testable</em>."},
+    {"kind":"image","label":"workbench","screenshot":"../../series-01/27-session-4-5.png","kicker":"In the workbench","headline":"Press Step.<br>Iterate.<br><em>Ship</em>."}
+  ],
+  "durations":[5,15,14,13,8,5]
+}

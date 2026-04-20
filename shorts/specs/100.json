@@ -1,0 +1,14 @@
+{
+  "n": 100,
+  "kicker_main": "The Learn Arc · 100/100",
+  "foot": "THANK YOU · PART 100",
+  "hook_headline": "Part 100.<br><br>Thank you.",
+  "hook_sub": "The whole arc.<br>Walked.",
+  "slides": [
+    {"kind":"text","label":"from-to","kicker":"From beginning to end","headline":"Part 1:<br>\"Your brain<br>doesn't see —<br>it predicts.\"","coral":"Part 99:<br>Dirichlet, hierarchy,<br>data fitting, synthesis.","coral_size":50},
+    {"kind":"text","label":"what-you-have","kicker":"What you now have","headline":"A working<br>mental model<br>of one of<br>cognitive<br>science's most<br>ambitious theories.","coral":"Seen running.<br>Live math.<br><em>Real workbench</em>.","coral_size":50},
+    {"kind":"split","label":"next","kicker":"What's next","columns":1,"cells":[{"h":"More series","p":"Deep dives.<br>Specific algorithms."},{"h":"Interviews","p":"People building<br>with this framework."},{"h":"Maybe a course","p":"If you want it."}]},
+    {"kind":"image","label":"thanks","screenshot":"../../series-01/50-capstone.png","kicker":"The arc is done","headline":"The work<br>continues.","sub":"Thank you<br>for watching."}
+  ],
+  "durations":[5,11,11,11,8,4]
+}

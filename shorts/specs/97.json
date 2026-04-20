@@ -1,0 +1,14 @@
+{
+  "n": 97,
+  "kicker_main": "The Learn Arc · 97/100",
+  "foot": "FIVE THINGS TO KEEP · PART 97",
+  "hook_headline": "Five things<br>to <em>keep</em>.",
+  "hook_sub": "If you remember<br>nothing else.",
+  "slides": [
+    {"kind":"split","label":"one-two","kicker":"1 + 2","columns":1,"cells":[{"h":"One","p":"Perception, action,<br>learning are three<br>faces of F minimisation."},{"h":"Two","p":"F is an upper<br>bound on surprise."}]},
+    {"kind":"split","label":"three","kicker":"3","columns":1,"cells":[{"h":"Three","p":"Preferences live in C<br>as a <em>distribution</em>.<br>Exploration is free."}]},
+    {"kind":"split","label":"four","kicker":"4","columns":1,"cells":[{"h":"Four","p":"Precision is the knob.<br>Dopamine. ACh.<br>Noradrenaline."}]},
+    {"kind":"split","label":"five","kicker":"5","columns":1,"cells":[{"h":"Five","p":"Hierarchy =<br>same equation,<br>deeper model.<br><em>Not a hack.</em>"}]}
+  ],
+  "durations":[4,11,9,9,9,4]
+}

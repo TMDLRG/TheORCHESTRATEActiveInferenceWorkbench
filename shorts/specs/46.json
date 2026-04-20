@@ -1,0 +1,14 @@
+{
+  "n": 46,
+  "kicker_main": "The Learn Arc · 46/100",
+  "foot": "ACTIVE INFERENCE · PART 46",
+  "hook_headline": "§7.3<br><br>Learn A<br>and B.",
+  "hook_sub": "Dirichlet updates.<br>Eq 7.10.",
+  "slides": [
+    {"kind":"text","label":"prior","kicker":"Put a prior on the prior","headline":"Each column of A<br>= a categorical.","sub":"Put a Dirichlet<br>on top.","coral":"A distribution<br>over distributions."},
+    {"kind":"equation","label":"update","kicker":"The update","equation":"a[s,o] += 1","sub":"After observing<br>(state, obs).","coral":"Posterior mean<br>= new likelihood."},
+    {"kind":"text","label":"drift","kicker":"Over time","headline":"A drifts toward<br>the true world.","coral":"Same for B.<br>Over transitions.","coral_size":68,"sub":"The agent<br><em>gets smarter</em>."},
+    {"kind":"image","label":"three-timescales","screenshot":"../../series-01/37-session-7-3.png","kicker":"The beautiful part","headline":"Learning is F<br>at the parameter<br>level.","sub":"Same equation.<br>One level up.<br>Three timescales —<br>one rule."}
+  ],
+  "durations":[4,13,13,13,8,5]
+}

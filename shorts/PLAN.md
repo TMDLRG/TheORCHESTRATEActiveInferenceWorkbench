@@ -316,9 +316,9 @@ If the MCP 401s, fall back to direct YouTube API — see §6.
 
 ---
 
-## 4. Description template
+## 4. Description template (canonical — MUST include all five anchor links)
 
-Paste into every Short. Replace `{N}`, `{HOOK}`, `{KEY_IDEA}` and prior-shorts list.
+Paste into every Short. Replace `{N}`, `{HOOK}`, `{KEY_IDEA}` and prior-shorts list. Every description must end with the Books + Blog + Workbench + LinkedIn + hashtags block unchanged.
 
 ```
 Part {N} of 100 — The Learn Arc.
@@ -327,19 +327,52 @@ Part {N} of 100 — The Learn Arc.
 
 {Optional contrast / proof sentence.}
 
-Prior parts:
-· Part 1: https://www.youtube.com/shorts/1iqMVSIfaP4
-· Part 2: https://www.youtube.com/shorts/mjTubFiR8PY
-· Part 3: https://www.youtube.com/shorts/9lJSifZ09aM
-...
+— — —
+📚 The books behind this series (by Michael Polzin):
+· ORCHESTRATE Prompting: https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V
+· LEVEL UP — the AI Usage Maturity Model: https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ
 
-Full written series: https://dev.to/tmdlrg
-Open-source workbench (Phoenix / LiveView / pure Jido on the BEAM): https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench
+📝 Full 50-post blog series: https://dev.to/tmdlrg
+🤖 Open-source Workbench (Phoenix / LiveView / pure Jido on the BEAM):
+   https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench
+🤝 Connect with Michael on LinkedIn: https://www.linkedin.com/in/mpolzin/
 
 Book reference: Active Inference — Parr, Pezzulo, Friston (MIT Press, 2022)
 
-#ActiveInference #FreeEnergyPrinciple #Neuroscience #AI #PredictiveCoding #Shorts
+#ActiveInference #FreeEnergyPrinciple #Neuroscience #AI #Shorts
 ```
+
+**Screenshot rule:** whenever a short's topic overlaps with the suite we built (Chs 4, 6, 7, 9; sessions §4–§10; every cookbook/lab-clip/equation-in-workbench short), use real screenshots from `blog-assets/series-01/*.png` as the full-bleed background on at least one slide (usually `slide-04` or `slide-05`). Do not substitute stock visuals.
+
+**CTA rotation rule (IMPORTANT):** Do NOT stack all five links on every Short's `slide-06-cta.html`. Pick ONE focused CTA per Short, rotating through the list below. The description still carries the full link block, but the on-screen ask stays single and strong so viewers actually act on it.
+
+**Rotation schedule** (cycle of 8 — apply mod-8 from Short 26 onwards):
+
+| Slot | On-screen CTA | Description emphasis |
+|---|---|---|
+| 1 | 📕 **Get "ORCHESTRATE Prompting"** — Michael's book | Amazon link top |
+| 2 | 📗 **Get "LEVEL UP"** — Michael's AI-UMM book | Amazon link top |
+| 3 | 🤝 **Connect with Michael on LinkedIn** | LinkedIn top |
+| 4 | ⭐ **Fork / star the Workbench on GitHub** | GitHub top |
+| 5 | 📝 **Read the full blog series on dev.to** | Dev.to top |
+| 6 | 💬 **Drop your take in the comments** | Engagement — reply to every comment |
+| 7 | 🔁 **Share with someone who'd love this** | Engagement |
+| 8 | 👍 **Like + Subscribe — Part N+1 coming** | Retention |
+
+Mapping:
+- Short 26 → slot 1 (ORCHESTRATE Prompting)
+- Short 27 → slot 2 (LEVEL UP)
+- Short 28 → slot 3 (LinkedIn)
+- Short 29 → slot 4 (GitHub)
+- Short 30 → slot 5 (Blog)
+- Short 31 → slot 6 (Comments)
+- Short 32 → slot 7 (Share)
+- Short 33 → slot 8 (Subscribe)
+- Short 34 → slot 1 (ORCHESTRATE Prompting) … and so on.
+
+Shorts 1–25 predate this rule and can stay as-is.
+
+The book / blog / workbench / LinkedIn footer block is still fine in every description — the rotation only governs the ON-SCREEN ask.
 
 ---
 
@@ -421,8 +454,20 @@ Note: container-internal edits are ephemeral. For durable registration, fork the
 
 ## 7. Status Log
 
-**Total:** 100 · **Live:** 13 · **In progress:** — · **Remaining:** 87.
+**Total:** 100 · **Live:** 27 · **Built + staged (pending upload):** 73 · **Remaining to produce:** 0.
 **Last updated:** 2026-04-20.
+
+**Scheduled upload pipeline:** `scheduled-tasks/learn-arc-shorts-daily-upload` fires 9:05 AM local daily. Reads `shorts/queue.json`, uploads next 20 pending entries via `youtube_manage` MCP (with direct-API fallback in `shorts/upload.sh`), updates statuses, commits. Full recipe in `shorts/upload_batch.md`.
+
+**Pipeline at a glance:**
+- Specs: `shorts/specs/NN.json` — one per short, spec-driven.
+- Generator: `shorts/gen.js` — renders 6 HTML slides per spec.
+- Builder: `shorts/build.sh NN` — Chrome → PNG, ffmpeg concat + aac mux.
+- Queue: `shorts/queue.json` — 73 entries awaiting upload.
+- Fallback uploader: `shorts/upload.sh NN` + `shorts/meta/NN.json`.
+- Rotation rule (§4): CTAs rotate through 8 slots mod-8 from Short 26 onward.
+
+**Drip schedule:** 20/day × 4 days = all 73 live by roughly 2026-04-24 (4 days from now).
 
 | # | Title | Duration | Video ID | URL | Published (UTC) |
 |---|---|---|---|---|---|

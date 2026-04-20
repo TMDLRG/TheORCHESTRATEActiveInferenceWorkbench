@@ -1,0 +1,14 @@
+{
+  "n": 45,
+  "kicker_main": "The Learn Arc · 45/100",
+  "foot": "ACTIVE INFERENCE · PART 45",
+  "hook_headline": "§7.2<br><br>Eq 4.13<br><em>in depth</em>.",
+  "hook_sub": "Softmax isn't<br>a heuristic.",
+  "slides": [
+    {"kind":"text","label":"claim","kicker":"The claim","headline":"Eq 4.13 is exact<br>belief propagation.","sub":"On a two-node<br>factor graph.<br>State + likelihood.","coral":"Not chosen.<br>Derived."},
+    {"kind":"equation","label":"derivation","kicker":"Five-line derivation","equation":"Q(s) ∝ ∏ messages","sub":"Log, sum, softmax,<br>normalise.","coral":"That's Eq 4.13."},
+    {"kind":"text","label":"meaning","kicker":"Why it matters","headline":"Softmax is how<br>probability<br>normalisation<br><em>falls out</em>.","coral":"Not a knob.<br>A consequence.","coral_size":68},
+    {"kind":"image","label":"visual","screenshot":"../../series-01/36-session-7-2.png","kicker":"In the workbench","headline":"Every term<br>in 4.13,<br>wired to<br>a node."}
+  ],
+  "durations":[4,13,13,13,8,5]
+}

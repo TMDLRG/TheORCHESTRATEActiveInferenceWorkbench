@@ -1,0 +1,14 @@
+{
+  "n": 77,
+  "kicker_main": "The Learn Arc · 77/100",
+  "foot": "EQ 2.5 · VFE · PART 77",
+  "hook_headline": "Eq 2.5.<br><br>Variational<br>free energy.",
+  "hook_sub": "F in one line.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"The form","equation":"F = E_Q[ log Q − log P ]","sub":"Expectation under Q<br>of the log-ratio.","coral":"Q — your belief.<br>P — the joint model."},
+    {"kind":"split","label":"reasons","kicker":"Why this form","cells":[{"h":"Tractable","p":"Needs no<br>intractable<br>marginal of P."},{"h":"Bound","p":"F ≥ surprise.<br><em>Minimise F</em><br>→ shrink surprise."}]},
+    {"kind":"text","label":"trick","kicker":"In one line","headline":"A clever trick.","coral":"Dressed up<br>as a physical<br>quantity.","coral_size":70},
+    {"kind":"image","label":"rest","screenshot":"../../series-01/03-equations.png","kicker":"Every later equation","headline":"Expands it.<br>Specialises it.<br><em>Differentiates it</em>."}
+  ],
+  "durations":[4,14,11,10,9,4]
+}

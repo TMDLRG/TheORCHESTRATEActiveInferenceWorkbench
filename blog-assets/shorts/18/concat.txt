@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 5
+file 'slides/slide-02-stack.png'
+duration 22
+file 'slides/slide-03-capstone.png'
+duration 8
+file 'slides/slide-04-hierarchy.png'
+duration 10
+file 'slides/slide-05-paysoff.png'
+duration 6
+file 'slides/slide-06-cta.png'
+duration 5
+file 'slides/slide-06-cta.png'

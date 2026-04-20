@@ -1,0 +1,14 @@
+{
+  "n": 83,
+  "kicker_main": "The Learn Arc · 83/100",
+  "foot": "EQ 4.19 · QUADRATIC F · PART 83",
+  "hook_headline": "Eq 4.19.<br><br>Quadratic F.",
+  "hook_sub": "Continuous-time<br>predictive coding.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"The Gaussian limit","equation":"F = Σ π · err²","sub":"Weighted squared<br>prediction errors.","coral":"Linear gradient."},
+    {"kind":"split","label":"terms","kicker":"Three errors","columns":1,"cells":[{"h":"Sensory","p":"Obs vs prediction."},{"h":"Dynamical","p":"Change vs model."},{"h":"State","p":"Belief vs prior."}]},
+    {"kind":"text","label":"precisions","kicker":"Precisions do the weighting","headline":"Each π tells<br>the agent<br>how much to<br><em>trust</em> the term.","coral":"Inverse variance."},
+    {"kind":"image","label":"cortex","screenshot":"../../series-01/41-session-8-2.png","kicker":"What your cortex computes","headline":"Many times<br>a <em>second</em>.","sub":"Spec of a<br>predictive-coding<br>microcircuit."}
+  ],
+  "durations":[4,11,14,10,7,4]
+}

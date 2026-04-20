@@ -1,0 +1,14 @@
+{
+  "n": 50,
+  "kicker_main": "The Learn Arc · 50/100",
+  "foot": "ACTIVE INFERENCE · PART 50",
+  "hook_headline": "§8.2<br><br>Eq 4.19.",
+  "hook_sub": "The <em>quadratic</em><br>free energy.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"What Gaussian buys you","headline":"F simplifies to","equation":"F = Σ π · err²","sub":"Prediction errors<br>squared, weighted<br>by precisions."},
+    {"kind":"split","label":"errors","kicker":"Three kinds of error","columns":1,"cells":[{"h":"Sensory","p":"Senses vs prediction."},{"h":"Dynamical","p":"Actual change vs modelled."},{"h":"State","p":"Belief vs prior."}]},
+    {"kind":"text","label":"descent","kicker":"What to do with it","headline":"Minimise F =<br>gradient descent","coral":"On a sum of<br><em>squared errors</em>.","coral_size":72},
+    {"kind":"image","label":"pc","screenshot":"../../series-01/41-session-8-2.png","kicker":"Why predictive coding","headline":"Continuous-time<br>Active Inference<br>IS predictive<br>coding.","sub":"Not just <em>looks like</em>.<br>Is."}
+  ],
+  "durations":[4,13,13,10,8,5]
+}

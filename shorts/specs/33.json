@@ -1,0 +1,14 @@
+{
+  "n": 33,
+  "kicker_main": "The Learn Arc · 33/100",
+  "foot": "ACTIVE INFERENCE · PART 33",
+  "hook_headline": "§4.2<br><br>The A matrix.",
+  "hook_sub": "Where <em>perception</em> lives.",
+  "slides": [
+    {"kind":"equation","label":"shape","kicker":"Shape","headline":"Rows: observations.<br>Columns: states.","equation":"A[i, j] = P(obs_i | state_j)","sub":"Every column<br>sums to 1.","coral":"A probability<br>distribution<br>over observations.","coral_size":60},
+    {"kind":"equation","label":"update","kicker":"The belief update","headline":"Core of Eq 4.13","equation":"Q(s) ∝ softmax(log A·o + log prior)","sub":"A is the engine<br>of perception."},
+    {"kind":"text","label":"biology","kicker":"In the cortex","headline":"A lives in the<br><em>descending</em><br>connections.","coral":"How the brain<br>generates its<br>prediction of the<br>sensors.","coral_size":62},
+    {"kind":"image","label":"proof","screenshot":"../../series-01/24-session-4-2.png","kicker":"In the workbench","headline":"Fill A.<br>Watch the belief<br><em>sharpen</em>."}
+  ],
+  "durations":[4,14,14,12,8,5]
+}

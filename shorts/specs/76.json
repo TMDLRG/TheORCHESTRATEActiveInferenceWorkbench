@@ -1,0 +1,14 @@
+{
+  "n": 76,
+  "kicker_main": "The Learn Arc · 76/100",
+  "foot": "EQ 2.1 · BAYES · PART 76",
+  "hook_headline": "Eq 2.1.<br><br><em>Bayes'<br>rule</em>.",
+  "hook_sub": "The identity<br>everything else<br>inherits.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"Plain English","equation":"P(s|o) = P(o|s)·P(s) / P(o)","sub":"Posterior =<br>likelihood × prior<br>÷ evidence.","coral":"One identity.<br>Four terms."},
+    {"kind":"split","label":"parts","kicker":"What each piece means","columns":1,"cells":[{"h":"P(s|o)","p":"What to believe,<br>given what you saw."},{"h":"P(o|s)","p":"How likely this obs<br>would be, if s were true."},{"h":"P(s)","p":"What you thought<br>before."},{"h":"P(o)","p":"Total probability<br>of the observation."}]},
+    {"kind":"text","label":"scope","kicker":"The claim","headline":"Every posterior<br>in the universe.","coral":"Likelihood-weighted<br>prior, normalised.","coral_size":68},
+    {"kind":"image","label":"rest","screenshot":"../../series-01/03-equations.png","kicker":"The rest of Active Inference","headline":"Approximating<br>P(o) when it's<br>intractable.","sub":"Or extending the<br>identity <em>across time</em>."}
+  ],
+  "durations":[5,11,15,8,7,4]
+}

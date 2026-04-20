@@ -1,0 +1,14 @@
+{
+  "n": 30,
+  "kicker_main": "The Learn Arc · 30/100",
+  "foot": "ACTIVE INFERENCE · PART 30",
+  "hook_headline": "§3.3<br><br>The softmax<br>policy.",
+  "hook_sub": "And its<br>precision knob γ.",
+  "slides": [
+    {"kind":"equation","label":"softmax","kicker":"The rule","headline":"Pick a policy","equation":"π ∝ exp(−γ · G)","sub":"Higher γ — commits.<br>Lower γ — spreads.","coral":"γ is <em>precision</em>.","coral_size":68},
+    {"kind":"split","label":"knob","kicker":"What γ does","cells":[{"h":"High γ","p":"Near-deterministic.<br>Picks the winner.<br>Fast, confident."},{"h":"Low γ","p":"Spread across.<br>Explores.<br>Hedges."}]},
+    {"kind":"text","label":"self-tune","kicker":"The beautiful part","headline":"γ itself can<br>be <em>inferred</em>.","sub":"The agent tunes<br>its own precision<br>as the situation<br>demands.","coral":"Same equation.<br>One level up."},
+    {"kind":"image","label":"dopamine","screenshot":"../../series-01/30-session-5-3.png","kicker":"In the brain","headline":"γ has a name:<br><em>dopamine</em>.","sub":"Same chemical that<br>modulates motivation."}
+  ],
+  "durations":[4,13,13,14,8,5]
+}

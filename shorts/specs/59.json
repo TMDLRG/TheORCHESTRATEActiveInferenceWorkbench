@@ -1,0 +1,14 @@
+{
+  "n": 59,
+  "kicker_main": "The Learn Arc · 59/100",
+  "foot": "ACTIVE INFERENCE · PART 59",
+  "hook_headline": "Chapter 4–7<br><em>recap</em>.",
+  "hook_sub": "In one minute.",
+  "slides": [
+    {"kind":"split","label":"ch45","kicker":"Ch 4 + 5","cells":[{"h":"Ch 4","p":"A, B, C, D.<br>The generative model."},{"h":"Ch 5","p":"Cortex +<br>neuromodulators.<br>Math fits biology."}]},
+    {"kind":"split","label":"ch67","kicker":"Ch 6 + 7","cells":[{"h":"Ch 6","p":"Design states,<br>obs, actions<br>for new problems."},{"h":"Ch 7","p":"Stack agents.<br>Dirichlet learning.<br><em>Full system</em>."}]},
+    {"kind":"text","label":"pause","kicker":"If you paused","headline":"Now is the time<br>to re-watch.","coral":"Every concept<br>shows up again<br>in Ch 8 – 10.","coral_size":64},
+    {"kind":"image","label":"compound","screenshot":"../../series-01/18-session-2-4.png","kicker":"The knowledge compounds","headline":"Theory → runnable.","sub":"You already have<br>the agent in your head."}
+  ],
+  "durations":[4,11,11,9,7,4]
+}

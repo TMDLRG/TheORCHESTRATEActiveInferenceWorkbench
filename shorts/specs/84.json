@@ -1,0 +1,14 @@
+{
+  "n": 84,
+  "kicker_main": "The Learn Arc · 84/100",
+  "foot": "EQ 7.10 · DIRICHLET · PART 84",
+  "hook_headline": "Eq 7.10.<br><br>Learning,<br>in <em>one line</em>.",
+  "hook_sub": "Count the obs.<br>Update the prior.",
+  "slides": [
+    {"kind":"equation","label":"form","kicker":"The update","equation":"a = A + n","sub":"A = prior counts.<br>n = observed counts.","coral":"a = posterior counts."},
+    {"kind":"text","label":"mean","kicker":"Posterior mean","headline":"Normalise a<br>by its total.","coral":"That's the<br>new expected<br><em>likelihood</em>.","coral_size":70},
+    {"kind":"text","label":"converges","kicker":"Over many observations","headline":"a grows.","sub":"Posterior narrows.","coral":"Mean converges<br>to the <em>truth</em>.","coral_size":72},
+    {"kind":"image","label":"conjugate","screenshot":"../../series-01/37-session-7-3.png","kicker":"The conjugate trick","headline":"Posterior is<br>same family<br>as prior.","sub":"Fast enough to<br>run in a <em>live</em> agent."}
+  ],
+  "durations":[4,11,11,10,9,4]
+}

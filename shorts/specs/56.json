@@ -1,0 +1,14 @@
+{
+  "n": 56,
+  "kicker_main": "The Learn Arc · 56/100",
+  "foot": "ACTIVE INFERENCE · PART 56",
+  "hook_headline": "§10.1<br><br>The<br><em>synthesis</em>.",
+  "hook_sub": "Ch 10 restates<br>the spine.",
+  "slides": [
+    {"kind":"split","label":"three-jobs","kicker":"Three jobs, one equation","columns":1,"cells":[{"h":"Perception","p":"Inference about states."},{"h":"Action","p":"Inference about future obs."},{"h":"Learning","p":"Inference about parameters."}]},
+    {"kind":"text","label":"none-bolted","kicker":"Nothing bolted on","headline":"One generative<br>model.<br>One imperative.","coral":"Minimise F.","coral_size":80},
+    {"kind":"text","label":"mathematical","kicker":"Not rhetorical","headline":"The synthesis<br>is <em>mathematical</em>.","sub":"Write your agent<br>as a generative model.<br>Specify C.","coral":"Perception, action,<br>learning — <em>already<br>implemented</em>.","coral_size":56},
+    {"kind":"image","label":"review","screenshot":"../../series-01/47-session-10-1.png","kicker":"What you now have","headline":"Run F minimisation.","sub":"That's it.<br>Chapter 10 is<br>the victory lap."}
+  ],
+  "durations":[4,14,12,13,8,5]
+}

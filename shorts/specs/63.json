@@ -1,0 +1,14 @@
+{
+  "n": 63,
+  "kicker_main": "The Learn Arc · 63/100",
+  "foot": "LAB CLIP · JUMPING FROG · PART 63",
+  "hook_headline": "Jumping Frog.<br><br>The perception<br>loop <em>closing</em>.",
+  "hook_sub": "Watch the belief<br>converge.",
+  "slides": [
+    {"kind":"text","label":"setup","kicker":"The setup","headline":"Grid world.<br>A frog.<br>Noisy sensors.","coral":"The frog doesn't<br>know where it is.","coral_size":68},
+    {"kind":"split","label":"loop","kicker":"Closed vs open","cells":[{"h":"Open","p":"No updates.<br>Belief stays<br>diffuse."},{"h":"Closed","p":"Each hop +<br>each obs sharpens.<br><em>Converges</em>."}]},
+    {"kind":"image","label":"live","screenshot":"../../series-01/02-world.png","kicker":"Watch the heat-map","headline":"Early:<br>diffuse.","sub":"After 3–4 hops:<br>near a point."},
+    {"kind":"text","label":"connection","kicker":"Where else you see this","headline":"SLAM.<br>Robot localisation.","coral":"Every embodied<br>reasoning<br>problem.","coral_size":72}
+  ],
+  "durations":[4,10,10,9,7,4]
+}

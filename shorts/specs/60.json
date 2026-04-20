@@ -1,0 +1,14 @@
+{
+  "n": 60,
+  "kicker_main": "The Learn Arc · 60/100",
+  "foot": "ACTIVE INFERENCE · PART 60",
+  "hook_headline": "Part 60.<br><br>The<br><em>capstone</em>.",
+  "hook_sub": "50 sessions<br>in one takeaway.",
+  "slides": [
+    {"kind":"split","label":"three-levels","kicker":"One equation, three levels","columns":1,"cells":[{"h":"Perception","p":"Min F over belief."},{"h":"Action","p":"Min F over obs<br>you make happen."},{"h":"Learning","p":"Min F over<br>model parameters."}]},
+    {"kind":"text","label":"what-changes","kicker":"What taking it seriously changes","headline":"No separation<br>perception/action.","sub":"No reward function.<br>No exp/exploit tuning.<br>No overfitting.","coral":"Preferences live in C.<br>Curiosity falls out.<br>Complexity is free.","coral_size":44},
+    {"kind":"text","label":"one-place","kicker":"The theory's gift","headline":"A single place<br>to stand.","sub":"The world you perceive.<br>The actions you take.","coral":"The person you<br><em>become</em>.","coral_size":70},
+    {"kind":"image","label":"endarc","screenshot":"../../series-01/50-capstone.png","kicker":"End of the sessions","headline":"All one<br>gradient."}
+  ],
+  "durations":[4,15,13,12,10,5]
+}

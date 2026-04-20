@@ -1,0 +1,14 @@
+{
+  "n": 31,
+  "kicker_main": "The Learn Arc · 31/100",
+  "foot": "ACTIVE INFERENCE · PART 31",
+  "hook_headline": "§3.4<br><br>What makes<br>an agent<br><em>active</em>.",
+  "hook_sub": "Not decoration. Definition.",
+  "slides": [
+    {"kind":"split","label":"two-agents","kicker":"Two kinds of agent","cells":[{"h":"Passive","p":"Observes.<br>Updates.<br>Minimises surprise.<br><em>Does not act.</em>"},{"h":"Active","p":"Picks which<br>sensor to open.<br>Which direction<br>to look.<br>Which <em>question<br>to test</em>."}]},
+    {"kind":"text","label":"loop","kicker":"The key move","headline":"The agent closes<br>its own<br>feedback loop.","sub":"Same equation.<br>New variable —<br>the action that<br><em style=\"color:#FF6F61;font-style:normal;font-weight:900\">changes</em> what<br>the sensors report."},
+    {"kind":"text","label":"consequence","kicker":"The consequence","headline":"The world is no<br>longer a passive<br>stream.","coral":"It's a consequence<br>of the <em>agent's<br>choices</em>.","coral_size":68},
+    {"kind":"image","label":"curiosity","screenshot":"../../series-01/22-session-3-4.png","kicker":"You get curiosity for free","headline":"The epistemic term<br>rewards actions<br>that reduce future<br><em>uncertainty</em>."}
+  ],
+  "durations":[4,14,14,12,8,5]
+}

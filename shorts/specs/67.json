@@ -1,0 +1,14 @@
+{
+  "n": 67,
+  "kicker_main": "The Learn Arc · 67/100",
+  "foot": "LAB CLIP · POMDP MACHINE · PART 67",
+  "hook_headline": "PoMDP<br>Machine.<br><br>Beat 7.",
+  "hook_sub": "Dirichlet <em>learning</em>.",
+  "slides": [
+    {"kind":"text","label":"stop-const","kicker":"The final beat","headline":"Matrices stop<br>being constants.","coral":"A and B become<br><em>Dirichlets</em>.","coral_size":72},
+    {"kind":"equation","label":"increment","kicker":"The update","equation":"a[s, o] += 1","sub":"Each observation<br>increments a count.","coral":"Posterior mean<br>= current estimate."},
+    {"kind":"text","label":"drift","kicker":"Over episodes","headline":"Start: uniform.<br>Knows nothing.","coral":"End: well-calibrated<br>generative model.","coral_size":68,"sub":"Ten or twenty episodes."},
+    {"kind":"image","label":"emerges","screenshot":"../../series-01/37-session-7-3.png","kicker":"Learning emerges","headline":"No separate<br>learning algorithm.","sub":"Same equation.<br>Slower timescale."}
+  ],
+  "durations":[4,9,11,10,8,4]
+}

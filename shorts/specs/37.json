@@ -1,0 +1,14 @@
+{
+  "n": 37,
+  "kicker_main": "The Learn Arc · 37/100",
+  "foot": "ACTIVE INFERENCE · PART 37",
+  "hook_headline": "§5.1<br><br>Cortex<br>as a<br>factor<br>graph.",
+  "hook_sub": "How the <em>brain</em><br>does this.",
+  "slides": [
+    {"kind":"split","label":"parts","kicker":"A factor graph has","columns":1,"cells":[{"h":"Variable nodes","p":"Circles.<br>The unknowns."},{"h":"Factor nodes","p":"Squares.<br>The constraints."},{"h":"Edges","p":"Who influences whom."}]},
+    {"kind":"split","label":"mapping","kicker":"Map to cortex","cells":[{"h":"Columns","p":"= Variables."},{"h":"Lateral<br>connections","p":"= Factors."}],"after_coral":"Action potentials<br>= <em>messages</em>."},
+    {"kind":"text","label":"claim","kicker":"The specific claim","headline":"The cortex is<br>running belief<br>propagation.","coral":"On a factor graph<br>that <em>is</em> its<br>generative model.","coral_size":62},
+    {"kind":"image","label":"layout","screenshot":"../../series-01/28-session-5-1.png","kicker":"Where the concepts live","headline":"Attention = edge<br>precision.","sub":"Inference = the<br>message-passing schedule."}
+  ],
+  "durations":[5,14,13,13,8,5]
+}

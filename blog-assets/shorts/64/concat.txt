@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 4
+file 'slides/slide-02-four-options.png'
+duration 11
+file 'slides/slide-03-winner.png'
+duration 8
+file 'slides/slide-04-table.png'
+duration 10
+file 'slides/slide-05-visible.png'
+duration 7
+file 'slides/slide-06-cta.png'
+duration 4
+file 'slides/slide-06-cta.png'

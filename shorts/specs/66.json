@@ -1,0 +1,14 @@
+{
+  "n": 66,
+  "kicker_main": "The Learn Arc · 66/100",
+  "foot": "LAB CLIP · POMDP MACHINE · PART 66",
+  "hook_headline": "PoMDP<br>Machine.<br><br>Beat 5.",
+  "hook_sub": "EFE policy choice.",
+  "slides": [
+    {"kind":"text","label":"now","kicker":"The situation","headline":"Agent has run.<br>Time to plan.","sub":"G per candidate<br>policy.","coral":"Plus the two<br>subterms."},
+    {"kind":"split","label":"subs","kicker":"The two subterms","cells":[{"h":"Epistemic","p":"Info gain<br>from the plan."},{"h":"Pragmatic","p":"Preferred-obs<br>match."}]},
+    {"kind":"image","label":"table","screenshot":"../../series-01/21-session-3-3.png","kicker":"The policy table","headline":"Winner<br>highlighted.","sub":"Softmax probs<br>next to each row."},
+    {"kind":"text","label":"regimes","kicker":"Same equation, two regimes","headline":"Early: explore<br>dominates.","coral":"Later: exploit<br>dominates.","coral_size":72}
+  ],
+  "durations":[4,12,9,11,8,4]
+}

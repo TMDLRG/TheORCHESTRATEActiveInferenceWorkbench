@@ -1,0 +1,14 @@
+{
+  "n": 35,
+  "kicker_main": "The Learn Arc · 35/100",
+  "foot": "ACTIVE INFERENCE · PART 35",
+  "hook_headline": "§4.4<br><br>The MDP world.",
+  "hook_sub": "Where A B C D<br><em>run together</em>.",
+  "slides": [
+    {"kind":"text","label":"mdp","kicker":"The classical arena","headline":"Discrete states.<br>Discrete time.","sub":"Pick an action.<br>State transitions.<br>Observe.<br>Repeat.","coral":"RL cut its teeth here."},
+    {"kind":"split","label":"swap","kicker":"The swap","cells":[{"h":"RL","p":"Reward function.<br>Policy network."},{"h":"Active<br>Inference","p":"Preferences C.<br>Enumerate + score<br>with G."}]},
+    {"kind":"text","label":"stack","kicker":"The full stack","headline":"A · observation.","sub":"B · transitions.<br>C · preferences.<br>D · initial prior.","coral":"Fully specified<br>agent + world."},
+    {"kind":"image","label":"demo","screenshot":"../../series-01/26-session-4-4.png","kicker":"In the workbench","headline":"Tiny open goal.<br>T-maze.<br>Three-state corridor.","sub":"Same equation<br>across all."}
+  ],
+  "durations":[4,13,13,13,9,5]
+}

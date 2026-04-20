@@ -1,0 +1,45 @@
+{
+  "n": 29,
+  "kicker_main": "The Learn Arc · 29/100",
+  "foot": "ACTIVE INFERENCE · PART 29",
+  "hook_headline": "§3.2<br><br>Epistemic vs<br><em>pragmatic</em>.",
+  "hook_sub": "EFE splits. Here's how.",
+  "slides": [
+    {
+      "kind": "split",
+      "label": "two-values",
+      "kicker": "The two values",
+      "cells": [
+        {"h": "Pragmatic", "p": "Will this produce<br>observations<br>I <em>want</em>?"},
+        {"h": "Epistemic", "p": "Will this reduce<br>my <em>uncertainty</em>?"}
+      ],
+      "after_coral": "Same equation.<br>Both terms."
+    },
+    {
+      "kind": "text",
+      "label": "emerges",
+      "kicker": "Exploration vs exploitation",
+      "headline": "Not a trade-off<br>you tune.",
+      "sub": "A trade-off the<br>math makes<br><em style=\"color:#FF6F61;font-style:normal;font-weight:900\">automatically</em>.",
+      "coral": "As uncertainty<br>rises and falls."
+    },
+    {
+      "kind": "text",
+      "label": "examples",
+      "kicker": "Same agent, different state",
+      "headline": "Rested and fed?",
+      "sub": "The agent <em style=\"color:#FF6F61;font-style:normal;font-weight:900\">explores</em>.",
+      "coral": "Hungry and uncertain?<br>It <em>exploits</em>.",
+      "coral_size": 70
+    },
+    {
+      "kind": "image",
+      "label": "proof",
+      "screenshot": "../../series-01/20-session-3-2.png",
+      "kicker": "In the workbench",
+      "headline": "Turn the<br>epistemic<br>weight up.<br>Watch it<br><em>explore</em>.",
+      "hl_size": 78
+    }
+  ],
+  "durations": [4, 14, 13, 14, 8, 5]
+}

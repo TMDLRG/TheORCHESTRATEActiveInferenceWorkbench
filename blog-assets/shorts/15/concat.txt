@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 5
+file 'slides/slide-02-ab.png'
+duration 15
+file 'slides/slide-03-cd.png'
+duration 15
+file 'slides/slide-04-fill.png'
+duration 12
+file 'slides/slide-05-live.png'
+duration 7
+file 'slides/slide-06-cta.png'
+duration 6
+file 'slides/slide-06-cta.png'

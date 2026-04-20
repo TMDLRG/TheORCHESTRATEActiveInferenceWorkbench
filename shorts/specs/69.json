@@ -1,0 +1,14 @@
+{
+  "n": 69,
+  "kicker_main": "The Learn Arc · 69/100",
+  "foot": "LAB CLIP · ANATOMY STUDIO · PART 69",
+  "hook_headline": "Anatomy<br>Studio.<br><br>Swap <em>C</em>.",
+  "hook_sub": "Watch the agent<br>become a<br>different agent.",
+  "slides": [
+    {"kind":"split","label":"three-Cs","kicker":"Three C configurations","columns":1,"cells":[{"h":"Prefer the goal","p":"Agent goes<br>straight there."},{"h":"Prefer unexplored","p":"Agent becomes a tourist."},{"h":"Prefer a mix","p":"Agent balances."}]},
+    {"kind":"text","label":"samesame","kicker":"Everything else held fixed","headline":"Same A.<br>Same B.<br>Same D.","coral":"Only C changed.","coral_size":80},
+    {"kind":"text","label":"distribution","kicker":"Why C is a distribution","headline":"Not \"reward<br>level up by X.\"","coral":"<em>Reshape</em><br>what you want.","coral_size":70},
+    {"kind":"image","label":"respec","screenshot":"../../series-01/25-session-4-3.png","kicker":"How to domain-specialise","headline":"Not retrain.<br><em>Respecify C</em>."}
+  ],
+  "durations":[4,12,9,10,9,4]
+}

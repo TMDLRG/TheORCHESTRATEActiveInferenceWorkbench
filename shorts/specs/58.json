@@ -1,0 +1,14 @@
+{
+  "n": 58,
+  "kicker_main": "The Learn Arc · 58/100",
+  "foot": "ACTIVE INFERENCE · PART 58",
+  "hook_headline": "§10.3<br><br>Where<br><em>next</em>?",
+  "hook_sub": "The frontier.",
+  "slides": [
+    {"kind":"split","label":"frontiers1","kicker":"Two big ones","cells":[{"h":"Continuous sensors","p":"Images.<br>Natural language.<br>Real streams."},{"h":"Deep generative","p":"Learn the generative<br>model itself<br>from data."}]},
+    {"kind":"split","label":"frontiers2","kicker":"Two more","cells":[{"h":"Multi-agent","p":"Agents modelling<br>each other.<br>Cooperating."},{"h":"Clinical","p":"Individual differences.<br>Onto behaviour.<br>Onto <em>suffering</em>."}]},
+    {"kind":"text","label":"status","kicker":"Where we are","headline":"None solved.<br>All tractable.","sub":"The math is there.<br>Compute is getting there.","coral":"The next decade<br>is <em>scaling</em>."},
+    {"kind":"image","label":"end-ch10","screenshot":"../../series-01/49-session-10-3.png","kicker":"End of Chapter 10","headline":"The curriculum is<br>behind you.","sub":"Sessions done.<br>Now you <em>build</em>."}
+  ],
+  "durations":[4,13,13,12,8,5]
+}
