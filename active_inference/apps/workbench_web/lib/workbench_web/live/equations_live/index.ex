@@ -14,7 +14,10 @@ defmodule WorkbenchWeb.EquationsLive.Index do
        equations: equations,
        filter_type: :all,
        filter_family: nil,
-       families: equations |> Enum.map(& &1.model_family) |> Enum.uniq() |> Enum.sort()
+       families: equations |> Enum.map(& &1.model_family) |> Enum.uniq() |> Enum.sort(),
+       qwen_page_type: :equations_index,
+       qwen_page_key: nil,
+       qwen_page_title: "Equation registry"
      )}
   end
 

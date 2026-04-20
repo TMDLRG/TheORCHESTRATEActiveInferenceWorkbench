@@ -17,21 +17,33 @@ defmodule WorkbenchWeb.StudioLive.Agent do
   end
 
   defp assign_instance(socket, agent_id) do
+    qwen_common = [
+      qwen_page_type: :studio_agent,
+      qwen_page_key: agent_id,
+      qwen_page_title: "Agent · " <> agent_id
+    ]
+
     case Instances.get(agent_id) do
       {:ok, %Instance{} = instance} ->
-        assign(socket,
-          page_title: instance.name || agent_id,
-          agent_id: agent_id,
-          instance: instance,
-          error: nil
+        assign(
+          socket,
+          [
+            page_title: instance.name || agent_id,
+            agent_id: agent_id,
+            instance: instance,
+            error: nil
+          ] ++ qwen_common
         )
 
       :error ->
-        assign(socket,
-          page_title: agent_id,
-          agent_id: agent_id,
-          instance: nil,
-          error: "Agent not found in Studio registry."
+        assign(
+          socket,
+          [
+            page_title: agent_id,
+            agent_id: agent_id,
+            instance: nil,
+            error: "Agent not found in Studio registry."
+          ] ++ qwen_common
         )
     end
   end

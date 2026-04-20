@@ -31,6 +31,11 @@ defmodule WorkbenchWeb do
   def live_view do
     quote do
       use Phoenix.LiveView, layout: {WorkbenchWeb.Layouts, :app}
+
+      # Keep the Qwen drawer page-aware on every route. See
+      # WorkbenchWeb.Qwen.Hook for the event + assigns contract.
+      on_mount WorkbenchWeb.Qwen.Hook
+
       unquote(html_helpers())
     end
   end

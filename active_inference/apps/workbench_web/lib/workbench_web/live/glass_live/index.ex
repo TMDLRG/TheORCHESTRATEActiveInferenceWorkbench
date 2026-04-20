@@ -18,7 +18,14 @@ defmodule WorkbenchWeb.GlassLive.Index do
   def mount(_params, _session, socket) do
     if connected?(socket), do: WorldModels.Bus.subscribe_global()
 
-    {:ok, load(socket)}
+    {:ok,
+     socket
+     |> assign(
+       qwen_page_type: :glass,
+       qwen_page_key: nil,
+       qwen_page_title: "Glass Engine"
+     )
+     |> load()}
   end
 
   @impl true

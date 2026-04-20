@@ -15,7 +15,13 @@ defmodule WorkbenchWeb.StudioLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign_all(socket, page_title: "Studio")}
+    {:ok,
+     assign_all(socket,
+       page_title: "Studio",
+       qwen_page_type: :studio_index,
+       qwen_page_key: nil,
+       qwen_page_title: "Studio"
+     )}
   end
 
   defp assign_all(socket, extra) do

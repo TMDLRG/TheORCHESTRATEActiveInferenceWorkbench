@@ -31,7 +31,10 @@ defmodule WorkbenchWeb.GlassLive.Agent do
        agent_id: agent_id,
        filter_equation: nil,
        filter_type: nil,
-       scrub_ts: nil
+       scrub_ts: nil,
+       qwen_page_type: :glass_agent,
+       qwen_page_key: agent_id,
+       qwen_page_title: "Glass · " <> agent_id
      )
      |> load_snapshot()}
   end

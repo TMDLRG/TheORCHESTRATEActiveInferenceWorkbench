@@ -20,7 +20,10 @@ defmodule WorkbenchWeb.LearningLive.Progress do
        chapters: Chapters.all(),
        progress: progress,
        total: Sessions.count(),
-       done: count_done(progress)
+       done: count_done(progress),
+       qwen_page_type: :learn_progress,
+       qwen_page_key: nil,
+       qwen_page_title: "Learning progress"
      )}
   end
 

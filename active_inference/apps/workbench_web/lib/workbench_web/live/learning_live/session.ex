@@ -50,7 +50,11 @@ defmodule WorkbenchWeb.LearningLive.Session do
            prev_session: Sessions.prev(s),
            next_session: Sessions.next(s),
            quiz_state: %{},
-           show_quiz_feedback: false
+           show_quiz_feedback: false,
+           qwen_page_type: :session,
+           qwen_page_key: "#{chapter.num}/#{s.slug}",
+           qwen_page_title: s.title,
+           qwen_seed: s.qwen_seed
          )}
     end
   end

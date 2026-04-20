@@ -11,7 +11,14 @@ defmodule WorkbenchWeb.StudioLive.Trash do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign_list(socket)}
+    {:ok,
+     socket
+     |> assign(
+       qwen_page_type: :studio_trash,
+       qwen_page_key: nil,
+       qwen_page_title: "Studio · Trash"
+     )
+     |> assign_list()}
   end
 
   defp assign_list(socket) do

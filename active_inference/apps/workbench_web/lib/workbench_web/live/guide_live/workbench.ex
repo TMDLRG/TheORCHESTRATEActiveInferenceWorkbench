@@ -3,8 +3,15 @@ defmodule WorkbenchWeb.GuideLive.Workbench do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket),
-    do: {:ok, assign(socket, page_title: "Workbench surfaces")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Workbench surfaces",
+       qwen_page_type: :guide,
+       qwen_page_key: "workbench",
+       qwen_page_title: "Workbench surfaces"
+     )}
+  end
 
   @impl true
   def render(assigns) do

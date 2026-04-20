@@ -270,91 +270,228 @@
     if (input) setTimeout(() => input.focus(), 50);
   });
 
-  // -------- UberHelp drawer wiring (open/close/submit, calls /api/uber-help) --------
-  function initUberHelp() {
-    const fab = document.getElementById("uber-help-fab");
-    const drawer = document.getElementById("uber-help-drawer");
-    if (!fab || !drawer) return;
-    const closeBtn = document.getElementById("uber-help-close");
-    const form = document.getElementById("uber-help-form");
-    const input = document.getElementById("uber-help-input");
-    const log = document.getElementById("uber-help-log");
-    const chips = drawer.querySelectorAll(".chips button");
+  // -------- QwenDrawer (global init — drawer lives in root layout,
+  // outside any LiveView DOM, so we use window events instead of a LV hook).
+  //
+  // Listens for `phx:qwen:page` (dispatched by Phoenix when the server-side
+  // WorkbenchWeb.Qwen.Hook calls push_event "qwen:page") to keep the drawer
+  // page-aware. Writes page_type/key/title/route/path/seed into dataset,
+  // re-renders the chip row with per-page-type prompts, handles send + in-app
+  // link interception (relative hrefs navigate via liveSocket).
+  const QwenDrawer = {
+    init() {
+      this.el = document.getElementById("uber-help-drawer");
+      if (!this.el) return;
+      if (this._initialized) return;
+      this._initialized = true;
 
-    const openDrawer = () => {
-      drawer.classList.add("on");
-      drawer.setAttribute("aria-hidden", "false");
-      setTimeout(() => input && input.focus(), 50);
-    };
-    const closeDrawer = () => {
-      drawer.classList.remove("on");
-      drawer.setAttribute("aria-hidden", "true");
-    };
+      this.fab = document.getElementById("uber-help-fab");
+      this.closeBtn = document.getElementById("uber-help-close");
+      this.form = document.getElementById("uber-help-form");
+      this.input = document.getElementById("uber-help-input");
+      this.log = document.getElementById("uber-help-log");
+      this.chipsEl = document.getElementById("uber-help-chips");
+      this.ctxEl = document.getElementById("uber-help-context");
 
-    fab.addEventListener("click", openDrawer);
-    closeBtn.addEventListener("click", closeDrawer);
-    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+      // Read the initial page context from <meta name="qwen-page"> if
+      // present (controller-rendered pages) so we're not blank before the LV
+      // handle_params event fires.
+      this.bootstrapFromMeta();
 
-    const appendMsg = (role, text) => {
+      // Listen for LV-pushed updates.
+      window.addEventListener("phx:qwen:page", (e) => this.applyPage(e.detail));
+
+      // Open / close / keyboard.
+      this.fab && this.fab.addEventListener("click", () => this.open());
+      this.closeBtn && this.closeBtn.addEventListener("click", () => this.close());
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") this.close(); });
+
+      // Submit.
+      this.form && this.form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const text = (this.input.value || "").trim();
+        if (!text) return;
+        this.input.value = "";
+        this.send(text);
+      });
+
+      // In-app link interception: clicks on <a href="/..."> inside the log
+      // navigate via liveSocket instead of doing a full reload.
+      this.log && this.log.addEventListener("click", (e) => {
+        const a = e.target.closest && e.target.closest("a");
+        if (!a) return;
+        const href = a.getAttribute("href") || "";
+        if (href.startsWith("/") && !a.hasAttribute("target") && window.liveSocket) {
+          e.preventDefault();
+          this.close();
+          if (typeof window.liveSocket.historyRedirect === "function") {
+            window.liveSocket.historyRedirect(href, "push");
+          } else {
+            window.location.href = href;
+          }
+        }
+      });
+
+      // Render initial chips from whatever context we have.
+      this.renderChipsFromDataset();
+      this.renderContextStrip();
+    },
+
+    bootstrapFromMeta() {
+      try {
+        const meta = document.querySelector('meta[name="qwen-page"]');
+        if (!meta) return;
+        const payload = JSON.parse(meta.getAttribute("content") || "{}");
+        this.applyPage(payload);
+      } catch (_err) { /* ignore */ }
+    },
+
+    applyPage(p) {
+      if (!p) return;
+      const el = this.el;
+      if (p.page_type !== undefined) el.dataset.pageType = p.page_type || "unknown";
+      if (p.page_key !== undefined) el.dataset.pageKey = p.page_key || "";
+      if (p.page_title !== undefined) el.dataset.pageTitle = p.page_title || "";
+      if (p.route !== undefined) el.dataset.route = p.route || "";
+      if (p.path !== undefined) el.dataset.path = p.path || "real";
+      if (p.seed !== undefined) el.dataset.seed = p.seed || "";
+
+      if (Array.isArray(p.chips)) {
+        this.chips = p.chips;
+      }
+      this.renderChipsFromDataset();
+      this.renderContextStrip();
+    },
+
+    renderChipsFromDataset() {
+      if (!this.chipsEl) return;
+      this.chipsEl.innerHTML = "";
+      const chips = this.chips && this.chips.length ? this.chips : this.defaultChips();
+      chips.forEach((c) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = c.label;
+        btn.dataset.prompt = c.prompt || c.label;
+        btn.addEventListener("click", () => this.send(btn.dataset.prompt));
+        this.chipsEl.appendChild(btn);
+      });
+    },
+
+    defaultChips() {
+      return [
+        { id: "here", label: "Where am I?", prompt: "Where am I, and what's this page for?" },
+        { id: "do", label: "What can I do?", prompt: "What can I do on this page?" },
+        { id: "walk", label: "Walk me through", prompt: "Walk me through this page as if I just arrived." },
+      ];
+    },
+
+    renderContextStrip() {
+      if (!this.ctxEl) return;
+      const type = this.el.dataset.pageType || "unknown";
+      const title = this.el.dataset.pageTitle || "";
+      const route = this.el.dataset.route || "";
+      this.ctxEl.innerHTML =
+        `<span class="qwen-ctx-type">${type}</span>` +
+        (title ? `<span class="qwen-ctx-title">${this.escape(title)}</span>` : "") +
+        (route ? ` <span class="qwen-ctx-route" style="color:#5a6ea0;">${this.escape(route)}</span>` : "");
+    },
+
+    escape(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    },
+
+    open() {
+      this.el.classList.add("on");
+      this.el.setAttribute("aria-hidden", "false");
+      setTimeout(() => this.input && this.input.focus(), 50);
+    },
+
+    close() {
+      this.el.classList.remove("on");
+      this.el.setAttribute("aria-hidden", "true");
+    },
+
+    appendMsg(role, text) {
       const el = document.createElement("div");
       el.className = "msg " + role;
       el.textContent = text;
-      log.appendChild(el);
-      log.scrollTop = log.scrollHeight;
+      this.log.appendChild(el);
+      this.log.scrollTop = this.log.scrollHeight;
       return el;
-    };
+    },
 
-    const sendMessage = async (text) => {
-      appendMsg("user", text);
-      const pendingEl = appendMsg("assistant", "⏳ …");
-      const pathMatch = document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);
-      const path = pathMatch ? decodeURIComponent(pathMatch[1]) : "real";
-      // Best-effort session inference from the current URL.
-      const m = location.pathname.match(/^\/learn\/session\/(\d+)\/([^/]+)/);
-      const chapter = m ? parseInt(m[1], 10) : null;
-      const session = m ? m[2] : null;
-      const seed = drawer.dataset.seed || "";
+    appendMarkdown(role, text) {
+      const el = this.appendMsg(role, "");
+      el.innerHTML = this.renderMarkdown(text);
+      this.log.scrollTop = this.log.scrollHeight;
+      return el;
+    },
+
+    // Minimal markdown: [label](url), **bold**, `code`, and paragraph breaks.
+    // Prevents HTML injection by escaping first, then applying patterns.
+    renderMarkdown(s) {
+      if (!s) return "";
+      let out = this.escape(s);
+      out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+      out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      out = out.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_m, label, href) => {
+        const isExternal = /^https?:\/\//.test(href);
+        const target = isExternal ? ' target="_blank" rel="noopener noreferrer"' : "";
+        return `<a href="${href}"${target}>${label}</a>`;
+      });
+      return out.replace(/\n\n/g, "<br><br>").replace(/\n/g, "<br>");
+    },
+
+    async send(text) {
+      if (!this.log) return;
+      this.open();
+      this.appendMsg("user", text);
+      const pendingEl = this.appendMsg("assistant", "⏳ …");
+      const pathCookie = document.cookie.match(/(?:^|;\s*)suite_path=([^;]+)/);
+      const cookiePath = pathCookie ? decodeURIComponent(pathCookie[1]) : null;
+      const body = {
+        user_msg: text,
+        page_type: this.el.dataset.pageType || "unknown",
+        page_key: this.el.dataset.pageKey || null,
+        route: this.el.dataset.route || location.pathname,
+        page_title: this.el.dataset.pageTitle || document.title,
+        path: cookiePath || this.el.dataset.path || "real",
+        seed: this.el.dataset.seed || "",
+      };
       try {
         const res = await fetch("/api/uber-help", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_msg: text, path, chapter, session, seed }),
+          body: JSON.stringify(body),
         });
         const j = await res.json();
         if (res.ok && j.reply) {
-          pendingEl.textContent = j.reply;
+          pendingEl.innerHTML = this.renderMarkdown(j.reply);
         } else {
           pendingEl.className = "msg error";
           pendingEl.textContent = j.hint || j.error || "Qwen error";
         }
-      } catch (err) {
+      } catch (_err) {
         pendingEl.className = "msg error";
         pendingEl.textContent = "Network error. Is Qwen running? ./Qwen3.6/scripts/start_qwen.ps1";
       }
-    };
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const text = (input.value || "").trim();
-      if (!text) return;
-      input.value = "";
-      sendMessage(text);
-    });
-    chips.forEach((b) => {
-      b.addEventListener("click", () => sendMessage(b.dataset.chip || b.textContent));
-    });
-  }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initUberHelp);
-  } else {
-    initUberHelp();
-  }
+    },
+  };
 
   const hooks = {
     CompositionCanvas: window.CompositionCanvas,
     PodcastSegment: PodcastSegment,
     Narrator: Narrator,
   };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => QwenDrawer.init());
+  } else {
+    QwenDrawer.init();
+  }
 
   const { Socket } = window.Phoenix;
   const { LiveSocket } = window.LiveView;

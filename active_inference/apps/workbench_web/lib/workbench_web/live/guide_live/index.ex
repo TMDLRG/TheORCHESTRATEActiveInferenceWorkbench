@@ -13,7 +13,13 @@ defmodule WorkbenchWeb.GuideLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Guide")}
+    {:ok,
+     assign(socket,
+       page_title: "Guide",
+       qwen_page_type: :guide,
+       qwen_page_key: "index",
+       qwen_page_title: "Guide hub"
+     )}
   end
 
   @impl true

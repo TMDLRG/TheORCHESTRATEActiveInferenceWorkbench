@@ -3,7 +3,15 @@ defmodule WorkbenchWeb.GuideLive.Voice do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket), do: {:ok, assign(socket, page_title: "Voice guide")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Voice guide",
+       qwen_page_type: :guide,
+       qwen_page_key: "voice",
+       qwen_page_title: "Voice guide"
+     )}
+  end
 
   @impl true
   def render(assigns) do

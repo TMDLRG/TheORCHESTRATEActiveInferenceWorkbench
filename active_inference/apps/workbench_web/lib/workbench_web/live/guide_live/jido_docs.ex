@@ -15,7 +15,10 @@ defmodule WorkbenchWeb.GuideLive.JidoDocs do
            file: safe,
            body: body,
            files: list_guides(),
-           error: nil
+           error: nil,
+           qwen_page_type: :guide,
+           qwen_page_key: "jido-docs/" <> safe,
+           qwen_page_title: "Jido doc · " <> safe
          )}
 
       _ ->
@@ -25,7 +28,10 @@ defmodule WorkbenchWeb.GuideLive.JidoDocs do
            file: safe,
            body: "",
            files: list_guides(),
-           error: :not_found
+           error: :not_found,
+           qwen_page_type: :guide,
+           qwen_page_key: "jido-docs/" <> safe,
+           qwen_page_title: "Jido doc · " <> safe
          )}
     end
   end

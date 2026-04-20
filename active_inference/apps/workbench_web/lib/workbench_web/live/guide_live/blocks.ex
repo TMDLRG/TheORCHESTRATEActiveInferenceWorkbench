@@ -23,7 +23,14 @@ defmodule WorkbenchWeb.GuideLive.Blocks do
         }
       end)
 
-    {:ok, assign(socket, page_title: "Blocks", blocks: blocks)}
+    {:ok,
+     assign(socket,
+       page_title: "Block catalogue",
+       blocks: blocks,
+       qwen_page_type: :guide,
+       qwen_page_key: "blocks",
+       qwen_page_title: "Block catalogue"
+     )}
   end
 
   @impl true

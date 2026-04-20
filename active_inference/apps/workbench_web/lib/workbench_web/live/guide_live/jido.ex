@@ -11,7 +11,10 @@ defmodule WorkbenchWeb.GuideLive.Jido do
      |> assign(
        page_title: "Jido guide",
        index: safe_read(Path.join(dir, "MASTER-INDEX.md")),
-       topics: list_topics(dir)
+       topics: list_topics(dir),
+       qwen_page_type: :guide,
+       qwen_page_key: "jido",
+       qwen_page_title: "Jido guide"
      )}
   end
 

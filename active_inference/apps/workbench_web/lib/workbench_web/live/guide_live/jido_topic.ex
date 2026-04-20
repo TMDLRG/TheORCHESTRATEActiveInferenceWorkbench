@@ -8,10 +8,28 @@ defmodule WorkbenchWeb.GuideLive.JidoTopic do
 
     case File.read(path) do
       {:ok, body} ->
-        {:ok, assign(socket, page_title: slug, slug: slug, body: body, error: nil)}
+        {:ok,
+         assign(socket,
+           page_title: slug,
+           slug: slug,
+           body: body,
+           error: nil,
+           qwen_page_type: :guide,
+           qwen_page_key: "jido/" <> slug,
+           qwen_page_title: "Jido · " <> slug
+         )}
 
       {:error, reason} ->
-        {:ok, assign(socket, page_title: slug, slug: slug, body: "", error: reason)}
+        {:ok,
+         assign(socket,
+           page_title: slug,
+           slug: slug,
+           body: "",
+           error: reason,
+           qwen_page_type: :guide,
+           qwen_page_key: "jido/" <> slug,
+           qwen_page_title: "Jido · " <> slug
+         )}
     end
   end
 

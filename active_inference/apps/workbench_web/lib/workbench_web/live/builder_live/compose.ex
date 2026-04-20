@@ -53,7 +53,14 @@ defmodule WorkbenchWeb.BuilderLive.Compose do
        recipe_banner: recipe_banner,
        query: "",
        block_types: block_palette(),
-       node_types_json: Jason.encode!(topology_node_types_for_js())
+       node_types_json: Jason.encode!(topology_node_types_for_js()),
+       qwen_page_type: :builder,
+       qwen_page_key:
+         (recipe_banner && recipe_banner["slug"]) ||
+           (loaded_spec && Map.get(loaded_spec, :id)),
+       qwen_page_title:
+         "Builder" <>
+           if(recipe_banner, do: " · " <> (recipe_banner["title"] || ""), else: "")
      )
      |> assign_topology(topology)}
   end

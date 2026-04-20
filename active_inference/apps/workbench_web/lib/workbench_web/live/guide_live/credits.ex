@@ -3,8 +3,15 @@ defmodule WorkbenchWeb.GuideLive.Credits do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket),
-    do: {:ok, assign(socket, page_title: "Credits & Attributions")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Credits & Attributions",
+       qwen_page_type: :guide,
+       qwen_page_key: "credits",
+       qwen_page_title: "Credits & Attributions"
+     )}
+  end
 
   @impl true
   def render(assigns) do

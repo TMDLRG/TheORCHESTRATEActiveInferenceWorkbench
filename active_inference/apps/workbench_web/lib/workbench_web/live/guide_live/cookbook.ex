@@ -6,7 +6,15 @@ defmodule WorkbenchWeb.GuideLive.Cookbook do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket), do: {:ok, assign(socket, page_title: "Cookbook guide")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Cookbook guide",
+       qwen_page_type: :guide,
+       qwen_page_key: "cookbook",
+       qwen_page_title: "Cookbook guide"
+     )}
+  end
 
   @impl true
   def render(assigns) do

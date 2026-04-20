@@ -41,25 +41,31 @@ defmodule WorkbenchWeb.Layouts do
         <main class="main"><%= @inner_content %></main>
         <.citation_footer />
 
-        <!-- Uber-help drawer (Qwen). Floating button bottom-right; click to open. -->
+        <!-- Uber-help drawer (Qwen). Floating button bottom-right; click to open.
+             Page awareness: WorkbenchWeb.Qwen.Hook pushes a "qwen:page" event on
+             every handle_params; the QwenDrawer JS hook writes payload into
+             drawer.dataset and re-renders the chip row. -->
         <button id="uber-help-fab" aria-label="Ask Qwen">✨ Ask Qwen</button>
-        <aside id="uber-help-drawer" role="dialog" aria-modal="false" aria-hidden="true">
+        <aside id="uber-help-drawer"
+               role="dialog" aria-modal="false" aria-hidden="true"
+               data-page-type="unknown"
+               data-page-key=""
+               data-page-title=""
+               data-route=""
+               data-path="real"
+               data-seed="">
           <header>
-            <strong style="color:#d8b56c;">✨ Qwen · uber help</strong>
+            <strong style="color:#d8b56c;">✨ Qwen · tutor-mentor</strong>
             <button id="uber-help-close" aria-label="Close">✕</button>
           </header>
+          <div id="uber-help-context" class="qwen-context" aria-live="polite"></div>
           <div id="uber-help-log" aria-live="polite"></div>
           <form id="uber-help-form">
             <input id="uber-help-input" type="text" autocomplete="off"
                    placeholder="Ask about the current page, or paste a concept…" />
             <button type="submit" class="primary">Send</button>
           </form>
-          <div class="chips">
-            <button data-chip="Explain the hero concept of this session in 3 sentences.">Explain this</button>
-            <button data-chip="Give me a concrete analogy I could try with household objects.">Analogy</button>
-            <button data-chip="What should I do next to cement this?">What's next?</button>
-            <button data-chip="Narrate your answer.">🔊 Narrate</button>
-          </div>
+          <div id="uber-help-chips" class="chips" role="group" aria-label="Suggested prompts"></div>
           <a id="uber-full-chat-link" href="http://localhost:3080/" target="_blank" rel="noopener noreferrer" class="full-chat-link">Open full chat ▸ (new tab)</a>
         </aside>
 
@@ -262,8 +268,17 @@ defmodule WorkbenchWeb.Layouts do
     #uber-help-drawer .chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 4px 12px 10px; }
     #uber-help-drawer .chips button { background: rgba(255,255,255,0.04); color: #9cb0d6;
       border: 1px solid #263257; border-radius: 999px; padding: 4px 8px;
-      font-size: 11px; cursor: pointer; }
+      font-size: 11px; cursor: pointer; font-family: ui-monospace, monospace; }
     #uber-help-drawer .chips button:hover { color: #e8ecf1; background: rgba(125,211,252,0.1); }
+    #uber-help-drawer .qwen-context { padding: 8px 16px 2px; color: #9cb0d6; font-size: 11px;
+      border-bottom: 1px dashed #263257; min-height: 22px; }
+    #uber-help-drawer .qwen-context .qwen-ctx-type { display: inline-block; padding: 1px 6px;
+      border-radius: 4px; background: rgba(125,211,252,0.12); color: #7dd3fc; margin-right: 6px;
+      font-family: ui-monospace, monospace; font-size: 10px; }
+    #uber-help-log .msg a { color: #7dd3fc; text-decoration: underline; }
+    #uber-help-log .msg a:hover { color: #bde4fb; }
+    #uber-help-log .msg.assistant code { background: rgba(255,255,255,0.05); padding: 1px 4px;
+      border-radius: 3px; font-size: 12px; }
     #uber-help-drawer .full-chat-link { display: block; padding: 8px 16px; text-align: right;
       border-top: 1px solid #263257; color: #7dd3fc; font-size: 12px; text-decoration: none; }
     #uber-help-drawer .full-chat-link:hover { text-decoration: underline; }

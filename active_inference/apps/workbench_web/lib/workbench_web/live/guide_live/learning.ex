@@ -3,7 +3,15 @@ defmodule WorkbenchWeb.GuideLive.Learning do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket), do: {:ok, assign(socket, page_title: "Learning guide")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Learning guide",
+       qwen_page_type: :guide,
+       qwen_page_key: "learning",
+       qwen_page_title: "Learning guide"
+     )}
+  end
 
   @impl true
   def render(assigns) do

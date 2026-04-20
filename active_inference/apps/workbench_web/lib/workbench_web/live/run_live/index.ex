@@ -31,7 +31,10 @@ defmodule WorkbenchWeb.RunLive.Index do
         running?: false,
         history: [],
         summary: nil,
-        auto_running?: false
+        auto_running?: false,
+        qwen_page_type: :labs_run,
+        qwen_page_key: nil,
+        qwen_page_title: "Run Maze"
       )
 
     {:ok, socket}

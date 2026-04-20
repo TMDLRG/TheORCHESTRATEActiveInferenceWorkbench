@@ -3,7 +3,15 @@ defmodule WorkbenchWeb.GuideLive.LevelUp do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket), do: {:ok, assign(socket, page_title: "Level Up primer")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Level Up primer",
+       qwen_page_type: :guide,
+       qwen_page_key: "level-up",
+       qwen_page_title: "LEVEL UP primer"
+     )}
+  end
 
   @impl true
   def render(assigns) do

@@ -61,7 +61,10 @@ defmodule WorkbenchWeb.StudioLive.Run do
        agent_id: agent_id,
        instance: instance,
        auto_running?: false,
-       error: nil
+       error: nil,
+       qwen_page_type: :studio_run,
+       qwen_page_key: session_id,
+       qwen_page_title: "Studio run · " <> session_id
      )}
   end
 

@@ -60,7 +60,10 @@ defmodule WorkbenchWeb.WorldLive.Index do
         history: [],
         summary: nil,
         auto_running?: false,
-        recent_events: []
+        recent_events: [],
+        qwen_page_type: :world,
+        qwen_page_key: to_string(first_world.id),
+        qwen_page_title: "World playground"
       )
 
     {:ok, socket}

@@ -10,7 +10,14 @@ defmodule WorkbenchWeb.EquationsLive.Show do
         {:ok, push_navigate(socket, to: ~p"/equations")}
 
       eq ->
-        {:ok, assign(socket, page_title: eq.equation_number, eq: eq)}
+        {:ok,
+         assign(socket,
+           page_title: eq.equation_number,
+           eq: eq,
+           qwen_page_type: :equation,
+           qwen_page_key: id,
+           qwen_page_title: "Equation " <> eq.equation_number
+         )}
     end
   end
 

@@ -16,7 +16,14 @@ defmodule WorkbenchWeb.GuideLive.Examples do
 
     socket =
       socket
-      |> assign(page_title: "Examples", slug: slug, examples: ExampleCatalog.all())
+      |> assign(
+        page_title: "Examples",
+        slug: slug,
+        examples: ExampleCatalog.all(),
+        qwen_page_type: :guide,
+        qwen_page_key: "examples" <> if(slug, do: "/" <> slug, else: ""),
+        qwen_page_title: "Examples" <> if(slug, do: " · " <> slug, else: "")
+      )
 
     {:ok, socket}
   end

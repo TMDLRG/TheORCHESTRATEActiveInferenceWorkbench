@@ -7,7 +7,14 @@ defmodule WorkbenchWeb.GuideLive.Tutorial do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Build your first agent", step: 1)}
+    {:ok,
+     assign(socket,
+       page_title: "Build your first agent",
+       step: 1,
+       qwen_page_type: :guide,
+       qwen_page_key: "tutorial",
+       qwen_page_title: "Build your first agent"
+     )}
   end
 
   @impl true

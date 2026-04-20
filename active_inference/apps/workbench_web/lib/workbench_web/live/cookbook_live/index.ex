@@ -23,7 +23,10 @@ defmodule WorkbenchWeb.CookbookLive.Index do
        level_filter: nil,
        tag_filter: nil,
        recipes: recipes,
-       all_tags: all_tags
+       all_tags: all_tags,
+       qwen_page_type: :cookbook_index,
+       qwen_page_key: nil,
+       qwen_page_title: "Cookbook"
      )}
   end
 

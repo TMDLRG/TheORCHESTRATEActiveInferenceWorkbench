@@ -30,7 +30,10 @@ defmodule WorkbenchWeb.LearningLive.Chapter do
          sessions: sessions,
          learning_path: path,
          prev_chapter: prev_chapter(chapter.num),
-         next_chapter: next_chapter(chapter.num)
+         next_chapter: next_chapter(chapter.num),
+         qwen_page_type: :chapter,
+         qwen_page_key: to_string(chapter.num),
+         qwen_page_title: "Ch #{chapter.num} · " <> chapter.title
        )}
     else
       {:ok, push_navigate(socket, to: ~p"/learn")}

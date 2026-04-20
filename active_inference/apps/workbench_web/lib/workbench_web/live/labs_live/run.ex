@@ -87,7 +87,10 @@ defmodule WorkbenchWeb.LabsLive.Run do
        history: [],
        recent_events: [],
        recipe_banner: recipe_banner,
-       error: nil
+       error: nil,
+       qwen_page_type: :labs_run,
+       qwen_page_key: (recipe_banner && recipe_banner["slug"]) || selected_spec_id,
+       qwen_page_title: "Labs" <> if(recipe_banner, do: " · " <> (recipe_banner["title"] || ""), else: "")
      )
      |> refresh_preview()}
   end

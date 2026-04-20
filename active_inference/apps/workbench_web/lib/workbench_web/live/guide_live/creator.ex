@@ -3,7 +3,15 @@ defmodule WorkbenchWeb.GuideLive.Creator do
   use WorkbenchWeb, :live_view
 
   @impl true
-  def mount(_params, _session, socket), do: {:ok, assign(socket, page_title: "About the Creator")}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "About the Creator",
+       qwen_page_type: :guide,
+       qwen_page_key: "creator",
+       qwen_page_title: "About the Creator"
+     )}
+  end
 
   @impl true
   def render(assigns) do

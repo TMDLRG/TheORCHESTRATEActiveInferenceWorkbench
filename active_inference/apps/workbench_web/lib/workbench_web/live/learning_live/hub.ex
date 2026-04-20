@@ -36,7 +36,10 @@ defmodule WorkbenchWeb.LearningLive.Hub do
        labs: LearningCatalog.labs(),
        paths: LearningCatalog.paths(),
        chapters: Chapters.all(),
-       total_sessions: Sessions.count()
+       total_sessions: Sessions.count(),
+       qwen_page_type: :learning_hub,
+       qwen_page_key: nil,
+       qwen_page_title: "Learn hub"
      )}
   end
 

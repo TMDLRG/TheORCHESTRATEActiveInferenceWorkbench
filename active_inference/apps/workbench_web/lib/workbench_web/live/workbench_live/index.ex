@@ -13,7 +13,10 @@ defmodule WorkbenchWeb.WorkbenchLive.Index do
        models_count: length(Models.all()),
        discrete_count: length(Equations.by_type(:discrete)),
        continuous_count: length(Equations.by_type(:continuous)),
-       general_count: length(Equations.by_type(:general))
+       general_count: length(Equations.by_type(:general)),
+       qwen_page_type: :home,
+       qwen_page_key: nil,
+       qwen_page_title: "Overview"
      )}
   end
 

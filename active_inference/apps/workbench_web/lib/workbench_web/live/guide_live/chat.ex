@@ -23,7 +23,10 @@ defmodule WorkbenchWeb.GuideLive.Chat do
        page_title: "Chat guide",
        base_agents: @base_agents,
        chapter_agents: @chapter_agents,
-       role_coaches: @role_coaches
+       role_coaches: @role_coaches,
+       qwen_page_type: :guide,
+       qwen_page_key: "chat",
+       qwen_page_title: "Chat guide"
      )}
   end
 

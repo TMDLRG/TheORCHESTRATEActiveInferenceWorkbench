@@ -5,7 +5,14 @@ defmodule WorkbenchWeb.ModelsLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Models", models: Models.all())}
+    {:ok,
+     assign(socket,
+       page_title: "Models",
+       models: Models.all(),
+       qwen_page_type: :models,
+       qwen_page_key: nil,
+       qwen_page_title: "Model taxonomy"
+     )}
   end
 
   @impl true

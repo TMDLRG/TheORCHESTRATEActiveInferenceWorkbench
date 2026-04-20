@@ -219,8 +219,17 @@ defmodule WorkbenchWeb.GuideLive.Features do
   ]
 
   @impl true
-  def mount(_params, _session, socket),
-    do: {:ok, assign(socket, page_title: "Features", features: @features, groups: groups())}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Features",
+       features: @features,
+       groups: groups(),
+       qwen_page_type: :guide,
+       qwen_page_key: "features",
+       qwen_page_title: "Features"
+     )}
+  end
 
   defp groups, do: @features |> Enum.map(& &1.group) |> Enum.uniq()
 

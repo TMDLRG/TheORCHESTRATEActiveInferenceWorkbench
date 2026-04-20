@@ -69,8 +69,16 @@ defmodule WorkbenchWeb.GuideLive.Labs do
   ]
 
   @impl true
-  def mount(_params, _session, socket),
-    do: {:ok, assign(socket, page_title: "Labs guide", labs: @labs)}
+  def mount(_params, _session, socket) do
+    {:ok,
+     assign(socket,
+       page_title: "Labs guide",
+       labs: @labs,
+       qwen_page_type: :guide,
+       qwen_page_key: "labs",
+       qwen_page_title: "Labs guide"
+     )}
+  end
 
   @impl true
   def render(assigns) do

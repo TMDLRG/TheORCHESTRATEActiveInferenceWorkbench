@@ -17,7 +17,15 @@ defmodule WorkbenchWeb.CookbookLive.Show do
         {:ok,
          socket
          |> put_flash(:error, "Recipe not found: #{slug}")
-         |> assign(recipe: nil, slug: slug, path: "real", page_title: "Not found")}
+         |> assign(
+           recipe: nil,
+           slug: slug,
+           path: "real",
+           page_title: "Not found",
+           qwen_page_type: :cookbook_recipe,
+           qwen_page_key: slug,
+           qwen_page_title: "Recipe not found"
+         )}
 
       recipe ->
         {:ok,
@@ -25,7 +33,10 @@ defmodule WorkbenchWeb.CookbookLive.Show do
            recipe: recipe,
            slug: slug,
            path: "real",
-           page_title: recipe["title"] || slug
+           page_title: recipe["title"] || slug,
+           qwen_page_type: :cookbook_recipe,
+           qwen_page_key: slug,
+           qwen_page_title: recipe["title"] || slug
          )}
     end
   end

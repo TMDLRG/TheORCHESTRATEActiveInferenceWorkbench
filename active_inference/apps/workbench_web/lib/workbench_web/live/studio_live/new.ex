@@ -73,7 +73,10 @@ defmodule WorkbenchWeb.StudioLive.New do
        selected_world_id: default_world || (List.first(mazes) || %{id: nil}).id,
        compile_preview: nil,
        preflight: nil,
-       error: nil
+       error: nil,
+       qwen_page_type: :studio_new,
+       qwen_page_key: default_recipe || default_agent,
+       qwen_page_title: "Studio · New run"
      )
      |> refresh_preview()
      |> maybe_run_preflight()}
