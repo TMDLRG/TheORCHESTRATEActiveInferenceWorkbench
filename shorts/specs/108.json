@@ -1,0 +1,21 @@
+{
+  "n": 108,
+  "kicker_main": "Abstractionist Papers · 7/10",
+  "foot": "LEARNING VIA PARADOX · PART 108",
+  "hook_headline": "Learning<br>through<br><em>paradox</em>.",
+  "hook_sub": "Contradiction<br>is the engine<br>of growth.",
+  "slides": [
+    {"kind":"split","label":"two-scales","kicker":"Two scales of mismatch","cells":[{"h":"Small","p":"Adjusts quickly.<br>Micro-update."},{"h":"Large","p":"Creates a loop.<br>Search. Struggle.<br><em>Reorganise</em>."}]},
+    {"kind":"text","label":"ai","kicker":"Active Inference formalises it","headline":"Prediction error<br>= mismatch.","coral":"Large, persistent error<br>→ structural change.","coral_size":56,"sub":"New matrix.<br>New hierarchy level.<br>Dirichlet counts<br>reorganise."},
+    {"kind":"text","label":"equation","kicker":"The equation","headline":"Paradox is<br>surprise.","coral":"Surprise is F.<br>You learn by<br><em>minimising it</em>.","coral_size":60},
+    {"kind":"image","label":"omega","screenshot":"omega-home.png","kicker":"Explore the connection","headline":"Omega.","sub":"app-omega-gray<br>.vercel.app"}
+  ],
+  "durations":[5,12,14,12,5,4],
+  "cta_custom": {
+    "kind": "omega",
+    "primary_line1": "See it for<br>yourself.",
+    "primary_line2_kicker": "Omega app",
+    "primary_line2": "app-omega-gray<br>.vercel.app",
+    "primary_sub": "Next: Emergence<br>+ Selection."
+  }
+}

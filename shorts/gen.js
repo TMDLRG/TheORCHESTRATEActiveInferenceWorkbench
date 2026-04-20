@@ -182,24 +182,28 @@ const renderers = { text: slideText, split: slideSplit, equation: slideEquation,
 
 // slide-01 is always the hook
 fs.writeFileSync(`${outDir}/slide-01-hook.html`, slideHook(spec));
-// middle slides (expect 4 entries, slides 2-5)
+// middle slides — any N (usually 4)
 spec.slides.forEach((slide, i) => {
   const num = String(i + 2).padStart(2, '0');
   const html = renderers[slide.kind](spec, slide);
   const label = slide.label || slide.kind;
   fs.writeFileSync(`${outDir}/slide-${num}-${label}.html`, html);
 });
-// slide-06 CTA
-fs.writeFileSync(`${outDir}/slide-06-cta.html`, slideCTA(spec));
+// CTA is always the LAST slide (= middle_count + 2)
+const ctaNum = String(spec.slides.length + 2).padStart(2, '0');
+fs.writeFileSync(`${outDir}/slide-${ctaNum}-cta.html`, slideCTA(spec));
 
 // Write concat.txt with provided timings
 const durations = spec.durations || [4, 13, 13, 13, 7, 5.5];
-const names = ['slide-01-hook'].concat(spec.slides.map((s, i) => `slide-${String(i+2).padStart(2, '0')}-${s.label || s.kind}`)).concat(['slide-06-cta']);
+const ctaLabel = `slide-${String(spec.slides.length + 2).padStart(2,'0')}-cta`;
+const names = ['slide-01-hook']
+  .concat(spec.slides.map((s, i) => `slide-${String(i+2).padStart(2, '0')}-${s.label || s.kind}`))
+  .concat([ctaLabel]);
 let concat = '';
 names.forEach((n2, i) => {
   concat += `file 'slides/${n2}.png'\nduration ${durations[i]}\n`;
 });
-concat += `file 'slides/slide-06-cta.png'\n`;
+concat += `file 'slides/${ctaLabel}.png'\n`;
 fs.writeFileSync(`blog-assets/shorts/${nn}/concat.txt`, concat);
 
 console.log(`  generated ${spec.slides.length + 2} slide HTMLs for #${nn}`);

@@ -1,0 +1,15 @@
+file 'slides/slide-01-hook.png'
+duration 5
+file 'slides/slide-02-map.png'
+duration 13
+file 'slides/slide-03-bridge.png'
+duration 16
+file 'slides/slide-04-two-langs.png'
+duration 13
+file 'slides/slide-05-bluespace.png'
+duration 9
+file 'slides/slide-06-omega.png'
+duration 7
+file 'slides/slide-07-cta.png'
+duration 6
+file 'slides/slide-07-cta.png'

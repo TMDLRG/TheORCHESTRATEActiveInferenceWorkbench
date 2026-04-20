@@ -1,0 +1,21 @@
+{
+  "n": 107,
+  "kicker_main": "Abstractionist Papers · 6/10",
+  "foot": "LIVING INSIDE THE MODEL · PART 107",
+  "hook_headline": "You are<br>living <em>inside</em><br>the model.",
+  "hook_sub": "Right now.<br>Every moment.",
+  "slides": [
+    {"kind":"text","label":"setup","kicker":"The quiet truth","headline":"Reading this.<br>Sitting here.<br>Aware of the room.","coral":"All of it,<br>inside a Red Space<br>your mind produces.","coral_size":52},
+    {"kind":"text","label":"hidden","kicker":"The model doesn't announce itself","headline":"You don't<br>experience<br>\"interpretation<br>of text.\"","coral":"You experience<br><em>text</em>.","coral_size":76},
+    {"kind":"text","label":"ai","kicker":"In Active Inference","headline":"It has a name.<br><em>Q</em>.","coral":"The variational<br>posterior.","coral_size":70,"sub":"Every thought —<br>operating on Q,<br>not on the world."},
+    {"kind":"image","label":"von","screenshot":"bluespace-papers.png","kicker":"Thanks for this framing","headline":"Von Paumgartten.","sub":"welcometo<br>thebluespace.com"}
+  ],
+  "durations":[5,11,11,12,5,4],
+  "cta_custom": {
+    "kind": "thanks-von",
+    "primary_line1": "Thanks<br><em>Von Paumgartten</em>.",
+    "primary_line2_kicker": "Follow Von",
+    "primary_line2": "linkedin.com/in/<br>vonpaumgartten",
+    "primary_sub": "Next: Learning<br>Through Paradox."
+  }
+}

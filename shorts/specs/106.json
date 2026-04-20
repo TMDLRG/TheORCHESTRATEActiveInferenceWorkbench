@@ -1,0 +1,21 @@
+{
+  "n": 106,
+  "kicker_main": "Abstractionist Papers · 5/10",
+  "foot": "INDUCTION · PART 106",
+  "hook_headline": "Induction.",
+  "hook_sub": "Bridging<br>the gap.",
+  "slides": [
+    {"kind":"text","label":"how","kicker":"How signals cross","headline":"Light waves<br>→ <em>colour</em>.","coral":"Pressure<br>→ touch.<br>Thought<br>→ action.","coral_size":62,"sub":"Crosses the<br>yellow boundary."},
+    {"kind":"equation","label":"ai","kicker":"In Active Inference","equation":"Eq 4.13","sub":"Message passing.<br>Signals in,<br>belief out.","coral":"Induction has<br>a precise name."},
+    {"kind":"text","label":"loop","kicker":"The loop","headline":"Signals in.<br>Belief updated.<br>Belief out.<br>Action executed.","coral":"Continuously<br>linked.","coral_size":68},
+    {"kind":"image","label":"source","screenshot":"bluespace-papers.png","kicker":"Read the framework","headline":"The Abstractionist's<br>Papers.","sub":"welcometo<br>thebluespace.com"}
+  ],
+  "durations":[4,13,13,13,6,4],
+  "cta_custom": {
+    "kind": "bluespace",
+    "primary_line1": "The full framework.",
+    "primary_line2_kicker": "Natural Reality",
+    "primary_line2": "welcometo<br>thebluespace<br>.com",
+    "primary_sub": "Next: Living Inside<br>the Model."
+  }
+}

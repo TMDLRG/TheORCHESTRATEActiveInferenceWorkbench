@@ -1,0 +1,21 @@
+{
+  "n": 102,
+  "kicker_main": "Abstractionist Papers · 1/10",
+  "foot": "RED + BLUE SPACE · PART 102",
+  "hook_headline": "Red Space.<br>Blue Space.",
+  "hook_sub": "Two worlds.<br>You only live<br>in <em>one</em>.",
+  "slides": [
+    {"kind":"split","label":"split","kicker":"The Abstractionist split","cells":[{"h":"Blue","p":"Causation.<br>What <em>happens</em>.<br>Unobserved."},{"h":"Red","p":"Interpretation.<br>What your<br><em>mind builds</em>."}]},
+    {"kind":"text","label":"experience","kicker":"Everything you experience","headline":"is Red.","sub":"The cup.<br>Your hand.<br>A voice across<br>the room.","coral":"All constructed."},
+    {"kind":"text","label":"bridge","kicker":"In Active Inference terms","headline":"Red = <em>Q</em>.","coral":"Blue = the true<br>world Q infers.","coral_size":72,"sub":"You never touch Blue."},
+    {"kind":"image","label":"source","screenshot":"bluespace-papers.png","kicker":"Where this comes from","headline":"Natural Reality.","sub":"welcometo<br>thebluespace.com"}
+  ],
+  "durations":[5,14,13,13,7,4],
+  "cta_custom": {
+    "kind": "thank-von-bluespace",
+    "primary_line1": "Thanks<br><em>Von Paumgartten</em><br>for this framework.",
+    "primary_line2_kicker": "Read the papers",
+    "primary_line2": "welcometo<br>thebluespace<br>.com",
+    "primary_sub": "Next: the Blindfold."
+  }
+}

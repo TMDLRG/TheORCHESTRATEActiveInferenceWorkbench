@@ -1,0 +1,21 @@
+{
+  "n": 110,
+  "kicker_main": "Abstractionist Papers · 9/10",
+  "foot": "NATURAL CAUSALITY · PART 110",
+  "hook_headline": "\"The music<br><em>made</em> me<br>dance.\"",
+  "hook_sub": "It didn't.",
+  "slides": [
+    {"kind":"text","label":"blindfold","kicker":"Inside the blindfold","headline":"A follows B.<br>We say<br><em>A caused B</em>.","coral":"Causation lives<br>in Blue Space.","coral_size":60,"sub":"It never arrives<br>whole in your experience."},
+    {"kind":"text","label":"ai","kicker":"Active Inference says","headline":"Causal inference<br>is <em>Bayesian</em>.","coral":"Your brain<br>constructs the best<br>explanation.","coral_size":58,"sub":"That explanation<br>is Q, not P."},
+    {"kind":"text","label":"felt","kicker":"The cause you feel","headline":"A dance.<br>A choice.<br>A reason.","coral":"All <em>inferred</em>.","coral_size":86},
+    {"kind":"image","label":"explore","screenshot":"omega-home.png","kicker":"Explore + connect","headline":"Omega app +<br>Michael Polzin.","sub":"app-omega-gray.vercel.app<br>+ linkedin.com/in/mpolzin"}
+  ],
+  "durations":[4,13,13,11,7,4],
+  "cta_custom": {
+    "kind": "combined",
+    "primary_line1": "Explore + connect.",
+    "primary_line2_kicker": "Omega + Michael",
+    "primary_line2": "app-omega-gray<br>.vercel.app<br><br>linkedin.com/in/<br>mpolzin",
+    "primary_sub": "Next: the<br>final synthesis."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "n": 103,
+  "kicker_main": "Abstractionist Papers · 2/10",
+  "foot": "THE BLINDFOLD · PART 103",
+  "hook_headline": "The<br>Blindfold.",
+  "hook_sub": "The mind is a map<br>that <em>forgets</em><br>it's a map.",
+  "slides": [
+    {"kind":"text","label":"what","kicker":"What it is","headline":"You don't<br>experience<br>interpretation.","coral":"You experience<br><em>reality</em>.","coral_size":76,"sub":"The construction<br>is invisible."},
+    {"kind":"text","label":"ai","kicker":"In Active Inference","headline":"Q is the<br>construction.","coral":"F minimisation<br>keeps Q aligned.","coral_size":68,"sub":"But Q is never<br><em>exactly</em> the world."},
+    {"kind":"text","label":"clinical","kicker":"When the blindfold fails","headline":"Hallucinations.<br>Phantom limbs.<br>Stubborn<br>wrong beliefs.","coral":"The mind trusting<br>its construction.","coral_size":50},
+    {"kind":"image","label":"omega","screenshot":"omega-home.png","kicker":"Explore the lens","headline":"Omega.","sub":"app-omega-gray<br>.vercel.app"}
+  ],
+  "durations":[5,12,12,12,5,4],
+  "cta_custom": {
+    "kind": "omega",
+    "primary_line1": "Try it.",
+    "primary_line2_kicker": "The Omega app",
+    "primary_line2": "app-omega-gray<br>.vercel.app",
+    "primary_sub": "Next: Orthogonality."
+  }
+}

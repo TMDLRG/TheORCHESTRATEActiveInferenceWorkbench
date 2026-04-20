@@ -1,0 +1,21 @@
+{
+  "n": 109,
+  "kicker_main": "Abstractionist Papers · 8/10",
+  "foot": "EMERGENCE · PART 109",
+  "hook_headline": "Emergence.",
+  "hook_sub": "How new<br>capabilities<br>appear.",
+  "slides": [
+    {"kind":"split","label":"problems","kicker":"Two problems","cells":[{"h":"Easy","p":"Things get better<br>at what they do.<br>Natural selection."},{"h":"Hard","p":"Things become<br>something <em>new</em>.<br>Where does it<br>come from?"}]},
+    {"kind":"text","label":"answer","kicker":"Active Inference says","headline":"Hierarchy.","coral":"Upper layer<br>represents patterns<br>lower layers can't.","coral_size":58,"sub":"Not evolution.<br><em>Combination</em>."},
+    {"kind":"text","label":"structure","kicker":"The key move","headline":"Upper state<br>→ lower prior.","coral":"New agency<br>from new<br><em>structure</em>.","coral_size":68,"sub":"Same equation.<br>Taller graph."},
+    {"kind":"image","label":"framework","screenshot":"bluespace-papers.png","kicker":"Emergence has math now","headline":"Natural Reality.","sub":"welcometo<br>thebluespace.com"}
+  ],
+  "durations":[4,13,14,12,6,4],
+  "cta_custom": {
+    "kind": "bluespace",
+    "primary_line1": "The framework<br>that connects them.",
+    "primary_line2_kicker": "Natural Reality",
+    "primary_line2": "welcometo<br>thebluespace<br>.com",
+    "primary_sub": "Next: Natural<br>Causality."
+  }
+}

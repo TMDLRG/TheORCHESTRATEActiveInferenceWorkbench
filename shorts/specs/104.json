@@ -1,0 +1,21 @@
+{
+  "n": 104,
+  "kicker_main": "Abstractionist Papers · 3/10",
+  "foot": "ORTHOGONALITY · PART 104",
+  "hook_headline": "Orthogonality.",
+  "hook_sub": "Red and Blue<br><em>meet</em> —<br>never <em>merge</em>.",
+  "slides": [
+    {"kind":"text","label":"axes","kicker":"Picture perpendicular axes","headline":"Shared origin.<br>Shared boundary.","coral":"A point on Red<br>is <em>not</em> on Blue.","coral_size":62,"sub":"Ever."},
+    {"kind":"text","label":"markov","kicker":"In Active Inference terms","headline":"The Markov blanket.","sub":"Interface where<br>signals cross.<br>Identities don't mix.","coral":"Q on one side.<br>P on the other."},
+    {"kind":"text","label":"trap","kicker":"The trap","headline":"You can't <em>think</em><br>your way out<br>of the system.","coral":"You're always<br>inside Red Space.","coral_size":62,"sub":"Looking at a map."},
+    {"kind":"image","label":"source","screenshot":"../../abstractionists/bluespace-papers.png","kicker":"Source","headline":"The Abstractionist's<br>Papers.","sub":"welcometo<br>thebluespace.com"}
+  ],
+  "durations":[5,13,13,12,6,4],
+  "cta_custom": {
+    "kind": "michael-linkedin",
+    "primary_line1": "Working on<br>cognition + AI?",
+    "primary_line2_kicker": "Connect with Michael",
+    "primary_line2": "linkedin.com/in/<br>mpolzin",
+    "primary_sub": "Next: Parallel Minds."
+  }
+}

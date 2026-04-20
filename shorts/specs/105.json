@@ -1,0 +1,21 @@
+{
+  "n": 105,
+  "kicker_main": "Abstractionist Papers · 4/10",
+  "foot": "PARALLEL MINDS · PART 105",
+  "hook_headline": "Parallel minds.<br>Shared<br>causation.",
+  "hook_sub": "One world.<br>Many Red Spaces.",
+  "slides": [
+    {"kind":"text","label":"three","kicker":"The same gesture","headline":"One sees<br><em>rudeness</em>.","coral":"One sees<br>shyness.","coral_size":72,"sub":"One sees someone<br>in a hurry."},
+    {"kind":"text","label":"ai","kicker":"Active Inference says","headline":"Different<br>generative<br>models.","coral":"→ Different<br>inferences from<br>identical obs.","coral_size":60,"sub":"Different priors.<br>Different likelihoods."},
+    {"kind":"text","label":"why","kicker":"Why communication is hard","headline":"Not an accident<br>of personality.","coral":"A <em>structural</em><br>property of minds.","coral_size":62},
+    {"kind":"image","label":"omega","screenshot":"omega-home.png","kicker":"Explore this lens","headline":"Omega.","sub":"app-omega-gray<br>.vercel.app"}
+  ],
+  "durations":[5,13,14,11,6,4],
+  "cta_custom": {
+    "kind": "omega",
+    "primary_line1": "Explore the<br>Abstractionist lens.",
+    "primary_line2_kicker": "Omega app",
+    "primary_line2": "app-omega-gray<br>.vercel.app",
+    "primary_sub": "Next: Induction."
+  }
+}

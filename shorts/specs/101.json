@@ -1,0 +1,22 @@
+{
+  "n": 101,
+  "kicker_main": "The Learn Arc · BONUS 101",
+  "foot": "THE BIG QUESTION · BONUS · #101",
+  "hook_headline": "Is everything<br>just electricity<br>finding the<br>path of<br><em>least resistance</em>?",
+  "hook_sub": "The bonus episode.<br>The big question.",
+  "slides": [
+    {"kind":"text","label":"setup","kicker":"If the math is this unifying","headline":"Is <em>this</em><br>the meaning<br>of life?","coral":"Free energy<br>minimisation,<br>all the way down.","coral_size":64},
+    {"kind":"text","label":"stemcells","kicker":"A thought experiment","headline":"Active Inference<br>stem cells.","sub":"No priors.<br>No hints.<br>Just: <em style=\"color:#FF6F61;font-style:normal;font-weight:900\">minimise surprise</em>.","coral":"Would agency<br>self-organise?","coral_size":62},
+    {"kind":"text","label":"bigbang","kicker":"Or further back","headline":"Was the<br>Big Bang","coral":"just the <em>flip</em><br>of the switch?","coral_size":80,"sub":"The base equation<br>laid down.<br>Everything since —<br>matter minimising F."},
+    {"kind":"image","label":"bluespace","screenshot":"bluespace-papers.png","kicker":"A framework that takes this seriously","headline":"Natural Reality.","sub":"The Abstractionist's<br>Papers —<br><em style=\"color:#FF6F61;font-style:normal;font-weight:900\">welcometothebluespace.com</em>"},
+    {"kind":"image","label":"omega","screenshot":"omega-home.png","kicker":"An app to explore the lens","headline":"Omega.","sub":"app-omega-gray<br>.vercel.app","coral":"Next 10 shorts:<br>wisdom of the<br>Abstractionists.","coral_size":46}
+  ],
+  "durations":[5,11,15,17,9,8,6],
+  "cta_custom": {
+    "kind": "bonus-credits",
+    "primary_line1": "Credits + where<br>to go <em>next</em>.",
+    "primary_line2_kicker": "Explore",
+    "primary_line2": "Omega app +<br>Blue Space",
+    "primary_sub": "Thanks Von Paumgartten<br>+ follow Michael Polzin<br>— links below."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "n": 111,
+  "kicker_main": "Abstractionist Papers · 10/10",
+  "foot": "THE SYNTHESIS · PART 111",
+  "hook_headline": "The<br><em>synthesis</em>.",
+  "hook_sub": "One idea,<br>said twice.",
+  "slides": [
+    {"kind":"split","label":"map","kicker":"What we learned","columns":1,"cells":[{"h":"Red + Blue","p":"Two domains,<br>orthogonal."},{"h":"Blindfold","p":"Map forgets<br>it's a map."},{"h":"Induction","p":"Signals cross<br>the boundary."},{"h":"Emergence","p":"Hierarchy,<br>not evolution."}]},
+    {"kind":"text","label":"bridge","kicker":"The bridge","headline":"Active Inference<br>is the <em>math</em><br>of everything<br>we just said.","coral":"Red = Q.<br>Blue = P.<br>F minimisation<br>= how Q approaches P.","coral_size":40},
+    {"kind":"text","label":"two-langs","kicker":"Same idea, two languages","headline":"Philosophy:<br>Von Paumgartten.","coral":"Mathematics:<br>Karl Friston.","coral_size":76,"sub":"One theory.<br>Two routes in."},
+    {"kind":"image","label":"bluespace","screenshot":"bluespace-papers.png","kicker":"Read the framework","headline":"welcometo<br>thebluespace.com","sub":"The Abstractionist's<br>Papers."},
+    {"kind":"image","label":"omega","screenshot":"omega-home.png","kicker":"Try the app","headline":"app-omega-gray<br>.vercel.app"}
+  ],
+  "durations":[5,13,16,13,9,7,6],
+  "cta_custom": {
+    "kind": "full-credits",
+    "primary_line1": "Thanks Von Paumgartten<br>+ follow Michael Polzin.",
+    "primary_line2_kicker": "All three links",
+    "primary_line2": "welcometothebluespace.com<br>app-omega-gray.vercel.app<br>linkedin.com/in/mpolzin",
+    "primary_sub": "The arc continues."
+  }
+}
