@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 5
+file 'slides/slide-02-claim.png'
+duration 14
+file 'slides/slide-03-wall.png'
+duration 14
+file 'slides/slide-04-map.png'
+duration 15
+file 'slides/slide-05-workbench.png'
+duration 6
+file 'slides/slide-06-cta.png'
+duration 6
+file 'slides/slide-06-cta.png'

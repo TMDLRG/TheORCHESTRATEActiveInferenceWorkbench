@@ -421,20 +421,24 @@ Note: container-internal edits are ephemeral. For durable registration, fork the
 
 ## 7. Status Log
 
-**Total:** 100 · **Live:** 3 · **In progress:** — · **Remaining:** 97.
+**Total:** 100 · **Live:** 13 · **In progress:** — · **Remaining:** 87.
+**Last updated:** 2026-04-20.
 
 | # | Title | Duration | Video ID | URL | Published (UTC) |
 |---|---|---|---|---|---|
 | 1 | Your brain doesn't see the world — it predicts it | 50.6s | `1iqMVSIfaP4` | https://www.youtube.com/shorts/1iqMVSIfaP4 | 2026-04-20 04:11 |
 | 2 | You don't decide what to do — you descend gradients | 52.3s | `mjTubFiR8PY` | https://www.youtube.com/shorts/mjTubFiR8PY | 2026-04-20 04:44 |
 | 3 | Surprise is the one thing your brain is trying to kill | 57.2s | `9lJSifZ09aM` | https://www.youtube.com/shorts/9lJSifZ09aM | 2026-04-20 05:00 |
-| 4 | Curiosity isn't a personality trait — it's an equation | — | — | — | — |
-| 5 | Confidence is just a number your neurons multiply by | — | — | — | — |
-| 6 | Boredom and panic are the same failure | — | — | — | — |
-| 7 | Your brain models itself — that's what "I" is | — | — | — | — |
-| 8 | Pain is a prediction, not a sensation | — | — | — | — |
-| 9 | Dreams are your brain running the model backwards | — | — | — | — |
-| 10 | The one equation Karl Friston built his career on | — | — | — | — |
+| 4 | Curiosity isn't a personality trait — it's an equation | 51.9s | `8QyDVFLcrfk` | https://www.youtube.com/shorts/8QyDVFLcrfk | 2026-04-20 |
+| 5 | Confidence is just a number your neurons multiply by | 53.5s | `qP9D-_1tV3o` | https://www.youtube.com/shorts/qP9D-_1tV3o | 2026-04-20 |
+| 6 | Boredom and panic are the same failure | 57.3s | `GMdymZSVYzQ` | https://www.youtube.com/shorts/GMdymZSVYzQ | 2026-04-20 |
+| 7 | Your brain models itself — that's what "I" is | 51.1s | `-w8Zud1wi_A` | https://www.youtube.com/shorts/-w8Zud1wi_A | 2026-04-20 |
+| 8 | Pain is a prediction, not a sensation | 48.3s | `ptQMJz7e6eM` | https://www.youtube.com/shorts/ptQMJz7e6eM | 2026-04-20 |
+| 9 | Dreams are your brain running the model backwards | 54.7s | `iA2DBc6kdBg` | https://www.youtube.com/shorts/iA2DBc6kdBg | 2026-04-20 |
+| 10 | The one equation Karl Friston built his career on | 51.9s | `Ma8sHv5EaKE` | https://www.youtube.com/shorts/Ma8sHv5EaKE | 2026-04-20 |
+| 11 | Preface — why this book exists | 59.7s | `Aos9oBJGako` | https://www.youtube.com/shorts/Aos9oBJGako | 2026-04-20 |
+| 12 | Ch 1: Perception, action, learning — one loop, one theory | 55.9s | `jzNr3IlDy8I` | https://www.youtube.com/shorts/jzNr3IlDy8I | 2026-04-20 |
+| 13 | Ch 2: Bayes' rule to free energy in four moves | 59.2s | `MuyRD8t_pZo` | https://www.youtube.com/shorts/MuyRD8t_pZo | 2026-04-20 |
 
 Fill the empty rows as you ship each short. **Append new rows at the bottom when you finish batch N — do not rebuild the table.**
 

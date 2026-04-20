@@ -1,0 +1,13 @@
+file 'slides/slide-01-hook.png'
+duration 3.5
+file 'slides/slide-02-no-receptors.png'
+duration 11
+file 'slides/slide-03-evidence.png'
+duration 11
+file 'slides/slide-04-best-guess.png'
+duration 13
+file 'slides/slide-05-change.png'
+duration 6
+file 'slides/slide-06-cta.png'
+duration 5
+file 'slides/slide-06-cta.png'
