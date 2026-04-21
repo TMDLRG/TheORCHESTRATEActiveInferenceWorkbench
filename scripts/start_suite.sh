@@ -88,7 +88,7 @@ if [[ "$(up_http "http://127.0.0.1:$LIBRECHAT_PORT/")" == "200" ]]; then
   green "  ✓ LibreChat already running on :$LIBRECHAT_PORT"
 else
   if command -v docker >/dev/null 2>&1 && [[ -f "$ROOT/Qwen3.6/librechat/docker-compose.yml" ]]; then
-    ( cd "$ROOT/Qwen3.6/librechat" && docker compose up -d > "$LOG_DIR/librechat.log" 2>&1 )
+    ( cd "$ROOT/Qwen3.6/librechat" && docker compose -f docker-compose.yml -f ../compose.librechat-workshop.yml up -d > "$LOG_DIR/librechat.log" 2>&1 )
     wait_until_up "LibreChat" "http://127.0.0.1:$LIBRECHAT_PORT/" 120 || red "  LibreChat startup timed out; full chat tab will show offline page."
     wait_until_up "Speech HTTP (voice container)" "http://127.0.0.1:$SPEAK_PORT/healthz" 30 || yellow "  voice HTTP slow to start — Phoenix Narrator falls back to Web Speech."
     wait_until_up "Speech MCP  (voice container)" "http://127.0.0.1:$SPEECH_MCP_PORT/sse" 30 || yellow "  voice MCP slow to start — LibreChat speak~voice tool will attach late."

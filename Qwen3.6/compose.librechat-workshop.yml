@@ -1,0 +1,49 @@
+# Tracked workshop overlay for LibreChat (merged after Qwen3.6/librechat/docker-compose.yml).
+# Paths in `build.context` are relative to THIS file (under Qwen3.6/).
+# Run from Qwen3.6/librechat: docker compose -f docker-compose.yml -f ../compose.librechat-workshop.yml up -d
+#
+# Local-only tweaks can still live in librechat/docker-compose.override.yml (gitignored upstream).
+services:
+  # Docker Desktop (Windows): bind-mounted ./logs and ./uploads are owned by root inside the VM.
+  api:
+    user: "0:0"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./librechat.yaml:/app/librechat.yaml:ro
+      - ./overrides/index.html:/app/client/dist/index.html:ro
+    environment:
+      - CONFIG_PATH=/app/librechat.yaml
+      - HOST=0.0.0.0
+    depends_on:
+      - mongodb
+      - rag_api
+      - voice
+
+  rag_api:
+    image: ghcr.io/danny-avila/librechat-rag-api-dev:latest
+
+  mongodb:
+    user: "999:999"
+    shm_size: "256m"
+
+  meilisearch:
+    user: "0:0"
+    environment:
+      MEILI_HTTP_ADDR: "0.0.0.0:7700"
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY}
+      MEILI_NO_ANALYTICS: "true"
+
+  voice:
+    container_name: workshop-voice
+    build:
+      context: ../ClaudeSpeak
+      dockerfile: claude-voice-connector-http/Dockerfile
+    image: workshop-voice:0.1.0
+    ports:
+      - "7711:7711"
+      - "7712:7712"
+    environment:
+      - SPEECH_MCP_PORT=7711
+      - CLAUDE_SPEAK_PORT=7712
+    restart: unless-stopped

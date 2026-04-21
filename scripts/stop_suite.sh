@@ -41,7 +41,7 @@ kill_port 7711 "Speech MCP"
 kill_port 8090 "Qwen"
 
 if [[ -f "$ROOT/Qwen3.6/librechat/docker-compose.yml" ]] && command -v docker >/dev/null 2>&1; then
-  ( cd "$ROOT/Qwen3.6/librechat" && docker compose stop 2>/dev/null || true )
+  ( cd "$ROOT/Qwen3.6/librechat" && docker compose -f docker-compose.yml -f ../compose.librechat-workshop.yml stop 2>/dev/null || true )
   echo "  stopped LibreChat Docker stack"
 fi
 

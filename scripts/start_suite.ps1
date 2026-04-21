@@ -11,6 +11,9 @@
   Run from the repo root:
       ./scripts/start_suite.ps1
 
+  Skip opening the workbench in a browser (CI / headless):
+      ./scripts/start_suite.ps1 -NoBrowser
+
   Stop everything:
       ./scripts/stop_suite.ps1
 #>
@@ -19,7 +22,8 @@ param(
   [int]$SpeakPort   = 7712,
   [int]$SpeechMcpPort = 7711,
   [int]$LibrechatPort = 3080,
-  [int]$QwenPort    = 8090
+  [int]$QwenPort    = 8090,
+  [switch]$NoBrowser
 )
 
 $ErrorActionPreference = "Stop"
@@ -50,11 +54,16 @@ function Write-LogTail([string]$path, [int]$lines = 25) {
 }
 
 function Test-Http($url, [int]$timeout=3) {
+  # Invoke-WebRequest shows a "Reading web response" progress bar by default; it can linger in the host.
+  $prev = $ProgressPreference
+  $ProgressPreference = "SilentlyContinue"
   try {
     $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec $timeout -ErrorAction Stop
     return [int]$r.StatusCode
   } catch {
     return 0
+  } finally {
+    $ProgressPreference = $prev
   }
 }
 
@@ -109,12 +118,25 @@ if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200) {
 } else {
   $libreDir = Join-Path $root "Qwen3.6\librechat"
   if ((Test-Path (Join-Path $libreDir "docker-compose.yml")) -and (Get-Command docker -ErrorAction SilentlyContinue)) {
+    $workshopPath = Join-Path $root "Qwen3.6\compose.librechat-workshop.yml"
+    if (-not (Test-Path $workshopPath)) {
+      Write-Red "  x missing $workshopPath (required workshop Docker overlay)."
+      exit 1
+    }
     $libreLog = Join-Path $logs "librechat.log"
+    $workshopCompose = (Resolve-Path $workshopPath).Path
+    $composeMain = (Resolve-Path (Join-Path $libreDir "docker-compose.yml")).Path
     Push-Location $libreDir
-    Ensure-ComposeUidGid
-    docker compose up -d *>&1 | Out-File -FilePath $libreLog -Encoding utf8
-    $dc = $LASTEXITCODE
-    Pop-Location
+    try {
+      Ensure-ComposeUidGid
+      # Docker writes progress to stderr. PowerShell 7+ can treat that as a terminating error when
+      # $ErrorActionPreference is Stop. cmd.exe redirection avoids aborting the script mid-compose.
+      # Workshop overlay lives under Qwen3.6/ (git-tracked); librechat/ stays gitignored for local data.
+      cmd /c "docker compose -f `"$composeMain`" -f `"$workshopCompose`" up -d > `"$libreLog`" 2>&1"
+      $dc = $LASTEXITCODE
+    } finally {
+      Pop-Location
+    }
     if ($dc -ne 0) {
       Write-Red "  x docker compose up failed (exit $dc). Full chat / voice stack did not start."
       Write-LogTail $libreLog
@@ -203,3 +225,9 @@ Write-Host ""
 Write-Cyan ("  Logs       : " + $logs + '\')
 Write-Cyan  "  Stop       : $(Join-Path $PSScriptRoot 'stop_suite.ps1')"
 Write-Host ""
+
+if (-not $NoBrowser) {
+  $workbench = "http://127.0.0.1:$PhoenixPort/"
+  Write-Host "Opening workbench in your default browser..." -ForegroundColor DarkGray
+  Start-Process $workbench
+}

@@ -100,14 +100,25 @@ Stop-Pidfile "ClaudeSpeak"       (Join-Path $state "claudespeak.pid")
 
 # Stop Docker-published services first; killing :3080 on the host can hit Docker's proxy before containers stop.
 $libreDir = Join-Path $root "Qwen3.6\librechat"
+$workshopPath = Join-Path $root "Qwen3.6\compose.librechat-workshop.yml"
 if ((Test-Path (Join-Path $libreDir "docker-compose.yml")) -and (Get-Command docker -ErrorAction SilentlyContinue)) {
   Push-Location $libreDir
   try {
     Ensure-ComposeUidGid
-    & docker compose stop
-    if ($LASTEXITCODE -ne 0) {
-      Write-Host "  docker compose stop returned $LASTEXITCODE (trying down...)" -ForegroundColor Yellow
-      & docker compose down
+    $composeMain = (Resolve-Path (Join-Path $libreDir "docker-compose.yml")).Path
+    if (Test-Path $workshopPath) {
+      $workshopCompose = (Resolve-Path $workshopPath).Path
+      & docker compose -f $composeMain -f $workshopCompose stop
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "  docker compose stop returned $LASTEXITCODE (trying down...)" -ForegroundColor Yellow
+        & docker compose -f $composeMain -f $workshopCompose down
+      }
+    } else {
+      & docker compose stop
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "  docker compose stop returned $LASTEXITCODE (trying down...)" -ForegroundColor Yellow
+        & docker compose down
+      }
     }
     Write-Host "  stopped LibreChat Docker stack" -ForegroundColor Green
   } catch {
