@@ -27,8 +27,12 @@ $bin = Join-Path $root "llama.cpp-bin\llama-server.exe"
 if (-not (Test-Path $bin)) { throw "llama-server.exe missing at $bin." }
 
 function Test-PortFree([int]$p) {
-    $c = Get-NetTCPConnection -LocalPort $p -ErrorAction SilentlyContinue
-    return ($null -eq $c) -or ($c.Count -eq 0)
+    # .NET API only — avoids NetTCPIP / Get-NetTCPConnection (missing or restricted on some Windows setups).
+    $props = [System.Net.NetworkInformation.IPGlobalProperties]::GetIPGlobalProperties()
+    foreach ($l in $props.GetActiveTcpListeners()) {
+        if ($l.Port -eq $p) { return $false }
+    }
+    return $true
 }
 
 $port = $StartPort

@@ -44,3 +44,9 @@ audio book/
 
 # Suite launcher runtime state (logs + admin JWT + passwords) -- never commit.
 scripts/.suite/
+*.mp4
+*.mp3
+blog-assets/shorts/*/video.mp4
+blog-assets/shorts/*/short-*.mp4
+blog-assets/shorts/*/narration.mp3
+blog-assets/shorts/*/slides/*.png

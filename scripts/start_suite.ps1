@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
   Active Inference Masterclass — unified Windows launcher.
@@ -23,6 +23,8 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+# Immediate banner so the window is never mistaken for "hung" before first HTTP check.
+Write-Host "Active Inference suite launcher (logs under scripts\.suite\logs)" -ForegroundColor DarkGray
 $root = Resolve-Path (Join-Path $PSScriptRoot "..")
 $state = Join-Path $PSScriptRoot ".suite"
 $logs  = Join-Path $state "logs"
@@ -32,6 +34,20 @@ function Write-Cyan($m)   { Write-Host $m -ForegroundColor Cyan }
 function Write-Green($m)  { Write-Host $m -ForegroundColor Green }
 function Write-Yellow($m) { Write-Host $m -ForegroundColor Yellow }
 function Write-Red($m)    { Write-Host $m -ForegroundColor Red }
+
+function Ensure-ComposeUidGid {
+  if ([string]::IsNullOrWhiteSpace($env:UID)) { $env:UID = '1000' }
+  if ([string]::IsNullOrWhiteSpace($env:GID)) { $env:GID = '1000' }
+}
+
+function Write-LogTail([string]$path, [int]$lines = 25) {
+  if (Test-Path $path) {
+    Write-Host "--- last $lines lines: $path ---" -ForegroundColor DarkGray
+    Get-Content $path -Tail $lines -ErrorAction SilentlyContinue | ForEach-Object { Write-Host "  $_" }
+  } else {
+    Write-Host "(log not found: $path)" -ForegroundColor DarkGray
+  }
+}
 
 function Test-Http($url, [int]$timeout=3) {
   try {
@@ -47,6 +63,7 @@ function Wait-Up($name, $url, [int]$maxSec, [int]$ok=200) {
   while ($t -lt $maxSec) {
     $code = Test-Http $url 3
     if ($code -eq $ok) { Write-Green "  + $name ready at $url (${t}s)"; return $true }
+    Write-Host "  ... waiting for $name (${t}s / ${maxSec}s)..." -ForegroundColor DarkGray
     Start-Sleep -Seconds 5
     $t += 5
   }
@@ -61,9 +78,21 @@ if ((Test-Http "http://127.0.0.1:$QwenPort/v1/models") -eq 200) {
 } else {
   $qwenScript = Join-Path $root "Qwen3.6\scripts\start_qwen.ps1"
   if (Test-Path $qwenScript) {
-    Start-Process powershell -ArgumentList "-NoProfile","-File",$qwenScript -WorkingDirectory (Join-Path $root "Qwen3.6") -RedirectStandardOutput (Join-Path $logs "qwen.log") -RedirectStandardError (Join-Path $logs "qwen.err") -PassThru | ForEach-Object { $_.Id } | Out-File (Join-Path $state "qwen.pid")
-    Write-Yellow "  ... loading 36 GB weights may take up to 2 minutes"
-    Wait-Up "Qwen" "http://127.0.0.1:$QwenPort/v1/models" 240 | Out-Null
+    $qwenLog = Join-Path $logs "qwen.log"
+    $qwenErr = Join-Path $logs "qwen.err"
+    try {
+      # Hidden: stdout/stderr go to log files; a visible window would look blank.
+      Start-Process powershell -WindowStyle Hidden -ArgumentList "-NoProfile","-ExecutionPolicy","Bypass","-File",$qwenScript -WorkingDirectory (Join-Path $root "Qwen3.6") -RedirectStandardOutput $qwenLog -RedirectStandardError $qwenErr -PassThru | ForEach-Object { $_.Id } | Out-File (Join-Path $state "qwen.pid")
+    } catch {
+      Write-Red "  x could not start Qwen helper process: $($_.Exception.Message)"
+      exit 1
+    }
+    Write-Yellow "  ... loading 36 GB weights may take up to 2 minutes (detail: $qwenLog)"
+    if (-not (Wait-Up "Qwen" "http://127.0.0.1:$QwenPort/v1/models" 240)) {
+      Write-Red "  x Qwen startup timed out; suite continues but local LLM tab may be offline."
+      Write-LogTail $qwenErr
+      Write-LogTail $qwenLog
+    }
   } else {
     Write-Yellow "  skipped — Qwen3.6\scripts\start_qwen.ps1 missing"
   }
@@ -80,12 +109,27 @@ if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200) {
 } else {
   $libreDir = Join-Path $root "Qwen3.6\librechat"
   if ((Test-Path (Join-Path $libreDir "docker-compose.yml")) -and (Get-Command docker -ErrorAction SilentlyContinue)) {
+    $libreLog = Join-Path $logs "librechat.log"
     Push-Location $libreDir
-    docker compose up -d | Out-File (Join-Path $logs "librechat.log")
+    Ensure-ComposeUidGid
+    docker compose up -d *>&1 | Out-File -FilePath $libreLog -Encoding utf8
+    $dc = $LASTEXITCODE
     Pop-Location
-    Wait-Up "LibreChat" "http://127.0.0.1:$LibrechatPort/" 120 | Out-Null
-    Wait-Up "Speech HTTP (voice)" "http://127.0.0.1:$SpeakPort/healthz" 30 | Out-Null
-    Wait-Up "Speech MCP  (voice)" "http://127.0.0.1:$SpeechMcpPort/sse" 30 | Out-Null
+    if ($dc -ne 0) {
+      Write-Red "  x docker compose up failed (exit $dc). Full chat / voice stack did not start."
+      Write-LogTail $libreLog
+      exit 1
+    }
+    if (-not (Wait-Up "LibreChat" "http://127.0.0.1:$LibrechatPort/" 120)) {
+      Write-Red "  x LibreChat startup timed out; full chat tab may show an offline page. See $libreLog"
+      Write-LogTail $libreLog
+    }
+    if (-not (Wait-Up "Speech HTTP (voice)" "http://127.0.0.1:$SpeakPort/healthz" 30)) {
+      Write-Yellow "  ! voice HTTP slow — narrator may fall back to Web Speech until :$SpeakPort answers."
+    }
+    if (-not (Wait-Up "Speech MCP  (voice)" "http://127.0.0.1:$SpeechMcpPort/sse" 30)) {
+      Write-Yellow "  ! voice MCP slow — LibreChat speak~voice tool may attach late."
+    }
   } else {
     Write-Yellow "  skipped — Docker or compose file missing"
   }
@@ -115,12 +159,32 @@ Write-Cyan ">> [4/4] Starting Phoenix Workbench..."
 if ((Test-Http "http://127.0.0.1:$PhoenixPort/") -eq 200) {
   Write-Green "  + Phoenix already running on :$PhoenixPort"
 } else {
+  if (-not (Get-Command mix -ErrorAction SilentlyContinue)) {
+    Write-Red "  x mix (Elixir) is not on PATH — Phoenix cannot start."
+    Write-Host "    Install Elixir, ensure mix is on your user PATH, then open a new PowerShell in the repo and run:" -ForegroundColor Yellow
+    Write-Host "      .\scripts\start_suite.ps1" -ForegroundColor Yellow
+    Write-Host "    (Double-clicking often uses a minimal PATH; VS Code / Windows Terminal inherit your dev PATH.)" -ForegroundColor Yellow
+    exit 1
+  }
   $phxDir = Join-Path $root "active_inference"
+  if (-not (Test-Path $phxDir)) {
+    Write-Red "  x Phoenix app directory missing: $phxDir"
+    exit 1
+  }
+  $phxOut = Join-Path $logs "phoenix.log"
+  $phxErr = Join-Path $logs "phoenix.err"
   $env:MIX_ENV = "dev"
-  $env:PORT = $PhoenixPort
-  Start-Process cmd -ArgumentList "/c","mix phx.server" -WorkingDirectory $phxDir -RedirectStandardOutput (Join-Path $logs "phoenix.log") -RedirectStandardError (Join-Path $logs "phoenix.err") -PassThru | ForEach-Object { $_.Id } | Out-File (Join-Path $state "phoenix.pid")
+  $env:PORT = "$PhoenixPort"
+  try {
+    Start-Process cmd -WindowStyle Hidden -ArgumentList "/c","mix phx.server" -WorkingDirectory $phxDir -RedirectStandardOutput $phxOut -RedirectStandardError $phxErr -PassThru | ForEach-Object { $_.Id } | Out-File (Join-Path $state "phoenix.pid")
+  } catch {
+    Write-Red "  x could not start Phoenix: $($_.Exception.Message)"
+    exit 1
+  }
   if (-not (Wait-Up "Phoenix" "http://127.0.0.1:$PhoenixPort/" 60)) {
-    Write-Red "  Phoenix failed. See $logs\phoenix.log"
+    Write-Red "  x Phoenix failed to listen on :$PhoenixPort. See logs:"
+    Write-LogTail $phxErr
+    Write-LogTail $phxOut
     exit 1
   }
 }
@@ -136,6 +200,6 @@ Write-Cyan  "  Qwen API   : http://127.0.0.1:$QwenPort/v1/models"
 Write-Cyan  "  Speech TTS : http://127.0.0.1:$SpeakPort/healthz"
 Write-Cyan  "  Speech MCP : http://127.0.0.1:$SpeechMcpPort/sse"
 Write-Host ""
-Write-Cyan  "  Logs       : $logs\"
+Write-Cyan ("  Logs       : " + $logs + '\')
 Write-Cyan  "  Stop       : $(Join-Path $PSScriptRoot 'stop_suite.ps1')"
 Write-Host ""
