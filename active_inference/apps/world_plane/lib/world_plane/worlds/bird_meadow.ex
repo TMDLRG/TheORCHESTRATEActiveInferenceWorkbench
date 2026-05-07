@@ -289,36 +289,100 @@ defmodule WorldPlane.Worlds.BirdMeadow do
 
   # -- Internal helpers -------------------------------------------------------
 
+  # External-review K5 (v2): same-tile move-conflict resolution must be
+  # deterministic. The previous version iterated `state.positions` as a Map
+  # and used `Enum.reduce` — Map iteration order in BEAM is implementation-
+  # defined, so two birds aiming at the same target tile resolved
+  # non-deterministically (whichever happened to be reduced second silently
+  # overwrote the first in `pos_acc`).
+  #
+  # The fix is a three-phase sweep:
+  #   1. Classify each agent's intent (move | sing | stay | no_action).
+  #   2. Compute *intended* movement targets.
+  #   3. Reconcile: for each target tile claimed by 2+ birds, the
+  #      lexicographically-lowest agent_id wins; losers stay put with a
+  #      `{:blocked, :collision}` ledger entry.
+  #
+  # The sort by `agent_id` at every iteration removes Map-order dependence
+  # entirely. Property test in `bird_meadow_test.exs` exercises random
+  # collision configurations.
   defp apply_actions(state, action_map) do
-    state.positions
-    |> Enum.reduce({%{}, [], []}, fn {agent_id, pos}, {pos_acc, sing_acc, stay_acc} ->
-      case Map.get(action_map, agent_id) do
-        nil ->
-          # No action submitted → bird stays put, doesn't sing.
+    intents =
+      state.positions
+      |> Enum.sort_by(fn {agent_id, _pos} -> agent_id end)
+      |> Enum.map(fn {agent_id, pos} -> {agent_id, pos, classify_intent(action_map, agent_id, state, pos)} end)
+
+    # Movement intents collect to {agent_id, intended_target, action_atom}.
+    movement_intents =
+      Enum.flat_map(intents, fn
+        {agent_id, _pos, {:move, target, action}} -> [{agent_id, target, action}]
+        _ -> []
+      end)
+
+    # Reconciliation: group by target tile; the agent with the
+    # lex-lowest id wins; others are bumped back to their original pos
+    # with a {:blocked, :collision} stay entry.
+    target_winners =
+      movement_intents
+      |> Enum.group_by(fn {_id, target, _action} -> target end)
+      |> Enum.into(%{}, fn {target, claimants} ->
+        winner = Enum.min_by(claimants, fn {agent_id, _t, _a} -> agent_id end)
+        {target, elem(winner, 0)}
+      end)
+
+    Enum.reduce(intents, {%{}, [], []}, fn {agent_id, pos, intent}, {pos_acc, sing_acc, stay_acc} ->
+      case intent do
+        {:no_action} ->
           {Map.put(pos_acc, agent_id, pos), sing_acc, [{agent_id, :no_action} | stay_acc]}
 
-        %ActionPacket{action: :stay} ->
+        {:stay} ->
           {Map.put(pos_acc, agent_id, pos), sing_acc, [{agent_id, :stay} | stay_acc]}
 
-        %ActionPacket{action: action} when action in @movement_actions ->
-          new_pos = step_pos(state, pos, action)
+        {:sing, token} ->
+          {Map.put(pos_acc, agent_id, pos), [{agent_id, token} | sing_acc], stay_acc}
 
-          stay = if new_pos == pos, do: [{agent_id, {:blocked, action}} | stay_acc], else: stay_acc
+        {:move, target, action} ->
+          cond do
+            # Target wasn't reachable in the first place (wall/oob).
+            target == pos ->
+              {Map.put(pos_acc, agent_id, pos), sing_acc,
+               [{agent_id, {:blocked, action}} | stay_acc]}
 
-          {Map.put(pos_acc, agent_id, new_pos), sing_acc, stay}
+            # We won this target — commit to it.
+            Map.get(target_winners, target) == agent_id ->
+              {Map.put(pos_acc, agent_id, target), sing_acc, stay_acc}
 
-        %ActionPacket{action: action} ->
-          # Singing action atom like :sing_t1 → token :t1
-          case decode_sing(action) do
-            {:ok, token} ->
-              {Map.put(pos_acc, agent_id, pos), [{agent_id, token} | sing_acc], stay_acc}
-
-            :error ->
-              raise ArgumentError,
-                    "BirdMeadow: unknown action #{inspect(action)} for agent #{agent_id}"
+            # Lost the collision — bump back to original position.
+            true ->
+              {Map.put(pos_acc, agent_id, pos), sing_acc,
+               [{agent_id, {:blocked, :collision}} | stay_acc]}
           end
       end
     end)
+  end
+
+  defp classify_intent(action_map, agent_id, state, pos) do
+    case Map.get(action_map, agent_id) do
+      nil ->
+        {:no_action}
+
+      %ActionPacket{action: :stay} ->
+        {:stay}
+
+      %ActionPacket{action: action} when action in @movement_actions ->
+        target = step_pos(state, pos, action)
+        {:move, target, action}
+
+      %ActionPacket{action: action} ->
+        case decode_sing(action) do
+          {:ok, token} ->
+            {:sing, token}
+
+          :error ->
+            raise ArgumentError,
+                  "BirdMeadow: unknown action #{inspect(action)} for agent #{agent_id}"
+        end
+    end
   end
 
   defp decode_sing(action) when is_atom(action) do

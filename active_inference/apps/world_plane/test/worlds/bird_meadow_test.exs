@@ -173,6 +173,144 @@ defmodule WorldPlane.Worlds.BirdMeadowTest do
     end
   end
 
+  # External-review K5 (v2): Map iteration order in `apply_actions/2` was
+  # implementation-defined, so two birds aiming at the same target tile
+  # resolved non-deterministically. The fix reconciles target conflicts by
+  # lexicographically-lowest agent_id wins; losers stay put with a
+  # `{:blocked, :collision}` ledger entry.
+  describe "K5 audit anchor: same-tile move-conflict resolution" do
+    test "head-on collision: lowest agent_id lands on target, loser blocked", %{
+      pid: pid,
+      blanket: bk
+    } do
+      # alice at (1,1), bob at (3,1). Both move east+west toward (2,1).
+      :ok = BirdMeadow.add_bird(pid, "alice", {1, 1})
+      :ok = BirdMeadow.add_bird(pid, "bob", {3, 1})
+
+      actions = %{
+        "alice" => ActionPacket.new(%{t: 0, action: :move_east, agent_id: "alice", blanket: bk}),
+        "bob" => ActionPacket.new(%{t: 0, action: :move_west, agent_id: "bob", blanket: bk})
+      }
+
+      {:ok, _obs} = BirdMeadow.multi_step(pid, actions)
+      state = BirdMeadow.peek(pid)
+
+      # alice is lex-first → wins (2, 1). bob bumped back to original (3, 1).
+      assert state.positions["alice"] == {2, 1}
+      assert state.positions["bob"] == {3, 1}
+
+      stays = Map.fetch!(List.last(state.history), :stays)
+      assert {"bob", {:blocked, :collision}} in stays
+    end
+
+    test "no spurious collisions when targets differ", %{pid: pid, blanket: bk} do
+      :ok = BirdMeadow.add_bird(pid, "alice", {0, 0})
+      :ok = BirdMeadow.add_bird(pid, "bob", {3, 3})
+
+      actions = %{
+        "alice" =>
+          ActionPacket.new(%{t: 0, action: :move_east, agent_id: "alice", blanket: bk}),
+        "bob" => ActionPacket.new(%{t: 0, action: :move_west, agent_id: "bob", blanket: bk})
+      }
+
+      {:ok, _} = BirdMeadow.multi_step(pid, actions)
+      state = BirdMeadow.peek(pid)
+
+      assert state.positions["alice"] == {1, 0}
+      assert state.positions["bob"] == {2, 3}
+
+      stays = Map.fetch!(List.last(state.history), :stays)
+      refute Enum.any?(stays, fn {_, kind} -> kind == {:blocked, :collision} end)
+    end
+
+    test "three-way collision on the same tile: lex-lowest wins", %{pid: pid, blanket: bk} do
+      :ok = BirdMeadow.add_bird(pid, "charlie", {2, 0})
+      :ok = BirdMeadow.add_bird(pid, "alice", {2, 2})
+      :ok = BirdMeadow.add_bird(pid, "bob", {1, 1})
+
+      # All three aim at (2, 1).
+      actions = %{
+        "charlie" =>
+          ActionPacket.new(%{t: 0, action: :move_south, agent_id: "charlie", blanket: bk}),
+        "alice" =>
+          ActionPacket.new(%{t: 0, action: :move_north, agent_id: "alice", blanket: bk}),
+        "bob" => ActionPacket.new(%{t: 0, action: :move_east, agent_id: "bob", blanket: bk})
+      }
+
+      {:ok, _} = BirdMeadow.multi_step(pid, actions)
+      state = BirdMeadow.peek(pid)
+
+      # alice (lex-first) wins (2,1); charlie and bob are bumped back.
+      assert state.positions["alice"] == {2, 1}
+      assert state.positions["charlie"] == {2, 0}
+      assert state.positions["bob"] == {1, 1}
+    end
+
+    test "deterministic across input ordering (audit anchor: K7+K5 reproducibility)" do
+      # Two birds aiming at the same target. Run twice — outcome must be
+      # identical regardless of any underlying iteration order.
+      run = fn ->
+        {:ok, pid} = BirdMeadow.start_link(width: 4, height: 4)
+        bk = Blanket.meadow_default()
+        # Add in alphabetical order one run, reverse the next — order of
+        # addition is irrelevant under the lex-first tie-break rule.
+        :ok = BirdMeadow.add_bird(pid, "zoe", {0, 0})
+        :ok = BirdMeadow.add_bird(pid, "alice", {2, 0})
+
+        actions = %{
+          "zoe" => ActionPacket.new(%{t: 0, action: :move_east, agent_id: "zoe", blanket: bk}),
+          "alice" =>
+            ActionPacket.new(%{t: 0, action: :move_west, agent_id: "alice", blanket: bk})
+        }
+
+        {:ok, _} = BirdMeadow.multi_step(pid, actions)
+        result = BirdMeadow.peek(pid)
+        GenServer.stop(pid)
+        result.positions
+      end
+
+      a = run.()
+      b = run.()
+      assert a == b
+
+      # alice (lex-first) lands on (1, 0); zoe bumped back.
+      assert a["alice"] == {1, 0}
+      assert a["zoe"] == {0, 0}
+    end
+  end
+
+  # External-review K6 (v2): `:no_action` (no ActionPacket submitted) and
+  # `:stay` (explicit ActionPacket with action=:stay) produce identical
+  # world transitions but different ledger entries. The distinction is
+  # preserved (not collapsed) so downstream researchers can see whether
+  # a bird's policy chose to stay vs. failed to act.
+  describe "K6 audit anchor: :no_action vs :stay history distinction" do
+    test "missing action → :no_action; explicit :stay → :stay in history", %{
+      pid: pid,
+      blanket: bk
+    } do
+      :ok = BirdMeadow.add_bird(pid, "alice", {1, 1})
+      :ok = BirdMeadow.add_bird(pid, "bob", {2, 2})
+
+      # Only alice submits an action (explicit :stay). Bob is omitted.
+      actions = %{
+        "alice" => ActionPacket.new(%{t: 0, action: :stay, agent_id: "alice", blanket: bk})
+      }
+
+      {:ok, _} = BirdMeadow.multi_step(pid, actions)
+      state = BirdMeadow.peek(pid)
+
+      stays = Map.fetch!(List.last(state.history), :stays)
+
+      assert {"alice", :stay} in stays
+      assert {"bob", :no_action} in stays
+
+      # Both stay put physically.
+      assert state.positions["alice"] == {1, 1}
+      assert state.positions["bob"] == {2, 2}
+    end
+  end
+
   describe "reproducibility" do
     test "identical action sequences produce identical observation streams" do
       run = fn ->
