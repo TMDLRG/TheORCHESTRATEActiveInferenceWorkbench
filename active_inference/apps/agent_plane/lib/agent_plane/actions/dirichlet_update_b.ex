@@ -25,12 +25,40 @@ defmodule AgentPlane.Actions.DirichletUpdateB do
     state = context.state
     bundle = state.bundle
     action = state[:last_action]
+
+    # Audit fix (external review C2, v1+v2): `marginal_state_belief` lives on
+    # `state`, not the `bundle`. The previous `Map.get(bundle, :marginal_state_belief, nil)`
+    # always returned nil, hitting the no-op branch below — DirichletUpdateB
+    # was silently dead on every call. `prev_marginal_state_belief` is still
+    # bundle-sourced because DirichletUpdateB writes it back to the bundle on
+    # line 53 below, so the per-tick rotation continues to work for tick 1
+    # onward (tick 0 correctly skips with q_prev == nil).
     q_prev = Map.get(bundle, :prev_marginal_state_belief, nil)
-    q_now = Map.get(bundle, :marginal_state_belief, nil)
+
+    q_now =
+      case state.marginal_state_belief do
+        [] -> nil
+        [_ | _] = vec -> vec
+      end
 
     cond do
-      is_nil(action) or is_nil(q_prev) or is_nil(q_now) ->
+      # No action chosen yet (e.g. first tick before Plan/Act). Nothing to do.
+      is_nil(action) ->
         {:ok, %{bundle: bundle}}
+
+      # No current marginal (e.g. Perceive hasn't run). Nothing to roll forward.
+      is_nil(q_now) ->
+        {:ok, %{bundle: bundle}}
+
+      # Bootstrap path: tick 0 has no prev_marginal yet. Seed it from q_now so
+      # the next tick can compute the outer product q_now ⊗ q_prev. Without
+      # this seed, the rotation never starts and DirichletUpdateB stays a
+      # no-op forever (audit fix paired with C2 — the original code only
+      # wrote prev_marginal in the full-update branch, which it could never
+      # reach without a prior prev_marginal). Skip the alpha update on this
+      # bootstrap tick by design.
+      is_nil(q_prev) ->
+        {:ok, %{bundle: Map.put(bundle, :prev_marginal_state_belief, q_now)}}
 
       true ->
         counts_map = Map.get(bundle, :dirichlet_b_counts, %{})

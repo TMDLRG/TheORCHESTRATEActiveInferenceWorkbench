@@ -30,7 +30,17 @@ defmodule AgentPlane.Actions.DirichletUpdateA do
     bundle = state.bundle
     a = bundle.a
     obs = List.last(state.obs_history) || List.duplicate(0.0, length(a))
-    q_s = Map.get(bundle, :marginal_state_belief, uniform(length(hd(a))))
+
+    # Audit fix (external review C2, v1+v2): `marginal_state_belief` lives on
+    # the agent's `state`, NOT on the `bundle`. The previous Map.get(bundle, ...)
+    # fired the uniform fallback every call, reducing the Dirichlet update to
+    # state-independent observation averaging. Reading from `state` lets the
+    # update actually weight by the agent's current posterior.
+    q_s =
+      case state.marginal_state_belief do
+        [] -> uniform(length(hd(a)))
+        [_ | _] = vec -> vec
+      end
 
     alpha_a =
       Context.with_agent_context(state, fn ->
