@@ -2,7 +2,9 @@
 
 > *Built with wisdom from [THE ORCHESTRATE METHOD™](https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V) and [LEVEL UP](https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ) by [Michael Polzin](https://www.linkedin.com/in/mpolzin/) — running on pure [Jido](https://github.com/agentjido/jido) on the BEAM, teaching Active Inference from Parr, Pezzulo & Friston (2022, MIT Press, CC BY-NC-ND).*
 
-A full **Active Inference learning suite** with a BEAM-native agent workbench, a 10-chapter curriculum with 39 sessions, 7 browser-based Learning Labs, a 50-recipe cookbook, and an integrated chat UI with 27 custom tutors. Every agent is a real `Jido.AgentServer` running on Elixir/OTP — no external agent runtimes, no Python orchestration.
+A **pedagogical Active Inference workbench**: a BEAM-native reference implementation of *discrete-time POMDP with mean-field variational message passing and expected-free-energy-weighted policy posterior* — **one specific instantiation under the FEP framework**, not the framework itself. Plus a 10-chapter curriculum with 39 sessions, 7 browser-based Learning Labs, a 50-recipe cookbook, and an integrated chat UI with 27 custom tutors. Every agent is a real `Jido.AgentServer` running on Elixir/OTP — no external agent runtimes, no Python orchestration.
+
+> **Scope honesty.** The mathematical content here implements one derivation under Friston's free-energy principle: discrete-time, finite-state, mean-field VMP, EFE policy posterior. Other derivations (continuous-time, hierarchical, particle-based, sampling-based) are not implemented. The framework is broader than what runs here. Operational ceilings (per-action timeout, depth-vs-substrate limits) and the planned Nx port are documented in [OPS.md](OPS.md). Reviewer findings drive ongoing remediation; see [_local_guides/](_local_guides/) for ADRs.
 
 ---
 
