@@ -1,5 +1,7 @@
 # The ORCHESTRATE Active Inference Learning Workbench
 
+[![CI](https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench/actions/workflows/ci.yml/badge.svg)](https://github.com/TMDLRG/TheORCHESTRATEActiveInferenceWorkbench/actions/workflows/ci.yml)
+
 > *Built with wisdom from [THE ORCHESTRATE METHOD™](https://www.amazon.com/ORCHESTRATE-Prompting-Professional-AI-Outputs-ebook/dp/B0G2B9LG6V) and [LEVEL UP](https://www.amazon.com/Level-Usage-Maturity-Model-Excellence-ebook/dp/B0GS4WDVFZ) by [Michael Polzin](https://www.linkedin.com/in/mpolzin/) — running on pure [Jido](https://github.com/agentjido/jido) on the BEAM, teaching Active Inference from Parr, Pezzulo & Friston (2022, MIT Press, CC BY-NC-ND).*
 
 A **pedagogical Active Inference workbench**: a BEAM-native reference implementation of *discrete-time POMDP with mean-field variational message passing and expected-free-energy-weighted policy posterior* — **one specific instantiation under the FEP framework**, not the framework itself. Plus a 10-chapter curriculum with 39 sessions, 7 browser-based Learning Labs, a 50-recipe cookbook, and an integrated chat UI with 27 custom tutors. Every agent is a real `Jido.AgentServer` running on Elixir/OTP — no external agent runtimes, no Python orchestration.

@@ -601,6 +601,20 @@ defmodule AgentPlane.BundleBuilder.Meadow do
     softmax_to_log(logits)
   end
 
+  @doc """
+  Enumerate policies as all depth-`d` action sequences for the meadow.
+
+  ## Complexity warning (audit anchor A2, v1.2-hardening)
+
+  This is `|A|^d` — exponential. With the meadow's 9-action vocabulary
+  (`[:stay, :move_n/s/e/w, :sing_t1/t2/t3/t4]`):
+  depth 1 → 9, depth 2 → 81, depth 3 → 729, depth 4 → 6,561.
+
+  ConvergentBird uses depth 1 by design; SimpleBird and ComplexBird
+  default to depth 2 with explicit `:policy_depth` overrides for
+  experimental tuning. See [`AgentPlane.BundleBuilder.enumerate_policies/2`](`AgentPlane.BundleBuilder.enumerate_policies/2`)
+  for the full scaling table and substrate constraints.
+  """
   @spec enumerate_policies([atom], pos_integer()) :: [[atom]]
   def enumerate_policies(actions, depth) when is_list(actions) and depth >= 1 do
     Enum.reduce(1..depth, [[]], fn _, acc ->

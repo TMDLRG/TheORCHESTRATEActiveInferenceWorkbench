@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  test:
+    name: Compile + fast suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      MIX_ENV: test
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: "27.3"
+          elixir-version: "1.18.4"
+
+      - name: Restore deps cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            active_inference/deps
+            active_inference/_build
+          key: ${{ runner.os }}-mix-${{ hashFiles('active_inference/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: Install Elixir deps
+        working-directory: ./active_inference
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+
+      - name: Compile (warnings as errors)
+        working-directory: ./active_inference
+        run: mix compile --warnings-as-errors
+
+      - name: Run fast test suite
+        working-directory: ./active_inference
+        run: mix test --exclude slow_experiment --exclude qwen_live --exclude flaky
+
+      - name: Audit anchor verification
+        working-directory: ./active_inference
+        run: |
+          mix test \
+            apps/agent_plane/test/meadow/vfe_bound_test.exs \
+            apps/agent_plane/test/meadow/elbo_bound_test.exs \
+            apps/agent_plane/test/meadow/q_vs_p_naming_test.exs \
+            apps/agent_plane/test/meadow/no_thermo_overclaim_test.exs \
+            apps/agent_plane/test/meadow/blanket_ci_test.exs \
+            apps/agent_plane/test/actions/dirichlet_update_a_test.exs \
+            apps/agent_plane/test/actions/dirichlet_update_b_test.exs

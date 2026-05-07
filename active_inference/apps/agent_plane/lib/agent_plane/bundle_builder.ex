@@ -225,7 +225,33 @@ defmodule AgentPlane.BundleBuilder do
     "bundle-" <> (:crypto.strong_rand_bytes(8) |> Base.url_encode64(padding: false))
   end
 
-  @doc "Enumerate policies as all depth-`d` action sequences."
+  @doc """
+  Enumerate policies as all depth-`d` action sequences.
+
+  ## Complexity warning (audit anchor A2, v1.2-hardening)
+
+  This is `|A|^d` — exponential in policy depth. Practical ceilings:
+
+  | Action vocab | Depth 2 | Depth 3 | Depth 4 | Depth 5 |
+  |---|---|---|---|---|
+  | 4 (maze) | 16 | 64 | 256 | 1,024 |
+  | 9 (meadow simple/complex) | 81 | 729 | 6,561 | 59,049 |
+  | 13 (meadow with 8 song tokens) | 169 | 2,197 | 28,561 | 371,293 |
+
+  Each policy in the returned list drives a per-policy belief sweep
+  in `ActiveInferenceCore.DiscreteTime.sweep_state_beliefs/7` AND a
+  per-policy EFE evaluation in `expected_free_energy/4`. Cost is
+  roughly `|A|^d × (horizon+1) × n_iters × matvec(n_states²)`.
+
+  At meadow scale (n_states=160 for ComplexBird on 4×4, n_obs=1000)
+  and depth 2, a single Plan tick already approaches the
+  `Jido.Exec` per-action 60s timeout in pure Elixir. See `OPS.md` §3.
+
+  Use beam search or amortised inference for depth ≥ 4 in any
+  vocabulary larger than 4. The receding-horizon controller in
+  `choose_action/4` runs the planner every tick, so depth-d policies
+  evaluated for one action's worth of value compound the cost.
+  """
   @spec enumerate_policies([atom], pos_integer()) :: [[atom]]
   def enumerate_policies(actions, d) when is_list(actions) and is_integer(d) and d >= 1 do
     Enum.reduce(1..d, [[]], fn _, acc ->

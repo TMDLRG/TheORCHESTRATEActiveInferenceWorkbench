@@ -68,6 +68,41 @@ The **unified event store, spec registry, and Phoenix.PubSub bus**. Every cross-
 
 All defined in [`lib/world_models/event_log/setup.ex`](lib/world_models/event_log/setup.ex).
 
+## Consistency model (audit anchor K1, v1.2-hardening)
+
+The event log makes the following declared guarantees, verified by
+[`test/event_log_consistency_test.exs`](test/event_log_consistency_test.exs):
+
+- **Per-`agent_id` causal ordering.** For any single `agent_id`, events
+  appended in serial order from the same calling process are observed
+  in that order by `EventLog.query(agent_id: ...)`. The
+  `:world_models_events` table is `ordered_set` keyed on
+  `{ts_usec, id}`, and `Event.new/1` populates `:ts_usec` from
+  `System.system_time(:microsecond)` at construction time, so monotonic
+  per-process clock advancement gives monotonic per-agent ordering.
+
+- **Cross-agent ordering is timestamp-best-effort.** Events from
+  different agents may interleave in the global query stream when
+  their `ts_usec` values are equal (microsecond clock resolution under
+  a single BEAM scheduler). **No global linearisability claim is
+  made.** Cross-agent ordering should be reconstructed by callers from
+  `provenance.agent_id` + `ts_usec`, not assumed.
+
+- **Append durability.** `EventLog.append/1` runs inside an
+  `:mnesia.transaction` that writes to `disc_copies`. On `:ok` return
+  the event has been written to the LATEST.LOG transaction journal
+  and survives BEAM restart. Verified by
+  [`test/event_log_test.exs:108-145`](test/event_log_test.exs).
+
+- **No claim of exactly-once across crashes mid-transaction.** A BEAM
+  crash inside a transaction reverts that transaction; callers must
+  treat `:append` failures (e.g. `{:aborted, _}`) as not-persisted.
+
+This is the model. Anything stronger would need: a vector-clock
+provenance, a quorum write across nodes, or a single global
+serialiser. None of those is present in v1.x; tracked as future
+distributed-systems work.
+
 ## Constants & config keys
 
 | Key | Default | Set in |
