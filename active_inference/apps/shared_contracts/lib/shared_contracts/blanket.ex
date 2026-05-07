@@ -96,6 +96,82 @@ defmodule SharedContracts.Blanket do
     }
   end
 
+  @doc """
+  Default blanket for the multi-agent Bird Meadow world.
+
+  Channels:
+    * Wall signature reduced to a single 2-way `:near_wall` summary so the
+      hearing factors (the scientifically interesting ones) dominate the
+      observation space. Mazes already test wall localisation; the meadow
+      is about song-driven inference.
+    * Hearing factors expose only the LOUDEST audible song in range
+      (aggregated, not per-source). This preserves the inter-agent
+      Markov blanket: a listener cannot directly observe another bird's
+      identity or hidden state — it must infer them from the song stream.
+    * `:self_sang_token` is proprioceptive (the listener's own previous
+      vocalisation) and is needed for the partner-modelling factor in
+      higher-tier birds (the bird must distinguish "I sang" from "they sang").
+
+  Action vocabulary: 9 atoms — one stay, four cardinal moves, four song
+  tokens. Singing and moving are mutually exclusive on a single tick
+  (matches the discrete-time POMDP's single-action-per-step contract;
+  call/response timing then emerges from the constraint).
+  """
+  @spec meadow_default() :: t()
+  def meadow_default do
+    song_tokens = [:t1, :t2, :t3, :t4]
+    sing_actions = Enum.map(song_tokens, fn t -> String.to_atom("sing_" <> Atom.to_string(t)) end)
+
+    %__MODULE__{
+      observation_channels: [
+        :wall_sig,
+        :hearing_amp,
+        :hearing_token,
+        :hearing_bearing,
+        :self_sang_token
+      ],
+      action_vocabulary:
+        [:stay, :move_north, :move_south, :move_east, :move_west] ++ sing_actions,
+      channel_specs: %{
+        wall_sig: %{
+          kind: :categorical,
+          values: [:open, :near_wall],
+          description:
+            "True iff at least one of the four cardinal neighbours is a wall (or out of bounds)."
+        },
+        hearing_amp: %{
+          kind: :categorical,
+          values: [:silence, :soft, :medium, :loud],
+          description:
+            "Amplitude bin of the LOUDEST audible song this tick after distance attenuation."
+        },
+        hearing_token: %{
+          kind: :categorical,
+          values: [:none | song_tokens],
+          description:
+            "Song token of the loudest audible source. `:none` iff `hearing_amp == :silence`."
+        },
+        hearing_bearing: %{
+          kind: :categorical,
+          values: [:none, :north, :east, :south, :west],
+          description:
+            "4-quadrant bearing to the loudest source. `:none` if same tile or no source."
+        },
+        self_sang_token: %{
+          kind: :categorical,
+          values: [:none | song_tokens],
+          description:
+            "Token the listener sang on the PREVIOUS tick (proprioceptive feedback). " <>
+              "`:none` if the listener did not sing."
+        }
+      }
+    }
+  end
+
+  @doc "Song-token alphabet used by `meadow_default/0`. Stable for callers that need the list."
+  @spec meadow_song_tokens() :: [atom()]
+  def meadow_song_tokens, do: [:t1, :t2, :t3, :t4]
+
   @doc "Replace the list of exposed observation channels."
   @spec with_observation_channels(t(), [atom()]) :: t()
   def with_observation_channels(%__MODULE__{} = blanket, channels) when is_list(channels) do

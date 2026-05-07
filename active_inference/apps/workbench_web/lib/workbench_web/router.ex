@@ -87,6 +87,9 @@ defmodule WorkbenchWeb.Router do
     live "/labs", LabsLive.Run, :index
     live "/labs/run", LabsLive.Run, :index
 
+    # Bird Meadow — multi-agent active inference world (audit-grade demo).
+    live "/labs/meadow", MeadowLive.Index, :index
+
     # ORCHESTRATE Workbench uplift -- cookbook (50 runnable recipes).
     live "/cookbook", CookbookLive.Index, :index
     live "/cookbook/:slug", CookbookLive.Show, :show

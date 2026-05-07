@@ -43,4 +43,27 @@ defmodule WorldPlane.WorldBehaviour do
 
   @doc "Stop the running instance."
   @callback stop(pid()) :: :ok
+
+  @doc """
+  Optional multi-agent step. Defined for worlds that host more than one
+  agent simultaneously (e.g., the Bird Meadow). Receives a map of
+  per-agent action packets and returns a map of per-agent observation
+  packets. Existing single-agent worlds (mazes) ignore this callback.
+
+  Implementing this callback DOES NOT change the typed Markov blanket —
+  every observation packet returned must still validate against
+  `Blanket.observation_channels`, and every action packet received must
+  still be in the blanket's `action_vocabulary`.
+  """
+  @callback multi_step(pid(), %{String.t() => ActionPacket.t()}) ::
+              {:ok, %{String.t() => ObservationPacket.t()}} | {:error, term()}
+
+  @doc """
+  Optional per-agent observation read for multi-agent worlds. Returns the
+  observation a specific agent would receive right now, without applying
+  any action. Mirrors `step/2`'s read-only sibling for the multi-agent case.
+  """
+  @callback observe(pid(), String.t()) :: {:ok, ObservationPacket.t()} | {:error, term()}
+
+  @optional_callbacks multi_step: 2, observe: 2
 end

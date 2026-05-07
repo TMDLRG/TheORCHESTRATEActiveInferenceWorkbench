@@ -21,7 +21,13 @@ defmodule AgentPlane.Actions.Perceive do
   @impl true
   def run(%{observation: obs_packet, n_iters: n_iters}, context) do
     state = context.state
-    obs_vec = ObsAdapter.to_obs_vector(obs_packet)
+    # Bird Meadow extension: the bundle may declare an alternate observation
+    # adapter (e.g., `AgentPlane.MeadowObsAdapter`) that knows how to project
+    # multi-channel hearing observations onto the agent's flat obs vector.
+    # Falling back to the maze adapter preserves backward compatibility for
+    # every existing (maze-bundle) caller.
+    adapter = Map.get(state.bundle, :obs_adapter, ObsAdapter)
+    obs_vec = adapter.to_obs_vector(obs_packet)
 
     new_history = state.obs_history ++ [obs_vec]
     new_t = length(new_history) - 1
