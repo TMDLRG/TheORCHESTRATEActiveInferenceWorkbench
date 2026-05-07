@@ -18,6 +18,31 @@ defmodule AgentPlane.Meadow.NoThermoOverclaimTest do
       sentinel string `analogical only` must appear in the same file)
 
   The lint runs over `apps/agent_plane/lib` and `apps/world_plane/lib`.
+
+  ## What this lint catches and what it doesn't (C4 efficacy boundary)
+
+  External-review C4 (v2, Cantrill): this lint allows the disclaimer
+  phrase `"analogical only"` (or `"analogy only"` / `"not literal"`)
+  *anywhere in the file* to excuse forbidden tokens *anywhere else in
+  the file*. A future contributor who learns the rule can satisfy the
+  lint by adding the disclaimer phrase as a docstring header at the top
+  of a file, regardless of whether the rest of the file's prose
+  maintains the analogy-versus-mechanism distinction.
+
+  This is a textual lint, not a semantic check. **It catches naive
+  overclaim** (someone who writes "the variational free energy is the
+  Helmholtz free energy" in a moduledoc with no disclaimer anywhere).
+  **It does not catch sophisticated overclaim** (someone who adds the
+  disclaimer phrase once at the top of the file, then proceeds to use
+  thermodynamic vocabulary as if it were literal mechanism throughout).
+
+  A future hardening would tighten the proximity: require the
+  disclaimer phrase within ~5 lines or the same docstring block as
+  the forbidden token. Tracked as future work; the v1.1 lint is
+  documented honestly so readers know what it does and doesn't do.
+
+  Per Cantrill's framing: source-code-level enforcement is much better
+  than no enforcement, even if the enforcement isn't airtight.
   """
 
   use ExUnit.Case, async: true

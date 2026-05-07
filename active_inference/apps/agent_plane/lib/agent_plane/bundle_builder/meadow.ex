@@ -223,6 +223,23 @@ defmodule AgentPlane.BundleBuilder.Meadow do
     * `:duet_window` (default 8) — number of recent obs to summarise.
     * `:silence_threshold` (default 3) — minimum recent silent ticks
       needed to enter `:duet` mode.
+
+  ## Honest naming (external-review R2-new, v2)
+
+  This v1 "Resonant" tier implements context-swap by a hand-coded
+  heuristic on observation summary statistics, **not** by hierarchical
+  Bayesian inference over a meta-level generative model. The meta
+  has no A/B/C/D matrices of its own; it has a rule (`if recent silence
+  count >= threshold, switch to :duet`).
+
+  The name "Resonant" suggests something richer than what's there.
+  A future revision should either (a) rename the tier to something like
+  `bimodal/1` or `context_swap/1` to reflect the heuristic nature, or
+  (b) wire this through `AgentPlane.Hierarchical` (currently
+  maze-coupled) so the meta level is a real generative model with its
+  own posterior. Tracked as future work; documented here so readers
+  know the v1 implementation does mode arbitration, not hierarchical
+  inference.
   """
   @spec resonant(keyword()) :: map()
   def resonant(opts) do

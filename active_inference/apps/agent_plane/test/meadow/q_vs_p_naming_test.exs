@@ -79,6 +79,22 @@ defmodule AgentPlane.Meadow.QvsPNamingTest do
       refute src =~ "ActiveInferenceAgent",
              "ExactInference must not take agent structs — bundles only"
     end
+
+    # External-review C5 (v2): the q_vs_p boundary was previously asymmetric.
+    # The variational path was tested to not reference the audit path, but
+    # the audit path could still reference variational machinery if a future
+    # refactor added an import. These two refutes close the boundary.
+    test "ExactInference does not import VariationalFreeEnergy" do
+      src = read_file_at(@exact_path)
+      refute src =~ "VariationalFreeEnergy",
+             "ExactInference (audit reference path) must not depend on the production VFE module"
+    end
+
+    test "ExactInference does not import ExpectedFreeEnergy" do
+      src = read_file_at(@exact_path)
+      refute src =~ "ExpectedFreeEnergy",
+             "ExactInference (audit reference path) must not depend on the production EFE module"
+    end
   end
 
   describe "naming discipline" do

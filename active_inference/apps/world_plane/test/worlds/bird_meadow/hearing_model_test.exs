@@ -1,4 +1,19 @@
 defmodule WorldPlane.Worlds.BirdMeadow.HearingModelTest do
+  @moduledoc """
+  Pure-function tests for the HearingModel module.
+
+  ## K7 audit anchor (external review v2)
+
+  The reviewer's "what would satisfy" for K7 was *"a single property test
+  that generates two equally-distant equally-loud emissions from agents
+  `alice` and `bob` and asserts `aggregate_per_listener` returns
+  `alice`."* That assertion already exists in this file at the test
+  named `"loudest wins; tie-break is amplitude→distance→agent_id"`
+  (around line 99) — two equally-close sources at amplitude 1.0 with
+  agent_ids `"z"` and `"a"`, asserting the lex-lowest `"a"` wins. The
+  K7 anchor is therefore satisfied by an existing test.
+  """
+
   use ExUnit.Case, async: true
 
   alias WorldPlane.Worlds.BirdMeadow.HearingModel
