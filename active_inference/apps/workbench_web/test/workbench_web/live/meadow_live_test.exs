@@ -62,7 +62,7 @@ defmodule WorkbenchWeb.MeadowLiveTest do
       view
       |> render_click("place_bird", %{"col" => "0", "row" => "0"})
 
-    assert html_dup =~ "tile occupied"
+    assert html_dup =~ "Tile already occupied"
 
     # Start episode.
     html_started = view |> render_click("start", %{})
@@ -109,7 +109,9 @@ defmodule WorkbenchWeb.MeadowLiveTest do
     view |> render_click("place_bird", %{"col" => "1", "row" => "1"})
 
     html = render(view)
-    assert html =~ "tier=simple"
+    # UI renders the placed bird as "Bird N — simple, prefers t1, placed at column 1, row 1"
+    # (post-v1.0 placement-list format).
+    assert html =~ "— simple, prefers t1"
   end
 
   test "remove_bird unplaces a bird before start", %{conn: conn} do
@@ -119,8 +121,10 @@ defmodule WorkbenchWeb.MeadowLiveTest do
     html_one = render(view)
     assert html_one =~ "Placed birds (1)"
 
-    # Pull the bird id out of the rendered HTML.
-    [_, bird_id] = Regex.run(~r/(bird-\d+)/, html_one)
+    # Pull the full bird id out of the rendered HTML. Post-v1.0 the id format
+    # is `bird-{index}-{unique_integer}` so the regex must include both
+    # numeric segments.
+    [_, bird_id] = Regex.run(~r/(bird-\d+-\d+)/, html_one)
 
     view |> render_click("remove_bird", %{"id" => bird_id})
 
