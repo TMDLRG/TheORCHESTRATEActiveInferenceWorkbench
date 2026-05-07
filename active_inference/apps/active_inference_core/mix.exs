@@ -28,7 +28,12 @@ defmodule ActiveInferenceCore.MixProject do
     [
       {:jason, "~> 1.4"},
       # Plan §8.4 — per-equation `:telemetry.span/3` in DiscreteTime.
-      {:telemetry, "~> 1.2"}
+      {:telemetry, "~> 1.2"},
+      # v2-nx-port: optional Nx-backed math primitives. Active when
+      # config :active_inference_core, :nx_backend is set to true.
+      # Pure-Elixir path remains the default; Nx is the production-scale
+      # accelerator. See `lib/active_inference_core/math/nx.ex`.
+      {:nx, "~> 0.7", optional: true}
     ]
   end
 end

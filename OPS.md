@@ -62,23 +62,53 @@ Each mitigation is enforced or documented in the codebase. None are silent.
 
 ---
 
-## 4. Roadmap: the Nx port milestone (`v2-nx-port`)
+## 4. Roadmap: the Nx port milestone (status as of v2-equivalence-proof, 2026-05-07)
 
 The **W1 finding** from the external review panel (Wolpert) named the pure-Elixir list math as the substrate problem. The v2 delta review noted this has graduated from "developer note" to "load-bearing capability constraint" because Experiment 2's call-response hypothesis at depth ≥ 2 is gated by it.
 
-The Nx port targets:
+### 4.1 What we attempted
 
-1. `ActiveInferenceCore.Math.matvec/2` and `softmax/1` — re-implement on Nx tensors.
-2. `Skills.VariationalFreeEnergy` and `Skills.ExpectedFreeEnergy` — switch their inner ops to Nx.
-3. `DiscreteTime.choose_action/4` — gate the per-policy belief sweep behind Nx if `:nx_backend` config is `true`.
+Minimum-viable Nx port: re-implement `ActiveInferenceCore.Math.matvec/2` and `softmax/1` on Nx tensors, gated behind a config flag (`:nx_backend`), with the pure-Elixir path as the default. The port lives at `apps/active_inference_core/lib/active_inference_core/math/nx.ex`.
 
-**Acceptance criterion:** ComplexBird at depth 2 on a 1000-dim observation space, single tick, under 5 s on a developer laptop. (Currently: tens of seconds, often timeout.)
+### 4.2 What we proved
 
-**Numerical equivalence test:** pure-Elixir vs. Nx outputs match within `1.0e-9` on random inputs. If they diverge, the port is wrong.
+**Primitive-level numerical equivalence to `1.0e-9`.** `apps/active_inference_core/test/math_nx_test.exs` asserts that `Math.Nx.matvec/2` and `Math.Nx.softmax/1` produce the same results as the pure-Elixir reference on random inputs across edge cases, meadow-scale (1000×64 and 1000×1152) matrices, sharply-peaked softmax inputs, and 1000-dim policy logits.
 
-The pure-Elixir path stays as the **pedagogical reference** — readable, no compile-time deps on Nx, suitable for teaching the math from the source equations.
+This artifact stands. It is the foundation a future redesign builds on.
 
-This is a milestone, not a sprint. Multi-week effort. Tracked in this OPS.md as the canonical reference; PR/issue links will appear here as the work proceeds.
+### 4.3 What we refuted
+
+**Drop-in primitive replacement does not deliver a speedup.** Wiring `Math.matvec/2` and `Math.softmax/1` to dispatch through `Math.Nx` via `Application.get_env(:active_inference_core, :nx_backend, true)` was prototyped and benchmarked. Result on the ComplexBird depth-2 4×4 meadow tick:
+
+| Path | Wall-clock |
+|---|---|
+| Pure-Elixir | ~26 s |
+| Nx (BinaryBackend, drop-in dispatch) | ~121 s |
+
+Speedup: **0.22×** (5× slower). The dispatch was reverted. The benchmark file `apps/agent_plane/test/meadow/nx_benchmark_test.exs` now ships as a baseline measurement of the pure-Elixir path only.
+
+**Root cause of the regression.** Per-call `Nx.tensor(...)` / `Nx.to_list(...)` boundary conversions dominate when the kernel itself is small (single matvec on a few thousand elements) and is invoked thousands of times per Plan call. The default BinaryBackend has no SIMD acceleration that would amortise this cost. Beyond the perf hit, accumulated floating-point summation-order differences across the long log-domain matvecs on the inner sweep exceed `1e-6` after composition through `log_eps + matvec + softmax`, even though primitive-level equivalence holds at `1e-9`.
+
+### 4.4 The honest scoping
+
+Drop-in primitive replacement is **the wrong design** for this hot path. To deliver a speedup, the inner sweep must be tensorised as a whole:
+
+1. **Batched matvec across policies.** The per-policy belief sweep does the same matvec shape repeatedly with different inputs. Batch them into a single `Nx.dot` on a 3-tensor.
+2. **`defn`-compiled kernels.** Compile the inner update as one `defn` so Nx can fuse ops and skip the conversion boundary inside the kernel.
+3. **EXLA or Torchx backend.** The default BinaryBackend is for portability, not speed. EXLA delivers the SIMD/GPU speedup that justifies the conversion overhead in the first place.
+
+This is **multi-week work**, tracked as `v2.1` and not part of the v1.x remediation series. The pure-Elixir path stays as the **pedagogical reference** — readable, no compile-time deps on Nx, suitable for teaching the math from the source equations.
+
+### 4.5 Capability gate, current state
+
+| Configuration | Pure-Elixir tick | Status |
+|---|---|---|
+| ConvergentBird depth 1 | sub-second | ✅ Live demo, integration test, both pass |
+| ComplexBird depth 1, 4×4 meadow | seconds | ✅ Within Jido per-action timeout |
+| ComplexBird depth 2, 4×4 meadow | ~26 s | 🟡 Within 60s Jido timeout, exceeds 5s comfort gate |
+| ComplexBird depth 2, 1000-dim full meadow | tens of seconds, often timeout | 🔴 Substrate ceiling — gated behind `v2.1` |
+
+The 5s acceptance gate originally written into this OPS.md targets the `v2.1` redesigned Nx path, **not** the pure-Elixir reference. Pure-Elixir clears the Jido 60s per-action timeout at 4×4 meadow scale; that is the gate that matters for the workbench shipping today.
 
 ---
 
