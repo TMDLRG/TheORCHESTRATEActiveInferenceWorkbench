@@ -43,7 +43,7 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
   use GenServer
 
   alias AgentPlane.{ActiveInferenceAgent, Telemetry}
-  alias AgentPlane.Actions.{Act, Perceive, Plan}
+  alias AgentPlane.Actions.{Act, Perceive, Plan, SwapContext}
   alias Jido.Agent.Directive
   alias SharedContracts.{ActionPacket, Blanket, ObservationPacket}
   alias WorldPlane.Worlds.BirdMeadow
@@ -101,11 +101,11 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
     GenServer.start(__MODULE__, Keyword.put(opts, :session_id, session_id), name: name)
   end
 
-  @spec step(pid() | String.t()) :: {:ok, [tick_entry()]} | {:done, map()}
-  def step(ref), do: GenServer.call(ref_to_pid(ref), :step, 60_000)
+  @spec step(pid() | String.t(), timeout()) :: {:ok, [tick_entry()]} | {:done, map()}
+  def step(ref, timeout \\ 60_000), do: GenServer.call(ref_to_pid(ref), :step, timeout)
 
-  @spec snapshot(pid() | String.t()) :: map()
-  def snapshot(ref), do: GenServer.call(ref_to_pid(ref), :snapshot)
+  @spec snapshot(pid() | String.t(), timeout()) :: map()
+  def snapshot(ref, timeout \\ 60_000), do: GenServer.call(ref_to_pid(ref), :snapshot, timeout)
 
   @spec reset(pid() | String.t()) :: :ok
   def reset(ref), do: GenServer.call(ref_to_pid(ref), :reset)
@@ -171,15 +171,18 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
     obs_map =
       Enum.into(state.agents, %{}, fn {agent_id, _} ->
         case BirdMeadow.observe(state.meadow_pid, agent_id) do
-          {:ok, obs} -> {agent_id, obs}
-          {:error, reason} -> raise "MeadowEpisode: observe/2 failed for #{agent_id}: #{inspect(reason)}"
+          {:ok, obs} ->
+            {agent_id, obs}
+
+          {:error, reason} ->
+            raise "MeadowEpisode: observe/2 failed for #{agent_id}: #{inspect(reason)}"
         end
       end)
 
     # 2. For each bird: maybe swap context (Resonant), then Perceive→Plan→Act.
     {new_agents, action_map, tick_entries} =
       Enum.reduce(state.agents, {%{}, %{}, []}, fn {agent_id, abundle},
-                                                    {acc_agents, acc_actions, acc_entries} ->
+                                                   {acc_agents, acc_actions, acc_entries} ->
         obs = Map.fetch!(obs_map, agent_id)
 
         {abundle1, ctx_swapped} = maybe_swap_resonant_context(abundle, obs)
@@ -260,6 +263,30 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
     {:reply, summary(state), state}
   end
 
+  # `WorkbenchWeb.ActiveRuns` polls every episode registered in
+  # `WorkbenchWeb.Episode.Registry` with `:inspect_state` on every layout
+  # render (the "Running" nav chip). MeadowEpisode shares that registry
+  # with the single-agent `WorkbenchWeb.Episode`, so it must answer the
+  # same call or the GenServer dies with FunctionClauseError mid-tick.
+  def handle_call(:inspect_state, _from, state) do
+    first_agent_id =
+      state.agents
+      |> Map.keys()
+      |> List.first()
+
+    bird_count = map_size(state.agents)
+
+    summary = %{
+      session_id: state.session_id,
+      steps: state.steps,
+      max_steps: state.max_steps,
+      terminal?: state.steps >= state.max_steps,
+      agent: %{agent_id: first_agent_id || "meadow:#{bird_count}"}
+    }
+
+    {:reply, summary, state}
+  end
+
   def handle_call(:reset, _from, state) do
     :ok = BirdMeadow.reset(state.meadow_pid)
 
@@ -275,8 +302,7 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
         {agent_id, %{ab | agent: agent, current_context: ctx, recent_obs: []}}
       end)
 
-    {:reply, :ok,
-     %{state | agents: new_agents, steps: 0, history: []}}
+    {:reply, :ok, %{state | agents: new_agents, steps: 0, history: []}}
   end
 
   # -- Inference helpers ------------------------------------------------------
@@ -296,8 +322,15 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
     {a3, action}
   end
 
-  # Resonant context swap: evaluate the duet/explore rule on the bird's recent
-  # observation channels. Returns {abundle_after_swap, swapped?}.
+  # Resonant context swap: evaluate the duet/explore rule on the bird's
+  # recent observation channels. Returns {abundle_after_swap, swapped?}.
+  #
+  # The actual `bundle.c` mutation is routed through the `SwapContext`
+  # JIDO action so the change is applied by the strategy inside `cmd/2`
+  # — preserving the cmd/2 purity contract from `00-philosophy.md`
+  # ("StateOps are applied by the strategy inside cmd/2 and never leave
+  # it"). Tracking the active context label is episode bookkeeping and
+  # stays here.
   defp maybe_swap_resonant_context(%{agent: agent} = ab, _new_obs) do
     case Map.get(ab.agent.state.bundle, :resonant_meta) do
       nil ->
@@ -321,9 +354,7 @@ defmodule WorkbenchWeb.Episode.MeadowEpisode do
 
         if target_ctx != ab.current_context do
           new_c = Map.fetch!(ctx_map, target_ctx)
-          new_bundle = Map.put(agent.state.bundle, :c, new_c)
-          new_state = Map.put(agent.state, :bundle, new_bundle)
-          new_agent = Map.put(agent, :state, new_state)
+          {new_agent, _dirs} = ActiveInferenceAgent.cmd(agent, {SwapContext, %{c: new_c}})
           {%{ab | agent: new_agent, current_context: target_ctx}, true}
         else
           {ab, false}

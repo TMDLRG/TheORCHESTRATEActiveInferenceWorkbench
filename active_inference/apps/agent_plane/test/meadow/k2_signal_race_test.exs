@@ -107,7 +107,9 @@ defmodule AgentPlane.Meadow.K2SignalRaceTest do
     assert length(agent_state.marginal_state_belief) == n_states
     sum = Enum.sum(agent_state.marginal_state_belief)
 
-    assert_in_delta sum, 1.0, 1.0e-6,
+    assert_in_delta sum,
+                    1.0,
+                    1.0e-6,
                     "marginal_state_belief is not a normalised distribution; " <>
                       "sum = #{sum}, indicating a torn read or a stale write"
 

@@ -310,7 +310,9 @@ defmodule WorldPlane.Worlds.BirdMeadow do
     intents =
       state.positions
       |> Enum.sort_by(fn {agent_id, _pos} -> agent_id end)
-      |> Enum.map(fn {agent_id, pos} -> {agent_id, pos, classify_intent(action_map, agent_id, state, pos)} end)
+      |> Enum.map(fn {agent_id, pos} ->
+        {agent_id, pos, classify_intent(action_map, agent_id, state, pos)}
+      end)
 
     # Movement intents collect to {agent_id, intended_target, action_atom}.
     movement_intents =
@@ -330,7 +332,8 @@ defmodule WorldPlane.Worlds.BirdMeadow do
         {target, elem(winner, 0)}
       end)
 
-    Enum.reduce(intents, {%{}, [], []}, fn {agent_id, pos, intent}, {pos_acc, sing_acc, stay_acc} ->
+    Enum.reduce(intents, {%{}, [], []}, fn {agent_id, pos, intent},
+                                           {pos_acc, sing_acc, stay_acc} ->
       case intent do
         {:no_action} ->
           {Map.put(pos_acc, agent_id, pos), sing_acc, [{agent_id, :no_action} | stay_acc]}

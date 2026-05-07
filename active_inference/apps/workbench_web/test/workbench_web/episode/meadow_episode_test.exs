@@ -35,9 +35,9 @@ defmodule WorkbenchWeb.Episode.MeadowEpisodeTest do
         assert length(entries) == 2
 
         Enum.each(entries, fn e ->
-          assert e.action in [:stay] ++
-                   [:move_north, :move_south, :move_east, :move_west] ++
-                   [:sing_t1, :sing_t2, :sing_t3, :sing_t4]
+          assert e.action in ([:stay] ++
+                                [:move_north, :move_south, :move_east, :move_west] ++
+                                [:sing_t1, :sing_t2, :sing_t3, :sing_t4])
 
           assert is_list(e.policy_posterior)
           assert_in_delta Enum.sum(e.policy_posterior), 1.0, 1.0e-6
@@ -91,6 +91,30 @@ defmodule WorkbenchWeb.Episode.MeadowEpisodeTest do
 
       assert {:ok, entries} = MeadowEpisode.step(ep)
       assert length(entries) == 2
+
+      GenServer.stop(ep)
+    end
+  end
+
+  describe "inspect_state contract (ActiveRuns chip)" do
+    test "answers :inspect_state with the keys ActiveRuns reads", %{meadow: meadow} do
+      birds = [
+        %{
+          agent_id: "alice",
+          position: {0, 0},
+          bundle: Meadow.simple(width: 4, height: 4, preferred_token: :t1)
+        }
+      ]
+
+      {:ok, ep} =
+        MeadowEpisode.start_link(meadow_pid: meadow, birds: birds, max_steps: 3)
+
+      s = GenServer.call(ep, :inspect_state, 1_000)
+
+      assert is_integer(s.steps)
+      assert is_integer(s.max_steps)
+      assert is_boolean(s.terminal?)
+      assert get_in(s, [:agent, :agent_id]) == "alice"
 
       GenServer.stop(ep)
     end

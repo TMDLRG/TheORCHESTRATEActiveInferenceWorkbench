@@ -73,7 +73,8 @@ defmodule WorldPlane.WorldRegistry do
         # Studio fix: unlinked start so the world engine survives LV
         # push_navigate.  Uses the same registry Engine.start_link uses,
         # so subsequent `Engine.apply_action/2` lookups by run_id succeed.
-        GenServer.start(WorldPlane.Engine,
+        GenServer.start(
+          WorldPlane.Engine,
           %{maze: maze, blanket: blanket, run_id: run_id},
           name: {:via, Registry, {WorldPlane.Registry, run_id}}
         )
@@ -84,7 +85,8 @@ defmodule WorldPlane.WorldRegistry do
   end
 
   @doc "Apply an action to a running world instance."
-  @spec step(pid(), ActionPacket.t()) :: {:ok, SharedContracts.ObservationPacket.t()} | {:error, term()}
+  @spec step(pid(), ActionPacket.t()) ::
+          {:ok, SharedContracts.ObservationPacket.t()} | {:error, term()}
   def step(pid, %ActionPacket{} = action), do: Engine.apply_action(pid, action)
 
   @doc "Is this running world instance in a terminal state?"

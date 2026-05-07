@@ -70,10 +70,14 @@ defmodule AgentPlane.Meadow.NxBenchmarkTest do
 
     cond do
       seconds < 5.0 ->
-        IO.puts("  STATUS: ✅ Pure-Elixir under v2.1 acceptance gate (unexpected — note in OPS.md)")
+        IO.puts(
+          "  STATUS: ✅ Pure-Elixir under v2.1 acceptance gate (unexpected — note in OPS.md)"
+        )
 
       seconds < 60.0 ->
-        IO.puts("  STATUS: 🟡 Pure-Elixir under Jido per-action timeout. v2.1 Nx redesign needed for 5s gate.")
+        IO.puts(
+          "  STATUS: 🟡 Pure-Elixir under Jido per-action timeout. v2.1 Nx redesign needed for 5s gate."
+        )
 
       true ->
         IO.puts("  STATUS: 🔴 Pure-Elixir EXCEEDS Jido 60s timeout — substrate ceiling reached.")
@@ -83,12 +87,12 @@ defmodule AgentPlane.Meadow.NxBenchmarkTest do
 
     # Sanity: the pure path produced a valid marginal_state_belief.
     marginal = agent.state.marginal_state_belief
+
     assert is_list(marginal) and length(marginal) > 0,
            "Pure-Elixir Plan must produce a marginal_state_belief"
 
     sum = Enum.sum(marginal)
-    assert_in_delta sum, 1.0, 1.0e-6,
-                    "marginal_state_belief must sum to 1 (normalised posterior)"
+    assert_in_delta sum, 1.0, 1.0e-6, "marginal_state_belief must sum to 1 (normalised posterior)"
 
     # Document the substrate finding by committing the threshold:
     # baseline must clear the Jido per-action timeout (otherwise the

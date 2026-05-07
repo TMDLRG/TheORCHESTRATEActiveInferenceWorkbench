@@ -123,7 +123,7 @@ defmodule AgentPlane.Meadow.ExperimentOneTest do
 
     {distances, _, _} =
       Enum.reduce(1..ticks, {[manhattan({0, 0}, {7, 7})], agent_a, agent_b}, fn _t,
-                                                                                 {dists, a_a, a_b} ->
+                                                                                {dists, a_a, a_b} ->
         {:ok, obs_a} = BirdMeadow.observe(meadow, "alice")
         {:ok, obs_b} = BirdMeadow.observe(meadow, "bob")
         {a_a2, action_a} = perceive_plan_act(a_a, obs_a)
@@ -132,8 +132,7 @@ defmodule AgentPlane.Meadow.ExperimentOneTest do
         actions = %{
           "alice" =>
             ActionPacket.new(%{t: 0, action: action_a, agent_id: "alice", blanket: @blanket}),
-          "bob" =>
-            ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
+          "bob" => ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
         }
 
         {:ok, _} = BirdMeadow.multi_step(meadow, actions)

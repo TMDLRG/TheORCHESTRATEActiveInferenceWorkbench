@@ -201,6 +201,7 @@ defmodule WorkbenchWeb.StudioLive.Agent do
   defp action_label(:restart), do: "Restart (→ live)"
 
   defp format_ts(nil), do: "-"
+
   defp format_ts(usec) do
     DateTime.from_unix!(div(usec, 1000), :millisecond) |> DateTime.to_string()
   end

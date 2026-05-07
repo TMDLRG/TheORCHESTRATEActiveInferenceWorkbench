@@ -136,8 +136,12 @@ defmodule WorkbenchWeb.Qwen.SystemPrompt do
   defp navigation_section(%{nav: nav}) do
     lines =
       []
-      |> then(fn acc -> if nav.prev, do: ["- Prev: [#{nav.prev.label}](#{nav.prev.url})" | acc], else: acc end)
-      |> then(fn acc -> if nav.next, do: ["- Next: [#{nav.next.label}](#{nav.next.url})" | acc], else: acc end)
+      |> then(fn acc ->
+        if nav.prev, do: ["- Prev: [#{nav.prev.label}](#{nav.prev.url})" | acc], else: acc
+      end)
+      |> then(fn acc ->
+        if nav.next, do: ["- Next: [#{nav.next.label}](#{nav.next.url})" | acc], else: acc
+      end)
 
     related =
       nav.related
@@ -165,7 +169,9 @@ defmodule WorkbenchWeb.Qwen.SystemPrompt do
   defp session_section(%{session: nil}), do: ""
 
   defp session_section(%{session: s, path: path, path_tier: tier}) do
-    narration = Map.get(s.path_text || %{}, String.to_atom(path)) || Map.get(s.path_text || %{}, :real) || ""
+    narration =
+      Map.get(s.path_text || %{}, String.to_atom(path)) || Map.get(s.path_text || %{}, :real) ||
+        ""
 
     lab_labels =
       (s.labs || [])
@@ -217,7 +223,8 @@ defmodule WorkbenchWeb.Qwen.SystemPrompt do
         r["minutes"] && "Estimated time: #{r["minutes"]} min",
         real != "" && "Real-world explanation:\n#{real}",
         math != "" && "Math:\n#{math}",
-        runtime != %{} && "Runtime: agent=#{Map.get(runtime, "agent_module")} world=#{Map.get(runtime, "world")} horizon=#{Map.get(runtime, "horizon")} policy_depth=#{Map.get(runtime, "policy_depth")} preference_strength=#{Map.get(runtime, "preference_strength")}"
+        runtime != %{} &&
+          "Runtime: agent=#{Map.get(runtime, "agent_module")} world=#{Map.get(runtime, "world")} horizon=#{Map.get(runtime, "horizon")} policy_depth=#{Map.get(runtime, "policy_depth")} preference_strength=#{Map.get(runtime, "preference_strength")}"
       ]
       |> Enum.reject(&(&1 in [nil, false, ""]))
 

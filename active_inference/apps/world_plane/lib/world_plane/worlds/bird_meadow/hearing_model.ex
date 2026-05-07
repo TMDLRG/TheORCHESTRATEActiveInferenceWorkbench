@@ -171,6 +171,13 @@ defmodule WorldPlane.Worlds.BirdMeadow.HearingModel do
   @doc "The silent default heard observation."
   @spec silent() :: heard()
   def silent do
-    %{token: :none, amp_bin: :silence, bearing: :none, raw_amp: 0.0, source_id: nil, distance: nil}
+    %{
+      token: :none,
+      amp_bin: :silence,
+      bearing: :none,
+      raw_amp: 0.0,
+      source_id: nil,
+      distance: nil
+    }
   end
 end

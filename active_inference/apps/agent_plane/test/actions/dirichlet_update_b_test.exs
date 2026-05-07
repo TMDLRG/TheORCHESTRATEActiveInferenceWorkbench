@@ -55,6 +55,7 @@ defmodule AgentPlane.Actions.DirichletUpdateBTest do
       # The tick-0 update wrote prev_marginal = q_t0 to the bundle but did
       # NOT touch dirichlet_b_counts (q_prev was nil — no-op branch).
       assert Map.get(bundle_t0, :prev_marginal_state_belief) == q_t0
+
       assert Map.get(bundle_t0, :dirichlet_b_counts) == nil or
                Map.get(bundle_t0, :dirichlet_b_counts) == %{}
 

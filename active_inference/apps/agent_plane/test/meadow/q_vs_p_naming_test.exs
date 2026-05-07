@@ -61,12 +61,14 @@ defmodule AgentPlane.Meadow.QvsPNamingTest do
   describe "code-level boundary" do
     test "VariationalFreeEnergy source does not reference ExactInference" do
       src = read_file_at(@vfe_path)
+
       refute src =~ "ExactInference",
              "variational path must not reference the exact-posterior module"
     end
 
     test "ExpectedFreeEnergy source does not reference ExactInference" do
       src = read_file_at(@efe_path)
+
       refute src =~ "ExactInference",
              "EFE path must not reference the exact-posterior module"
     end
@@ -86,12 +88,14 @@ defmodule AgentPlane.Meadow.QvsPNamingTest do
     # refactor added an import. These two refutes close the boundary.
     test "ExactInference does not import VariationalFreeEnergy" do
       src = read_file_at(@exact_path)
+
       refute src =~ "VariationalFreeEnergy",
              "ExactInference (audit reference path) must not depend on the production VFE module"
     end
 
     test "ExactInference does not import ExpectedFreeEnergy" do
       src = read_file_at(@exact_path)
+
       refute src =~ "ExpectedFreeEnergy",
              "ExactInference (audit reference path) must not depend on the production EFE module"
     end

@@ -92,13 +92,18 @@ defmodule AgentPlane.ExactInference do
     {alpha_T, _} =
       Enum.zip(rest_obs, actions)
       |> Enum.reduce({alpha0, 0}, fn {y_t, action}, {alpha_prev, _} ->
-        b_a = Map.get(b, action) || raise "log_evidence: bundle.b missing action #{inspect(action)}"
+        b_a =
+          Map.get(b, action) || raise "log_evidence: bundle.b missing action #{inspect(action)}"
 
         # alpha_t[x] = (Σ_x' alpha_{t-1}[x'] · B[a][x, x']) · P(y_t | x)
         alpha_t =
           for x <- 0..(length(alpha_prev) - 1) do
             row = Enum.at(b_a, x)
-            transit = Enum.zip(row, alpha_prev) |> Enum.reduce(0.0, fn {p, a_prev}, acc -> acc + p * a_prev end)
+
+            transit =
+              Enum.zip(row, alpha_prev)
+              |> Enum.reduce(0.0, fn {p, a_prev}, acc -> acc + p * a_prev end)
+
             transit * obs_likelihood(a, x, y_t)
           end
 
@@ -140,7 +145,10 @@ defmodule AgentPlane.ExactInference do
         alpha =
           for x <- 0..(length(prev) - 1) do
             row = Enum.at(b_a, x)
-            transit = Enum.zip(row, prev) |> Enum.reduce(0.0, fn {p, a_prev}, sum -> sum + p * a_prev end)
+
+            transit =
+              Enum.zip(row, prev) |> Enum.reduce(0.0, fn {p, a_prev}, sum -> sum + p * a_prev end)
+
             transit * obs_likelihood(a, x, y_t)
           end
 

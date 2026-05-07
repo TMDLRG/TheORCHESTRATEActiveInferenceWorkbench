@@ -17,6 +17,7 @@ defmodule WorldModels.Application do
       if Application.get_env(:world_models, :auto_start_event_log, true) do
         [
           {Phoenix.PubSub, name: WorldModels.Bus},
+          WorldModels.EventLog.Writer,
           WorldModels.EventLog.Janitor,
           # Lego-uplift Phase C — seed the five prebuilt example specs on
           # every boot. Idempotent (Mnesia write overwrites on same id) so

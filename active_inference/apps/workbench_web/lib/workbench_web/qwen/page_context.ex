@@ -302,16 +302,47 @@ defmodule WorkbenchWeb.Qwen.PageContext do
 
     related =
       case topic do
-        :blocks -> [link("/cookbook", "Browse runnable recipes", :recipe), link("/builder/new", "Open builder", :builder)]
-        :cookbook -> [link("/cookbook", "Cookbook index", :recipe), link("/builder/new", "Open builder", :builder)]
-        :labs -> [link("/labs", "Labs index", :labs), link("/guide/blocks", "Block catalogue", :guide)]
-        :studio -> [link("/studio", "Studio dashboard", :studio), link("/guide/labs", "Labs overview", :guide)]
-        :learning -> [link("/learn", "Learn hub", :learning_hub), link("/guide/workbench", "Workbench tour", :guide)]
-        :jido -> [link("/guide/jido", "Knowledgebase index", :guide)]
-        :orchestrate -> [link("/guide/orchestrate", "Framework primer", :guide)]
-        :level_up -> [link("/guide/level-up", "AI-UMM primer", :guide)]
-        :creator -> [link("/guide/credits", "Credits & attributions", :guide)]
-        _ -> [link("/guide", "Guide home", :guide)]
+        :blocks ->
+          [
+            link("/cookbook", "Browse runnable recipes", :recipe),
+            link("/builder/new", "Open builder", :builder)
+          ]
+
+        :cookbook ->
+          [
+            link("/cookbook", "Cookbook index", :recipe),
+            link("/builder/new", "Open builder", :builder)
+          ]
+
+        :labs ->
+          [link("/labs", "Labs index", :labs), link("/guide/blocks", "Block catalogue", :guide)]
+
+        :studio ->
+          [
+            link("/studio", "Studio dashboard", :studio),
+            link("/guide/labs", "Labs overview", :guide)
+          ]
+
+        :learning ->
+          [
+            link("/learn", "Learn hub", :learning_hub),
+            link("/guide/workbench", "Workbench tour", :guide)
+          ]
+
+        :jido ->
+          [link("/guide/jido", "Knowledgebase index", :guide)]
+
+        :orchestrate ->
+          [link("/guide/orchestrate", "Framework primer", :guide)]
+
+        :level_up ->
+          [link("/guide/level-up", "AI-UMM primer", :guide)]
+
+        :creator ->
+          [link("/guide/credits", "Credits & attributions", :guide)]
+
+        _ ->
+          [link("/guide", "Guide home", :guide)]
       end
 
     base
@@ -325,7 +356,9 @@ defmodule WorkbenchWeb.Qwen.PageContext do
 
     related =
       [link("/cookbook", "Pick a recipe", :recipe), link("/labs", "Labs index", :labs)] ++
-        if recipe, do: [link("/cookbook/#{recipe["slug"]}", "Recipe · #{recipe["title"]}", :recipe)], else: []
+        if recipe,
+          do: [link("/cookbook/#{recipe["slug"]}", "Recipe · #{recipe["title"]}", :recipe)],
+          else: []
 
     base
     |> Map.put(:recipe, recipe)
@@ -374,7 +407,11 @@ defmodule WorkbenchWeb.Qwen.PageContext do
   end
 
   defp build_specific(:studio_trash, _params, base) do
-    Map.put(base, :nav, %{prev: nil, next: nil, related: [link("/studio", "Studio dashboard", :studio)]})
+    Map.put(base, :nav, %{
+      prev: nil,
+      next: nil,
+      related: [link("/studio", "Studio dashboard", :studio)]
+    })
   end
 
   defp build_specific(:glass, _params, base) do
@@ -396,7 +433,11 @@ defmodule WorkbenchWeb.Qwen.PageContext do
   end
 
   defp build_specific(:equations_index, _params, base) do
-    Map.put(base, :nav, %{prev: nil, next: nil, related: [link("/models", "Model taxonomy", :models)]})
+    Map.put(base, :nav, %{
+      prev: nil,
+      next: nil,
+      related: [link("/models", "Model taxonomy", :models)]
+    })
   end
 
   defp build_specific(:models, _params, base) do
@@ -424,7 +465,11 @@ defmodule WorkbenchWeb.Qwen.PageContext do
   end
 
   defp build_specific(:learn_progress, _params, base) do
-    Map.put(base, :nav, %{prev: nil, next: nil, related: [link("/learn", "Back to Learn hub", :learning_hub)]})
+    Map.put(base, :nav, %{
+      prev: nil,
+      next: nil,
+      related: [link("/learn", "Back to Learn hub", :learning_hub)]
+    })
   end
 
   defp build_specific(_unknown, _params, base), do: base

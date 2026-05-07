@@ -33,8 +33,11 @@ defmodule WorkbenchWeb.StudioLive.Trash do
   @impl true
   def handle_event("restore", %{"agent_id" => id}, socket) do
     case Runtime.restore(id) do
-      {:ok, _} -> {:noreply, assign_list(socket) |> put_flash(:info, "Restored #{id} to :stopped.")}
-      {:error, reason} -> {:noreply, put_flash(socket, :error, inspect(reason))}
+      {:ok, _} ->
+        {:noreply, assign_list(socket) |> put_flash(:info, "Restored #{id} to :stopped.")}
+
+      {:error, reason} ->
+        {:noreply, put_flash(socket, :error, inspect(reason))}
     end
   end
 

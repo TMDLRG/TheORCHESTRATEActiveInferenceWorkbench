@@ -414,6 +414,7 @@ defmodule AgentPlane.BundleBuilder.Meadow do
             case bearing_s do
               :none ->
                 if tok_o == :none, do: 0.85, else: 0.15 / 4
+
               _ ->
                 # Open across all tokens including :none (partner sometimes silent).
                 1.0 / length(MeadowObsAdapter.token_values())
@@ -957,7 +958,13 @@ defmodule AgentPlane.BundleBuilder.Meadow do
   def decode_state(s, n_token, n_pres), do: decode_state_complex(s, n_token, n_pres)
 
   @doc "Encode a Complex/Resonant state."
-  @spec encode_state(non_neg_integer(), non_neg_integer(), non_neg_integer(), pos_integer(), pos_integer()) ::
+  @spec encode_state(
+          non_neg_integer(),
+          non_neg_integer(),
+          non_neg_integer(),
+          pos_integer(),
+          pos_integer()
+        ) ::
           non_neg_integer()
   def encode_state(pos, pt_idx, pp_idx, n_token, n_pres),
     do: encode_state_complex(pos, pt_idx, pp_idx, n_token, n_pres)

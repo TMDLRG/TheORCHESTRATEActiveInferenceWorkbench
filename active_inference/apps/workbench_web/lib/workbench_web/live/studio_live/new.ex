@@ -178,9 +178,7 @@ defmodule WorkbenchWeb.StudioLive.New do
   end
 
   def handle_event("start_from_recipe", _, socket) do
-    Logger.info(
-      "[studio.new] start_from_recipe slug=#{inspect(socket.assigns.selected_recipe)}"
-    )
+    Logger.info("[studio.new] start_from_recipe slug=#{inspect(socket.assigns.selected_recipe)}")
 
     slug = socket.assigns.selected_recipe
 
@@ -222,7 +220,9 @@ defmodule WorkbenchWeb.StudioLive.New do
           source = if flow == :recipe, do: :cookbook, else: :studio
 
           agent_id =
-            "agent-" <> Atom.to_string(source) <> "-" <>
+            "agent-" <>
+              Atom.to_string(source) <>
+              "-" <>
               (:crypto.strong_rand_bytes(6) |> Base.url_encode64(padding: false))
 
           lifecycle_opts =

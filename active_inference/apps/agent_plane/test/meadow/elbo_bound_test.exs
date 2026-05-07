@@ -33,6 +33,7 @@ defmodule AgentPlane.Meadow.ELBOBoundTest do
 
   defp all_seqs(t), do: all_seqs([], t)
   defp all_seqs(acc, 0), do: [Enum.reverse(acc)]
+
   defp all_seqs(acc, n) do
     [0, 1] |> Enum.flat_map(fn o -> all_seqs([o | acc], n - 1) end)
   end

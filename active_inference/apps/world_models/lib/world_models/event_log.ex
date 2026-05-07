@@ -6,7 +6,7 @@ defmodule WorldModels.EventLog do
   throughput. All writes also fan out onto `WorldModels.Bus`.
   """
 
-  alias WorldModels.{Bus, Event}
+  alias WorldModels.Event
   alias WorldModels.EventLog.Setup
 
   @table Setup.table()
@@ -22,33 +22,25 @@ defmodule WorldModels.EventLog do
           | {:world_run_id, String.t()}
 
   @doc """
-  Persist an event to Mnesia AND broadcast it on the bus. Call-site (e.g.
-  Episode) gets a single write-through API. Idempotent is not guaranteed
-  — append assumes unique event ids.
+  Persist an event to Mnesia AND broadcast it on the bus. Returns `:ok`
+  immediately — the actual disc-log write happens in a batched Mnesia
+  transaction inside `WorldModels.EventLog.Writer`.
+
+  Why async: the Active Inference `Plan` action fires ~150
+  `equation.evaluated` telemetry spans per tick (one per
+  `expected_free_energy` call × policies × bird). Per-event
+  `:mnesia.transaction/1` cost dominated `Episode.step/1` wall time
+  (60–80s for 2 Resonant birds). The writer batches up to 200 events
+  per Mnesia transaction and flushes every 50 ms, amortising the log
+  cost ~10-100×. Durability trade-off: on a hard BEAM crash we lose at
+  most one un-flushed batch (≤50 ms of events).
+
+  Call-sites that need write-then-read consistency (tests, audit
+  exports) can call `WorldModels.EventLog.Writer.flush/0` first.
   """
   @spec append(Event.t()) :: :ok
   def append(%Event{} = e) do
-    record = to_record(e)
-
-    # Plan §8.5 — disc_copies durability.
-    # `dirty_write/1` only updates RAM/ETS (no log hit → lost on BEAM crash).
-    # `sync_transaction/1` forces fsync per write, which turns every
-    # equation.evaluated span into a disk seek; in supervised mode with
-    # ~150 spans per step, that pushed Episode.step past the 5s GenServer
-    # timeout.
-    # `transaction/1` writes to the disc log (persisted across BEAM
-    # restarts — Phase 2 disk-durability test still passes) without
-    # forcing a synchronous fsync, so write cost is ~µs per event. On a
-    # hard crash we lose at most the last millisecond of events, which
-    # is acceptable for observability.
-    {:atomic, :ok} =
-      :mnesia.transaction(fn -> :mnesia.write(record) end)
-
-    if Bus.running?() do
-      :ok = Bus.broadcast(e)
-    end
-
-    :ok
+    WorldModels.EventLog.Writer.append(e)
   end
 
   @doc """
@@ -192,13 +184,6 @@ defmodule WorldModels.EventLog do
   end
 
   # -- Record ↔ Event --------------------------------------------------------
-
-  defp to_record(%Event{} = e) do
-    p = e.provenance || %{}
-
-    {@table, {e.ts_usec, e.id}, Map.get(p, :agent_id), e.type, Map.get(p, :spec_id),
-     Map.get(p, :world_run_id), e}
-  end
 
   defp from_record({@table, _key, _aid, _type, _sid, _wid, event}), do: event
 

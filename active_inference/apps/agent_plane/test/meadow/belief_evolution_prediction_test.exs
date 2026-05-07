@@ -114,7 +114,9 @@ defmodule AgentPlane.Meadow.BeliefEvolutionPredictionTest do
         e_a = Enum.at(entropy_a, t)
         e_b = Enum.at(entropy_b, t)
 
-        assert_in_delta e_a, e_b, 1.0e-6,
+        assert_in_delta e_a,
+                        e_b,
+                        1.0e-6,
                         "Pre-window entropy diverged at t=#{t}: A=#{e_a}, B=#{e_b}"
       end
 

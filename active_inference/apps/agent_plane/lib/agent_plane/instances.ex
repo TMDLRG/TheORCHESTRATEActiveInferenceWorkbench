@@ -85,6 +85,7 @@ defmodule AgentPlane.Instances do
   def create(fields) when is_map(fields) do
     ensure_table!()
     now = now_usec()
+
     instance = %Instance{
       agent_id: fetch!(fields, :agent_id),
       spec_id: fetch!(fields, :spec_id),
@@ -270,8 +271,10 @@ defmodule AgentPlane.Instances do
      i.started_at_usec, i.updated_at_usec}
   end
 
-  defp instance_from({@table, agent_id, spec_id, source, recipe_slug, pid, state, name,
-       started_at_usec, updated_at_usec}) do
+  defp instance_from(
+         {@table, agent_id, spec_id, source, recipe_slug, pid, state, name, started_at_usec,
+          updated_at_usec}
+       ) do
     %Instance{
       agent_id: agent_id,
       spec_id: spec_id,
@@ -284,7 +287,6 @@ defmodule AgentPlane.Instances do
       updated_at_usec: updated_at_usec
     }
   end
-
 
   defp filter_state(list, opts) do
     state = opts[:state]

@@ -68,11 +68,20 @@ defmodule WorkbenchWeb.Cookbook.Loader do
         pref = rt["preference_strength"]
 
         cond do
-          "hierarchical" in tags or "hierarchy" in tags -> "example-l5-hierarchical-composition"
-          "dirichlet_update_a" in actions or "dirichlet_update_b" in actions -> "example-l4-dirichlet-learner"
-          "sophisticated_plan" in actions -> "example-l3-sophisticated-planner"
-          is_number(pref) and pref == 0 -> "example-l2-epistemic-explorer"
-          true -> "example-l1-hello-pomdp"
+          "hierarchical" in tags or "hierarchy" in tags ->
+            "example-l5-hierarchical-composition"
+
+          "dirichlet_update_a" in actions or "dirichlet_update_b" in actions ->
+            "example-l4-dirichlet-learner"
+
+          "sophisticated_plan" in actions ->
+            "example-l3-sophisticated-planner"
+
+          is_number(pref) and pref == 0 ->
+            "example-l2-epistemic-explorer"
+
+          true ->
+            "example-l1-hello-pomdp"
         end
     end
   end

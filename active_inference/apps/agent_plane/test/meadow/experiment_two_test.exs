@@ -65,7 +65,11 @@ defmodule AgentPlane.Meadow.ExperimentTwoTest do
     n_b_sangs = Enum.map(results, fn {_, _, b} -> b end)
 
     IO.puts("\nExperiment 2 — Singing co-occurrence (#{n_seeds} seeds × #{n_ticks} ticks)")
-    IO.puts("  observed MI per seed (nats): #{inspect(Enum.map(mi_observed, &Float.round(&1, 4)))}")
+
+    IO.puts(
+      "  observed MI per seed (nats): #{inspect(Enum.map(mi_observed, &Float.round(&1, 4)))}"
+    )
+
     IO.puts("  bird A sang count per seed:  #{Enum.join(n_a_sangs, ", ")}")
     IO.puts("  bird B sang count per seed:  #{Enum.join(n_b_sangs, ", ")}")
 
@@ -107,8 +111,7 @@ defmodule AgentPlane.Meadow.ExperimentTwoTest do
         actions = %{
           "alice" =>
             ActionPacket.new(%{t: 0, action: action_a, agent_id: "alice", blanket: @blanket}),
-          "bob" =>
-            ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
+          "bob" => ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
         }
 
         {:ok, _} = BirdMeadow.multi_step(meadow, actions)
@@ -152,9 +155,13 @@ defmodule AgentPlane.Meadow.ExperimentTwoTest do
       0.0
     else
       counts =
-        Enum.reduce(pairs, %{{true, true} => 0, {true, false} => 0, {false, true} => 0, {false, false} => 0}, fn {a, b}, acc ->
-          Map.update!(acc, {a, b}, &(&1 + 1))
-        end)
+        Enum.reduce(
+          pairs,
+          %{{true, true} => 0, {true, false} => 0, {false, true} => 0, {false, false} => 0},
+          fn {a, b}, acc ->
+            Map.update!(acc, {a, b}, &(&1 + 1))
+          end
+        )
 
       p_joint = Enum.into(counts, %{}, fn {k, v} -> {k, v / n} end)
 

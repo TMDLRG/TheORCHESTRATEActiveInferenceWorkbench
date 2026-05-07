@@ -18,7 +18,12 @@ defmodule WorkbenchWeb.Qwen.PageContextTest do
     end
 
     test "accepts the explicit page_type param" do
-      p = PageContext.build(%{"page_type" => "cookbook_recipe", "page_key" => "pomdp-tiny-corridor"})
+      p =
+        PageContext.build(%{
+          "page_type" => "cookbook_recipe",
+          "page_key" => "pomdp-tiny-corridor"
+        })
+
       assert p.page_type == :cookbook_recipe
     end
 

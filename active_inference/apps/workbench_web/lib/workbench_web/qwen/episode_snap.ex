@@ -59,7 +59,8 @@ defmodule WorkbenchWeb.Qwen.EpisodeSnap do
       steps: Map.get(state, :steps, 0),
       max_steps: Map.get(state, :max_steps, 0),
       terminal?: Map.get(state, :terminal?, false),
-      goal_reached?: Map.get(state, :goal_reached?, false) or Map.get(agent, :goal_reached?, false),
+      goal_reached?:
+        Map.get(state, :goal_reached?, false) or Map.get(agent, :goal_reached?, false),
       last_action: last_action(agent),
       last_f: number_or_nil(Map.get(agent, :best_f)),
       last_g: number_or_nil(Map.get(agent, :best_g)),
@@ -98,6 +99,7 @@ defmodule WorkbenchWeb.Qwen.EpisodeSnap do
   defp top_policies(tensor) when is_struct(tensor) do
     # Handle Nx.Tensor (and similar) without a compile-time dep.
     nx = Nx
+
     if Code.ensure_loaded?(nx) and function_exported?(nx, :to_flat_list, 1) do
       top_policies(apply(nx, :to_flat_list, [tensor]))
     else

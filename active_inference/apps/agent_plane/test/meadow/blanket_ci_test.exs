@@ -140,8 +140,8 @@ defmodule AgentPlane.Meadow.BlanketCITest do
 
     {beliefs_a, actions_a, actions_b, _, _} =
       Enum.reduce(1..6, {[], [], [], agent_a, agent_b}, fn _t,
-                                                            {b_acc, aa_acc, ab_acc, agent_a,
-                                                             agent_b} ->
+                                                           {b_acc, aa_acc, ab_acc, agent_a,
+                                                            agent_b} ->
         {:ok, obs_a} = BirdMeadow.observe(meadow, "alice")
         {:ok, obs_b} = BirdMeadow.observe(meadow, "bob")
 
@@ -151,14 +151,13 @@ defmodule AgentPlane.Meadow.BlanketCITest do
         actions = %{
           "alice" =>
             ActionPacket.new(%{t: 0, action: action_a, agent_id: "alice", blanket: @blanket}),
-          "bob" =>
-            ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
+          "bob" => ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
         }
 
         {:ok, _} = BirdMeadow.multi_step(meadow, actions)
 
-        {[agent_a2.state.marginal_state_belief | b_acc], [action_a | aa_acc],
-         [action_b | ab_acc], agent_a2, agent_b2}
+        {[agent_a2.state.marginal_state_belief | b_acc], [action_a | aa_acc], [action_b | ab_acc],
+         agent_a2, agent_b2}
       end)
 
     GenServer.stop(meadow)

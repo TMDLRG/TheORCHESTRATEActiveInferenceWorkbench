@@ -38,7 +38,14 @@ defmodule WorkbenchWeb.MeadowLive.Index do
      |> assign(:snapshot, nil)
      |> assign(:tick_ms, @tick_interval_ms)
      |> assign(:status, :idle)
-     |> assign(:flash_msg, nil)}
+     |> assign(:flash_msg, nil)
+     # Step is run in a Task so the LiveView stays responsive while heavy
+     # tiers (Complex/Resonant ×N birds) compute. `step_task` carries the
+     # %Task{} when an inference is in flight; `computing_at_ms` lets the
+     # ticker render a live "Computing tick N… (Xs)" indicator.
+     |> assign(:step_task, nil)
+     |> assign(:computing_at_ms, nil)
+     |> assign(:computing_now_ms, nil)}
   end
 
   @impl true
@@ -129,8 +136,7 @@ defmodule WorkbenchWeb.MeadowLive.Index do
   end
 
   def handle_event("step", _, socket) do
-    if socket.assigns.episode_pid, do: take_one_step(socket.assigns.episode_pid)
-    {:noreply, refresh(socket)}
+    {:noreply, kick_step(socket)}
   end
 
   def handle_event("pause", _, socket) do
@@ -155,8 +161,9 @@ defmodule WorkbenchWeb.MeadowLive.Index do
   end
 
   def handle_event("stop", _, socket) do
-    if socket.assigns.episode_pid, do: GenServer.stop(socket.assigns.episode_pid, :normal)
-    if socket.assigns.meadow_pid, do: GenServer.stop(socket.assigns.meadow_pid, :normal)
+    cancel_step_task(socket.assigns.step_task)
+    safe_stop(socket.assigns.episode_pid)
+    safe_stop(socket.assigns.meadow_pid)
 
     {:noreply,
      socket
@@ -165,36 +172,142 @@ defmodule WorkbenchWeb.MeadowLive.Index do
      |> assign(:auto_running?, false)
      |> assign(:status, :idle)
      |> assign(:snapshot, nil)
-     |> assign(:placed, [])}
+     |> assign(:placed, [])
+     |> assign(:step_task, nil)
+     |> assign(:computing_at_ms, nil)
+     |> assign(:computing_now_ms, nil)}
   end
 
   @impl true
   def handle_info(:tick, %{assigns: %{auto_running?: true, episode_pid: ep}} = socket)
       when is_pid(ep) do
-    take_one_step(ep)
-
-    if socket.assigns.auto_running? do
-      Process.send_after(self(), :tick, socket.assigns.tick_ms)
-    end
-
-    {:noreply, refresh(socket)}
+    {:noreply, kick_step(socket)}
   end
 
   def handle_info(:tick, socket), do: {:noreply, socket}
 
-  defp take_one_step(ep) do
-    try do
-      MeadowEpisode.step(ep)
-    catch
-      _, _ -> :ok
+  # 100ms heartbeat refreshes the "Computing tick N… (Xs)" elapsed counter
+  # while a step Task is in flight. Skipped when no step is computing.
+  def handle_info(:compute_tick, %{assigns: %{step_task: %Task{}}} = socket) do
+    Process.send_after(self(), :compute_tick, 100)
+    {:noreply, assign(socket, :computing_now_ms, System.monotonic_time(:millisecond))}
+  end
+
+  def handle_info(:compute_tick, socket), do: {:noreply, socket}
+
+  # Step Task completed normally — ignore the actual reply payload (we read
+  # state via snapshot), demonitor, refresh, schedule the next auto tick.
+  def handle_info({ref, _result}, %{assigns: %{step_task: %Task{ref: ref}}} = socket) do
+    Process.demonitor(ref, [:flush])
+    schedule_next_tick(socket)
+
+    {:noreply,
+     socket
+     |> refresh()
+     |> assign(:step_task, nil)
+     |> assign(:computing_at_ms, nil)
+     |> assign(:computing_now_ms, nil)}
+  end
+
+  # Step Task crashed (raise/exit/throw inside MeadowEpisode.step). Surface
+  # it to the user instead of silently swallowing — they need to know the
+  # episode is in an inconsistent state and click Stop to recover.
+  def handle_info(
+        {:DOWN, ref, :process, _, reason},
+        %{assigns: %{step_task: %Task{ref: ref}}} = socket
+      ) do
+    msg =
+      "Step inference crashed: #{inspect(reason)}. The episode may be in an inconsistent state — click Stop to reset."
+
+    {:noreply,
+     socket
+     |> assign(:step_task, nil)
+     |> assign(:auto_running?, false)
+     |> assign(:status, :paused)
+     |> assign(:computing_at_ms, nil)
+     |> assign(:computing_now_ms, nil)
+     |> assign(:flash_msg, msg)}
+  end
+
+  # Trailing late `{ref, _}` from a Task we already demonitored — ignore.
+  def handle_info({ref, _}, socket) when is_reference(ref), do: {:noreply, socket}
+
+  def handle_info({:DOWN, ref, :process, _, _}, socket) when is_reference(ref),
+    do: {:noreply, socket}
+
+  # Spawn a step Task if the episode is up and no step is already in flight.
+  # Returns the updated socket. Idempotent — auto-ticks may fire while a
+  # step is computing; we just skip them.
+  defp kick_step(%{assigns: %{episode_pid: nil}} = socket), do: socket
+  defp kick_step(%{assigns: %{step_task: %Task{}}} = socket), do: socket
+
+  defp kick_step(%{assigns: %{episode_pid: ep}} = socket) when is_pid(ep) do
+    if Process.alive?(ep) do
+      task =
+        Task.async(fn ->
+          # 5-minute timeout — heavy multi-bird Resonant inference legitimately
+          # takes tens of seconds. The LiveView itself stays responsive because
+          # the call happens in a separate process.
+          MeadowEpisode.step(ep, 300_000)
+        end)
+
+      now = System.monotonic_time(:millisecond)
+      Process.send_after(self(), :compute_tick, 100)
+
+      socket
+      |> refresh()
+      |> assign(:step_task, task)
+      |> assign(:computing_at_ms, now)
+      |> assign(:computing_now_ms, now)
+    else
+      socket
     end
   end
 
+  defp schedule_next_tick(%{assigns: %{auto_running?: true, tick_ms: ms}}),
+    do: Process.send_after(self(), :tick, ms)
+
+  defp schedule_next_tick(_), do: :ok
+
+  defp cancel_step_task(nil), do: :ok
+
+  defp cancel_step_task(%Task{} = task) do
+    # Task.shutdown also demonitors and flushes the inbox.
+    _ = Task.shutdown(task, :brutal_kill)
+    :ok
+  end
+
+  defp safe_stop(nil), do: :ok
+
+  defp safe_stop(pid) when is_pid(pid) do
+    if Process.alive?(pid) do
+      try do
+        GenServer.stop(pid, :normal, 1_000)
+      catch
+        :exit, _ -> :ok
+        _, _ -> :ok
+      end
+    end
+
+    :ok
+  end
+
+  # The episode GenServer serialises :step (heavy inference) and :snapshot.
+  # With 2+ heavy-tier birds a step can outlive both the LiveView's 60s step
+  # timeout AND the snapshot's default 5s — `take_one_step` catches the step
+  # exit, then refresh races against the still-running step. A timeout here
+  # (or a transient :noproc on shutdown) must not crash the LiveView; we
+  # just keep the previous snapshot for this tick.
   defp refresh(socket) do
     case socket.assigns.episode_pid do
       pid when is_pid(pid) ->
-        snap = MeadowEpisode.snapshot(pid)
-        assign(socket, :snapshot, snap)
+        try do
+          snap = MeadowEpisode.snapshot(pid, 5_000)
+          assign(socket, :snapshot, snap)
+        catch
+          :exit, _ -> socket
+          _, _ -> socket
+        end
 
       _ ->
         socket
@@ -268,6 +381,15 @@ defmodule WorkbenchWeb.MeadowLive.Index do
               <%= label %>
             </label>
           <% end %>
+          <p class="meadow-tier-note">
+            Only <strong>Convergent</strong> birds move toward each other —
+            their hidden state factor includes <em>partner_bearing</em>, so
+            EFE has a spatial gradient. Simple/Complex/Resonant birds
+            <strong>do not move spatially</strong> by design (their hearing
+            factors are uniform conditional on position) — they exhibit
+            singing / listening / duet behaviour. This is the
+            audit-verified falsifiable claim the meadow tests.
+          </p>
         </fieldset>
 
         <fieldset>
@@ -296,6 +418,12 @@ defmodule WorkbenchWeb.MeadowLive.Index do
             <% @status == :idle -> %>
               <%= length(@placed) %> bird(s) placed. Click another cell to add more,
               or press <strong>Start episode</strong>.
+            <% @computing_at_ms -> %>
+              Episode running &mdash; t=<%= @snapshot && @snapshot.steps || 0 %>.
+              <span class="computing-pill">
+                ⟳ Computing tick <%= (@snapshot && @snapshot.steps || 0) + 1 %>…
+                <%= compute_elapsed_str(@computing_at_ms, @computing_now_ms) %>
+              </span>
             <% true -> %>
               Episode running &mdash; t=<%= @snapshot && @snapshot.steps || 0 %>.
           <% end %>
@@ -409,6 +537,18 @@ defmodule WorkbenchWeb.MeadowLive.Index do
     .meadow-tagline { color: #a8b3c0; margin: 0 0 1.25rem; }
     .meadow-hint { color: #b8c4d0; font-size: 0.92rem; margin: 0.4rem 0 0.75rem; }
     .meadow-hint strong { color: #ffd070; }
+    .computing-pill {
+      display: inline-block; margin-left: 0.6rem;
+      padding: 0.1rem 0.55rem; border-radius: 999px;
+      background: #4d3c1a; color: #ffd070;
+      border: 1px solid #b88a30; font-weight: 600;
+      font-size: 0.85rem;
+      animation: pulse-glow 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 208, 112, 0.0); }
+      50%      { box-shadow: 0 0 8px 2px rgba(255, 208, 112, 0.45); }
+    }
     .muted { color: #88909a; font-style: italic; }
 
     .meadow-flash {
@@ -427,6 +567,13 @@ defmodule WorkbenchWeb.MeadowLive.Index do
       display: block; padding: 0.15rem 0; cursor: pointer; color: #e8e8e8;
     }
     .meadow-controls input[type=radio] { margin-right: 0.4rem; }
+    .meadow-tier-note {
+      margin: 0.5rem 0 0; padding: 0.55rem 0.7rem;
+      background: #1a2330; border-left: 3px solid #ffd070;
+      color: #c8d0dc; font-size: 0.84rem; line-height: 1.4;
+    }
+    .meadow-tier-note strong { color: #ffd070; }
+    .meadow-tier-note em { color: #b8cdf0; font-style: italic; }
 
     .meadow-grid {
       display: grid; gap: 3px; background: #2d3645;
@@ -560,6 +707,15 @@ defmodule WorkbenchWeb.MeadowLive.Index do
   end
 
   defp cell_tooltip(_, _song, c, r), do: "Song heard at (#{c},#{r})"
+
+  defp compute_elapsed_str(nil, _), do: ""
+  defp compute_elapsed_str(_, nil), do: ""
+
+  defp compute_elapsed_str(start_ms, now_ms) when now_ms >= start_ms do
+    "(#{Float.round((now_ms - start_ms) / 1000.0, 1)}s)"
+  end
+
+  defp compute_elapsed_str(_, _), do: ""
 
   defp entropy_str([]), do: "—"
 

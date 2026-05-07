@@ -38,7 +38,8 @@ defmodule WorkbenchWeb.Qwen.Client do
   def offline_response do
     %{
       error: "qwen offline",
-      hint: "Start Qwen: cd Qwen3.6 && ./scripts/start_qwen.ps1 (Windows) or ./scripts/start_qwen.sh",
+      hint:
+        "Start Qwen: cd Qwen3.6 && ./scripts/start_qwen.ps1 (Windows) or ./scripts/start_qwen.sh",
       reply:
         "Qwen is currently asleep. Start the local model with the command above, then try again."
     }

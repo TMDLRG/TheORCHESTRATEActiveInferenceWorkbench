@@ -86,6 +86,7 @@ defmodule AgentPlane.MeadowObsAdapterTest do
 
     test "different observations produce different one-hots" do
       blanket = Blanket.meadow_default()
+
       mk = fn ch ->
         ObservationPacket.new(%{
           t: 0,

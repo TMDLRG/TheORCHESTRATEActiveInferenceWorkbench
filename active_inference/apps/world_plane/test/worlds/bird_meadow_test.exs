@@ -162,8 +162,7 @@ defmodule WorldPlane.Worlds.BirdMeadowTest do
       :ok = BirdMeadow.add_bird(pid, "edge", {0, 1})
 
       stay = %{
-        "interior" =>
-          ActionPacket.new(%{t: 0, action: :stay, agent_id: "interior", blanket: bk}),
+        "interior" => ActionPacket.new(%{t: 0, action: :stay, agent_id: "interior", blanket: bk}),
         "edge" => ActionPacket.new(%{t: 0, action: :stay, agent_id: "edge", blanket: bk})
       }
 
@@ -208,8 +207,7 @@ defmodule WorldPlane.Worlds.BirdMeadowTest do
       :ok = BirdMeadow.add_bird(pid, "bob", {3, 3})
 
       actions = %{
-        "alice" =>
-          ActionPacket.new(%{t: 0, action: :move_east, agent_id: "alice", blanket: bk}),
+        "alice" => ActionPacket.new(%{t: 0, action: :move_east, agent_id: "alice", blanket: bk}),
         "bob" => ActionPacket.new(%{t: 0, action: :move_west, agent_id: "bob", blanket: bk})
       }
 
@@ -232,8 +230,7 @@ defmodule WorldPlane.Worlds.BirdMeadowTest do
       actions = %{
         "charlie" =>
           ActionPacket.new(%{t: 0, action: :move_south, agent_id: "charlie", blanket: bk}),
-        "alice" =>
-          ActionPacket.new(%{t: 0, action: :move_north, agent_id: "alice", blanket: bk}),
+        "alice" => ActionPacket.new(%{t: 0, action: :move_north, agent_id: "alice", blanket: bk}),
         "bob" => ActionPacket.new(%{t: 0, action: :move_east, agent_id: "bob", blanket: bk})
       }
 
@@ -259,8 +256,7 @@ defmodule WorldPlane.Worlds.BirdMeadowTest do
 
         actions = %{
           "zoe" => ActionPacket.new(%{t: 0, action: :move_east, agent_id: "zoe", blanket: bk}),
-          "alice" =>
-            ActionPacket.new(%{t: 0, action: :move_west, agent_id: "alice", blanket: bk})
+          "alice" => ActionPacket.new(%{t: 0, action: :move_west, agent_id: "alice", blanket: bk})
         }
 
         {:ok, _} = BirdMeadow.multi_step(pid, actions)

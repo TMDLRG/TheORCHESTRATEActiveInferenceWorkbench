@@ -112,12 +112,12 @@ defmodule WorkbenchWeb.Router do
     live "/guide/jido/:topic", GuideLive.JidoTopic, :show
 
     # Studio subsystem (S5) -- flexible agent runner + lifecycle dashboard.
-    live "/studio",                  StudioLive.Index, :index
-    live "/studio/new",              StudioLive.New,   :new
-    live "/studio/run/:session_id",  StudioLive.Run,   :show
+    live "/studio", StudioLive.Index, :index
+    live "/studio/new", StudioLive.New, :new
+    live "/studio/run/:session_id", StudioLive.Run, :show
     live "/studio/agents/:agent_id", StudioLive.Agent, :show
-    live "/studio/trash",            StudioLive.Trash, :index
-    live "/guide/studio",            GuideLive.Studio, :index
+    live "/studio/trash", StudioLive.Trash, :index
+    live "/guide/studio", GuideLive.Studio, :index
 
     # Direct one-shot run endpoint used by the cookbook "Run in Studio"
     # button (bypasses the LV picker so the cookbook gives a true

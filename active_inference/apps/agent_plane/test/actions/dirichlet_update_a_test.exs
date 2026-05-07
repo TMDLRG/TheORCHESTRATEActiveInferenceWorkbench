@@ -99,7 +99,9 @@ defmodule AgentPlane.Actions.DirichletUpdateATest do
       # for an agent that hasn't run Plan yet.
       agent =
         Meadow.simple(width: 4, height: 4, preferred_token: :t1)
-        |> then(fn b -> ActiveInferenceAgent.fresh("dir-a-empty", b, Blanket.meadow_default()) end)
+        |> then(fn b ->
+          ActiveInferenceAgent.fresh("dir-a-empty", b, Blanket.meadow_default())
+        end)
         |> put_in([Access.key!(:state), Access.key!(:marginal_state_belief)], [])
         |> put_in([Access.key!(:state), Access.key!(:obs_history)], [
           for(i <- 0..(length(elem({hd_a(), 0}, 0)) - 1), do: if(i == 7, do: 1.0, else: 0.0))

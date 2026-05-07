@@ -214,12 +214,11 @@ defmodule AgentPlane.Meadow.ExperimentOneV2Test do
         actions = %{
           "alice" =>
             ActionPacket.new(%{t: 0, action: action_a, agent_id: "alice", blanket: @blanket}),
-          "bob" =>
-            ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
+          "bob" => ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
         }
 
         {:ok, _} = BirdMeadow.multi_step(meadow, actions)
-        sang_inc = (if sang?(action_a), do: 1, else: 0) + (if sang?(action_b), do: 1, else: 0)
+        sang_inc = if(sang?(action_a), do: 1, else: 0) + if sang?(action_b), do: 1, else: 0
         {sangs + sang_inc, a_a2, a_b2}
       end)
 
@@ -249,12 +248,11 @@ defmodule AgentPlane.Meadow.ExperimentOneV2Test do
         actions = %{
           "alice" =>
             ActionPacket.new(%{t: 0, action: action_a, agent_id: "alice", blanket: @blanket}),
-          "bob" =>
-            ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
+          "bob" => ActionPacket.new(%{t: 0, action: action_b, agent_id: "bob", blanket: @blanket})
         }
 
         {:ok, _} = BirdMeadow.multi_step(meadow, actions)
-        sangs + (if sang?(action_a), do: 1, else: 0) + (if sang?(action_b), do: 1, else: 0)
+        sangs + if(sang?(action_a), do: 1, else: 0) + if sang?(action_b), do: 1, else: 0
       end)
 
     snapshot = BirdMeadow.peek(meadow)
