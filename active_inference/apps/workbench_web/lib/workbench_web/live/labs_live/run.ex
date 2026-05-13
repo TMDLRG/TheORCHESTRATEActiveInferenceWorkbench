@@ -324,11 +324,41 @@ defmodule WorkbenchWeb.LabsLive.Run do
     <% end %>
 
     <p style="color:#9cb0d6; max-width:780px;">
-      Pick a saved spec and a maze. The <code class="inline">SpecCompiler</code>
-      derives a bundle tailored to the world, boots a supervised episode,
-      and wires it through Glass. Every saved spec (seeded examples + anything
-      you save in the Builder) is runnable on every maze.
+      Open a dedicated Workbench lab, or use the matrix runner below to pick a
+      saved spec and a maze. The matrix path uses <code class="inline">SpecCompiler</code>
+      to derive a bundle, boot a supervised episode, and wire it through Glass.
     </p>
+
+    <div class="card" style="border-color:#0f766e;background:#0f1f2a;">
+      <h2 style="margin-top:0;">Bird Labs</h2>
+      <p style="color:#9cb0d6;max-width:900px;">
+        These are dedicated LiveView labs, separate from the spec x maze matrix.
+        They run native Jido Active Inference agents and expose the relevant
+        beliefs, policies, and world state.
+      </p>
+      <div class="grid-2">
+        <div class="card" style="margin-bottom:0;">
+          <h3>Birdsong Call-Response</h3>
+          <p>
+            Teach a motif songbook, run Jido Perceive -> Plan -> Act, inspect
+            F, G, q(pi), and play the generated response WAV.
+          </p>
+          <.link navigate={~p"/labs/birdsong-call-response"} class="btn primary">
+            Open Birdsong lab ->
+          </.link>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <h3>Bird Meadow</h3>
+          <p>
+            Run the existing multi-agent meadow with token hearing, singing,
+            per-bird beliefs, and meadow-world telemetry.
+          </p>
+          <.link navigate={~p"/labs/meadow"} class="btn">
+            Open Meadow lab ->
+          </.link>
+        </div>
+      </div>
+    </div>
 
     <div class="grid-2">
       <div>

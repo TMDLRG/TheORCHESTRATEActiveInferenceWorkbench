@@ -8,7 +8,7 @@ For run instructions see [`README.md`](README.md); for branding/citation strings
 
 Two coexisting surfaces expose the episode loop:
 
-- **`/labs`** (stable) — fresh `{agent, world}` pair per click, via `WorkbenchWeb.Episode.start/3`. Never regresses.
+- **`/labs`** (stable) — dedicated lab hub plus fresh `{agent, world}` matrix runner per click. Birdsong Call-Response lives at `/labs/birdsong-call-response`; the existing Bird Meadow lives at `/labs/meadow`.
 - **`/studio`** (flexible) — attach already-running agents to any world via `WorkbenchWeb.Episode.attach/1`; tracks lifecycle in `AgentPlane.Instances` (Mnesia `:agent_plane_instances`). Any module implementing [`WorldPlane.WorldBehaviour`](active_inference/apps/world_plane/lib/world_plane/world_behaviour.ex) plugs into Studio — the forward-compat surface for the custom world builder.
 
 ---

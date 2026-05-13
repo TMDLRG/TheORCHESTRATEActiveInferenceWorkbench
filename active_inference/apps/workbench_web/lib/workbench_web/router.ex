@@ -90,6 +90,9 @@ defmodule WorkbenchWeb.Router do
     # Bird Meadow — multi-agent active inference world (audit-grade demo).
     live "/labs/meadow", MeadowLive.Index, :index
 
+    # Birdsong Call-Response -- separate Jido Active Inference lab.
+    live "/labs/birdsong-call-response", BirdsongCallResponseLive.Index, :index
+
     # ORCHESTRATE Workbench uplift -- cookbook (50 runnable recipes).
     live "/cookbook", CookbookLive.Index, :index
     live "/cookbook/:slug", CookbookLive.Show, :show

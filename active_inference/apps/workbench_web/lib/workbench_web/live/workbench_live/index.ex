@@ -61,6 +61,8 @@ defmodule WorkbenchWeb.WorkbenchLive.Index do
         <.link navigate={~p"/guide/build-your-first"} class="btn primary">Build your first agent →</.link>
         <.link navigate={~p"/guide/examples"} class="btn">Try the examples →</.link>
         <.link navigate={~p"/labs"} class="btn">Open Labs →</.link>
+        <.link navigate={~p"/labs/birdsong-call-response"} class="btn">Birdsong lab -></.link>
+        <.link navigate={~p"/labs/meadow"} class="btn">Bird Meadow -></.link>
       </p>
     </div>
 

@@ -172,6 +172,58 @@ defmodule SharedContracts.Blanket do
   @spec meadow_song_tokens() :: [atom()]
   def meadow_song_tokens, do: [:t1, :t2, :t3, :t4]
 
+  @doc """
+  Default blanket for the single-agent Birdsong Call-Response lab.
+
+  This is intentionally separate from `meadow_default/0`: the Meadow lab is a
+  multi-agent spatial world with `:t1..:t4` song tokens, while this lab is a
+  single-agent motif call-response demonstration with audio ingestion and a
+  generated response waveform.
+  """
+  @spec birdsong_default() :: t()
+  def birdsong_default do
+    motifs = birdsong_motifs()
+
+    %__MODULE__{
+      observation_channels: [
+        :heard_motif,
+        :turn_phase,
+        :self_sang_motif,
+        :response_fit
+      ],
+      action_vocabulary:
+        [:listen] ++
+          Enum.map(motifs, fn motif -> String.to_atom("sing_" <> Atom.to_string(motif)) end),
+      channel_specs: %{
+        heard_motif: %{
+          kind: :categorical,
+          values: [:silence | motifs] ++ [:unknown],
+          description: "Coarse motif extracted from the input birdsong signal."
+        },
+        turn_phase: %{
+          kind: :categorical,
+          values: [:call, :gap, :response_due, :refractory],
+          description: "Discrete call-response phase inferred from the motif timeline."
+        },
+        self_sang_motif: %{
+          kind: :categorical,
+          values: [:none | motifs],
+          description: "Proprioceptive/self-audition channel for the previous emitted motif."
+        },
+        response_fit: %{
+          kind: :categorical,
+          values: [:none, :poor_fit, :good_fit],
+          description:
+            "Categorical consequence of the response under the current motif and interaction mode."
+        }
+      }
+    }
+  end
+
+  @doc "Motif alphabet used by the Birdsong Call-Response lab."
+  @spec birdsong_motifs() :: [atom()]
+  def birdsong_motifs, do: [:a, :b, :c, :d]
+
   @doc "Replace the list of exposed observation channels."
   @spec with_observation_channels(t(), [atom()]) :: t()
   def with_observation_channels(%__MODULE__{} = blanket, channels) when is_list(channels) do

@@ -81,7 +81,23 @@ defmodule WorkbenchWeb.GuideLive.Features do
       name: "Labs",
       path: "/labs",
       state: :ok,
-      note: "Run any spec x any maze.  Accepts ?recipe= + ?world= (G8)."
+      note:
+        "Hub for dedicated Workbench labs plus the spec x maze runner. Accepts ?recipe= + ?world= (G8)."
+    },
+    %{
+      group: "Workbench",
+      name: "Birdsong Call-Response lab",
+      path: "/labs/birdsong-call-response",
+      state: :ok,
+      note:
+        "Learns a motif response songbook, plans with F/G/q(pi), and renders a real WAV response."
+    },
+    %{
+      group: "Workbench",
+      name: "Bird Meadow lab",
+      path: "/labs/meadow",
+      state: :ok,
+      note: "Existing multi-agent bird world with token hearing, singing, and per-bird beliefs."
     },
     %{
       group: "Workbench",

@@ -235,7 +235,7 @@ Once `mix phx.server` is running, open <http://localhost:4000>. Start here:
 | **Guide** | `/guide` | Tutorial + feature index + prebuilt examples |
 | **Cookbook** | `/cookbook` | Browse 50 runnable recipes; click **Run in Studio** |
 | **Builder** | `/builder/new` | Compose a generative model on the canvas |
-| **Labs** | `/labs` | Run a saved spec × a maze (fresh agent/world each click) |
+| **Labs** | `/labs` | Open dedicated Workbench labs or run a saved spec × a maze |
 | **Studio** | `/studio` | Long-lived agents with full lifecycle + world attachment |
 | **Glass** | `/glass` | Inspect any agent's signal river with equation traces |
 
@@ -249,7 +249,9 @@ Once `mix phx.server` is running, open <http://localhost:4000>. Start here:
 | `/guide/features` | Honest state (works / partial / scaffold) for every feature |
 | `/guide/learning` | Learning flow guide (paths, chapters, sessions, quizzes, progress) |
 | `/guide/workbench` | Workbench surfaces guide |
-| `/guide/labs` | 7 learning labs with launch params + coach agents |
+| `/guide/labs` | Dedicated Workbench labs plus 7 standalone learning simulators |
+| `/labs/birdsong-call-response` | Birdsong Call-Response lab with motif learning, F/G/q(pi), and generated WAV response |
+| `/labs/meadow` | Existing multi-agent Bird Meadow lab |
 | `/guide/voice` | Piper / XTTS-v2 / narrator / autoplay shim |
 | `/guide/chat` | LibreChat integration, all 27 agents |
 | `/guide/jido` | Jido primer + curated knowledgebase (27 topics) |

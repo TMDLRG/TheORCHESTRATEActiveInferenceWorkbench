@@ -30,6 +30,8 @@ defmodule WorkbenchWeb.Layouts do
             <.link navigate={~p"/world"}>World</.link>
             <.link navigate={~p"/builder/new"}>Builder</.link>
             <.link navigate={~p"/labs"}>Labs</.link>
+            <.link navigate={~p"/labs/birdsong-call-response"}>Birdsong</.link>
+            <.link navigate={~p"/labs/meadow"}>Meadow</.link>
             <.link navigate={~p"/studio"}>Studio</.link>
             <.link navigate={~p"/glass"}>Glass</.link>
             <.running_chip />

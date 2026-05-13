@@ -11,7 +11,7 @@ The **Phoenix LiveView workbench UI** and **episode orchestrator**. The only app
 | [`lib/workbench_web.ex`](lib/workbench_web.ex) | Root module with `controller/view/live` macros |
 | [`lib/workbench_web/application.ex`](lib/workbench_web/application.ex) | OTP Application; children: `WorkbenchWeb.PubSub`, `Endpoint` |
 | [`lib/workbench_web/endpoint.ex`](lib/workbench_web/endpoint.ex) | Phoenix endpoint (Bandit, `/live` socket, session, CSRF, static) |
-| [`lib/workbench_web/router.ex`](lib/workbench_web/router.ex) | 18 routes — see below |
+| [`lib/workbench_web/router.ex`](lib/workbench_web/router.ex) | Phoenix route map, including dedicated bird labs -- see below |
 | [`lib/workbench_web/episode.ex`](lib/workbench_web/episode.ex) | GenServer orchestrator: Perceive → Plan → Act → Engine → events |
 | [`lib/workbench_web/spec_compiler.ex`](lib/workbench_web/spec_compiler.ex) | Pure compiler: `Spec × Maze → {bundle, agent_opts}` |
 | [`lib/workbench_web/live/`](lib/workbench_web/live/) | 16 LiveView modules grouped by feature |
@@ -29,6 +29,8 @@ The **Phoenix LiveView workbench UI** and **episode orchestrator**. The only app
 - [`live/glass_live/`](lib/workbench_web/live/glass_live/) — `/glass`, `/glass/agent/:id`, `/glass/signal/:id`
 - [`live/builder_live/`](lib/workbench_web/live/builder_live/) — `/builder/new`, `/builder/:spec_id`
 - [`live/labs_live/`](lib/workbench_web/live/labs_live/) — `/labs`, `/labs/run`
+- [`live/birdsong_call_response_live/`](lib/workbench_web/live/birdsong_call_response_live/) — `/labs/birdsong-call-response`
+- [`live/meadow_live/`](lib/workbench_web/live/meadow_live/) — `/labs/meadow`
 - [`live/guide_live/`](lib/workbench_web/live/guide_live/) — `/guide/*` (user guide + tutorial + examples + block catalogue)
 
 ## Public API surface (non-LiveView)
@@ -63,8 +65,10 @@ The **Phoenix LiveView workbench UI** and **episode orchestrator**. The only app
 | `/guide/examples` | `GuideLive.Examples` | L1–L5 |
 | `/guide/examples/:slug` | `GuideLive.Examples` | Example detail |
 | `/guide/build-your-first` | `GuideLive.Tutorial` | 6-step tutorial |
-| `/labs` | `LabsLive.Run` | Any spec × any maze |
+| `/labs` | `LabsLive.Run` | Dedicated lab hub plus any spec × any maze |
 | `/labs/run` | `LabsLive.Run` | (alias) |
+| `/labs/birdsong-call-response` | `BirdsongCallResponseLive.Index` | Birdsong motif learning and generated WAV response |
+| `/labs/meadow` | `MeadowLive.Index` | Existing multi-agent bird meadow |
 
 **Phase D (this documentation pass)** adds additional routes under `/guide/technical/*` — see [subtree README](lib/workbench_web/live/guide_live/ReadmeAI.MD).
 

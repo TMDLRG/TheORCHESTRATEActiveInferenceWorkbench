@@ -1,6 +1,28 @@
 defmodule WorkbenchWeb.GuideLive.Labs do
-  @moduledoc "C7 -- labs guide (index + 7 subpages share this LiveView)."
+  @moduledoc "C7 -- labs guide for Workbench labs and standalone simulators."
   use WorkbenchWeb, :live_view
+
+  @workbench_labs [
+    %{
+      slug: "birdsong-call-response",
+      name: "Birdsong Call-Response",
+      route: "/labs/birdsong-call-response",
+      tier: 4,
+      blurb:
+        "Teach a motif songbook, infer hidden call causes, evaluate response policies, and render a real WAV response.",
+      proof:
+        "Native Jido Perceive -> Plan -> Act, ActiveInferenceCore F/G/q(pi), Dirichlet songbook learning."
+    },
+    %{
+      slug: "meadow",
+      name: "Bird Meadow",
+      route: "/labs/meadow",
+      tier: 4,
+      blurb:
+        "Multi-agent bird world with token hearing, singing, per-bird beliefs, and meadow telemetry.",
+      proof: "Separate MeadowEpisode, BirdMeadow generative process, and meadow bundle builder."
+    }
+  ]
 
   @labs [
     %{
@@ -73,6 +95,7 @@ defmodule WorkbenchWeb.GuideLive.Labs do
     {:ok,
      assign(socket,
        page_title: "Labs guide",
+       workbench_labs: @workbench_labs,
        labs: @labs,
        qwen_page_type: :guide,
        qwen_page_key: "labs",
@@ -84,12 +107,36 @@ defmodule WorkbenchWeb.GuideLive.Labs do
   def render(assigns) do
     ~H"""
     <p><.link navigate={~p"/guide"}>&larr; Guide</.link></p>
-    <h1>Learning Labs -- seven hands-on simulators</h1>
+    <h1>Labs guide -- Workbench labs and hands-on simulators</h1>
     <p style="color:#9cb0d6;max-width:900px;">
-      Each lab is a single HTML simulator under <code class="inline">priv/static/learninglabs/</code>.
-      Each supports <code class="inline">?path=kid|real|equation|derivation</code> and
-      <code class="inline">?beat=N</code> for deep-link storytelling.  Every lab has a dedicated
-      coach agent (<code class="inline">aif-lab-<em>slug</em></code>) reachable via LibreChat.
+      Workbench labs are native Phoenix LiveViews backed by Jido Active Inference
+      episodes. Standalone simulators are static teaching labs under
+      <code class="inline">priv/static/learninglabs/</code>.
+    </p>
+
+    <h2>Workbench Labs</h2>
+    <div class="grid-2">
+      <%= for lab <- @workbench_labs do %>
+        <div class="card">
+          <h2><%= lab.name %>
+            <span class="tag verified" style="font-size:11px;">Level <%= lab.tier %></span>
+          </h2>
+          <p><%= lab.blurb %></p>
+          <ul style="font-size:13px;">
+            <li><strong>Launch:</strong> <a href={lab.route}><%= lab.route %></a></li>
+            <li><strong>Evidence shown:</strong> <%= lab.proof %></li>
+          </ul>
+          <a href={lab.route} class="btn primary">Open lab -></a>
+        </div>
+      <% end %>
+    </div>
+
+    <h2>Standalone Learning Simulators</h2>
+    <p style="color:#9cb0d6;max-width:900px;">
+      Each simulator supports <code class="inline">?path=kid|real|equation|derivation</code>
+      and <code class="inline">?beat=N</code> for deep-link storytelling. Every
+      simulator has a dedicated coach agent (<code class="inline">aif-lab-<em>slug</em></code>)
+      reachable via LibreChat.
     </p>
 
     <div class="grid-2">

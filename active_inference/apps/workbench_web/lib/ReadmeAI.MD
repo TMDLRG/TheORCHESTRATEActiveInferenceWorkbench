@@ -11,7 +11,7 @@ Source tree for the Phoenix LiveView workbench.
 | [`workbench_web.ex`](workbench_web.ex) | `WorkbenchWeb` | `controller/view/live` macros |
 | [`workbench_web/application.ex`](workbench_web/application.ex) | `WorkbenchWeb.Application` | OTP app; children = PubSub + Endpoint |
 | [`workbench_web/endpoint.ex`](workbench_web/endpoint.ex) | `WorkbenchWeb.Endpoint` | Bandit + `/live` socket + session + static |
-| [`workbench_web/router.ex`](workbench_web/router.ex) | `WorkbenchWeb.Router` | 18 routes (more coming in Phase D `/guide/technical/*`) |
+| [`workbench_web/router.ex`](workbench_web/router.ex) | `WorkbenchWeb.Router` | Workbench routes, including dedicated bird labs |
 | [`workbench_web/episode.ex`](workbench_web/episode.ex) | `WorkbenchWeb.Episode` | GenServer orchestrator |
 | [`workbench_web/spec_compiler.ex`](workbench_web/spec_compiler.ex) | `WorkbenchWeb.SpecCompiler` | Pure Spec × Maze compiler |
 
@@ -34,6 +34,8 @@ Source tree for the Phoenix LiveView workbench.
 | `live/glass_live/` | `Index`, `Agent`, `Signal` |
 | `live/builder_live/` | `Compose` |
 | `live/labs_live/` | `Run` |
+| `live/birdsong_call_response_live/` | `Index` (`/labs/birdsong-call-response`) |
+| `live/meadow_live/` | `Index` (`/labs/meadow`) |
 | `live/guide_live/` | `Index`, `Blocks`, `Examples`, `ExampleCatalog`, `Tutorial`, **+ Phase D `Technical.*`** |
 
 See [`../ReadmeAI.MD`](../ReadmeAI.MD) for the consolidated route map and feature list.

@@ -9,6 +9,7 @@ Architecture Decision Records (ADRs). Each file documents a single non-trivial a
 | ADR | Title | Status | Date |
 |---|---|---|---|
 | [`canvas-library.md`](canvas-library.md) | Composition canvas library for the Agent Builder (litegraph.js chosen over rete.js v2) | Accepted | 2026-04-17 |
+| [`birdsong-call-response-lab.md`](birdsong-call-response-lab.md) | Bird-song call-and-response lab boundary, math spec, TDD plan, and navigation integration | Scaffolded + verified | 2026-05-13 |
 
 ### Inline ADRs (not in this folder)
 

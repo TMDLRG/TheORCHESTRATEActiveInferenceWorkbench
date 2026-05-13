@@ -72,10 +72,12 @@ Then open <http://localhost:4000>. Key sections:
 - <http://localhost:4000/builder/new> — Lego-style drag-and-drop canvas with a
   schema-bound Inspector. Open any seeded example directly via
   `/builder/example-l1-hello-pomdp` … `/builder/example-l5-hierarchical-composition`.
-- <http://localhost:4000/labs> — **run any saved spec × any registered maze**.
-  Picks a spec + a maze, compiles via `WorkbenchWeb.SpecCompiler`, and boots
-  a supervised episode with the same live visuals as `/world` (policy-direction
-  bars + predicted-trajectory overlay). Deep-link with query params:
+- <http://localhost:4000/labs> — **open dedicated Workbench labs or run any saved spec × any registered maze**.
+  Includes direct links to Birdsong Call-Response (`/labs/birdsong-call-response`)
+  and Bird Meadow (`/labs/meadow`). The matrix runner picks a spec + a maze,
+  compiles via `WorkbenchWeb.SpecCompiler`, and boots a supervised episode with
+  the same live visuals as `/world` (policy-direction bars + predicted-trajectory
+  overlay). Deep-link the matrix runner with query params:
   `/labs/run?spec_id=example-l3-sophisticated-planner&world_id=deceptive_dead_end`.
 - <http://localhost:4000/equations> — equation registry with filters + detail pages.
 - <http://localhost:4000/models> — model-family taxonomy.

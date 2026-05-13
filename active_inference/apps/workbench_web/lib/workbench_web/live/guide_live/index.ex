@@ -102,7 +102,7 @@ defmodule WorkbenchWeb.GuideLive.Index do
         </div>
         <div>
           <h3><.link navigate={~p"/guide/labs"}>Labs detail</.link></h3>
-          <p>Seven simulators with launch parameters and coach agents.</p>
+          <p>Dedicated Workbench labs, including Birdsong and Bird Meadow, plus seven standalone simulators.</p>
         </div>
         <div>
           <h3><.link navigate={~p"/guide/voice"}>Voice &amp; narration</.link></h3>
@@ -146,9 +146,13 @@ defmodule WorkbenchWeb.GuideLive.Index do
     <div class="card" style="border-color:#d8b56c;">
       <h2 style="color:#d8b56c;">Learning Labs · hands-on simulators</h2>
       <p style="max-width:780px;">
-        Seven standalone teaching simulators — chip machines, clockwork POMDPs, forges, towers, atlases, jumping frogs.
-        Each has a 4-path toggle (Story / Real-world / Equation / Derivation), glossary, analogies, and printable physical exercises.
-        Browse them from the unified <.link navigate={~p"/learn"}>Learn hub</.link>.
+        The suite includes dedicated Workbench labs for bird experiments and seven standalone teaching simulators
+        for chip machines, clockwork POMDPs, forges, towers, atlases, and jumping frogs.
+        Browse the full lab guide at <.link navigate={~p"/guide/labs"}>/guide/labs</.link>.
+      </p>
+      <p>
+        <.link navigate={~p"/labs/birdsong-call-response"} class="btn primary" style="background:#b3863a;border-color:#b3863a;color:#1b1410;">Open Birdsong lab -></.link>
+        <.link navigate={~p"/labs/meadow"} class="btn">Open Bird Meadow -></.link>
       </p>
       <div class="grid-3" style="margin-top:12px;">
         <%= for lab <- WorkbenchWeb.LearningCatalog.labs() |> Enum.take(6) do %>

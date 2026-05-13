@@ -315,7 +315,12 @@ defmodule WorkbenchWeb.Qwen.PageContext do
           ]
 
         :labs ->
-          [link("/labs", "Labs index", :labs), link("/guide/blocks", "Block catalogue", :guide)]
+          [
+            link("/labs", "Labs index", :labs),
+            link("/labs/birdsong-call-response", "Birdsong Call-Response lab", :labs),
+            link("/labs/meadow", "Bird Meadow lab", :labs),
+            link("/guide/blocks", "Block catalogue", :guide)
+          ]
 
         :studio ->
           [
@@ -378,6 +383,8 @@ defmodule WorkbenchWeb.Qwen.PageContext do
 
   defp build_specific(:labs_index, _params, base) do
     related = [
+      link("/labs/birdsong-call-response", "Birdsong Call-Response lab", :labs),
+      link("/labs/meadow", "Bird Meadow lab", :labs),
       link("/cookbook", "Recipe index", :recipe),
       link("/studio", "Studio (long-lived agents)", :studio),
       link("/guide/labs", "How Labs work", :guide)

@@ -59,6 +59,9 @@ Start `mix phx.server` then browse:
 | `/guide/technical/config` | Every Application env key, `config/*.exs` entry, defaults |
 | `/guide/technical/api/:module` | Per-module doc page (from `Code.fetch_docs/1`) |
 | `/guide/technical/verification` | Verified / scaffolded / uncertain honesty manifest |
+| `/labs` | Lab hub with dedicated Workbench labs and the spec x maze runner |
+| `/labs/birdsong-call-response` | Birdsong Call-Response lab; motif learning, Active Inference policy evaluation, generated WAV response |
+| `/labs/meadow` | Bird Meadow lab; existing multi-agent token hearing/singing world |
 
 ## Generated API docs (ExDoc)
 
@@ -82,6 +85,7 @@ Groups modules by umbrella app. The in-app `/guide/technical/api/:module` links 
 | ADR | Topic |
 |---|---|
 | [`active_inference/docs/decisions/canvas-library.md`](../active_inference/docs/decisions/canvas-library.md) | Composition canvas library choice (litegraph.js vs rete.js) |
+| [`active_inference/docs/decisions/birdsong-call-response-lab.md`](../active_inference/docs/decisions/birdsong-call-response-lab.md) | Bird-song call-and-response lab boundary, math spec, TDD plan, and navigation integration |
 | Inline ADRs in [`DELIVERABLE.md`](../active_inference/DELIVERABLE.md) §6 | Umbrella architecture, blanket contracts, native Jido, Phoenix LiveView, etc. |
 
 ## Documentation conventions

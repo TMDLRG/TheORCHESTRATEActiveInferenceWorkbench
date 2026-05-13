@@ -48,9 +48,10 @@ defmodule WorkbenchWeb.GuideLive.Workbench do
     </div>
 
     <div class="card">
-      <h2>/labs -- spec x maze matrix</h2>
+      <h2>/labs -- dedicated labs + spec x maze matrix</h2>
       <ol>
         <li>Open <.link navigate={~p"/labs"}>/labs</.link>.</li>
+        <li>Use direct lab cards for <.link navigate={~p"/labs/birdsong-call-response"}>Birdsong Call-Response</.link> and <.link navigate={~p"/labs/meadow"}>Bird Meadow</.link>.</li>
         <li>Pick any saved spec + any registered maze.  <code class="inline">SpecCompiler.compile/3</code> derives a fresh bundle.</li>
         <li>Run / pause / reset / stop the episode.  Live policy-direction chart + trajectory overlay.</li>
       </ol>

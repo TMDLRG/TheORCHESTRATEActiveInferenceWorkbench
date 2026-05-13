@@ -97,7 +97,8 @@ defmodule ActiveInferenceCore.DiscreteTimeTest do
         e: nil,
         actions: [:left, :right],
         policies: [[:left, :left], [:right, :right], [:left, :right], [:right, :left]],
-        horizon: 2
+        horizon: 2,
+        action_selection: :argmax
       }
 
       beliefs = DiscreteTime.fresh_beliefs(bundle)

@@ -69,11 +69,10 @@ defmodule AgentPlane.Meadow.BeliefEvolutionPredictionTest do
   use ExUnit.Case, async: true
 
   alias ActiveInferenceCore.Math, as: M
-  alias AgentPlane.{ActiveInferenceAgent, BundleBuilder, BundleBuilder.Meadow}
+  alias AgentPlane.{ActiveInferenceAgent, BundleBuilder.Meadow}
   alias AgentPlane.Actions.{Act, Perceive, Plan}
   alias Jido.Agent.Directive
   alias SharedContracts.{ActionPacket, Blanket, ObservationPacket}
-  alias WorldPlane.Worlds
 
   describe "G4: observation withholding broadens the marginal entropy" do
     test "withholding observations raises entropy at the transition under stochastic dynamics" do
@@ -257,23 +256,6 @@ defmodule AgentPlane.Meadow.BeliefEvolutionPredictionTest do
     # Stochastic enough that predictive rollout broadens entropy.
     actions = [:move_north, :move_south, :move_east, :move_west]
 
-    b =
-      Enum.into(actions, %{}, fn _action ->
-        mat =
-          for s_next <- 0..(n_states - 1) do
-            for s_curr <- 0..(n_states - 1) do
-              if s_next == s_curr, do: 0.5, else: 0.5 / (n_states - 1)
-            end
-          end
-
-        {hd(actions), mat}
-      end)
-      |> Map.new(fn {_, mat} ->
-        # Recompute actions list properly.
-        {hd(actions), mat}
-      end)
-
-    # Better: build per-action B explicitly.
     b =
       Enum.into(actions, %{}, fn action ->
         mat =

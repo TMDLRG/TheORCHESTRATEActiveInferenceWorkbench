@@ -34,6 +34,23 @@ $state = Join-Path $PSScriptRoot ".suite"
 $logs  = Join-Path $state "logs"
 New-Item -ItemType Directory -Force -Path $state, $logs | Out-Null
 
+# docker-compose publishes `${PORT}:${PORT}` from librechat/.env — keep HTTP checks in sync when the default param was not overridden.
+$LibrechatHttpPort = $LibrechatPort
+if (-not $PSBoundParameters.ContainsKey('LibrechatPort')) {
+  $lcEnv = Join-Path $root "Qwen3.6\librechat\.env"
+  if (Test-Path $lcEnv) {
+    foreach ($line in Get-Content $lcEnv -ErrorAction SilentlyContinue) {
+      if ($line -match '^\s*PORT\s*=\s*(\d+)') {
+        $LibrechatHttpPort = [int]$Matches[1]
+        break
+      }
+    }
+  }
+}
+if ($LibrechatHttpPort -ne $LibrechatPort) {
+  Write-Host "  (using LibreChat PORT=$LibrechatHttpPort from Qwen3.6\librechat\.env for readiness checks)" -ForegroundColor DarkGray
+}
+
 function Write-Cyan($m)   { Write-Host $m -ForegroundColor Cyan }
 function Write-Green($m)  { Write-Host $m -ForegroundColor Green }
 function Write-Yellow($m) { Write-Host $m -ForegroundColor Yellow }
@@ -61,22 +78,45 @@ function Test-Http($url, [int]$timeout=3) {
     $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec $timeout -ErrorAction Stop
     return [int]$r.StatusCode
   } catch {
+    # With -ErrorAction Stop, 4xx/5xx often throw; connection refused has no response. Preserve status when available.
+    try {
+      $resp = $_.Exception.Response
+      if ($null -ne $resp -and $null -ne $resp.StatusCode) {
+        return [int]$resp.StatusCode
+      }
+    } catch { }
     return 0
   } finally {
     $ProgressPreference = $prev
   }
 }
 
-function Wait-Up($name, $url, [int]$maxSec, [int]$ok=200) {
+function Test-HttpSuccess([string]$url, [int]$timeout=3) {
+  $c = Test-Http $url $timeout
+  return (($c -ge 200 -and $c -lt 300) -or ($c -eq 304))
+}
+
+function Wait-Up($name, $url, [int]$maxSec, [int]$ok=200, [switch]$HttpSuccess) {
   $t = 0
+  $last = 0
   while ($t -lt $maxSec) {
     $code = Test-Http $url 3
-    if ($code -eq $ok) { Write-Green "  + $name ready at $url (${t}s)"; return $true }
-    Write-Host "  ... waiting for $name (${t}s / ${maxSec}s)..." -ForegroundColor DarkGray
+    $last = $code
+    $ready = if ($HttpSuccess) {
+      (($code -ge 200 -and $code -lt 300) -or ($code -eq 304))
+    } else {
+      ($code -eq $ok)
+    }
+    if ($ready) { Write-Green "  + $name ready at $url (HTTP $code, ${t}s)"; return $true }
+    if ($code -gt 0) {
+      Write-Host "  ... waiting for $name (${t}s / ${maxSec}s)... (last HTTP $code)" -ForegroundColor DarkGray
+    } else {
+      Write-Host "  ... waiting for $name (${t}s / ${maxSec}s)..." -ForegroundColor DarkGray
+    }
     Start-Sleep -Seconds 5
     $t += 5
   }
-  Write-Red "  x $name did not come up within ${maxSec}s"
+  Write-Red "  x $name did not come up within ${maxSec}s (last HTTP status: $last; 0 = no TCP response or no status from server)"
   return $false
 }
 
@@ -113,8 +153,14 @@ if ((Test-Http "http://127.0.0.1:$QwenPort/v1/models") -eq 200) {
 
 # [2/4] LibreChat Docker (includes voice container exposing 7711/7712)
 Write-Cyan ">> [2/4] Starting LibreChat Docker stack (includes voice service)..."
-if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200) {
-  Write-Green "  + LibreChat already running on :$LibrechatPort"
+if (Test-HttpSuccess "http://127.0.0.1:$LibrechatHttpPort/") {
+  Write-Green "  + LibreChat already running on :$LibrechatHttpPort"
+  if (-not (Wait-Up "Speech HTTP (voice)" "http://127.0.0.1:$SpeakPort/healthz" 30 -HttpSuccess)) {
+    Write-Yellow "  ! voice HTTP slow — narrator may fall back to Web Speech until :$SpeakPort answers."
+  }
+  if (-not (Wait-Up "Speech MCP  (voice)" "http://127.0.0.1:$SpeechMcpPort/sse" 30 -HttpSuccess)) {
+    Write-Yellow "  ! voice MCP slow — LibreChat speak~voice tool may attach late."
+  }
 } else {
   $libreDir = Join-Path $root "Qwen3.6\librechat"
   if ((Test-Path (Join-Path $libreDir "docker-compose.yml")) -and (Get-Command docker -ErrorAction SilentlyContinue)) {
@@ -142,14 +188,14 @@ if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200) {
       Write-LogTail $libreLog
       exit 1
     }
-    if (-not (Wait-Up "LibreChat" "http://127.0.0.1:$LibrechatPort/" 120)) {
+    if (-not (Wait-Up "LibreChat" "http://127.0.0.1:$LibrechatHttpPort/" 120 -HttpSuccess)) {
       Write-Red "  x LibreChat startup timed out; full chat tab may show an offline page. See $libreLog"
       Write-LogTail $libreLog
     }
-    if (-not (Wait-Up "Speech HTTP (voice)" "http://127.0.0.1:$SpeakPort/healthz" 30)) {
+    if (-not (Wait-Up "Speech HTTP (voice)" "http://127.0.0.1:$SpeakPort/healthz" 30 -HttpSuccess)) {
       Write-Yellow "  ! voice HTTP slow — narrator may fall back to Web Speech until :$SpeakPort answers."
     }
-    if (-not (Wait-Up "Speech MCP  (voice)" "http://127.0.0.1:$SpeechMcpPort/sse" 30)) {
+    if (-not (Wait-Up "Speech MCP  (voice)" "http://127.0.0.1:$SpeechMcpPort/sse" 30 -HttpSuccess)) {
       Write-Yellow "  ! voice MCP slow — LibreChat speak~voice tool may attach late."
     }
   } else {
@@ -160,9 +206,9 @@ if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200) {
 # [3/4] LibreChat bootstrap + seed (requires Python)
 $py = Get-Command python -ErrorAction SilentlyContinue
 if (-not $py) { $py = Get-Command python3 -ErrorAction SilentlyContinue }
-if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200 -and $py) {
+if ((Test-HttpSuccess "http://127.0.0.1:$LibrechatHttpPort/") -and $py) {
   Write-Cyan ">> [3/4] LibreChat bootstrap + API seeding (idempotent)..."
-  $env:LC_BASE_URL = "http://127.0.0.1:$LibrechatPort"
+  $env:LC_BASE_URL = "http://127.0.0.1:$LibrechatHttpPort"
   $bootLog = Join-Path $logs "librechat_bootstrap.log"
   $seedLog = Join-Path $logs "librechat_seed.log"
   & $py.Source (Join-Path $root "scripts\librechat_bootstrap.py") 2>&1 | Out-File -FilePath $bootLog -Encoding utf8
@@ -172,7 +218,7 @@ if ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200 -and $py) {
   if ($LASTEXITCODE -eq 0) { Write-Green "  + tools/librechat_seed/seed.py" }
   else { Write-Yellow "  ! librechat_seed/seed.py failed — see $seedLog" }
 }
-elseif ((Test-Http "http://127.0.0.1:$LibrechatPort/") -eq 200) {
+elseif (Test-HttpSuccess "http://127.0.0.1:$LibrechatHttpPort/") {
   Write-Yellow "  python not found — skipping LibreChat bootstrap/seed"
 }
 
@@ -217,7 +263,7 @@ Write-Green " Active Inference Masterclass is live."
 Write-Green "================================================="
 Write-Cyan  "  Learn hub  : http://127.0.0.1:$PhoenixPort/learn"
 Write-Cyan  "  Workbench  : http://127.0.0.1:$PhoenixPort/"
-Write-Cyan  "  Full chat  : http://127.0.0.1:$LibrechatPort/"
+Write-Cyan  "  Full chat  : http://127.0.0.1:$LibrechatHttpPort/"
 Write-Cyan  "  Qwen API   : http://127.0.0.1:$QwenPort/v1/models"
 Write-Cyan  "  Speech TTS : http://127.0.0.1:$SpeakPort/healthz"
 Write-Cyan  "  Speech MCP : http://127.0.0.1:$SpeechMcpPort/sse"
