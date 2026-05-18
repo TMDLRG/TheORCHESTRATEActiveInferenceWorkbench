@@ -45,6 +45,23 @@ defmodule ActiveInferenceCore.DiscreteTime do
 
   The engine layer (`AgentPlane.ActiveInferenceAgent`) stores this bundle
   inside its agent state and never shares it with the world plane.
+
+  ## Precision controls (optional)
+
+  Three optional bundle fields tune precision, each defaulting to the
+  identity so an un-annotated bundle behaves exactly as before:
+
+    * `softmax_temperature` — *policy precision*. Inverse temperature on the
+      policy posterior σ((ln E − F − G) / T); see `choose_action/4`.
+    * `gamma_a` — *sensory/likelihood precision*. Exponent on the columns of
+      A; `> 1` sharpens (observations more diagnostic of state), `< 1`
+      flattens (observations more ambiguous). See `apply_precision/1`.
+    * `gamma_b` — *transition precision*. Exponent on the columns of every
+      per-action B matrix; `> 1` sharpens the believed dynamics, `< 1`
+      flattens them (less predictable transitions). See `apply_precision/1`.
+
+  These are deliberately distinct knobs — precision is a family of controls,
+  not a single scalar.
   """
 
   alias ActiveInferenceCore.Math, as: M
@@ -450,6 +467,42 @@ defmodule ActiveInferenceCore.DiscreteTime do
   end
 
   # ---------------------------------------------------------------------------
+  # Precision weighting — sensory (γ_A) and transition (γ_B) precision
+  # ---------------------------------------------------------------------------
+
+  @doc """
+  Return `bundle` with its A and B matrices precision-weighted.
+
+  Reads two optional bundle fields, both defaulting to `1.0` (identity):
+
+    * `:gamma_a` — sensory/likelihood precision, applied to the columns of A.
+    * `:gamma_b` — transition precision, applied to the columns of every
+      per-action B matrix.
+
+  `choose_action/4` calls this internally, so callers normally just set
+  `:gamma_a` / `:gamma_b` on the bundle rather than calling this directly.
+  See `ActiveInferenceCore.Math.precision_weight/2` — note in particular that
+  a deterministic transition column is invariant under `:gamma_b`.
+  """
+  @spec apply_precision(map()) :: map()
+  def apply_precision(bundle) do
+    with_span(:apply_precision, 1, fn -> do_apply_precision(bundle) end)
+  end
+
+  defp do_apply_precision(bundle) do
+    gamma_a = Map.get(bundle, :gamma_a, 1.0)
+    gamma_b = Map.get(bundle, :gamma_b, 1.0)
+
+    bundle
+    |> Map.update!(:a, &M.precision_weight(&1, gamma_a))
+    |> Map.update!(:b, fn b_per_action ->
+      Map.new(b_per_action, fn {action, mat} ->
+        {action, M.precision_weight(mat, gamma_b)}
+      end)
+    end)
+  end
+
+  # ---------------------------------------------------------------------------
   # End-to-end: select an action from the current belief state
   # ---------------------------------------------------------------------------
 
@@ -480,6 +533,10 @@ defmodule ActiveInferenceCore.DiscreteTime do
   end
 
   defp do_choose_action(bundle, beliefs, obs_history, _t_now) do
+    # Fold sensory (γ_A) and transition (γ_B) precision into A and B once,
+    # here, so every downstream step — fresh_beliefs, the VMP sweep, F and
+    # G — sees a single consistent precision-weighted generative model.
+    bundle = apply_precision(bundle)
     %{a: a, b: b_per_action, c: c, d: d, e: e, policies: policies} = bundle
 
     c_log =

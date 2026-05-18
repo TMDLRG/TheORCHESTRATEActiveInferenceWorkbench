@@ -107,4 +107,114 @@ defmodule ActiveInferenceCore.DiscreteTimeTest do
       assert result.action == :right
     end
   end
+
+  describe "Math.precision_weight (sensory / transition precision)" do
+    test "gamma = 1.0 is the identity" do
+      m = [[0.7, 0.2], [0.3, 0.8]]
+      assert Math.precision_weight(m, 1.0) == m
+    end
+
+    test "columns stay normalised for any gamma" do
+      m = [[0.7, 0.2], [0.3, 0.8]]
+
+      for g <- [0.2, 0.5, 2.0, 6.0] do
+        weighted = Math.precision_weight(m, g)
+
+        for col <- Math.transpose(weighted) do
+          assert_in_delta Enum.sum(col), 1.0, 1.0e-9
+        end
+      end
+    end
+
+    test "gamma > 1 sharpens — the dominant entry grows" do
+      m = [[0.7, 0.5], [0.3, 0.5]]
+      [[a00, _], [_, _]] = Math.precision_weight(m, 5.0)
+      assert a00 > 0.7
+    end
+
+    test "gamma < 1 flattens toward uniform" do
+      m = [[0.9, 0.5], [0.1, 0.5]]
+      [[a00, _], [_, _]] = Math.precision_weight(m, 0.2)
+      assert a00 < 0.9
+      assert a00 > 0.5
+    end
+
+    test "a deterministic point-mass column is invariant under any gamma" do
+      m = [[1.0, 0.0], [0.0, 1.0]]
+      assert Math.precision_weight(m, 0.3) == m
+      assert Math.precision_weight(m, 4.0) == m
+    end
+  end
+
+  describe "choose_action — sensory precision (gamma_a)" do
+    test "gamma_a = 1.0 reproduces the un-parameterised result" do
+      base = DiscreteTime.choose_action(goal_bundle(), %{}, [], -1)
+      g1 = DiscreteTime.choose_action(goal_bundle(%{gamma_a: 1.0}), %{}, [], -1)
+      assert base.f == g1.f
+      assert base.g == g1.g
+      assert base.policy_posterior == g1.policy_posterior
+    end
+
+    test "lower gamma_a raises EFE ambiguity (a less legible world)" do
+      sharp = DiscreteTime.choose_action(goal_bundle(%{gamma_a: 4.0}), %{}, [], -1)
+      flat = DiscreteTime.choose_action(goal_bundle(%{gamma_a: 0.25}), %{}, [], -1)
+      assert total_ambiguity(flat) > total_ambiguity(sharp)
+    end
+  end
+
+  describe "choose_action — transition precision (gamma_b)" do
+    test "gamma_b = 1.0 reproduces the un-parameterised result" do
+      bundle = stochastic_b_bundle()
+      base = DiscreteTime.choose_action(bundle, %{}, [], -1)
+      g1 = DiscreteTime.choose_action(Map.put(bundle, :gamma_b, 1.0), %{}, [], -1)
+      assert base.f == g1.f
+      assert base.g == g1.g
+    end
+
+    test "gamma_b reshapes planning when transitions are stochastic" do
+      bundle = stochastic_b_bundle()
+      sharp = DiscreteTime.choose_action(Map.put(bundle, :gamma_b, 5.0), %{}, [], -1)
+      flat = DiscreteTime.choose_action(Map.put(bundle, :gamma_b, 0.3), %{}, [], -1)
+      refute sharp.g == flat.g
+    end
+  end
+
+  # --- helpers ---------------------------------------------------------------
+
+  defp goal_bundle(extra \\ %{}) do
+    Map.merge(
+      %{
+        a: [[0.8, 0.2], [0.2, 0.8]],
+        b: %{stay: [[1.0, 0.0], [0.0, 1.0]], go: [[0.0, 0.0], [1.0, 1.0]]},
+        c: Math.log_eps(Math.softmax([0.0, 3.0])),
+        d: [1.0, 0.0],
+        e: nil,
+        actions: [:stay, :go],
+        policies: [[:stay, :stay], [:go, :go], [:stay, :go], [:go, :stay]],
+        horizon: 2,
+        action_selection: :argmax
+      },
+      extra
+    )
+  end
+
+  defp stochastic_b_bundle do
+    %{
+      a: [[0.9, 0.1], [0.1, 0.9]],
+      b: %{stay: [[0.9, 0.1], [0.1, 0.9]], go: [[0.2, 0.1], [0.8, 0.9]]},
+      c: Math.log_eps(Math.softmax([0.0, 3.0])),
+      d: [1.0, 0.0],
+      e: nil,
+      actions: [:stay, :go],
+      policies: [[:stay, :stay], [:go, :go], [:stay, :go], [:go, :stay]],
+      horizon: 2,
+      action_selection: :argmax
+    }
+  end
+
+  defp total_ambiguity(result) do
+    result.efe_per_policy
+    |> Enum.flat_map(& &1.ambiguity_per_tau)
+    |> Enum.sum()
+  end
 end

@@ -69,6 +69,13 @@ defmodule ActiveInferenceCore.DiscreteTimeTelemetryTest do
 
       assert_receive {:tm, @event_stop, _, %{fn: :update_state_beliefs}}, 500
     end
+
+    test "apply_precision" do
+      bundle = %{a: [[0.9, 0.1], [0.1, 0.9]], b: %{stay: [[1.0, 0.0], [0.0, 1.0]]}}
+
+      _ = DiscreteTime.apply_precision(bundle)
+      assert_receive {:tm, @event_stop, _, %{fn: :apply_precision}}, 500
+    end
   end
 
   describe "T3: span metadata includes process-dict telemetry context" do

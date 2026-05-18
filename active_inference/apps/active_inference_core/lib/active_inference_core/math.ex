@@ -122,6 +122,39 @@ defmodule ActiveInferenceCore.Math do
     end)
   end
 
+  @doc """
+  Precision-weight a column-stochastic matrix.
+
+  Each column is treated as a categorical distribution and re-sharpened by
+  the precision exponent `gamma`:
+
+      M_γ[i][j] = M[i][j]^γ / Σ_k M[k][j]^γ
+
+  `gamma == 1.0` returns the matrix unchanged. `gamma > 1` sharpens — the
+  distribution concentrates (higher precision); `0 < gamma < 1` flattens it
+  toward uniform (lower precision).
+
+  A deterministic column (a point mass such as `[1.0, 0.0]`) is invariant
+  under any `gamma > 0`, because `0.0^γ = 0.0` — the power transform cannot
+  spread a point mass. Precision weighting is only expressive on columns
+  that are already stochastic.
+  """
+  @spec precision_weight(mat(), number()) :: mat()
+  def precision_weight(m, gamma) when gamma == 1.0, do: m
+
+  def precision_weight(m, gamma) do
+    g = max(gamma, @eps)
+
+    m
+    |> transpose()
+    |> Enum.map(fn col ->
+      powered = Enum.map(col, fn x -> :math.pow(x, g) end)
+      z = sum(powered)
+      if z <= 0.0, do: col, else: scale(powered, 1.0 / z)
+    end)
+    |> transpose()
+  end
+
   # ---------------------------------------------------------------------------
   # Convenience: build categorical distributions
   # ---------------------------------------------------------------------------
