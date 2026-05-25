@@ -67,6 +67,30 @@ defmodule ActiveInferenceCore.DiscreteTimeTest do
       assert Enum.at(pi, 2) > Enum.at(pi, 1)
       assert_in_delta Enum.sum(pi), 1.0, 1.0e-9
     end
+
+    test "γ=1, T=1 recovers the textbook σ(ln E − F − G)" do
+      f = [0.2, 0.5]
+      g = [0.1, 0.9]
+      got = DiscreteTime.policy_posterior(f, g, nil, gamma: 1.0, temperature: 1.0)
+      want = Math.softmax([-0.2 - 0.1, -0.5 - 0.9])
+      assert_in_delta Enum.at(got, 0), Enum.at(want, 0), 1.0e-9
+      assert_in_delta Enum.at(got, 1), Enum.at(want, 1), 1.0e-9
+    end
+
+    test "policy precision γ sharpens the posterior toward the lowest-G policy" do
+      # Equal F so only G (scaled by γ) drives the posterior. Policy 0 has min G.
+      f = [0.0, 0.0, 0.0]
+      g = [0.0, 1.0, 2.0]
+      low = DiscreteTime.policy_posterior(f, g, nil, gamma: 0.5)
+      high = DiscreteTime.policy_posterior(f, g, nil, gamma: 4.0)
+
+      # Higher γ concentrates more probability on the min-G policy.
+      assert Enum.at(high, 0) > Enum.at(low, 0)
+      # ...and less on the worst (max-G) policy.
+      assert Enum.at(high, 2) < Enum.at(low, 2)
+      assert_in_delta Enum.sum(high), 1.0, 1.0e-9
+      assert_in_delta Enum.sum(low), 1.0, 1.0e-9
+    end
   end
 
   describe "update_state_beliefs (eq. 4.13 / B.5)" do
@@ -176,6 +200,71 @@ defmodule ActiveInferenceCore.DiscreteTimeTest do
       sharp = DiscreteTime.choose_action(Map.put(bundle, :gamma_b, 5.0), %{}, [], -1)
       flat = DiscreteTime.choose_action(Map.put(bundle, :gamma_b, 0.3), %{}, [], -1)
       refute sharp.g == flat.g
+    end
+  end
+
+  describe "learned-likelihood inference — E[ln A] (digamma, eq. 7.x)" do
+    test "inference_log_a returns E[ln A] only when learning is live with counts" do
+      counts = [[3.0, 1.0], [1.0, 3.0]]
+
+      assert DiscreteTime.inference_log_a(%{}) == nil
+      assert DiscreteTime.inference_log_a(%{learning_enabled: true}) == nil
+
+      assert DiscreteTime.inference_log_a(%{learning_enabled: false, dirichlet_a_counts: counts}) ==
+               nil
+
+      assert DiscreteTime.inference_log_a(%{learning_enabled: true, dirichlet_a_counts: counts}) ==
+               Math.dirichlet_expected_log(counts)
+    end
+
+    test "a learned-A sweep converges to the mean-log sweep as evidence concentrates" do
+      # Light vs heavy Dirichlet counts sharing the same mean A = [[0.9,0.1],[0.1,0.9]].
+      light = [[9.0, 1.0], [1.0, 9.0]]
+      heavy = Enum.map(light, fn row -> Enum.map(row, &(&1 * 1000.0)) end)
+
+      mean_a = light |> Math.transpose() |> Enum.map(&Math.normalise/1) |> Math.transpose()
+
+      b = %{stay: [[1.0, 0.0], [0.0, 1.0]]}
+      policies = [[:stay]]
+      d = [0.5, 0.5]
+      obs = [[1.0, 0.0]]
+
+      sweep = fn ln_a ->
+        fresh = DiscreteTime.fresh_beliefs(%{d: d, horizon: 1, b: b, policies: policies})
+
+        DiscreteTime.sweep_state_beliefs(fresh, policies, b, mean_a, obs, d, 5, ln_a: ln_a)
+        |> Map.fetch!(0)
+        |> List.first()
+      end
+
+      post_mean = sweep.(nil)
+      post_light = sweep.(Math.dirichlet_expected_log(light))
+      post_heavy = sweep.(Math.dirichlet_expected_log(heavy))
+
+      l1 = fn p, q -> Enum.zip(p, q) |> Enum.map(fn {x, y} -> abs(x - y) end) |> Enum.sum() end
+
+      # Heavy evidence ⇒ E[ln A] → ln(mean A) ⇒ the swept posteriors coincide.
+      assert l1.(post_heavy, post_mean) < l1.(post_light, post_mean)
+      assert l1.(post_heavy, post_mean) < 1.0e-3
+    end
+
+    test "passing ln_a moves the VFE accuracy term (the learned A-path is wired into F)" do
+      chain = [[0.6, 0.4]]
+      a = [[0.9, 0.1], [0.1, 0.9]]
+      counts = [[2.0, 1.0], [1.0, 2.0]]
+      b = %{stay: [[1.0, 0.0], [0.0, 1.0]]}
+      d = [0.5, 0.5]
+      obs = [[1.0, 0.0]]
+
+      f_mean = DiscreteTime.variational_free_energy(chain, [:stay], b, a, obs, d)
+
+      f_learned =
+        DiscreteTime.variational_free_energy(chain, [:stay], b, a, obs, d,
+          ln_a: Math.dirichlet_expected_log(counts)
+        )
+
+      refute_in_delta(f_mean, f_learned, 1.0e-9)
+      assert is_number(f_learned)
     end
   end
 

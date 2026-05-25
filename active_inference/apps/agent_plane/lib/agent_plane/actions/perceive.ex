@@ -34,6 +34,12 @@ defmodule AgentPlane.Actions.Perceive do
 
     # Plan §8.4 — stash the provenance tuple so DiscreteTime spans can be
     # turned into equation.evaluated events with full provenance.
+    # When the bundle is learning A, perception must use the Dirichlet
+    # expected log E[ln A] (not ln of the mean) so this sweep stays on the
+    # same generative model the planner's choose_action uses. `nil` for a
+    # fixed likelihood ⇒ sweep logs `bundle.a` as before.
+    ln_a = DiscreteTime.inference_log_a(state.bundle)
+
     updated_beliefs =
       Context.with_agent_context(state, fn ->
         DiscreteTime.sweep_state_beliefs(
@@ -43,7 +49,8 @@ defmodule AgentPlane.Actions.Perceive do
           state.bundle.a,
           new_history,
           state.bundle.d,
-          n_iters
+          n_iters,
+          ln_a: ln_a
         )
       end)
 

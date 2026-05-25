@@ -8,6 +8,19 @@ defmodule AgentPlane.Actions.DirichletUpdateB do
       α_B[a][s', s] ← α_B[a][s', s] + η · q(s_{t+1} = s') · q(s_t = s)
 
   The rebuilt B[a] is the column-stochastic normalisation of α_B[a].
+
+  > #### Reference-implementation-sensitive {: .warning}
+  >
+  > B (and habit E) learning is **reference-implementation-sensitive**: the
+  > exact expected-statistic placement for transition/habit learning varies
+  > across reference implementations (the outer-product weighting, whether the
+  > smoothed pairwise marginal q(s_{t+1}, s_t) or the product of marginals is
+  > used, and whether inference consumes the Dirichlet mean or the expected log
+  > E[ln B] = ψ(α) − ψ(Σα)). We therefore do **not** claim B/E learning is
+  > exact against Parr, Pezzulo & Friston (2022). The A-likelihood path is the
+  > one held to the expected-log standard — see
+  > `ActiveInferenceCore.DiscreteTime.inference_log_a/1` and
+  > `AgentPlane.Actions.DirichletUpdateA`.
   """
 
   use Jido.Action,

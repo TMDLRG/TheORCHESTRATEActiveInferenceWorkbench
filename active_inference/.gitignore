@@ -27,3 +27,10 @@ apps/*/priv/static/assets/*
 # Mnesia on-disk event log
 /priv/mnesia/
 /apps/*/priv/mnesia/
+
+# Throwaway debug/scratch artefacts (sweeps, browser screenshots). Untracked
+# scratch must never enter git or break `mix q`'s format check. Prefix scratch
+# files `tmp_` (root or any app) and they are ignored.
+tmp_*
+apps/*/tmp_*
+*.tmp

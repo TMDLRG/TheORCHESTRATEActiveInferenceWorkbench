@@ -77,6 +77,23 @@ defmodule ActiveInferenceCore.DiscreteTime do
   @telemetry_event [:active_inference_core, :discrete_time, :call]
 
   # ---------------------------------------------------------------------------
+  # Inference-path declaration (build gate #4)
+  # ---------------------------------------------------------------------------
+
+  @doc """
+  The inference path this core implements — build gate #4 requires every
+  implementation to *declare* one of the three recognised decompositions and
+  not silently blend them.
+
+  This core runs **mean-field variational message passing**: the state-belief
+  update (eq. 4.13 / B.5) uses the expected-log transition message `(ln B) s`.
+  (The cross-function pairing with the VFE's `ln(B s)` prior term is the open
+  item routed to UNI via W-1; this declaration fixes the path the lessons teach.)
+  """
+  @spec inference_path() :: :one_step_exact | :mean_field_vmp | :marginal_message_passing
+  def inference_path, do: :mean_field_vmp
+
+  # ---------------------------------------------------------------------------
   # eq_4_5_pomdp_likelihood — observation probabilities from state beliefs
   # ---------------------------------------------------------------------------
 
@@ -177,25 +194,39 @@ defmodule ActiveInferenceCore.DiscreteTime do
           M.mat(),
           [M.vec()],
           M.vec(),
-          pos_integer()
+          pos_integer(),
+          keyword()
         ) :: %{non_neg_integer() => belief()}
   # Default n_iters reduced from 8 → 3 after the A matrix jumped from
   # 4 obs to 64 obs (wall-signature localization). 3 mean-field sweeps
   # are enough for the belief to converge on a localized posterior
   # given sharp A; 8 was pegging per-step time past 30s at policy_depth 3.
-  def sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d, n_iters \\ 3) do
+  def sweep_state_beliefs(
+        beliefs,
+        policies,
+        b_per_action,
+        a,
+        obs_history,
+        d,
+        n_iters \\ 3,
+        opts \\ []
+      ) do
     with_span(:sweep_state_beliefs, 7, fn ->
-      do_sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d, n_iters)
+      do_sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d, n_iters, opts)
     end)
   end
 
-  defp do_sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d, n_iters) do
+  defp do_sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d, n_iters, opts) do
     # Hoist expensive matrix transforms out of the inner loop. The
     # sweep does n_iters × n_policies × horizon belief updates; each
     # one used to re-transpose log(A) and log-transform every B[a] on
     # the fly. For a 64×n_states A and 4 B matrices that was dominating
     # step time. Precompute once here and thread the cache down.
-    log_a_t = M.transpose(M.log_eps_mat(a))
+    #
+    # When A is being *learned*, `opts[:ln_a]` carries the Dirichlet expected
+    # log E[ln A] = ψ(α) − ψ(Σα); inference must use that, NOT ln of the
+    # Dirichlet mean held in `a`. Absent it, log the fixed likelihood `a`.
+    log_a_t = M.transpose(Keyword.get(opts, :ln_a) || M.log_eps_mat(a))
     log_b_per_action = Map.new(b_per_action, fn {k, m} -> {k, M.log_eps_mat(m)} end)
 
     log_b_t_per_action =
@@ -321,19 +352,25 @@ defmodule ActiveInferenceCore.DiscreteTime do
 
   At τ=0, the transition term uses D in place of B^π_0 s^π_{-1}.
   """
-  @spec variational_free_energy(belief(), [atom], map(), M.mat(), [M.vec()], M.vec()) :: float()
-  def variational_free_energy(chain, policy, b_per_action, a, obs_history, d) do
+  @spec variational_free_energy(belief(), [atom], map(), M.mat(), [M.vec()], M.vec(), keyword()) ::
+          float()
+  def variational_free_energy(chain, policy, b_per_action, a, obs_history, d, opts \\ []) do
     with_span(:variational_free_energy, 6, fn ->
-      do_variational_free_energy(chain, policy, b_per_action, a, obs_history, d)
+      do_variational_free_energy(chain, policy, b_per_action, a, obs_history, d, opts)
     end)
   end
 
-  defp do_variational_free_energy(chain, policy, b_per_action, a, obs_history, d) do
+  defp do_variational_free_energy(chain, policy, b_per_action, a, obs_history, d, opts) do
     # Same receding-horizon semantics as sweep_one_policy: only the
     # latest observation anchors chain[0]; future τ slots have no
     # likelihood term (nil obs).
     last_obs = List.last(obs_history)
     obs_window = [last_obs | List.duplicate(nil, length(chain) - 1)]
+
+    # Use the learned expected log E[ln A] when supplied (must match the
+    # sweep's accuracy term), else ln of the fixed likelihood. Hoisted out
+    # of the τ-loop — the transpose is constant across the chain.
+    log_a_t = M.transpose(Keyword.get(opts, :ln_a) || M.log_eps_mat(a))
 
     chain
     |> Enum.with_index()
@@ -343,7 +380,7 @@ defmodule ActiveInferenceCore.DiscreteTime do
       log_likelihood =
         case Enum.at(obs_window, tau) do
           nil -> List.duplicate(0.0, length(s_tau))
-          o -> M.matvec(M.transpose(M.log_eps_mat(a)), o)
+          o -> M.matvec(log_a_t, o)
         end
 
       log_prior =
@@ -378,19 +415,23 @@ defmodule ActiveInferenceCore.DiscreteTime do
   `c_log` is `ln C`. `C` is assumed constant over time when a single vector
   is supplied; to vary C by τ, pass a list-of-vectors `c_log_per_tau`.
   """
-  @spec expected_free_energy(belief(), M.mat(), M.vec() | [M.vec()], integer()) :: %{
+  @spec expected_free_energy(belief(), M.mat(), M.vec() | [M.vec()], integer(), keyword()) :: %{
           total: float(),
           per_tau: [float()],
           ambiguity_per_tau: [float()],
           risk_per_tau: [float()]
         }
-  def expected_free_energy(chain, a, c_log, t_now \\ -1) do
+  def expected_free_energy(chain, a, c_log, t_now \\ -1, opts \\ []) do
     with_span(:expected_free_energy, 4, fn ->
-      do_expected_free_energy(chain, a, c_log, t_now)
+      do_expected_free_energy(chain, a, c_log, t_now, opts)
     end)
   end
 
-  defp do_expected_free_energy(chain, a, c_log, t_now) do
+  defp do_expected_free_energy(chain, a, c_log, t_now, opts) do
+    # Build gate #5 / capstone ablation 2: the ambiguity (information) term can
+    # be switched off to prove the epistemic drive matters. Default keeps it on
+    # so every existing caller computes the full risk + ambiguity EFE.
+    include_ambiguity = Keyword.get(opts, :ambiguity, true)
     h = M.ambiguity_vector(a)
 
     c_log_per_tau =
@@ -413,7 +454,7 @@ defmodule ActiveInferenceCore.DiscreteTime do
           log_o = M.log_eps(o_pi)
           c_tau = Enum.at(c_log_per_tau, min(tau, length(c_log_per_tau) - 1))
 
-          ambiguity = M.dot(h, s_tau)
+          ambiguity = if include_ambiguity, do: M.dot(h, s_tau), else: 0.0
           risk = M.dot(o_pi, M.sub(log_o, c_tau))
           g_tau = ambiguity + risk
 
@@ -435,20 +476,36 @@ defmodule ActiveInferenceCore.DiscreteTime do
   @doc """
   Compute posterior over policies.
 
-      π = σ( ln E  −  F  −  G )
+      π = σ( ln E  −  F  −  γ·G )          (optionally tempered: ÷ T)
+
+  The canonical eq. 4.14 / B.9 form is `σ(ln E − F − G)`. Two optional knobs
+  refine it, both defaulting to the identity so an un-annotated call is exactly
+  the textbook form:
+
+    * `:gamma` — **policy precision γ on the EFE term G** (the curriculum spec's
+      γ in `σ(ln E − γ G − F)`). `γ > 1` sharpens the posterior toward low-G
+      policies (more decisive); `γ < 1` flattens it. This is distinct from the
+      `:gamma_a` / `:gamma_b` sensory/transition precision applied to A and B
+      columns in `apply_precision/1`.
+    * `:temperature` — global inverse-temperature T on the whole exponent,
+      `σ((ln E − F − γG) / T)`; `T = 1` recovers the untempered form.
 
   * `f_vec` — per-policy VFE.
   * `g_vec` — per-policy EFE.
   * `e_vec` — habit prior (pass `nil` for uniform).
+  * `opts` — `[gamma: float(), temperature: float()]`.
   """
-  @spec policy_posterior([float()], [float()], M.vec() | nil, float()) :: M.vec()
-  def policy_posterior(f_vec, g_vec, e_vec \\ nil, temperature \\ 1.0) do
+  @spec policy_posterior([float()], [float()], M.vec() | nil, keyword()) :: M.vec()
+  def policy_posterior(f_vec, g_vec, e_vec \\ nil, opts \\ []) do
     with_span(:policy_posterior, 3, fn ->
-      do_policy_posterior(f_vec, g_vec, e_vec, temperature)
+      do_policy_posterior(f_vec, g_vec, e_vec, opts)
     end)
   end
 
-  defp do_policy_posterior(f_vec, g_vec, e_vec, temperature) do
+  defp do_policy_posterior(f_vec, g_vec, e_vec, opts) do
+    gamma = Keyword.get(opts, :gamma, 1.0)
+    temperature = Keyword.get(opts, :temperature, 1.0)
+
     log_e =
       case e_vec do
         nil -> List.duplicate(0.0, length(f_vec))
@@ -456,12 +513,13 @@ defmodule ActiveInferenceCore.DiscreteTime do
       end
 
     neg_f = Enum.map(f_vec, &(-&1))
-    neg_g = Enum.map(g_vec, &(-&1))
+    # γ multiplies G only — the spec's policy precision placement σ(ln E − γG − F).
+    neg_gamma_g = Enum.map(g_vec, &(-gamma * &1))
     t = max(temperature, 1.0e-6)
 
     log_e
     |> M.add(neg_f)
-    |> M.add(neg_g)
+    |> M.add(neg_gamma_g)
     |> Enum.map(&(&1 / t))
     |> M.softmax()
   end
@@ -503,6 +561,39 @@ defmodule ActiveInferenceCore.DiscreteTime do
   end
 
   # ---------------------------------------------------------------------------
+  # Learned-likelihood inference: expected log E[ln A]
+  # ---------------------------------------------------------------------------
+
+  @doc """
+  Return the log-likelihood matrix to use for **inference**, given a bundle.
+
+  When the bundle is actively learning A — `:learning_enabled` is true and live
+  Dirichlet counts `:dirichlet_a_counts` are present — variational inference must
+  use the **expected log** under the Dirichlet posterior,
+
+      E[ln A_ij] = ψ(α_ij) − ψ(Σ_k α_kj),
+
+  NOT `ln E[A]` (the log of the Dirichlet mean held in `bundle.a`). Returns that
+  matrix. Otherwise returns `nil`, signalling callers to log the fixed `bundle.a`
+  as usual.
+
+  Pass the result as `ln_a:` to `sweep_state_beliefs/8` and
+  `variational_free_energy/7` so the state-update accuracy term and the VFE
+  accuracy term stay on one consistent (learned) generative model. The EFE's
+  forward prediction and ambiguity continue to use the Dirichlet mean `bundle.a`
+  (= E[A]), which is the correct point estimate for predicting outcomes.
+  """
+  @spec inference_log_a(map()) :: M.mat() | nil
+  def inference_log_a(bundle) do
+    if Map.get(bundle, :learning_enabled, false) do
+      case Map.get(bundle, :dirichlet_a_counts) do
+        nil -> nil
+        counts -> M.dirichlet_expected_log(counts)
+      end
+    end
+  end
+
+  # ---------------------------------------------------------------------------
   # End-to-end: select an action from the current belief state
   # ---------------------------------------------------------------------------
 
@@ -539,6 +630,12 @@ defmodule ActiveInferenceCore.DiscreteTime do
     bundle = apply_precision(bundle)
     %{a: a, b: b_per_action, c: c, d: d, e: e, policies: policies} = bundle
 
+    # Learned-likelihood inference: when A is being learned, the state-update
+    # and VFE accuracy terms use E[ln A] (Dirichlet expected log), not ln(mean).
+    # `nil` ⇒ fixed likelihood, callers log `a`. Computed from the post-precision
+    # bundle; precision weighting touches only `:a`/`:b`, never the counts.
+    ln_a = inference_log_a(bundle)
+
     c_log =
       case c do
         [h | _] = list when is_list(h) -> list
@@ -558,7 +655,8 @@ defmodule ActiveInferenceCore.DiscreteTime do
         do: fresh_beliefs(bundle),
         else: beliefs
 
-    beliefs = sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d)
+    beliefs =
+      sweep_state_beliefs(beliefs, policies, b_per_action, a, obs_history, d, 3, ln_a: ln_a)
 
     # Receding-horizon: chain[0] is "now" (swept with the latest obs),
     # chain[1..H] are pure predictions. EFE therefore scores everything
@@ -571,14 +669,28 @@ defmodule ActiveInferenceCore.DiscreteTime do
       policies
       |> Enum.with_index()
       |> Enum.map(fn {policy, pi} ->
-        variational_free_energy(Map.fetch!(beliefs, pi), policy, b_per_action, a, obs_history, d)
+        variational_free_energy(
+          Map.fetch!(beliefs, pi),
+          policy,
+          b_per_action,
+          a,
+          obs_history,
+          d,
+          ln_a: ln_a
+        )
       end)
+
+    # Capstone ablation 2 — `:efe_ambiguity` (default true) lets a bundle drop
+    # the EFE information/ambiguity term to show the epistemic drive matters.
+    efe_ambiguity = Map.get(bundle, :efe_ambiguity, true)
 
     efe_per_policy =
       policies
       |> Enum.with_index()
       |> Enum.map(fn {_policy, pi} ->
-        expected_free_energy(Map.fetch!(beliefs, pi), a, c_log, t_now_eff)
+        expected_free_energy(Map.fetch!(beliefs, pi), a, c_log, t_now_eff,
+          ambiguity: efe_ambiguity
+        )
       end)
 
     g_vec = Enum.map(efe_per_policy, & &1.total)
@@ -588,7 +700,10 @@ defmodule ActiveInferenceCore.DiscreteTime do
     # reach the goal. Deterministic callers can pin `:softmax_temperature`
     # to 1.0 on their bundle to recover the textbook σ(ln E − F − G) form.
     temperature = Map.get(bundle, :softmax_temperature, 2.0)
-    pi_post = policy_posterior(f_vec, g_vec, e, temperature)
+    # Policy precision γ on G (curriculum spec). Defaults to 1.0 — identity —
+    # so existing bundles are unchanged; the Week-10 lab sweeps :gamma_g.
+    gamma_g = Map.get(bundle, :gamma_g, 1.0)
+    pi_post = policy_posterior(f_vec, g_vec, e, gamma: gamma_g, temperature: temperature)
 
     # Receding-horizon controller: **always take the first action of the
     # selected policy**. Re-planning happens every step, so indexing into
@@ -618,7 +733,24 @@ defmodule ActiveInferenceCore.DiscreteTime do
       end
 
     best_policy = Enum.at(policies, best_idx)
-    action = List.first(best_policy)
+
+    # Build gate #6 — the action is read off the *marginal* action posterior
+    # Q(uₜ) = Σ_{π : πₜ = u} Q(π), never raw G. `:argmax` takes argmax_u Q(uₜ)
+    # (deterministic tie-break in the bundle's canonical action order); `:sample`
+    # takes the first action of a policy sampled from Q(π), which is exactly a
+    # draw from Q(uₜ). For goal-directed tasks argmax_u Q(uₜ) coincides with the
+    # MAP policy's first action, but the marginal is the canonical readout.
+    action_marginal = action_marginal(policies, pi_post)
+
+    action =
+      case selection_mode do
+        :argmax ->
+          ordered_actions(bundle, policies)
+          |> Enum.max_by(fn u -> Map.get(action_marginal, u, 0.0) end)
+
+        _ ->
+          List.first(best_policy)
+      end
 
     # Phase L — the best-policy's belief chain is already available in
     # `beliefs[best_idx]`; surface it so Plan/Episode can forward it
@@ -637,6 +769,8 @@ defmodule ActiveInferenceCore.DiscreteTime do
       # the rollout endpoint.
       marginal_state_belief: marginal_over_policies(beliefs, pi_post, 0),
       best_policy_chain: best_chain,
+      # Marginal action posterior Q(uₜ) — the gate-6 readout the action came from.
+      action_marginal: action_marginal,
       telemetry: %{
         policies: policies,
         best_policy_index: best_idx,
@@ -644,6 +778,25 @@ defmodule ActiveInferenceCore.DiscreteTime do
         best_policy_chain: best_chain
       }
     }
+  end
+
+  # Q(uₜ) = Σ_{π : πₜ = u} Q(π) — marginalise the policy posterior onto the
+  # immediate action. Keys are the first-action atoms; values sum to 1.
+  defp action_marginal(policies, pi_post) do
+    policies
+    |> Enum.zip(pi_post)
+    |> Enum.reduce(%{}, fn {policy, p}, acc ->
+      Map.update(acc, List.first(policy), p, &(&1 + p))
+    end)
+  end
+
+  # Canonical action order for deterministic argmax tie-breaking: the bundle's
+  # declared `:actions`, falling back to first-appearance order in the policies.
+  defp ordered_actions(bundle, policies) do
+    case Map.get(bundle, :actions) do
+      [_ | _] = actions -> actions
+      _ -> policies |> Enum.map(&List.first/1) |> Enum.uniq()
+    end
   end
 
   @doc "Marginalise state beliefs over the policy posterior at a given time-step."

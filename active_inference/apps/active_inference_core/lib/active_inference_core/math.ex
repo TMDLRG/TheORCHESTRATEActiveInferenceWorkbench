@@ -52,6 +52,10 @@ defmodule ActiveInferenceCore.Math do
   @spec sub(vec(), vec()) :: vec()
   def sub(a, b), do: Enum.zip_with(a, b, &(&1 - &2))
 
+  @doc "Outer product `u ⊗ v`: matrix `M[i][j] = u_i · v_j`."
+  @spec outer(vec(), vec()) :: mat()
+  def outer(u, v), do: Enum.map(u, fn ui -> Enum.map(v, &(ui * &1)) end)
+
   @doc "Matrix transpose."
   @spec transpose(mat()) :: mat()
   def transpose([]), do: []
@@ -151,6 +155,63 @@ defmodule ActiveInferenceCore.Math do
       powered = Enum.map(col, fn x -> :math.pow(x, g) end)
       z = sum(powered)
       if z <= 0.0, do: col, else: scale(powered, 1.0 / z)
+    end)
+    |> transpose()
+  end
+
+  # ---------------------------------------------------------------------------
+  # Dirichlet / Bayesian model learning (expected sufficient statistics)
+  # ---------------------------------------------------------------------------
+
+  @doc """
+  Digamma function ψ(x) = d/dx ln Γ(x), for x > 0.
+
+  Uses the recurrence ψ(x) = ψ(x+1) − 1/x to push the argument to x ≥ 6, then
+  the asymptotic expansion
+
+      ψ(x) ≈ ln x − 1/(2x) − 1/(12x²) + 1/(120x⁴) − 1/(252x⁶) + 1/(240x⁸) − 1/(132x¹⁰)
+
+  Accurate to better than 1e-10 over the whole positive axis. ψ(1) = −γ ≈
+  −0.5772156649 (the Euler–Mascheroni constant); ψ(x+1) = ψ(x) + 1/x.
+  """
+  @spec digamma(number()) :: float()
+  def digamma(x) when is_number(x) and x > 0, do: digamma_shift(x * 1.0, 0.0)
+
+  defp digamma_shift(x, acc) when x < 6.0, do: digamma_shift(x + 1.0, acc - 1.0 / x)
+
+  defp digamma_shift(x, acc) do
+    f = 1.0 / (x * x)
+
+    acc + :math.log(x) - 0.5 / x +
+      f *
+        (-1.0 / 12.0 +
+           f * (1.0 / 120.0 + f * (-1.0 / 252.0 + f * (1.0 / 240.0 + f * (-1.0 / 132.0)))))
+  end
+
+  @doc """
+  Expected log of a Dirichlet-parameterised likelihood matrix.
+
+  Given a matrix of Dirichlet concentration counts `α` whose **columns** index
+  the categorical being learned (here `A_ij = P(o=i | s=j)`, so column `j` is a
+  categorical over outcomes with counts `α_·j`), returns the matrix of expected
+  logs under the Dirichlet posterior:
+
+      E[ln A_ij] = ψ(α_ij) − ψ(Σ_k α_kj)
+
+  This is the quantity that enters variational inference when the likelihood is
+  *learned* — NOT `ln E[A_ij]` (the log of the Dirichlet mean). By Jensen's
+  inequality E[ln A] ≤ ln E[A], so these values sit at or below the log-mean
+  whenever a column carries finite evidence. Counts are floored at `@eps` so a
+  zero count cannot send ψ to −∞.
+  """
+  @spec dirichlet_expected_log(mat()) :: mat()
+  def dirichlet_expected_log(alpha) do
+    alpha
+    |> transpose()
+    |> Enum.map(fn col ->
+      col = Enum.map(col, &max(&1, @eps))
+      psi_sum = digamma(sum(col))
+      Enum.map(col, fn a -> digamma(a) - psi_sum end)
     end)
     |> transpose()
   end

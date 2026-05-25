@@ -61,7 +61,7 @@ defmodule AgentPlane.BirdsongMathCrossValidationTest do
     e = [0.2, 0.3, 0.5]
     temperature = 0.75
 
-    posterior = DiscreteTime.policy_posterior(f, g, e, temperature)
+    posterior = DiscreteTime.policy_posterior(f, g, e, temperature: temperature)
 
     expected =
       e
