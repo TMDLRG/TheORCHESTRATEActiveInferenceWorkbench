@@ -10,14 +10,15 @@ defmodule AgentPlane.BundleBuilder.CueTaskTest do
   the agent exploits it. We assert the full step0-cue → step1-exploit loop plus
   the five ablations.
 
-  One honest caveat (flagged to UNI). Cue-seeking in this engine is
-  **risk-driven** (it follows from a loss-averse `C`), not **ambiguity-driven**.
-  With near-deterministic likelihoods the EFE ambiguity term is ≈ 0, so ablation
-  2 (drop the ambiguity term) changes `G` numerically but does NOT weaken
-  cue-seeking — ablation 3 (flatten `C`, removing the risk gradient) is what
-  abolishes it. Matching the spec's ablation 2 to the letter (ambiguity-driven
-  cue-seeking) would need an ambiguity-structured task or an explicit salience
-  term; that choice is in the UNI packet.
+  UNI ruling (2026-05-25): **signed as risk-driven safe cue-seeking.** Cue-seeking
+  in this engine is **risk-driven** (it follows from a loss-averse `C`), not
+  **ambiguity-driven**; with near-deterministic likelihoods the EFE ambiguity
+  term is ≈ 0. UNI therefore *revised ablation 2*: dropping the ambiguity term
+  changes `G` numerically but should NOT abolish cue-seeking — the **primary
+  breaking ablation is flattening `C`** (ablation 3). Demonstrating epistemic
+  cue-seeking in the stronger T-maze sense would need a separate variant
+  (ambiguity-structured task, or a salience term under counterfactual inference);
+  UNI's instruction is explicitly NOT to retrofit this result as ambiguity-driven.
   """
   use ExUnit.Case, async: true
 
@@ -125,14 +126,17 @@ defmodule AgentPlane.BundleBuilder.CueTaskTest do
     end
   end
 
-  describe "ablation 2 — epistemic term (EFE ambiguity toggle)" do
-    test "the ambiguity toggle changes G numerically" do
-      # NOTE: cue-seeking here is risk-driven (see moduledoc), so dropping the
-      # ambiguity term does not abolish it — but it does change G, and the toggle
-      # is the gate-2 lever the spec's ablation 2 names.
-      g_with = DiscreteTime.choose_action(CueTask.build(efe_ambiguity: true), %{}, [], -1).g
-      g_without = DiscreteTime.choose_action(CueTask.build(efe_ambiguity: false), %{}, [], -1).g
-      refute g_with == g_without
+  describe "ablation 2 — epistemic term (UNI-revised 2026-05-25: risk-driven engine)" do
+    test "removing the ambiguity term changes G but does NOT abolish cue-seeking" do
+      # UNI: cue-seeking here is risk-driven, so ablation 2 is expected to leave
+      # it intact — ablation 3 (flatten C) is the breaker. Asserting persistence
+      # is the correct form of this ablation for this engine.
+      with_amb = DiscreteTime.choose_action(CueTask.build(efe_ambiguity: true), %{}, [], -1)
+      no_amb = DiscreteTime.choose_action(CueTask.build(efe_ambiguity: false), %{}, [], -1)
+
+      refute with_amb.g == no_amb.g
+      assert no_amb.action == :go_cue
+      assert Map.get(no_amb.action_marginal, :go_cue) > Map.get(no_amb.action_marginal, :go_left)
     end
   end
 

@@ -5,10 +5,8 @@ defmodule AgentPlane.BuildGateTest do
   Mirrors `curriculum_app/content/lessons/weeks-08-12-build-gate.md` — UNI's
   governing correction layer. Each `describe` block is one gate; the suite is
   the machine-checkable form of "no Week 8–12 lesson OR lab ships until the gate
-  holds." Where a gate depends on a still-open workstream (the (lnB)s/ln(Bs)
-  ruling routed to UNI via W-1; the full 5-ablation capstone in W-6) the
-  dependent assertion is a tagged, deliberately-skipped test so the suite never
-  falsely greens it.
+  holds." All nine gates are now asserted; the (lnB)s/ln(Bs) form was ruled on by
+  UNI (2026-05-25: mean-field `(ln B) s` in both the update and the VFE).
   """
   use ExUnit.Case, async: true
 
@@ -96,9 +94,29 @@ defmodule AgentPlane.BuildGateTest do
       assert DiscreteTime.inference_path() == :mean_field_vmp
     end
 
-    @tag skip: "pending UNI ruling (W-1): (lnB)s [update] vs ln(Bs) [VFE] transition-term form"
-    test "update vs VFE transition-term share one form" do
-      flunk("awaiting UNI ruling routed via W-1")
+    test "VFE transition term is the expected log (ln B)s, not ln(B s) — no blend (UNI 2026-05-25)" do
+      b = %{go: [[0.7, 0.4], [0.3, 0.6]]}
+      s0 = [0.5, 0.5]
+      s1 = [0.6, 0.4]
+      d = [0.5, 0.5]
+
+      # No observation ⇒ only entropy + transition-prior terms contribute.
+      f =
+        DiscreteTime.variational_free_energy([s0, s1], [:go], b, [[1.0, 0.0], [0.0, 1.0]], [], d)
+
+      entropy0 = Math.dot(s0, Math.sub(Math.log_eps(s0), Math.log_eps(d)))
+
+      # Mean-field (correct): transition prior at τ=1 is (ln B) s0.
+      f_meanfield =
+        entropy0 +
+          Math.dot(s1, Math.sub(Math.log_eps(s1), Math.matvec(Math.log_eps_mat(b.go), s0)))
+
+      # Marginal (the form UNI ruled OUT for this path): ln(B s0).
+      f_marginal =
+        entropy0 + Math.dot(s1, Math.sub(Math.log_eps(s1), Math.log_eps(Math.matvec(b.go, s0))))
+
+      assert_in_delta f, f_meanfield, 1.0e-9
+      refute_in_delta(f, f_marginal, 1.0e-6)
     end
   end
 

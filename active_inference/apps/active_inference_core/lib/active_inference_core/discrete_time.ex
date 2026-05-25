@@ -348,9 +348,11 @@ defmodule ActiveInferenceCore.DiscreteTime do
   @doc """
   Compute F_π = Σ_τ F_{πτ} for one policy given its belief chain.
 
-      F_{πτ} = s^π_τ · ( ln s^π_τ − ln A · o_τ − ln B^π_τ s^π_{τ-1} )
+      F_{πτ} = s^π_τ · ( ln s^π_τ − (ln A) · o_τ − (ln B^π_τ) s^π_{τ-1} )
 
-  At τ=0, the transition term uses D in place of B^π_0 s^π_{-1}.
+  The transition term is the **expected log** `(ln B) s` (mean-field VMP, UNI
+  ruling 2026-05-25) — consistent with the eq. 4.13 update message, NOT the
+  marginal `ln(B s)` form. At τ=0, `ln D` replaces the transition prior.
   """
   @spec variational_free_energy(belief(), [atom], map(), M.mat(), [M.vec()], M.vec(), keyword()) ::
           float()
@@ -390,7 +392,11 @@ defmodule ActiveInferenceCore.DiscreteTime do
           action = Enum.at(policy, tau - 1)
           b = Map.fetch!(b_per_action, action)
           s_prev = Enum.at(chain, tau - 1)
-          M.log_eps(M.matvec(b, s_prev))
+          # UNI ruling (2026-05-25): the mean-field VFE transition term is the
+          # EXPECTED log (ln B) s — the same message the eq-4.13 update uses —
+          # NOT ln(B s). Using ln(B s) here would blend a marginal/Bethe term
+          # into the mean-field path (build-gate #4 forbids the blend).
+          M.matvec(M.log_eps_mat(b), s_prev)
         end
 
       contribution =
