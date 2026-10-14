@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 1 — Surprise</title>
+<meta name="description" content="The first number the whole theory is built from. Watch two tempting 'surprise' rules die against one demand, and the logarithm be the only thing left standing — then earn S(p) = −log p by hand." />
+<style>
+  /* ── Theme tokens: light is the default, dark overrides under prefers-color-scheme ───────────── */
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#e0b878; --warn-soft:#2a2214;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:17px; line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  /* ── Masthead ─────────────────────────────────────────────────────────────────────────────── */
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;
+  }
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(30px,5vw,44px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{
+    font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line);
+    border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;
+  }
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  /* ── Sections and prose ───────────────────────────────────────────────────────────────────── */
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  /* ── Layered boxes (optional reading lanes) ───────────────────────────────────────────────── */
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{
+    cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px;
+    display:flex; align-items:center; gap:10px; color:var(--ink);
+  }
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.check{border-color:var(--ok)}
+  details.box.check>summary{color:var(--ok-ink)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  /* ── Tool panels ──────────────────────────────────────────────────────────────────────────── */
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{
+    font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink);
+    background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px;
+    transition:filter .12s ease, background .12s ease;
+  }
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  input[type="number"],input[type="text"]{
+    font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2);
+    border-radius:8px; padding:8px 10px; width:120px;
+  }
+  input[type="range"]{width:min(340px,100%); accent-color:var(--accent); vertical-align:middle}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:8px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .big{font-size:28px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+  .figures{display:flex; flex-wrap:wrap; gap:18px; margin-top:6px}
+  .figure .lab{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .figure .val{font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink)}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+
+  /* ── Impostors table ──────────────────────────────────────────────────────────────────────── */
+  .suspects{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:4px 0 12px}
+  .suspect{border:1px solid var(--line); border-radius:10px; padding:11px 13px; background:var(--panel2)}
+  .suspect .nm{font-family:var(--mono); font-size:15px; font-weight:700}
+  .suspect .st{font-size:12.5px; font-weight:700; margin-top:6px; display:inline-block; padding:2px 8px; border-radius:999px}
+  .suspect.standing{border-color:var(--ok)}
+  .suspect.standing .st{background:var(--ok-soft); color:var(--ok-ink)}
+  .suspect.out{opacity:.72}
+  .suspect.out .nm{text-decoration:line-through}
+  .suspect.out{border-color:var(--bad)}
+  .suspect.out .st{background:var(--bad-soft); color:var(--bad-ink)}
+  table.calc{border-collapse:collapse; width:100%; font-size:14.5px; margin-top:6px}
+  table.calc th,table.calc td{border:1px solid var(--line); padding:7px 9px; text-align:left; font-variant-numeric:tabular-nums}
+  table.calc th{background:var(--panel2); font-size:13px}
+  table.calc td.mono{font-family:var(--mono)}
+  .verdict{font-weight:800; font-size:12.5px; padding:2px 8px; border-radius:999px; white-space:nowrap}
+  .verdict.pass{background:var(--ok-soft); color:var(--ok-ink)}
+  .verdict.fail{background:var(--bad-soft); color:var(--bad-ink)}
+  .verdict.outv{background:var(--panel2); color:var(--muted)}
+  .statusline{margin-top:12px; font-size:15px}
+  .statusline .s-ok{color:var(--ok-ink); font-weight:700}
+  .statusline .s-out{color:var(--bad-ink); font-weight:700}
+  .takeaway{margin-top:14px; padding:14px 16px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); display:none}
+  .takeaway.show{display:block}
+  .takeaway b{color:var(--accent-ink)}
+
+  /* ── Halving ladder ───────────────────────────────────────────────────────────────────────── */
+  .ladder{display:flex; flex-direction:column; gap:4px; margin:10px 0; font-family:var(--mono); font-size:14px}
+  .rung{display:grid; grid-template-columns:70px 1fr auto; gap:10px; align-items:center; padding:5px 8px; border:1px solid var(--line); border-radius:8px; background:var(--panel2)}
+  .rung .barwrap{height:12px; background:var(--panel); border:1px solid var(--line); border-radius:999px; overflow:hidden}
+  .rung .bar{height:100%; background:var(--accent); width:0%}
+  .rung.reached{background:var(--accent-soft); border-color:var(--accent)}
+  .rung .num{color:var(--muted)}
+  .rung .you{color:var(--accent-ink); font-weight:700}
+
+  /* ── Two jobs ─────────────────────────────────────────────────────────────────────────────── */
+  .jobs{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:6px 0}
+  .job{border:1px solid var(--line); border-radius:10px; padding:12px 14px; background:var(--panel2)}
+  .job h4{margin:0 0 6px; font-size:14px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted)}
+
+  /* ── Exercises ────────────────────────────────────────────────────────────────────────────── */
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+  textarea{font:inherit; width:100%; min-height:90px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  footer code{word-break:break-word}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){
+    body{font-size:16px}
+    .jobs{grid-template-columns:1fr}
+    h1{font-size:30px}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 1</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>Surprise</h1>
+    <p class="lede">
+      The first number the whole theory is built from. By the end you will have turned a feeling you have had a
+      thousand times into an exact, checkable number — and you will have <em>derived</em> it, not been handed it.
+    </p>
+    <p class="legend">
+      This lab runs as one plain thread anyone can follow. Open the boxes that fit you — they map onto the four ways
+      through every course session:
+      <b>▶ Picture it</b> (for a ten-year-old), the main text (plain English),
+      <b>✎ Try it</b> and <b>✓ Check it yourself</b> (the equation, done by hand),
+      <b>▸ Go deeper</b> (the derivation), and <b>⬡ See it in UNI</b> (where the idea lives in the system).
+      Everything here runs in your browser — no account, no network, CPU only. It adapts to light and dark.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Surprise,” and later “free energy,” are <strong>functional quantities</strong>
+      — numbers a model computes about its own predictions. They are not feelings, not awareness, not sentience. When we
+      say a system “wants” low surprise, that is shorthand for “its dynamics move in the direction that lowers this
+      number.” We keep that line bright on purpose.
+    </p>
+  </header>
+
+  <!-- ── 0 ───────────────────────────────────────────────────────────────────────────────────── -->
+  <section id="s0">
+    <div class="sec-kicker">0 · The question underneath</div>
+    <h2>Why a book about minds begins with a feeling</h2>
+    <div class="prose">
+      <p>
+        Here is the question this whole course is quietly answering: how does a mind — yours, an animal’s, or the
+        artificial one being built in this lab — make sense of a world it can never see directly?
+      </p>
+      <p>
+        You never touch the world. You get <em>hints</em> of it: light on your eyes, pressure on your skin, sound in your
+        ears. From those hints a mind has to guess what’s out there, act on the guess, and not die of being wrong.
+        The astonishing thing is that the entire job reduces to <strong>one feeling turned into a number</strong>, and then
+        to <strong>one move repeated forever</strong>. The feeling is <em>surprise</em>. The move is <em>keep surprise low</em>.
+      </p>
+      <p>So we start exactly where a mind starts: with the jolt of being wrong. No equations yet — just a feeling.</p>
+    </div>
+    <details class="box picture" open>
+      <summary>▶ Picture it <span class="tag">kid</span></summary>
+      <div class="box-body">
+        Surprise is the size of your flinch when reality taps you on the shoulder. A big flinch means “my picture of
+        things was badly off.” A tiny flinch means “yep, saw that coming.”
+      </div>
+    </details>
+  </section>
+
+  <!-- ── 1 ───────────────────────────────────────────────────────────────────────────────────── -->
+  <section id="s1">
+    <div class="sec-kicker">1 · The stakes</div>
+    <h2>What surprise is really for</h2>
+    <div class="prose">
+      <p>Two mornings. Both end with you soaked to the skin.</p>
+      <ul>
+        <li><strong>Monday:</strong> the app said 10% chance of rain. It poured.</li>
+        <li><strong>Tuesday:</strong> the app said 90% chance of rain. It poured.</li>
+      </ul>
+      <p>
+        Same wet shirt both days. But Monday you <em>felt</em> it — “you have got to be kidding me” — and Tuesday you just
+        sighed and opened the umbrella you’d packed. Identical outcome, completely different jolt.
+      </p>
+      <p>
+        That jolt is <strong>surprise</strong>, and notice what it tracks. Not the weather (same both days). Not whether the
+        outcome was good or bad (getting wet is annoying both days). It tracks <strong>how much your expectation had ruled
+        the outcome out.</strong> A mind runs on predictions; surprise is how it finds out a prediction just failed.
+        Staying <em>un</em>-surprised, over a lifetime, <em>is</em> understanding your world.
+      </p>
+    </div>
+    <details class="box try" open>
+      <summary>✎ Try it (one minute) <span class="tag">equation · by hand</span></summary>
+      <div class="box-body">
+        Rank these five jolts from smallest to biggest, by gut: (a) the 10%-rain soaking, (b) a famously-reliable friend
+        showing up 20 minutes late, (c) a coin you called “heads” landing tails, (d) your lottery ticket actually winning,
+        (e) your usual bus arriving on time. Now say in one sentence what your ranking is really tracking. It isn’t
+        good-vs-bad, and it isn’t how <em>much</em> happened — it’s how little probability you’d parked on each thing.
+      </div>
+    </details>
+  </section>
+
+  <!-- ── 2 ───────────────────────────────────────────────────────────────────────────────────── -->
+  <section id="s2">
+    <div class="sec-kicker">2 · The hinge</div>
+    <h2>Surprise lives in your model, not in the world</h2>
+    <div class="prose">
+      <p>Think of two separate jobs:</p>
+      <ul>
+        <li><strong>Reality’s job:</strong> decide <em>what actually happens.</em> It picked “rain.”</li>
+        <li><strong>Your job:</strong> supply the probability <em>you had parked on that outcome, beforehand.</em></li>
+      </ul>
+      <p>
+        Surprise is built from <strong>your</strong> number for the slot <strong>reality</strong> chose. Nothing else. And look
+        what falls straight out: if you had been <em>certain</em> it would rain (probability 1) and it rained, your surprise
+        should be <strong>zero</strong> — you can’t be surprised by what you already knew. The tool below is that idea you can
+        push on.
+      </p>
+    </div>
+
+    <!-- TOOL C: TWO JOBS -->
+    <div class="tool" id="twojobs">
+      <div class="tool-head">
+        <h3>Two jobs</h3>
+        <p class="why">Reality picks the outcome; you supply the probability. See the surprise pull <em>your</em> number for the slot reality chose — and watch certainty pay off (or detonate).</p>
+      </div>
+      <div class="tool-body">
+        <div class="jobs">
+          <div class="job">
+            <h4>Your job — set the probability you parked on rain</h4>
+            <div class="field">
+              <label for="tj-range">p(rain)</label>
+              <input type="range" id="tj-range" min="0" max="1" step="0.01" value="0.20" aria-describedby="tj-prob" />
+              <span id="tj-prob" class="mono"></span>
+            </div>
+            <p class="hint" id="tj-dry"></p>
+          </div>
+          <div class="job">
+            <h4>Reality’s job — pick what happened</h4>
+            <div class="btnrow">
+              <button type="button" id="tj-rain">Reality: it rained</button>
+              <button type="button" id="tj-dryb">Reality: it stayed dry</button>
+            </div>
+            <p class="hint">Before reality picks, here is the surprise waiting in each slot:</p>
+            <p class="mono" id="tj-both" aria-live="off"></p>
+          </div>
+        </div>
+        <div class="readout" aria-live="polite" id="tj-out">
+          Set your probability, then let reality pick a slot.
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>
+        Before we put any formula down, let’s agree on the <strong>shape</strong> any honest surprise number must have. Call
+        the surprise of an outcome you gave probability <span class="k">p</span> by the name <span class="k">S(p)</span>. It
+        must obey three rules:
+      </p>
+      <ol>
+        <li><span class="k">S(1) = 0</span> — a sure thing happening is no surprise at all.</li>
+        <li><span class="k">S</span> gets bigger as <span class="k">p</span> gets smaller — rarer stings more, smoothly.</li>
+        <li><span class="k">S</span> is never negative — surprise doesn’t run in reverse.</li>
+      </ol>
+      <p>We haven’t chosen a formula. We’ve written down the rules a formula would have to satisfy.</p>
+    </div>
+  </section>
+
+  <!-- ── 3 ───────────────────────────────────────────────────────────────────────────────────── -->
+  <section id="s3">
+    <div class="sec-kicker">3 · The one demand that does all the work</div>
+    <h2>Putting a number on it — and why it has to be a logarithm</h2>
+    <div class="prose">
+      <p>
+        Flip two fair coins in two separate rooms. They land heads and heads. The two flips have <strong>nothing to do with
+        each other</strong>, so the only honest thing is that the two shocks <strong>add</strong>. For two unrelated outcomes with
+        probabilities <span class="k">p</span> and <span class="k">q</span> (whose joint probability is <span class="k">p × q</span>,
+        because that’s what “independent” means):
+      </p>
+      <p style="text-align:center; font-family:var(--mono); font-size:19px"><strong>S(p × q) = S(p) + S(q)</strong></p>
+      <p>
+        Call that <strong>the demand: independent surprises add.</strong> A lot of innocent-looking formulas <em>seem</em> fine
+        until you test them against this one demand. So don’t trust any of them yet — put them on the bench and try to
+        break them.
+      </p>
+    </div>
+
+    <!-- TOOL A: BREAK THE IMPOSTORS -->
+    <div class="tool" id="impostors">
+      <div class="tool-head">
+        <h3>Break the impostors</h3>
+        <p class="why">Three candidate surprise rules are “standing.” Test each event-pair against the demand <span class="mono">S(p×q)=S(p)+S(q)</span>. A rule is <strong>eliminated the moment it breaks additivity on any pair.</strong> Only one can survive — find out which, and why.</p>
+      </div>
+      <div class="tool-body">
+        <div class="suspects" id="imp-suspects" aria-live="polite"></div>
+        <div class="btnrow">
+          <span style="align-self:center; font-size:14px; font-weight:600">Test a pair:</span>
+          <button type="button" data-pair="two-coins">Two coins (½, ½)</button>
+          <button type="button" data-pair="coin-die">Coin &amp; die (½, ⅙)</button>
+          <button type="button" data-pair="two-dice">Two dice (⅙, ⅙)</button>
+        </div>
+        <div class="btnrow">
+          <button type="button" id="imp-all" class="primary">Run all three in order</button>
+          <button type="button" id="imp-reset" class="ghost">Reset</button>
+        </div>
+        <div id="imp-results" aria-live="polite"></div>
+        <p class="statusline" id="imp-status"></p>
+        <div class="takeaway" id="imp-takeaway" role="status">
+          <b>Only −log survives.</b> That is not luck. A logarithm is the one function in all of mathematics whose
+          defining identity is <em>“turn multiplying into adding”</em>: <span class="mono">log(p×q) = log(p) + log(q)</span>,
+          always. The demand you insisted on <em>is</em> that identity. Everything else had to die.
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>
+        What survives is the <strong>logarithm</strong>. Two small fixes finish the job. A log of a number below 1 is
+        <em>negative</em>, but surprise must be positive — so put a <strong>minus sign</strong> in front. And
+        <span class="k">log(1) = 0</span> automatically, which hands us rule&nbsp;1 for free. So:
+      </p>
+      <p style="text-align:center; font-size:21px">
+        surprise of an outcome = <strong>−log( the probability you gave it )</strong><br/>
+        <span class="mono" style="font-size:16px; color:var(--muted)">written S(p) = −log p · its proper name is <strong>surprisal</strong></span>
+      </p>
+      <p>
+        You didn’t swallow that formula. You watched two reasonable alternatives die against a rule <em>you</em> insisted on,
+        and watched the logarithm be the thing standing when the dust cleared.
+      </p>
+    </div>
+
+    <details class="box picture" open>
+      <summary>▶ Picture it — what a logarithm even is <span class="tag">kid</span></summary>
+      <div class="box-body">
+        Forget “logarithm” the scary word. <span class="mono">−log₂ p</span> just counts <strong>how many times you have to
+        halve 1 to get down to p.</strong> Halve 1 → ½ (that’s 1). Halve again → ¼ (that’s 2). Again → ⅛ (that’s 3). So the
+        surprise of something with probability ⅛ is 3 “halvings.” Rarer things sit further down the ladder, so they score
+        higher. Move the ladder below and watch it.
+      </div>
+    </details>
+
+    <!-- TOOL B: HALVING LADDER -->
+    <div class="tool" id="ladder">
+      <div class="tool-head">
+        <h3>The halving ladder</h3>
+        <p class="why">Set a probability and see <span class="mono">−log₂ p</span> as the number of halvings from 1 down to p. This is <em>why</em> it’s a logarithm: halvings <strong>add</strong>, which is exactly the demand.</p>
+      </div>
+      <div class="tool-body">
+        <div class="btnrow" id="lad-presets">
+          <span style="align-self:center; font-size:14px; font-weight:600">Jump to:</span>
+          <button type="button" data-p="1">1</button>
+          <button type="button" data-p="0.5">½</button>
+          <button type="button" data-p="0.25">¼</button>
+          <button type="button" data-p="0.125">⅛</button>
+          <button type="button" data-p="0.0625">1/16</button>
+          <button type="button" data-p="0.16666666666666666">⅙ (a die)</button>
+        </div>
+        <div class="field">
+          <label for="lad-input">…or type any p in (0, 1]:</label>
+          <input type="number" id="lad-input" min="0" max="1" step="0.01" value="0.125" />
+        </div>
+        <div class="readout">
+          <div class="big" id="lad-head"></div>
+          <div class="ladder" id="lad-rungs" aria-hidden="true"></div>
+          <p class="hint" id="lad-note"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>
+        <strong>The unit.</strong> If you count in halvings (log base 2), surprise comes out in <strong>bits</strong>. If you use
+        the “natural” log (base <span class="k">e</span>, the one on your calculator marked <span class="k">ln</span>), it
+        comes out in <strong>nats</strong>. Same idea, different ruler. The system in this lab works in <strong>nats</strong>.
+      </p>
+    </div>
+
+    <details class="box check" open>
+      <summary>✓ Check it yourself (two minutes) <span class="tag">equation · by hand</span></summary>
+      <div class="box-body">
+        <ul>
+          <li>Fair coin lands heads, p = ½: <span class="mono">−log₂(½) = 1 bit</span>. One honest yes/no question’s worth of “huh.”</li>
+          <li>Two coins both heads, p = ¼: <span class="mono">−log₂(¼) = 2 bits</span> — exactly double one coin. The demand, working in your hands.</li>
+          <li>Fair die shows a 4, p = ⅙: <span class="mono">−log₂(⅙) ≈ 2.58 bits</span> — rarer than one coin, less than two.</li>
+        </ul>
+        Punch each into the calculator below. From here you can check <em>any</em> claim about surprise with the three rules
+        and a calculator — never anyone’s say-so.
+      </div>
+    </details>
+
+    <!-- TOOL D: CALCULATOR + GOLDEN -->
+    <div class="tool" id="calc">
+      <div class="tool-head">
+        <h3>Surprisal calculator — and land on the golden value</h3>
+        <p class="why">Enter any probability; read its surprisal in nats and bits. Then compute one specific value by hand and watch it land on an externally sealed reference. Trust is the <em>match</em>, never the authority.</p>
+      </div>
+      <div class="tool-body">
+        <div class="field">
+          <label for="calc-p">p =</label>
+          <input type="number" id="calc-p" min="0" max="1" step="0.01" value="0.5" />
+          <button type="button" id="calc-go" class="primary">Compute</button>
+        </div>
+        <div class="btnrow" id="calc-presets">
+          <span style="align-self:center; font-size:14px; font-weight:600">Sanity cases:</span>
+          <button type="button" data-p="0.5">Coin (½)</button>
+          <button type="button" data-p="0.16666666666666666">Die (⅙)</button>
+          <button type="button" data-p="0.25">Two coins (¼)</button>
+          <button type="button" data-p="0.2">Rain you gave 1/5</button>
+        </div>
+        <div class="err" id="calc-err" role="alert" style="display:none"></div>
+        <div class="readout" id="calc-out" aria-live="polite">
+          <div class="figures">
+            <div class="figure"><div class="lab">−ln p · nats</div><div class="val" id="calc-nats">0.6931</div></div>
+            <div class="figure"><div class="lab">−log₂ p · bits</div><div class="val" id="calc-bits">1.0000</div></div>
+          </div>
+          <p class="hint" id="calc-gut"></p>
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--line); margin:18px 0" />
+
+        <h4 style="margin:0 0 6px; font-size:16px">⬡ Land on the golden value</h4>
+        <p style="font-size:15px; margin:6px 0">
+          In the system’s very first reproducibility test, a particular observation had been given probability
+          <span class="k">0.69</span> by the model. Compute its surprisal by hand — then we’ll show you the sealed record.
+        </p>
+        <div class="btnrow">
+          <button type="button" id="gold-go" class="primary">Compute −ln(0.69)</button>
+        </div>
+        <div class="ex-answer" id="gold-out" role="status">
+          <p style="margin:2px 0"><strong>Your arithmetic:</strong> <span class="mono big" id="gold-you" style="font-size:22px"></span> nats</p>
+          <p style="margin:8px 0"><strong>The sealed reference in the release gate:</strong> <span class="mono" style="font-size:17px">0.3710636814</span> nats</p>
+          <p style="margin:8px 0" id="gold-match"></p>
+          <p class="hint" style="margin-top:10px">
+            The seal is <em>not</em> why you believe it — you just computed it. The seal is the independent, hash-locked
+            record that <em>your</em> arithmetic and the running code land on the same digits. Trust is the match, never
+            the authority. That discipline is what the whole project runs on.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <details class="box deeper">
+      <summary>▸ Go deeper — the functional equation <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        We want <span class="mono">S : (0,1] → [0,∞)</span>, continuous and decreasing, with
+        <span class="mono">S(pq) = S(p) + S(q)</span> for all <span class="mono">p, q</span>. That functional equation (a
+        cousin of Cauchy’s) has exactly one family of solutions, <span class="mono">S(p) = −k·log p</span> for a positive
+        constant <span class="mono">k</span>: continuity rules out the pathological non-measurable solutions, monotonicity
+        fixes the sign, and the base you pick <em>is</em> the constant <span class="mono">k</span> — it only sets the unit
+        (bits, nats, or “bans” in base 10). Nothing else survives. This is why information theory, thermodynamics, and
+        active inference all speak in logs: it is forced, not chosen.
+      </div>
+    </details>
+
+    <details class="box uni">
+      <summary>⬡ See it in UNI <span class="tag">the system</span></summary>
+      <div class="box-body">
+        <span class="mono">−ln p</span> is the real quantity the system reports, under the name <strong>surprisal</strong>. The
+        organism you can watch in the other labs is doing exactly this all day: it predicts its next sensory hint, reality
+        delivers one, and when the two disagree it adjusts its beliefs to make that kind of contradiction less surprising
+        next time — “rolling its beliefs downhill,” where downhill means <em>toward less surprise.</em> That is the move the
+        rest of the course earns the right to say precisely.
+      </div>
+    </details>
+  </section>
+
+  <!-- ── 4 ───────────────────────────────────────────────────────────────────────────────────── -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Make it yours</div>
+    <h2>Three exercises</h2>
+    <div class="prose">
+      <p>You don’t own an idea until you can use it on something new and say it back in your own words. Each box checks your
+      input and will not reveal the worked answer until you’ve made a real attempt.</p>
+    </div>
+
+    <!-- EX 1 -->
+    <div class="tool" id="ex1">
+      <div class="tool-head"><h3>Exercise 1 — the 20% rain surprise</h3></div>
+      <div class="tool-body">
+        <p style="margin:4px 0 10px">You gave rain a probability of <span class="k">1/5 = 0.2</span>, and it rained. What is the
+          surprise, in <strong>nats</strong>? (Decimal, e.g. <span class="mono">1.61</span>.)</p>
+        <div class="field">
+          <label for="ex1-in">Your answer (nats)</label>
+          <input type="number" id="ex1-in" step="0.01" />
+          <button type="button" id="ex1-check" class="primary">Check</button>
+        </div>
+        <div class="err" id="ex1-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="ex1-ans"></div>
+      </div>
+    </div>
+
+    <!-- EX 2 -->
+    <div class="tool" id="ex2">
+      <div class="tool-head"><h3>Exercise 2 — the loaded-die transfer</h3></div>
+      <div class="tool-body">
+        <p style="margin:4px 0 10px">A loaded die comes up 6, and you had <em>correctly</em> believed 6 had probability
+          <span class="k">1/2</span>.</p>
+        <p style="margin:4px 0 8px"><strong>(a)</strong> More or less surprising than a 6 on a <em>fair</em> die?</p>
+        <div class="btnrow" id="ex2-mc" role="group" aria-label="More or less surprising">
+          <button type="button" data-ans="less">Less surprising</button>
+          <button type="button" data-ans="more">More surprising</button>
+        </div>
+        <p style="margin:14px 0 8px"><strong>(b)</strong> The surprise of the loaded-die 6, in nats:</p>
+        <div class="field">
+          <label for="ex2-in">Your answer (nats)</label>
+          <input type="number" id="ex2-in" step="0.01" />
+          <button type="button" id="ex2-check" class="primary">Check</button>
+        </div>
+        <div class="err" id="ex2-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="ex2-ans"></div>
+      </div>
+    </div>
+
+    <!-- EX 3 -->
+    <div class="tool" id="ex3">
+      <div class="tool-head"><h3>Exercise 3 — teach it back</h3></div>
+      <div class="tool-body">
+        <p style="margin:4px 0 10px">In one or two sentences, with <strong>no formula</strong>, tell an imaginary friend
+          <em>why</em> surprise has to be built from a logarithm.</p>
+        <label class="sr-only" for="ex3-in">Your explanation</label>
+        <textarea id="ex3-in" placeholder="Write your explanation here…"></textarea>
+        <div class="btnrow" style="margin-top:10px">
+          <button type="button" id="ex3-check" class="primary">I’ve written mine — show the one-liner</button>
+        </div>
+        <div class="err" id="ex3-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="ex3-ans"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 5 ───────────────────────────────────────────────────────────────────────────────────── -->
+  <section id="s5">
+    <div class="sec-kicker">5 · Where this goes next</div>
+    <h2>Stand back and see what you have</h2>
+    <div class="prose">
+      <p>
+        You can now put an exact, checkable number on the surprise of <strong>a single outcome, under probabilities you
+        trust.</strong> That’s a real tool, and the rest of the theory is built on it.
+      </p>
+      <p>
+        But look at the soft spot. Those probabilities came from a <strong>model</strong> — your picture of how the world works
+        — and <strong>your model is not the world.</strong> So two questions open up: what is the <em>true</em> surprise of what
+        you actually saw, over <em>all</em> the causes that could have produced it (it needs a sum that, for anything as big
+        as a brain, you can never actually do — the <strong>wall</strong>); and if you can’t compute your true surprise, how
+        can a mind possibly <em>minimize</em> it? The answer to the second is the thing the book is named for:
+        <strong>free energy</strong> — which will turn out to be a <em>height</em>, a belief a <em>position</em>, and “making sense
+        of the world” a ball rolling downhill into a valley whose lowest point is a truth you couldn’t compute directly.
+        That’s the next module. For now: you turned a feeling into a number, and earned every symbol in it.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 1 — Surprise.</strong> A self-contained interactive lesson: no network, no account, no analytics;
+      all computation runs locally in your browser and the page adapts to light and dark.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 1 — <em>Surprise</em> (surprise = −ln p, derived by eliminating failed
+      candidates against additivity). Every number on this page is computed live from the probabilities you enter; the one
+      sealed constant, <code>−ln(0.69) = 0.3710636814</code>, is shown only so your own arithmetic can land on it.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  // ── helpers ──────────────────────────────────────────────────────────────────────────────────
+  var $ = function (sel, root) { return (root || document).querySelector(sel); };
+  var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
+  var ln = function (x) { return Math.log(x); };
+  var log2 = function (x) { return Math.log2(x); };
+  // Tidy number: integers stay integers, otherwise up to 3 decimals, trailing zeros trimmed.
+  function tidy(x) {
+    if (!isFinite(x)) return "∞";
+    var r = Math.round(x * 1000) / 1000;
+    if (Number.isInteger(r)) return String(r);
+    return r.toFixed(3).replace(/0+$/, "").replace(/\.$/, "");
+  }
+  function fx(x, n) { return isFinite(x) ? x.toFixed(n == null ? 4 : n) : "∞"; }
+
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  // TOOL A — BREAK THE IMPOSTORS
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  (function () {
+    var root = $("#impostors");
+    if (!root) return;
+
+    var SUSPECTS = [
+      { key: "one-minus", name: "S(p) = 1 − p", fn: function (p) { return 1 - p; } },
+      { key: "one-over",  name: "S(p) = 1 / p", fn: function (p) { return 1 / p; } },
+      { key: "neg-log2",  name: "S(p) = −log₂ p", fn: function (p) { return -Math.log2(p); } }
+    ];
+    var PAIRS = {
+      "two-coins": { label: "Two coins (½, ½)", p: 1 / 2, q: 1 / 2, pf: "½", qf: "½", jf: "¼", joint: 1 / 4 },
+      "coin-die":  { label: "Coin & die (½, ⅙)", p: 1 / 2, q: 1 / 6, pf: "½", qf: "⅙", jf: "1/12", joint: 1 / 12 },
+      "two-dice":  { label: "Two dice (⅙, ⅙)", p: 1 / 6, q: 1 / 6, pf: "⅙", qf: "⅙", jf: "1/36", joint: 1 / 36 }
+    };
+    var ORDER = ["two-coins", "coin-die", "two-dice"];
+
+    var eliminated = {}; // key -> pairKey that killed it
+    var shown = {};      // pairKey -> already rendered, so a re-click does not duplicate
+    var susEl = $("#imp-suspects"), resEl = $("#imp-results"), statusEl = $("#imp-status"), takeEl = $("#imp-takeaway");
+
+    function additive(fn, pr) {
+      return Math.abs(fn(pr.joint) - (fn(pr.p) + fn(pr.q))) < 1e-9;
+    }
+
+    function renderSuspects() {
+      susEl.innerHTML = "";
+      SUSPECTS.forEach(function (s) {
+        var out = eliminated[s.key];
+        var div = document.createElement("div");
+        div.className = "suspect " + (out ? "out" : "standing");
+        var st = out ? ("Eliminated on " + PAIRS[out].label) : "Still standing";
+        div.innerHTML = '<div class="nm">' + s.name + "</div>" +
+          '<span class="st">' + st + "</span>";
+        susEl.appendChild(div);
+      });
+    }
+
+    function renderStatus() {
+      var standing = SUSPECTS.filter(function (s) { return !eliminated[s.key]; });
+      var out = SUSPECTS.filter(function (s) { return eliminated[s.key]; });
+      var parts = [];
+      parts.push('<span class="s-ok">Still standing: ' +
+        (standing.length ? standing.map(function (s) { return s.name; }).join(", ") : "none") + "</span>");
+      if (out.length) parts.push('<span class="s-out">Eliminated: ' +
+        out.map(function (s) { return s.name; }).join(", ") + "</span>");
+      statusEl.innerHTML = parts.join(" &nbsp;·&nbsp; ");
+
+      // Reveal the takeaway once the two impostors are gone and −log is the survivor.
+      var survivors = standing.map(function (s) { return s.key; });
+      if (survivors.length === 1 && survivors[0] === "neg-log2") takeEl.classList.add("show");
+    }
+
+    function testPair(pairKey) {
+      if (shown[pairKey]) return; // its table and the elimination it caused are already on screen
+      shown[pairKey] = true;
+      var pr = PAIRS[pairKey];
+      var rows = SUSPECTS.map(function (s) {
+        var alreadyOut = eliminated[s.key] && eliminated[s.key] !== pairKey;
+        var sp = s.fn(pr.p), sq = s.fn(pr.q), sum = sp + sq, sj = s.fn(pr.joint);
+        var pass = additive(s.fn, pr);
+        if (!pass && !eliminated[s.key]) eliminated[s.key] = pairKey; // eliminate on first break
+        return { s: s, sp: sp, sq: sq, sum: sum, sj: sj, pass: pass, alreadyOut: alreadyOut };
+      });
+
+      var html = "<h4 style='margin:14px 0 6px; font-size:15px'>Testing " + pr.label +
+        " — does <span class='mono'>S(p)+S(q)</span> equal <span class='mono'>S(p×q)</span>?</h4>";
+      html += "<table class='calc'><thead><tr><th>Candidate</th><th>S(" + pr.pf + ") + S(" + pr.qf +
+        ")</th><th>S(" + pr.jf + ")</th><th>Verdict</th></tr></thead><tbody>";
+      rows.forEach(function (r) {
+        var v, cls;
+        if (r.alreadyOut) { v = "already out"; cls = "outv"; }
+        else if (r.pass) { v = "PASS"; cls = "pass"; }
+        else { v = "FAILS — eliminated"; cls = "fail"; }
+        html += "<tr><td class='mono'>" + r.s.name + "</td>" +
+          "<td class='mono'>" + tidy(r.sp) + " + " + tidy(r.sq) + " = " + tidy(r.sum) + "</td>" +
+          "<td class='mono'>" + tidy(r.sj) + "</td>" +
+          "<td><span class='verdict " + cls + "'>" + v + "</span></td></tr>";
+      });
+      html += "</tbody></table>";
+      resEl.insertAdjacentHTML("beforeend", html); // accumulate, so 1/p is seen surviving before it dies
+
+      renderSuspects();
+      renderStatus();
+    }
+
+    function reset() {
+      eliminated = {};
+      shown = {};
+      resEl.innerHTML = "";
+      takeEl.classList.remove("show");
+      renderSuspects();
+      renderStatus();
+    }
+
+    $$("button[data-pair]", root).forEach(function (b) {
+      b.addEventListener("click", function () { testPair(b.getAttribute("data-pair")); });
+    });
+    $("#imp-all").addEventListener("click", function () {
+      reset();
+      ORDER.forEach(function (k) { testPair(k); });
+    });
+    $("#imp-reset").addEventListener("click", reset);
+
+    reset();
+  })();
+
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  // TOOL B — HALVING LADDER
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  (function () {
+    var root = $("#ladder");
+    if (!root) return;
+    var input = $("#lad-input"), head = $("#lad-head"), rungs = $("#lad-rungs"), note = $("#lad-note");
+
+    function render(p) {
+      if (!(p > 0) || p > 1) {
+        head.textContent = "Enter a probability between 0 and 1.";
+        rungs.innerHTML = ""; note.textContent = ""; return;
+      }
+      var h = -log2(p); // halvings
+      head.innerHTML = "−log₂(" + tidy(p) + ") = <strong>" + tidy(h) + "</strong> halving" + (tidy(h) === "1" ? "" : "s") +
+        "  →  <strong>" + tidy(h) + " bits</strong>  ·  −ln(" + tidy(p) + ") = <strong>" + fx(-ln(p), 3) + " nats</strong>";
+
+      var maxRung = Math.max(5, Math.ceil(h));
+      var html = "";
+      for (var k = 0; k <= maxRung; k++) {
+        var val = Math.pow(0.5, k);
+        var reached = k <= h + 1e-9;
+        var fillPct = Math.max(0, Math.min(100, (h - (k - 1)) * 100)); // how full THIS step is
+        if (k === 0) fillPct = 100;
+        var youHere = (Math.abs(k - h) < 1e-9);
+        html += "<div class='rung" + (reached ? " reached" : "") + "'>" +
+          "<span>" + (k === 0 ? "start" : "halving " + k) + "</span>" +
+          "<span class='barwrap'><span class='bar' style='width:" + (reached ? fillPct : 0) + "%'></span></span>" +
+          "<span class='num'>1/2" + (k ? "^" + k : "⁰") + " = " + (val >= 0.001 ? tidy(val) : val.toExponential(1)) +
+          (youHere ? " &nbsp;<span class='you'>◀ exactly here</span>" : "") + "</span></div>";
+      }
+      rungs.innerHTML = html;
+
+      var floorR = Math.floor(h + 1e-9);
+      if (Math.abs(h - Math.round(h)) < 1e-9) {
+        note.innerHTML = "p = " + tidy(p) + " is exactly " + tidy(h) + " halvings below 1. Each step down is one halving; the count IS the surprise.";
+      } else {
+        note.innerHTML = "p = " + tidy(p) + " sits <strong>between " + floorR + " and " + (floorR + 1) +
+          " halvings</strong> — " + tidy(h) + " of them. Two halvings then one more make three: the counts <strong>add</strong>, which is exactly the demand that forced the logarithm.";
+      }
+    }
+
+    $$("button[data-p]", $("#lad-presets")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        var p = parseFloat(b.getAttribute("data-p"));
+        input.value = (p === 1 / 6) ? "0.166667" : String(p);
+        render(p);
+      });
+    });
+    input.addEventListener("input", function () { render(parseFloat(input.value)); });
+    render(0.125);
+  })();
+
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  // TOOL C — TWO JOBS
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  (function () {
+    var root = $("#twojobs");
+    if (!root) return;
+    var range = $("#tj-range"), prob = $("#tj-prob"), dry = $("#tj-dry"), both = $("#tj-both"), out = $("#tj-out");
+
+    function surprise(p) {
+      if (p <= 0) return Infinity;
+      return -ln(p);
+    }
+    function refresh() {
+      var pr = parseFloat(range.value);
+      var pd = 1 - pr;
+      prob.textContent = pr.toFixed(2);
+      dry.innerHTML = "so p(dry) = 1 − " + pr.toFixed(2) + " = <strong>" + pd.toFixed(2) + "</strong>";
+      both.innerHTML = "rain → −ln(" + pr.toFixed(2) + ") = <strong>" + fx(surprise(pr), 3) + "</strong> nats" +
+        " &nbsp;|&nbsp; dry → −ln(" + pd.toFixed(2) + ") = <strong>" + fx(surprise(pd), 3) + "</strong> nats";
+    }
+    function pick(slot) {
+      var pr = parseFloat(range.value);
+      var pd = 1 - pr;
+      var used = slot === "rain" ? pr : pd;
+      var s = surprise(used);
+      var msg = "<strong>Reality chose " + (slot === "rain" ? "RAIN" : "DRY") + ".</strong> Surprise uses <em>your</em> number for that slot: p = " +
+        used.toFixed(2) + ", so surprise = −ln(" + used.toFixed(2) + ") = <strong>" + fx(s, 4) + "</strong> nats.";
+      if (used >= 0.999999) {
+        msg += "<br/><span style='color:var(--ok-ink); font-weight:700'>You were certain, and you were right — zero surprise. You can’t be surprised by what you already knew.</span>";
+      } else if (used <= 1e-9) {
+        msg = "<strong>Reality chose " + (slot === "rain" ? "RAIN" : "DRY") + ".</strong> Your number for that slot was 0 — you ruled it out completely." +
+          "<br/><span style='color:var(--bad-ink); font-weight:700'>Surprise = −ln(0) = ∞. Infinite shock. Never park probability 0 on something that can actually happen.</span>";
+      }
+      out.innerHTML = msg;
+    }
+    range.addEventListener("input", refresh);
+    $("#tj-rain").addEventListener("click", function () { pick("rain"); });
+    $("#tj-dryb").addEventListener("click", function () { pick("dry"); });
+    refresh();
+  })();
+
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  // TOOL D — CALCULATOR + GOLDEN
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  (function () {
+    var root = $("#calc");
+    if (!root) return;
+    var inp = $("#calc-p"), errEl = $("#calc-err"), outEl = $("#calc-out"),
+        natsEl = $("#calc-nats"), bitsEl = $("#calc-bits"), gut = $("#calc-gut");
+
+    function gutText(p) {
+      if (Math.abs(p - 0.5) < 1e-9) return "A fair coin: 1 bit, one yes/no question’s worth.";
+      if (Math.abs(p - 1 / 6) < 1e-3) return "A fair die face: rarer than a coin, so more than 1 bit.";
+      if (Math.abs(p - 0.25) < 1e-9) return "Two coins: exactly double one coin — the demand at work.";
+      if (Math.abs(p - 1) < 1e-9) return "A sure thing: zero surprise, exactly as rule 1 demands.";
+      return "";
+    }
+    function compute() {
+      var p = parseFloat(inp.value);
+      if (isNaN(p) || p <= 0 || p > 1) {
+        errEl.style.display = "block";
+        errEl.textContent = "A probability must be a number greater than 0 and at most 1. Try something like 0.5.";
+        return;
+      }
+      errEl.style.display = "none";
+      natsEl.textContent = fx(-ln(p), 4);
+      bitsEl.textContent = fx(-log2(p), 4);
+      gut.textContent = gutText(p);
+    }
+    $("#calc-go").addEventListener("click", compute);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") compute(); });
+    inp.addEventListener("input", function () { if (errEl.style.display === "block") compute(); });
+    $$("button[data-p]", $("#calc-presets")).forEach(function (b) {
+      b.addEventListener("click", function () {
+        inp.value = b.getAttribute("data-p");
+        compute();
+      });
+    });
+    compute();
+
+    // Golden value
+    var goldOut = $("#gold-out"), goldYou = $("#gold-you"), goldMatch = $("#gold-match");
+    $("#gold-go").addEventListener("click", function () {
+      var v = -ln(0.69);
+      var shown = v.toFixed(10);
+      goldYou.textContent = shown;
+      var matches = Math.abs(v - 0.3710636814) < 5e-11;
+      goldMatch.innerHTML = matches
+        ? "<strong style='color:var(--ok-ink)'>✓ They match, digit for digit.</strong> Your calculator and the sealed record agree — and you did not have to take anyone’s word for it."
+        : "The values agree to the precision shown.";
+      goldOut.classList.add("show");
+    });
+  })();
+
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  // EXERCISES
+  // ════════════════════════════════════════════════════════════════════════════════════════════
+  function wireNumeric(opts) {
+    var inp = $(opts.input), btn = $(opts.button), err = $(opts.err), ans = $(opts.answer);
+    btn.addEventListener("click", function () {
+      var raw = inp.value.trim();
+      var v = parseFloat(raw);
+      if (raw === "" || isNaN(v)) {
+        err.style.display = "block";
+        err.textContent = "Enter a number first — then I’ll show the worked answer.";
+        return;
+      }
+      err.style.display = "none";
+      var diff = Math.abs(v - opts.target);
+      var cls = diff <= opts.tol ? "correct" : (diff <= opts.tol * 4 ? "close" : "");
+      ans.className = "ex-answer show " + cls;
+      ans.innerHTML = opts.render(v, diff <= opts.tol, diff <= opts.tol * 4);
+    });
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") btn.click(); });
+  }
+
+  wireNumeric({
+    input: "#ex1-in", button: "#ex1-check", err: "#ex1-err", answer: "#ex1-ans",
+    target: -Math.log(0.2), tol: 0.03,
+    render: function (v, ok, close) {
+      var lead = ok ? "✓ Correct." : (close ? "Close — check your rounding." : "Not quite.");
+      return "<p style='margin:2px 0'><strong>" + lead + "</strong></p>" +
+        "<p style='margin:8px 0'>The surprise is <span class='mono'>−ln(0.2) = ln&nbsp;5 ≈ 1.6094</span> nats. " +
+        "You entered " + v + ". It is bigger than a coin’s 0.6931 nats because 1/5 is rarer than ½.</p>";
+    }
+  });
+
+  (function () {
+    // EX2 — multiple choice (a) + numeric (b)
+    var mcChoice = null;
+    $$("#ex2-mc button").forEach(function (b) {
+      b.addEventListener("click", function () {
+        mcChoice = b.getAttribute("data-ans");
+        $$("#ex2-mc button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      });
+    });
+    var inp = $("#ex2-in"), btn = $("#ex2-check"), err = $("#ex2-err"), ans = $("#ex2-ans");
+    btn.addEventListener("click", function () {
+      var raw = inp.value.trim(), v = parseFloat(raw);
+      if (!mcChoice) { err.style.display = "block"; err.textContent = "First choose: more or less surprising?"; return; }
+      if (raw === "" || isNaN(v)) { err.style.display = "block"; err.textContent = "Enter the surprise in nats, then check."; return; }
+      err.style.display = "none";
+      var target = -Math.log(0.5);
+      var numOk = Math.abs(v - target) <= 0.03;
+      var mcOk = mcChoice === "less";
+      var cls = (numOk && mcOk) ? "correct" : ((Math.abs(v - target) <= 0.12 || mcOk) ? "close" : "");
+      ans.className = "ex-answer show " + cls;
+      ans.innerHTML = "<p style='margin:2px 0'><strong>" + ((numOk && mcOk) ? "✓ Correct." : "Here’s the working.") + "</strong></p>" +
+        "<p style='margin:8px 0'><strong>(a)</strong> <em>Less</em> surprising. You had half-expected the 6.</p>" +
+        "<p style='margin:8px 0'><strong>(b)</strong> Loaded-die 6: <span class='mono'>−ln(1/2) = 0.6931</span> nats. " +
+        "A fair-die 6 would be <span class='mono'>−ln(1/6) = 1.7918</span> nats — more than twice as surprising. " +
+        "You chose “" + (mcChoice === "less" ? "less" : "more") + "” and entered " + v + ".</p>";
+    });
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") btn.click(); });
+  })();
+
+  (function () {
+    // EX3 — teach it back: reveal only after a non-empty attempt
+    var inp = $("#ex3-in"), btn = $("#ex3-check"), err = $("#ex3-err"), ans = $("#ex3-ans");
+    btn.addEventListener("click", function () {
+      if (inp.value.trim().length < 12) {
+        err.style.display = "block";
+        err.textContent = "Write a sentence or two first — the point is to say it in your own words before you see mine.";
+        return;
+      }
+      err.style.display = "none";
+      ans.className = "ex-answer show correct";
+      ans.innerHTML = "<p style='margin:2px 0'><strong>One way to say it:</strong></p>" +
+        "<p style='margin:8px 0'>“Because independent surprises have to <em>add</em>, and the logarithm is the one thing " +
+        "that turns <em>multiplying</em> into <em>adding</em>.” If you reached for that, you’ve got it — your own wording is the test, not mine.</p>";
+    });
+  })();
+})();
+</script>
+</body>
+</html>
