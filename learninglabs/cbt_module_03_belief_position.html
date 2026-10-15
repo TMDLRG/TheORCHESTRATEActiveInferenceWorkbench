@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 3 — A belief is a position</title>
+<meta name="description" content="The true belief is behind the wall, so carry one you can move: a position on a line from 0 to 1. Then meet the three pressures on it — fit, stretch, looseness — and prove by your own ranking that no single pressure is enough." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --fit:#1d6b34; --stretch:#8a6a10; --loose:#0e6e63;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#e0b878; --warn-soft:#2a2214;
+      --fit:#8fce86; --stretch:#d9b56a; --loose:#7fc6bb;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button:disabled{opacity:.5; cursor:not-allowed}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  .reasons button{display:block; width:100%; text-align:left; margin:6px 0; white-space:normal}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  /* belief line (§3) — a position line, NOT a scored curve */
+  .beliefline{position:relative; height:92px; margin:16px 0 8px; border:1px solid var(--line2); border-radius:10px; background:linear-gradient(90deg, var(--panel), var(--panel2)); }
+  .beliefline .axis{position:absolute; left:0; right:0; top:62px; height:2px; background:var(--line2)}
+  .beliefline .tick{position:absolute; top:56px; width:2px; height:14px; background:var(--line2)}
+  .beliefline .ticklab{position:absolute; top:74px; transform:translateX(-50%); font-size:11px; color:var(--muted); white-space:nowrap}
+  .beliefline .mark{position:absolute; top:6px; transform:translateX(-50%); text-align:center; display:none}
+  .beliefline .mark .dot{width:12px; height:12px; border-radius:50%; margin:0 auto}
+  .beliefline .mark .arrow{font-size:14px; line-height:1}
+  .beliefline .mark .nm{font-size:11px; font-weight:700; white-space:nowrap}
+  .beliefline .mark .pos{font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums}
+  .mark.fit .dot,.swatch.fit{background:var(--fit)} .mark.fit .nm{color:var(--fit)}
+  .mark.stretch .dot,.swatch.stretch{background:var(--stretch)} .mark.stretch .nm{color:var(--stretch)}
+  .mark.loose .dot,.swatch.loose{background:var(--loose)} .mark.loose .nm{color:var(--loose)}
+  .conflict{margin-top:12px; padding:14px 16px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); display:none}
+  .conflict.show{display:block}
+  .conflict b{color:var(--accent-ink)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 3</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>A belief is a position</h1>
+    <p class="lede">
+      The true belief is behind the wall — it needs the sum you can never finish. So carry one you can <strong>move</strong>:
+      a position on a line from 0 to 1. Then learn to tell a good position from a bad one, by three pressures you can
+      actually feel — and prove, by your own hand, that no single one is enough.
+    </p>
+    <p class="legend">
+      Same four doors as before — the plain line runs straight through; take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally — no account, no network — and adapts to light and dark.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Belief,” “fit,” “stretch,” “looseness” are <strong>functional
+      quantities</strong> — a position a model holds and the forces on it. For <em>you</em> we use felt words, because
+      you’re a person reading a sky; for UNI we use functional words — it holds a number and its dynamics move it.
+      Neither is awareness, feeling, or sentience.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, with no peeking</h2>
+    <div class="prose">
+      <p>
+        No scrolling back to Module 2. A cook pulls a tray from the oven — the edges are darker than usual, the smell is
+        sharp, there’s a thin haze above it. The cook wants the <em>true</em> chance the batch is burnt — not a hunch,
+        the honest answer. Reconstruct, cold: why can’t they just compute it?
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="cook">
+      <div class="tool-head">
+        <h3>Cold retrieval — the cook and the honest number</h3>
+        <p class="why">From memory, in a new domain (no rain, coins, dice or sailor): say why the true number is out of reach, pick the reason, then check. Reconstruct it — no re-reading.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="cook-mem">Why can't the cook just compute it</label>
+        <textarea id="cook-mem" placeholder="From memory: why can't the cook just compute the true chance it's burnt?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pick the reason</div>
+        <div class="reasons" id="cook-reasons" role="group" aria-label="Why the true number is out of reach">
+          <button type="button" data-ok="0">Ovens are just unpredictable — no number could ever be right.</button>
+          <button type="button" data-ok="1">The honest number is −ln of the probability of <em>this exact tray</em>, and getting that probability means summing over <em>every</em> hidden cause that could make it look this way — too many terms to finish. The wall.</button>
+          <button type="button" data-ok="0">The cook forgot to measure the oven temperature.</button>
+          <button type="button" data-ok="0">Probability isn’t a real thing, so there’s nothing to compute.</button>
+        </div>
+        <div class="btnrow" style="margin-top:8px"><button type="button" id="cook-go" class="primary">Check</button></div>
+        <div class="err" id="cook-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="cook-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, you’re ready for the way around the wall.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · The move every mind makes</div>
+    <h2>Carry a belief you can move</h2>
+    <div class="prose">
+      <p>
+        You can’t reach the <em>true</em> belief about the hidden cause — that needs the forbidden sum. So <strong>don’t
+        try</strong>. Carry a <strong>stand-in</strong> belief instead: a guess you’re allowed to pick, hold, and
+        <em>slide around</em> until it’s as good as you can make it.
+      </p>
+      <p>
+        Back in your doorway’s two-cause world from Module 2 — front <strong>on</strong> or <strong>off</strong>. The
+        truth about how much to believe “on,” given the sky, was <span class="k">0.913</span> — but that came from
+        dividing by the evidence <span class="k">0.69</span>, the sum you’re avoiding. So set it aside. Instead, just
+        <strong>pick a number</strong> for how strongly <em>you’ll</em> believe the front is on — and get ready to move it.
+      </p>
+    </div>
+    <details class="box picture" open>
+      <summary>▶ Picture it — the dial <span class="tag">kid</span></summary>
+      <div class="box-body">
+        A single dial on the wall, marked <strong>off</strong> at the far left and <strong>on</strong> at the far right.
+        Where you point it is your current belief about the hidden cause. You can turn it freely. Nobody handed you the
+        right setting — the whole game from here is <em>learning which way to turn it.</em>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · What a belief now is</div>
+    <h2>A belief is a position</h2>
+    <div class="prose">
+      <p>So look at what a belief actually <em>is</em> now: not a fact, not a number handed down — a <strong>position</strong>. A spot on a line from 0 to 1.</p>
+    </div>
+    <details class="box try" open>
+      <summary>✎ Try it — read the dial (commit before the reveal) <span class="tag">commit first</span></summary>
+      <div class="box-body">
+        Point the dial three ways and say, in plain words, what each <em>means</em> as a belief about the front:
+        (a) hard left, 0 · (b) dead centre, 0.5 · (c) hard right, 1. Commit your three one-line readings, then open
+        the reveal below.
+        <details style="margin-top:10px"><summary style="cursor:pointer; font-weight:700; color:var(--accent-ink)">Reveal the readings</summary>
+          <p style="margin:8px 0 0">(a) <span class="k">0</span> = “certain the front is <strong>off</strong>.” (b) <span class="k">0.5</span> = “genuinely torn — could be either.” (c) <span class="k">1</span> = “certain the front is <strong>on</strong>.” Everything between is a shade of leaning. That one number is your whole belief about the hidden cause, and you can put it anywhere.</p>
+        </details>
+      </div>
+    </details>
+    <details class="box deeper">
+      <summary>▸ Go deeper — the movable belief q(η) <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        The movable belief is a distribution <span class="mono">q(η)</span> over the hidden cause <span class="mono">η</span>.
+        In a two-cause world it’s pinned by one number — <span class="mono">b = q(η = on) ∈ [0, 1]</span>, with
+        <span class="mono">q(η = off) = 1 − b</span>. This <span class="mono">q</span> is the thing a mind actually carries
+        and updates; it is <em>not</em> the true posterior <span class="mono">p(η | y)</span> (that needs the evidence).
+        <span class="mono">q</span> is a free stand-in we get to choose — well, without ever computing the evidence.
+      </div>
+    </details>
+    <div class="prose">
+      <p>That’s the earned idea: <strong>a belief is a position <span class="k">b</span> on <span class="k">[0, 1]</span> you can move.</strong> Now — how do you tell a <em>good</em> position from a bad one, when you can’t peek at the true answer?</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-kicker">3 · Three pressures you can feel</div>
+    <h2>Fit, stretch, looseness</h2>
+    <div class="prose">
+      <p>You can’t score a position against the truth (behind the wall). But you <em>can</em> feel three honest pressures on it, each judged from things in your hands. Meet them one at a time — agreeing case first.</p>
+      <ul>
+        <li><strong>Fit.</strong> Does this position <em>explain the sky you saw?</em> The wet sky is predicted well by “on” (0.9), badly by “off” (0.2). <strong>Fit pulls the dial toward whatever explains your senses.</strong></li>
+        <li><strong>Stretch.</strong> How far did you drag the dial from where you <em>started</em> — your prior, 0.7? Abandoning a lifetime of mornings on a whim is expensive. <strong>Stretch pulls the dial back toward your prior.</strong></li>
+        <li><strong>Looseness.</strong> How <em>confident</em> is the position — and has it earned that? A dial slammed to 0.99 claims near-certainty; one near 0.5 stays humble. <strong>Looseness pulls the dial toward the honest middle.</strong></li>
+      </ul>
+    </div>
+
+    <div class="tool centerpiece" id="pressures">
+      <div class="tool-head">
+        <h3>Which position does each pressure want?</h3>
+        <p class="why">Commit, for each pressure, which of three positions it prefers — then reveal where the three actually point. The lesson is the CONFLICT: no one position wins all three. (This shows the three pulls, not a scored curve — the single score comes in Module 4.)</p>
+      </div>
+      <div class="tool-body">
+        <div class="field"><label for="pr-fit">FIT prefers…</label>
+          <select id="pr-fit"><option value="">— pick 0.5 / 0.7 / 0.95 —</option><option value="0.5">0.5</option><option value="0.7">0.7</option><option value="0.95">0.95</option></select></div>
+        <div class="field"><label for="pr-stretch">STRETCH prefers…</label>
+          <select id="pr-stretch"><option value="">— pick —</option><option value="0.5">0.5</option><option value="0.7">0.7</option><option value="0.95">0.95</option></select></div>
+        <div class="field"><label for="pr-loose">LOOSENESS prefers…</label>
+          <select id="pr-loose"><option value="">— pick —</option><option value="0.5">0.5</option><option value="0.7">0.7</option><option value="0.95">0.95</option></select>
+          <button type="button" id="pr-go" class="primary">Reveal where they point</button></div>
+        <div class="err" id="pr-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="pr-out" role="status"></div>
+        <div class="beliefline" id="pr-line" aria-hidden="true">
+          <div class="axis"></div>
+          <div class="tick" style="left:0%"></div><div class="ticklab" style="left:0%">0 · off</div>
+          <div class="tick" style="left:50%"></div><div class="ticklab" style="left:50%">0.5</div>
+          <div class="tick" style="left:70%"></div><div class="ticklab" style="left:70%">0.7 · prior</div>
+          <div class="tick" style="left:95%"></div><div class="ticklab" style="left:95%">0.95</div>
+          <div class="tick" style="left:100%"></div><div class="ticklab" style="left:100%">1 · on</div>
+          <div class="mark loose" id="mk-loose" style="left:50%"><div class="dot"></div><div class="arrow">↓</div><div class="nm">Looseness</div><div class="pos">0.5</div></div>
+          <div class="mark stretch" id="mk-stretch" style="left:70%"><div class="dot"></div><div class="arrow">↓</div><div class="nm">Stretch</div><div class="pos">0.7</div></div>
+          <div class="mark fit" id="mk-fit" style="left:95%"><div class="dot"></div><div class="arrow">↓</div><div class="nm">Fit</div><div class="pos">0.95</div></div>
+        </div>
+        <div class="conflict" id="pr-conflict" role="status">
+          <b>No single position wins all three.</b> <span class="swatch fit" style="display:inline-block;width:10px;height:10px;border-radius:50%"></span> Fit wants the bold 0.95,
+          <span class="swatch stretch" style="display:inline-block;width:10px;height:10px;border-radius:50%"></span> Stretch wants the prior 0.7,
+          <span class="swatch loose" style="display:inline-block;width:10px;height:10px;border-radius:50%"></span> Looseness wants the humble 0.5 — three different spots. Trust <em>fit</em> alone → the gambler who’s always certain; <em>stretch</em> alone → the stubborn prior that never learns; <em>looseness</em> alone → the eternal shrug. A good belief <strong>balances all three</strong> — which forces putting them on one scale and adding them up. That single number is Module 4.
+        </div>
+      </div>
+    </div>
+
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI <span class="tag">functional · what's proven vs the build</span></summary>
+      <div class="box-body">
+        The organism carries exactly this: a movable belief <span class="mono">q</span> over its world’s hidden state,
+        pushed by these same pressures — fit the sensory evidence, don’t stray needlessly from the prior, don’t collapse
+        to false certainty. Forces on a number its dynamics minimize — never a feeling. <strong>What is proven today is
+        the free-energy arithmetic these pressures live in (the sealed Gate-F0 math); the organism’s full behaviour is
+        the build still underway — we hold that open rather than claim it.</strong>
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Where this goes next</div>
+    <h2>The score is forced</h2>
+    <div class="prose">
+      <p>
+        You’ve made the first move around the wall. A belief is no longer a fact you can’t reach — it’s a
+        <strong>position</strong> you can hold and slide, and you can feel three honest pressures on it: fit, stretch,
+        looseness. And you proved, by your own ranking, that they pull in different directions — no position is best on
+        all three at once.
+      </p>
+      <p>
+        So the next rung is forced: <strong>put the three pressures on one scale and add them into a single number</strong>
+        — a <em>height</em> that’s low where a belief is good and high where it’s bad. That single number is the one this
+        whole book is named for, and here’s the beautiful part waiting: it will contain <strong>no evidence term at
+        all</strong>. The forbidden sum won’t appear. That’s how a mind scores its beliefs without ever walking through
+        the wall. You assemble it in Module 4.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You couldn’t reach the true belief, so you did exactly what a mind does: carried a movable one, and judged it by
+        pressures you <em>can</em> feel instead of a truth you can’t — and found, by your own hand, that no single
+        pressure is enough. <strong>That tension is why free energy has the shape it has</strong>, and you felt the need
+        for it before you were handed it.
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 3 — A belief is a position.</strong> Built on the Active-Inference Pedagogy spec: a cold-retrieval
+      opener in a new domain (the cook), the movable belief as a position on [0,1], and the three pressures whose conflict
+      the learner proves by their own ranking. Self-contained — no network, no account, CPU only; adapts to light and dark.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 3. It reuses Module 2’s two-cause world and its sealed references
+      (prior 0.7, evidence 0.69, posterior 0.913); no new golden is computed here, and no free-energy score is drawn —
+      that is Module 4. The <code>⬡ See it in UNI</code> claims hold the fence: the sealed Gate-F0 arithmetic is asserted,
+      the organism’s full behaviour is flagged as the build underway. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // ── §0 COOK COLD-RETRIEVAL ────────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#cook"); if (!root) return;
+    var mem = $("#cook-mem"), reasons = $("#cook-reasons"), err = $("#cook-err"), out = $("#cook-out");
+    var picked = null;
+    $$("button[data-ok]", reasons).forEach(function (b) {
+      b.addEventListener("click", function () {
+        picked = b;
+        $$("button[data-ok]", reasons).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      });
+    });
+    $("#cook-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — a sentence or two, from memory."; return; }
+      if (!picked) { err.style.display = "block"; err.textContent = "Pick the reason that matches before you check."; return; }
+      err.style.display = "none";
+      var right = picked.getAttribute("data-ok") === "1";
+      out.className = "ex-answer show " + (right ? "correct" : "close");
+      out.innerHTML =
+        "<p style='margin:2px 0'><strong>" + (right ? "✓ That’s it." : "Not that one — here’s why.") + "</strong></p>" +
+        "<p style='margin:8px 0'>The honest number is <span class='mono'>−ln</span> of the probability of <em>this exact tray</em> (its colour, smell, haze). To get that probability you must add up, over <strong>every</strong> hidden cause that could produce this tray — oven too hot, a cold spot, bad flour, the door opened — the chance each would make it look this way. That sum is the <strong>evidence</strong>, and in any real kitchen it has too many terms to finish. That’s the wall." +
+        (right ? "" : " (Not unpredictability, not a missed measurement — the sum itself is unfinishable.)") + "</p>";
+    });
+  })();
+
+  // ── §3 THREE PRESSURES (reveal the conflict; no scored curve) ────────────────────────────────
+  (function () {
+    var root = $("#pressures"); if (!root) return;
+    var fit = $("#pr-fit"), stretch = $("#pr-stretch"), loose = $("#pr-loose"),
+        err = $("#pr-err"), out = $("#pr-out"), line = $("#pr-line"), conflict = $("#pr-conflict");
+    var TRUE = { fit: "0.95", stretch: "0.7", loose: "0.5" };
+    $("#pr-go").addEventListener("click", function () {
+      if (!fit.value || !stretch.value || !loose.value) { err.style.display = "block"; err.textContent = "Commit all three guesses before the reveal."; return; }
+      err.style.display = "none";
+      var picks = { fit: fit.value, stretch: stretch.value, loose: loose.value };
+      var hits = 0; ["fit", "stretch", "loose"].forEach(function (k) { if (picks[k] === TRUE[k]) hits++; });
+      // show the diverging marks + the committed-vs-true note
+      ["fit", "stretch", "loose"].forEach(function (k) { $("#mk-" + k).style.display = "block"; });
+      function row(name, k) {
+        var ok = picks[k] === TRUE[k];
+        return "<li><strong>" + name + "</strong> prefers <span class='mono'>" + TRUE[k] + "</span>" +
+          (ok ? " — you had it." : " — you guessed " + picks[k] + ".") + "</li>";
+      }
+      out.className = "ex-answer show " + (hits === 3 ? "correct" : "close");
+      out.innerHTML =
+        "<p style='margin:2px 0'><strong>" + (hits === 3 ? "✓ All three." : hits + " of 3 — look where they land.") + "</strong></p>" +
+        "<ul style='margin:8px 0'>" + row("Fit", "fit") + row("Stretch", "stretch") + row("Looseness", "loose") + "</ul>";
+      conflict.classList.add("show");
+    });
+  })();
+})();
+</script>
+</body>
+</html>
