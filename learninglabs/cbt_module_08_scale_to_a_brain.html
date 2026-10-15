@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 8 — Scale to a brain</title>
+<meta name="description" content="Two causes and one dial was a training world. A mind has a tower of causes, each a belief rolling downhill on the one above — predictions flow down, errors flow up. The exact floor becomes a genuine but looser ceiling, tagged :exact_mean_field. Part I closes." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --down:#0e6e63; --up:#a8341f; --ceil:#8a6a10;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --down:#7fc6bb; --up:#e89580; --ceil:#d9b56a;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  input[type="range"]{width:min(300px,100%); accent-color:var(--accent); vertical-align:middle}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  /* the tower (§2) */
+  .towerwrap{display:flex; gap:22px; flex-wrap:wrap}
+  .tower{display:flex; flex-direction:column; gap:0; min-width:260px; flex:1 1 260px}
+  .lvl{border:1px solid var(--line2); border-radius:10px; padding:10px 12px; background:var(--panel2); position:relative}
+  .lvl .name{font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted)}
+  .lvl .val{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums; margin-top:2px}
+  .lvl .errbar{height:8px; border-radius:999px; background:var(--up); margin-top:6px; width:0%; transition:width .18s ease}
+  .lvl .errlab{font-size:11px; color:var(--up); margin-top:3px}
+  .flowgap{display:flex; justify-content:space-between; padding:3px 18px; font-size:12px; color:var(--muted)}
+  .flowgap .down{color:var(--down)} .flowgap .up{color:var(--up)}
+  .meter{min-width:150px; flex:0 0 150px}
+  .meter .scale{position:relative; height:200px; border:1px solid var(--line2); border-radius:8px; background:linear-gradient(180deg, var(--panel) 0 55%, var(--ok-soft) 55% 100%)}
+  .meter .floorline{position:absolute; left:0; right:0; bottom:28%; border-top:2px dashed var(--ceil)}
+  .meter .floorlab{position:absolute; left:4px; bottom:calc(28% + 2px); font-size:10px; color:var(--ceil); font-weight:700}
+  .meter .ceilmark{position:absolute; left:50%; transform:translate(-50%,50%); width:14px; height:14px; border-radius:50%; background:var(--ceil); border:2px solid #fff; transition:bottom .2s ease; bottom:70%}
+  .meter .ceillab{position:absolute; left:50%; transform:translateX(-50%); font-size:10px; color:var(--ceil); font-weight:700; transition:bottom .2s ease; bottom:74%}
+  .meter .exactmark{position:absolute; left:50%; transform:translate(-50%,50%); width:12px; height:12px; border-radius:50%; background:var(--ok); border:2px solid #fff; bottom:28%}
+  .tagpill{display:inline-block; font-family:var(--mono); font-size:12px; background:var(--gold-soft); color:var(--ceil); border:1px solid var(--line2); border-radius:999px; padding:2px 8px; font-weight:700}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 8</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>Scale to a brain, then make it yours</h1>
+    <p class="lede">
+      Two causes and one dial was a training world. A real mind has a <strong>tower</strong> of causes stacked high,
+      each a belief rolling downhill on the one above — predictions flowing down, errors flowing up. The valley
+      survives — the exact floor becomes a genuine, if looser, ceiling. This closes Part I and opens the door to action.
+    </p>
+    <p class="legend">
+      Five doors as before — the plain line runs straight through; take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally — no account, no network — and adapts to light and dark; honours reduced motion.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Free energy,” “belief,” “prediction error,” “bound” are <strong>functional
+      quantities</strong> — a tower of numbers rolling heights downhill. For <em>you</em> we use felt words; for UNI,
+      functional ones. Neither is awareness, feeling, or sentience. Part I’s exact engine is proven (Gate F0, sealed);
+      everything larger — the hierarchy, growth, action — is the build underway, held open until its own proof lands.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, the keystone — with no peeking</h2>
+    <div class="prose">
+      <p>No scrolling back to Module 7. One cold question, the keystone of the whole book.</p>
+    </div>
+
+    <div class="tool centerpiece" id="keystone">
+      <div class="tool-head">
+        <h3>Cold retrieval — the punchline</h3>
+        <p class="why">From memory: when a mind minimizes free energy, what two things does it get back — and why is that remarkable? Reconstruct it — no re-reading.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="key-mem">What two things does minimizing F return, and why remarkable</label>
+        <textarea id="key-mem" placeholder="From memory: minimizing free energy hands a mind back which two things, and why is that remarkable?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field"><label for="key-two">Minimizing F returns…</label>
+          <select id="key-two"><option value="">—</option><option value="both">the posterior (true belief) AND the surprise (−ln p(y)), at once</option><option value="prior">the prior and the likelihood</option><option value="ev">the evidence p(y)</option></select></div>
+        <div class="field"><label for="key-why">…remarkable because…</label>
+          <select id="key-why"><option value="">—</option><option value="wall">both were walled off as uncomputable, yet F is computed WITHOUT the evidence</option><option value="fast">it is fast</option><option value="simple">the formula is short</option></select>
+          <button type="button" id="key-go" class="primary">Check</button></div>
+        <div class="err" id="key-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="key-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, you own Part I. Now scale it up — honestly.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · Two causes was a training wheel</div>
+    <h2>A tower of causes</h2>
+    <div class="prose">
+      <p>
+        Our world had one hidden thing (front on/off) and one sensation (the sky). Real worlds are a <strong>stack</strong>:
+        photons on your eye are best explained by <strong>edges</strong>, best explained by <strong>surfaces and
+        objects</strong>, best explained by a <strong>scene</strong> (“a kitchen, morning”), explained by
+        <strong>where you are and what you’re doing</strong>. Each layer is a hidden cause for the one below and a
+        sensation for the one above.
+      </p>
+    </div>
+    <details class="box picture" open>
+      <summary>▶ Picture it — a tower of dials <span class="tag">kid</span></summary>
+      <div class="box-body">
+        Not one dial on a wall — a <strong>tower</strong> of dials. The bottom dial explains the raw signal; the one
+        above explains the bottom dial; and so on up. Each dial still does the only thing a belief can do: sit at a
+        position and feel which way is downhill.
+      </div>
+    </details>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · The valley survives — the floor becomes a ceiling</div>
+    <h2>Predictions down, errors up — and a looser ceiling</h2>
+    <div class="prose">
+      <p>
+        You can’t minimize a towering world’s free energy <em>perfectly</em> — exact minimization needs its own
+        forbidden sums. So a mind assumes the layers are roughly independent and minimizes within that assumption — the
+        <strong>mean-field</strong> move, tagged <span class="tagpill">:exact_mean_field</span>. Perturb the bottom
+        sensation below and watch the tower settle: predictions flow <span style="color:var(--down); font-weight:700">down</span>,
+        errors flow <span style="color:var(--up); font-weight:700">up</span>, until every level agrees.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="tower">
+      <div class="tool-head">
+        <h3>Settle the tower</h3>
+        <p class="why">A 3-level sketch of hierarchical inference. Set the raw sensation, then step: each level predicts the one below (down) and reports its error up; beliefs roll downhill until errors vanish. The mean-field free energy (right) settles ABOVE the exact floor — a valid but loose ceiling it never quite touches.</p>
+      </div>
+      <div class="tool-body">
+        <div class="field">
+          <label for="tw-sense">Raw sensation (perturb the bottom):</label>
+          <input type="range" id="tw-sense" min="0" max="10" step="1" value="8" />
+          <span id="tw-sense-v" class="mono"></span>
+        </div>
+        <div class="btnrow">
+          <button type="button" id="tw-step" class="primary">Step (settle once)</button>
+          <button type="button" id="tw-settle">Settle fully</button>
+          <button type="button" id="tw-reset" class="ghost">Reset beliefs</button>
+        </div>
+        <div class="towerwrap" style="margin-top:12px">
+          <div class="tower" id="tw-tower" aria-hidden="true">
+            <div class="lvl" id="tw-l3"><div class="name">Level 3 · scene ("where/what")</div><div class="val" id="tw-l3v">—</div><div class="errbar" id="tw-l3e"></div><div class="errlab" id="tw-l3el"></div></div>
+            <div class="flowgap"><span class="down">▼ prediction</span><span class="up">▲ error</span></div>
+            <div class="lvl" id="tw-l2"><div class="name">Level 2 · objects / surfaces</div><div class="val" id="tw-l2v">—</div><div class="errbar" id="tw-l2e"></div><div class="errlab" id="tw-l2el"></div></div>
+            <div class="flowgap"><span class="down">▼ prediction</span><span class="up">▲ error</span></div>
+            <div class="lvl" id="tw-l1"><div class="name">Level 1 · raw sensation (the sky / the signal)</div><div class="val" id="tw-l1v">—</div></div>
+          </div>
+          <div class="meter" aria-hidden="true">
+            <div class="steplabel">ceiling meter</div>
+            <div class="scale">
+              <div class="floorline"></div><div class="floorlab">exact floor</div>
+              <div class="exactmark" title=":exact — on the floor"></div>
+              <div class="ceilmark" id="tw-ceil"></div>
+              <div class="ceillab" id="tw-ceillab">:exact_mean_field</div>
+            </div>
+          </div>
+        </div>
+        <p class="hint" id="tw-note" aria-live="polite">Set a sensation, then step. Watch errors (red bars) shrink as the tower settles — and the mean-field ceiling sink toward, but never onto, the exact floor.</p>
+      </div>
+    </div>
+
+    <details class="box try" open>
+      <summary>✎ Try it — predict before you settle <span class="tag">commit first</span></summary>
+      <div class="box-body">
+        From the floor you proved in Module 6 (<span class="mono">F ≥ −ln p(y)</span>, always), when you can only
+        minimize F <em>approximately</em>, does the number you land on sit <em>above</em>, <em>below</em>, or
+        <em>exactly on</em> the true surprise? Commit, then settle the tower above.
+        <details style="margin-top:10px"><summary style="cursor:pointer; font-weight:700; color:var(--accent-ink)">Reveal</summary>
+          <p style="margin:8px 0 0"><strong>Above.</strong> The floor theorem still holds — F is still a ceiling over
+          the surprise — but now a genuine, <em>looser</em> ceiling you no longer touch. Still enough: push the ceiling
+          down and you corner the surprise beneath it; you just can’t claim you’ve hit it. That’s exactly why the number
+          carries its tag — <span class="mono">:exact_mean_field</span> means “a real bound, but a loose one.”</p>
+        </details>
+      </div>
+    </details>
+    <details class="box">
+      <summary>✓ Check it yourself — a lazy belief is still a ceiling <span class="tag">equation · by hand</span></summary>
+      <div class="box-body">
+        Back in our two-cause training world the exact floor was the surprise,
+        <span class="mono">−ln p(y) = −ln 0.69 = 0.3710636814</span>, touched only by the exact posterior
+        <span class="mono">b* = 0.63/0.69 = 0.9130434783</span>. Now pretend a mind settles <em>lazily</em> on
+        <span class="mono">b = 0.80</span> instead — the kind of near-miss a mean-field approximation leaves. Plug it
+        into the same free energy <span class="mono">F(b) = b·ln(b/0.63) + (1−b)·ln((1−b)/0.06)</span>:
+        <ul style="margin:8px 0">
+          <li><span class="mono">F(0.80) = 0.4319080875</span></li>
+          <li>floor <span class="mono">= 0.3710636814</span>, so the gap is <span class="mono">0.0608444061 &gt; 0</span></li>
+        </ul>
+        Above the floor, never below — a valid ceiling, just a loose one. Settle even lazier, at
+        <span class="mono">b = 0.50</span>, and <span class="mono">F = 0.9445759076</span> — a looser ceiling still. That is
+        precisely what the <span class="mono">:exact_mean_field</span> tag promises: <strong>always ≥ the surprise,
+        never equal unless you hit the exact posterior</strong>. Falsify it if you can — pick any <span class="mono">b</span>
+        in (0,1) and compute <span class="mono">F(b)</span>; you will never get a number below
+        <span class="mono">0.3710636814</span>.
+      </div>
+    </details>
+    <details class="box deeper">
+      <summary>▸ Go deeper — messages and the guaranteed bound <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        Each layer carries its own belief <span class="mono">q</span>; predictions flow <strong>down</strong> (each level
+        tells the one below what to expect) and prediction errors flow <strong>up</strong> (each tells the one above
+        where it was wrong). Every level rolls downhill on its own free energy given its neighbours’ messages; the whole
+        tower settles together. The global bound is <span class="mono">:exact_mean_field</span> — guaranteed to be a
+        ceiling, not guaranteed tight. A bound is “guaranteed” only for <span class="mono">:exact</span> and
+        <span class="mono">:exact_mean_field</span>; <span class="mono">:laplace</span> / <span class="mono">:sampled</span>
+        are looser, and <span class="mono">:mmp</span> is never a bound at all (MMP-BOUND-01).
+      </div>
+    </details>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-kicker">3 · Make it yours</div>
+    <h2>Your own moment, three layers</h2>
+    <div class="prose">
+      <p>You’ve earned a teach-back — the strongest way to keep what you built.</p>
+    </div>
+    <div class="tool" id="teach">
+      <div class="tool-head"><h3>Tell it back as “free energy rolling downhill”</h3></div>
+      <div class="tool-body">
+        <p style="margin:4px 0 10px">Pick something you perceived in the last day where you were briefly <em>wrong</em> then <em>right</em> — a sound you misheard, a face you mistook, a step that wasn’t where you expected. Name three layers: (1) the <strong>raw sensation</strong>, (2) the <strong>cause your model first guessed</strong>, (3) the <strong>correction</strong> when the error flowed up and your belief rolled to a better spot.</p>
+        <label class="sr-only" for="teach-in">Your three-layer story</label>
+        <textarea id="teach-in" placeholder="e.g. (1) a buzz; (2) my phone; (3) nope — the error flowed up, and it was the fridge; my belief rolled to 'fridge'."></textarea>
+        <div class="btnrow" style="margin-top:10px"><button type="button" id="teach-go" class="primary">I’ve written mine — show the shape</button></div>
+        <div class="err" id="teach-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="teach-out"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Where this goes next — Part II</div>
+    <h2>From perceiving to doing</h2>
+    <div class="prose">
+      <p>
+        Part I was <strong>perception</strong>: a mind, still, re-believing until its free energy rolls to the floor.
+        But back in Module 2’s doorway there was a <strong>second engine</strong> — you could <em>act</em>, change the
+        world so your senses fall in line. That turns free energy from a thing you <em>minimize now</em> into a thing
+        you <em>expect over possible futures</em> — a forward cousin called <strong>expected free energy</strong>
+        (<span class="k">G</span>) — and scoring futures with it is how a mind <em>chooses what to do</em>. That is the
+        start of behaviour, and of how UNI will move, grow, and reach for a life.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI — honestly <span class="tag">proven vs build underway</span></summary>
+      <div class="box-body">
+        The organism is built to be exactly this: a hierarchy of beliefs, each a blanket in the inference sense, rolling
+        tagged free energy downhill, with the structure meant to <strong>grow</strong> by model comparison. <strong>What
+        is proven today is the exact arithmetic at the base (Gate F0, sealed). The hierarchy, the growth, the action, the
+        long life toward the North Star are the build underway</strong>, and this book claims each only when its gate
+        proves it. That honesty <em>is</em> the method: a number without its evidence, like a free energy without its
+        tag, is not a result.
+      </div>
+    </details>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did — across eight modules <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        From a feeling in a doorway you built a number (surprise), hit a wall (the intractable evidence), carried a
+        movable belief, fused three pressures into free energy, drew its valley, found its floor, proved the floor, and
+        watched one blind descent hand back both the belief and the surprise — then scaled it to a tower. You didn’t
+        learn <em>about</em> active inference. You built it.
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 8 — Scale to a brain.</strong> The Part I closer, built on the Active-Inference Pedagogy spec:
+      a capstone cold-retrieval, a 3-level tower where predictions flow down and errors flow up until it settles
+      (illustrative mechanism, not the organism’s measured values), and a ceiling meter where the mean-field free energy
+      settles above the exact floor (tagged :exact_mean_field — a valid but loose bound). Self-contained — no network, no
+      account, CPU only; adapts to light and dark; honours reduced motion.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 8. The exact engine at the base is the sealed Gate-F0 case; the
+      hierarchy, growth and action are the build underway, claimed only when their own gates prove them — the tower here
+      is a schematic of the mechanism, not a measurement. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  // ── §0 CAPSTONE COLD-RETRIEVAL ────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#keystone"); if (!root) return;
+    var mem = $("#key-mem"), two = $("#key-two"), why = $("#key-why"), err = $("#key-err"), out = $("#key-out");
+    $("#key-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — a sentence or two, from memory."; return; }
+      if (!two.value || !why.value) { err.style.display = "block"; err.textContent = "Answer both before you check."; return; }
+      err.style.display = "none";
+      var hits = (two.value === "both") + (why.value === "wall");
+      out.className = "ex-answer show " + (hits === 2 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 2 ? "✓ Both." : hits + " of 2.") + "</strong></p>" +
+        "<p style='margin:8px 0'>Minimizing free energy hands a mind back the <strong>true belief</strong> (the posterior, Bayes — the valley bottom) AND the <strong>true surprise</strong> (−ln p(y) — the height at the bottom), both at once — from a number computed <strong>without the evidence</strong>. Remarkable because both were walled off as uncomputable. You own Part I.</p>";
+    });
+  })();
+
+  // ── §2 THE TOWER + CEILING METER ─────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#tower"); if (!root) return;
+    var sense = $("#tw-sense"), senseV = $("#tw-sense-v"),
+        l1v = $("#tw-l1v"), l2v = $("#tw-l2v"), l3v = $("#tw-l3v"),
+        l2e = $("#tw-l2e"), l3e = $("#tw-l3e"), l2el = $("#tw-l2el"), l3el = $("#tw-l3el"),
+        ceil = $("#tw-ceil"), ceillab = $("#tw-ceillab"), note = $("#tw-note");
+    // 3 levels: L1 = raw sensation (set by learner), L2, L3 = beliefs that settle.
+    var s = 8, m = 5, t = 5;           // start beliefs mid-scale so a perturbation makes real errors
+    var FLOOR_PCT = 28;                // the exact floor sits at 28% up the meter (matches CSS)
+    function errUp() { return Math.abs(s - m); }        // level-1 error (sensation vs L2's prediction)
+    function errMid() { return Math.abs(m - t); }       // level-2 error (vs L3's prediction)
+    function totalErr() { return errUp() + errMid(); }
+    function render() {
+      senseV.textContent = "= " + s;
+      l1v.textContent = s.toFixed(2); l2v.textContent = m.toFixed(2); l3v.textContent = t.toFixed(2);
+      var e1 = errUp(), e2 = errMid();
+      l2e.style.width = Math.min(100, e1 / 10 * 100) + "%"; l2el.textContent = "error up: " + e1.toFixed(2);
+      l3e.style.width = Math.min(100, e2 / 10 * 100) + "%"; l3el.textContent = "error up: " + e2.toFixed(2);
+      // ceiling: mean-field F = exact floor + a looseness that shrinks with total error but never reaches 0.
+      // Mapped onto the meter as a % height above the floor line. Bottoms out a little ABOVE the floor.
+      var loose = 0.08 + 0.9 * Math.min(1, totalErr() / 10);   // residual looseness, always > 0
+      var ceilPct = FLOOR_PCT + loose * 44;                     // always above the floor line
+      ceil.style.bottom = ceilPct + "%"; ceillab.style.bottom = (ceilPct + 4) + "%";
+    }
+    function stepOnce() {
+      // predictive-coding settle: beliefs roll toward their neighbours' messages (down predictions, up errors)
+      var m2 = m + 0.5 * ((s - m) - (m - t));   // L2 pulled down by sensation error, up by its own error to L3
+      var t2 = t + 0.5 * (m - t);               // L3 pulled toward L2
+      m = m2; t = t2; render();
+    }
+    function settle() {
+      for (var i = 0; i < 40 && totalErr() > 0.01; i++) stepOnce();
+      render();
+      note.innerHTML = "Settled: every level agrees (errors ≈ 0), predictions and errors in balance. The mean-field ceiling sank close to the exact floor — but stopped <strong>above</strong> it. It is a valid bound (<span class='mono'>:exact_mean_field</span>), never the exact surprise. Push it down; you can’t land on the floor, and you can never fall below it.";
+    }
+    sense.addEventListener("input", function () { s = parseFloat(sense.value); render(); note.textContent = "Sensation changed — the bottom error jumped. Step to let it flow up and the tower re-settle."; });
+    $("#tw-step").addEventListener("click", function () { stepOnce(); if (totalErr() < 0.01) settle(); else note.innerHTML = "One step: predictions flowed down, errors flowed up, beliefs rolled a little. Errors are shrinking — keep stepping, or settle fully."; });
+    $("#tw-settle").addEventListener("click", settle);
+    $("#tw-reset").addEventListener("click", function () { m = 5; t = 5; render(); note.textContent = "Beliefs reset to the middle. Set a sensation and step to watch the tower settle."; });
+    render();
+  })();
+
+  // ── §3 TEACH-BACK ─────────────────────────────────────────────────────────────────────────────
+  (function () {
+    var inp = $("#teach-in"), btn = $("#teach-go"), err = $("#teach-err"), ans = $("#teach-out");
+    if (!btn) return;
+    btn.addEventListener("click", function () {
+      if (inp.value.trim().length < 15) { err.style.display = "block"; err.textContent = "Write your three-layer story first — it’s where the learning sticks."; return; }
+      err.style.display = "none"; ans.className = "ex-answer show correct";
+      ans.innerHTML = "<p style='margin:2px 0'><strong>The shape you just told:</strong></p>" +
+        "<p style='margin:8px 0'>guess → error → roll → settle. Your model predicted a cause; the sensation didn’t match; the <em>error flowed up</em>; your belief <em>rolled downhill</em> to a better spot and the error vanished. That little story is the whole engine, running in you, in the size of a second — free energy rolling to its floor.</p>";
+    });
+  })();
+})();
+</script>
+</body>
+</html>
