@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 4 — Free energy</title>
+<meta name="description" content="Three pressures, one number: free energy is the height under a belief — energy minus looseness, fit-and-stretch fused in the joint minus the spread. Assemble it, verify the forbidden evidence sum is nowhere in it, and compute it by hand — twice." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#e0b878; --warn-soft:#2a2214;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(30px,5vw,44px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.check{border-color:var(--ok)}
+  details.box.check>summary{color:var(--ok-ink)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  input[type="number"]{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:110px;}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .big{font-size:26px; font-weight:800; font-variant-numeric:tabular-nums}
+  .figures{display:flex; flex-wrap:wrap; gap:18px; margin-top:6px}
+  .figure .lab{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .figure .val{font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink)}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  .formula{font-family:var(--mono); font-size:16px; background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:10px 0; line-height:1.7; word-break:break-word}
+  .formula .q{color:var(--accent-ink); font-weight:700}
+  .formula .j{color:var(--gold); font-weight:700}
+  .formula .py{color:var(--bad-ink); font-weight:700}
+  .pyhunt{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px dashed var(--bad); background:var(--bad-soft); display:none}
+  .pyhunt.show{display:block}
+  .pyhunt b{color:var(--bad-ink)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:30px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 4</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>Free energy</h1>
+    <p class="lede">
+      Three pressures, one number — and the forbidden sum is nowhere in it. Free energy is a <strong>height under a
+      belief</strong>, low where a belief is good and high where it’s bad. You’ll assemble it, verify the evidence sum
+      never enters, and compute it by hand — twice, watching a better belief come out lower.
+    </p>
+    <p class="legend">
+      Five doors as before — the plain line runs straight through; take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally — no account, no network — and adapts to light and dark.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Free energy,” “energy,” “entropy” are <strong>functional quantities</strong>
+      — a number a model computes over its own belief. For <em>you</em> we use felt words; for UNI, functional ones: it
+      holds a belief and its dynamics lower a height. Neither is awareness, feeling, or sentience. The free-energy
+      arithmetic here is proven (Gate F0, sealed) — the floor the organism stands on, not a claim about what it feels.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, with no peeking</h2>
+    <div class="prose">
+      <p>
+        No scrolling back to Module 3. A doctor reads a scan: a shadow that could be nothing, or could be something. The
+        doctor carries a <em>movable belief</em> about what the shadow is. Reconstruct, cold.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="doctor">
+      <div class="tool-head">
+        <h3>Cold retrieval — belief and its three pressures</h3>
+        <p class="why">From memory, new domain (the scan): say what “a belief is a position” means, and match each pressure to what it wants. Reconstruct it — no re-reading.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="doc-mem">What does it mean to call a belief a position</label>
+        <textarea id="doc-mem" placeholder="From memory: what does it mean to call a belief a 'position'?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Match each pressure to what it wants</div>
+        <div class="field"><label for="doc-fit">FIT wants…</label>
+          <select id="doc-fit"><option value="">—</option><option value="explain">to explain the data you actually saw</option><option value="prior">to stay near your prior</option><option value="humble">to not be more certain than earned</option></select></div>
+        <div class="field"><label for="doc-stretch">STRETCH wants…</label>
+          <select id="doc-stretch"><option value="">—</option><option value="explain">to explain the data you actually saw</option><option value="prior">to stay near your prior</option><option value="humble">to not be more certain than earned</option></select></div>
+        <div class="field"><label for="doc-loose">LOOSENESS wants…</label>
+          <select id="doc-loose"><option value="">—</option><option value="explain">to explain the data you actually saw</option><option value="prior">to stay near your prior</option><option value="humble">to not be more certain than earned</option></select>
+          <button type="button" id="doc-go" class="primary">Check</button></div>
+        <div class="err" id="doc-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="doc-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, you’re ready to fuse the three into one number.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · One scale, one number</div>
+    <h2>Three tugs don’t tell you where to stop</h2>
+    <div class="prose">
+      <p>
+        Three pressures you can feel is progress, but a mind has to <em>act</em> — turn the dial <em>one</em> way — and
+        three separate tugs don’t say where to stop. You need them on <strong>one scale</strong>, added into a single
+        score, so “the best belief” is just “the position with the best score.” Build it so <strong>lower is better</strong>
+        — a <em>height</em>, where good beliefs sit low and bad ones high. A mind then just rolls downhill.
+      </p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · Assemble it</div>
+    <h2>Energy minus looseness</h2>
+    <div class="prose">
+      <p>
+        <strong>Part one — energy.</strong> For each possible cause, ask: under my belief, how <em>unexpected</em> is
+        “this cause together with the sky I saw”? That togetherness is the <strong>joint</strong> from Module 2,
+        <span class="k">p(y, η) = p(y|η)·p(η)</span> — likelihood (fit) times prior (stretch), already fused. Its surprise
+        is <span class="k">−ln p(y, η)</span>. Weight by how much your belief backs each cause, and add up. That’s the
+        <strong>energy</strong> — low when your belief backs causes that sit comfortably with what you saw.
+      </p>
+      <p>
+        <strong>Part two — looseness.</strong> Subtract your belief’s <strong>spread</strong> — its willingness to stay
+        uncommitted (its entropy). The more honestly loose, the more we subtract, the lower the height.
+      </p>
+      <p>Put them together — <strong>energy minus looseness</strong> — and you have the height:</p>
+      <p style="text-align:center; font-family:var(--mono); font-size:19px"><strong>F[q] = Σ<sub>η</sub> q(η) · [ ln q(η) − ln p(y, η) ]</strong></p>
+      <p class="hint" style="max-width:72ch">
+        For each cause: take how confident your belief is there (<span class="k">ln q</span>) minus how well that cause
+        sits with the sky (<span class="k">ln p(y,η)</span>), weight by your belief <span class="k">q(η)</span>, and sum.
+        That one number is <strong>free energy</strong> — the height under a belief.
+      </p>
+    </div>
+    <details class="box deeper">
+      <summary>▸ Go deeper — three faces of one number <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        <span class="mono">F[q] = E_q[ln q(η) − ln p(y,η)] = E_q[−ln p(y,η)] − H[q]</span> — <strong>energy minus
+        entropy</strong>. It rearranges to <strong>complexity − accuracy</strong>:
+        <span class="mono">F = KL(q(η)‖p(η)) − E_q[ln p(y|η)]</span>, the stretch-from-prior term minus the fit term, with
+        looseness folded in. Same number, three faces. This exact two-state sum carries the bound tag
+        <span class="mono">:exact</span>.
+      </div>
+    </details>
+  </section>
+
+  <!-- 3 + 4 -->
+  <section id="s3">
+    <div class="sec-kicker">3 · Look what isn’t there · 4 · Land a real number</div>
+    <h2>The evidence never enters — and it still computes</h2>
+    <div class="prose">
+      <p>
+        Now the moment this climb was for. Stare at the formula and hunt for the <strong>evidence</strong> —
+        <span class="k">p(y)</span>, the sum over all hidden causes that walled you off in Module 2. Commit a yes/no in
+        your head, then press the button.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="freeenergy">
+      <div class="tool-head">
+        <h3>The computable height</h3>
+        <p class="why">See F assembled from the joint terms only, hunt for the evidence (it isn’t there), then compute F by hand — twice. The reveal is that F needs only the joint, never the forbidden sum — not a plotted curve.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">The formula, colour-coded</div>
+        <div class="formula">
+          F[q] = Σ<sub>η</sub> <span class="q">q(η)</span> · [ ln <span class="q">q(η)</span> − ln <span class="j">p(y, η)</span> ]
+          <br/><span class="hint" style="margin:0">uses your belief <span class="q">q</span> and the joint <span class="j">p(y,η)=p(y|η)·p(η)</span> — one multiply per cause.</span>
+        </div>
+        <div class="btnrow"><button type="button" id="fe-hunt" class="primary">Where is the evidence p(y)?</button></div>
+        <div class="pyhunt" id="fe-pyhunt" role="status">
+          <b>It’s not there.</b> <span class="py">p(y) = Σ p(y,η)</span>, the forbidden total, appears <em>nowhere</em> in
+          F. The height uses only your belief <span class="q">q</span> (you chose it) and the joint <span class="j">p(y,η)</span>
+          (likelihood × prior — one multiply per cause, no sum). <strong>So free energy is computable</strong> — fully,
+          exactly — even though the surprise it shadows is not. That is the whole trick: a score for your beliefs that
+          never walks through the wall.
+        </div>
+
+        <hr style="border:none; border-top:1px solid var(--line); margin:18px 0" />
+        <div class="steplabel">Compute it by hand — twice (two-cause world: p(y,on)=0.63, p(y,off)=0.06)</div>
+        <div class="btnrow">
+          <button type="button" id="fe-05" class="primary">Reveal F at b = 0.5 (the loose, torn belief)</button>
+          <button type="button" id="fe-913">Reveal F at b = 0.913 (sharp, well-aimed)</button>
+        </div>
+        <div class="ex-answer" id="fe-check" role="status"></div>
+
+        <hr style="border:none; border-top:1px solid var(--line); margin:18px 0" />
+        <div class="steplabel">Or compute F at any belief (one value — no evidence used)</div>
+        <div class="field">
+          <label for="fe-b">your belief b = q(front on), 0.01–0.99</label>
+          <input type="number" id="fe-b" min="0.01" max="0.99" step="0.01" value="0.70" />
+          <button type="button" id="fe-go" class="primary">Compute F(b)</button>
+        </div>
+        <div class="err" id="fe-err" role="alert" style="display:none"></div>
+        <div class="readout" id="fe-out" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI <span class="tag">functional · Gate F0 proven</span></summary>
+      <div class="box-body">
+        The organism holds a belief <span class="mono">q</span> and its dynamics move to lower this height — a number it
+        computes from its likelihood and prior, never the evidence. <strong>This free-energy arithmetic is what is proven
+        today (Gate F0, sealed); it is the floor the organism stands on. Its full behaviour is the build underway — held
+        open, not claimed.</strong> A quantity its dynamics work with, never a feeling.
+      </div>
+    </details>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-kicker">5 · Where this goes next</div>
+    <h2>Two numbers is a hint of a shape</h2>
+    <div class="prose">
+      <p>
+        You built it. <strong>Free energy is the height under a belief</strong> — energy minus looseness, fit-and-stretch
+        fused in the joint minus the spread — and it is <strong>computable without the evidence.</strong> You watched it
+        fall, from <span class="k">0.944576</span> at a torn belief to <span class="k">0.371064</span> at a sharp one, by
+        hand. Next you’ll draw the <strong>whole</strong> shape: free energy as a height over <em>every</em> belief — a
+        curve with a <strong>valley</strong> — and meet an old friend waiting at the bottom. That’s Module 5: the
+        landscape, and the valley is Bayes.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You took three pressures you could only <em>feel</em> and fused them into a single number you can
+        <em>compute</em> — then computed it, twice, by hand, and watched a better belief come out lower. Nobody handed
+        you free energy; you assembled it from parts you already owned, and checked that the one impossible part never
+        entered. That is how a mind scores itself from the inside.
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 4 — Free energy.</strong> Built on the Active-Inference Pedagogy spec: a cold-retrieval opener
+      (the doctor), free energy assembled as energy − looseness, the absent-evidence reveal, and two by-hand checkpoints.
+      Self-contained — no network, no account, CPU only; adapts to light and dark.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 4. Every number is computed live from what you enter; the sealed
+      references it lands on — <code>F(0.5)=0.944576</code> and <code>F(0.913)=0.371064</code> (= the Module 1 surprisal
+      and the lowest the height ever reaches) — are Module 1/2 goldens met by your own arithmetic. No curve is drawn here
+      (that is Module 5); no DDNA runtime source is reproduced. The free-energy arithmetic is the sealed Gate-F0 floor;
+      the organism’s full behaviour is held open as the build underway.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var ln = function (x) { return Math.log(x); };
+  var J_ON = 0.63, J_OFF = 0.06; // the two-cause joints carried since Module 2
+
+  // F[q] = Σ q(η)[ln q(η) − ln p(y,η)], with the q·ln q → 0 limit at q=0
+  function term(q, j) { return q <= 0 ? 0 : q * (ln(q) - ln(j)); }
+  function F(b) { return term(b, J_ON) + term(1 - b, J_OFF); }
+
+  // ── §0 DOCTOR COLD-RETRIEVAL ──────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#doctor"); if (!root) return;
+    var mem = $("#doc-mem"), fit = $("#doc-fit"), stretch = $("#doc-stretch"), loose = $("#doc-loose"),
+        err = $("#doc-err"), out = $("#doc-out");
+    var TRUE = { fit: "explain", stretch: "prior", loose: "humble" };
+    $("#doc-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — one line, from memory."; return; }
+      if (!fit.value || !stretch.value || !loose.value) { err.style.display = "block"; err.textContent = "Match all three pressures before you check."; return; }
+      err.style.display = "none";
+      var picks = { fit: fit.value, stretch: stretch.value, loose: loose.value };
+      var hits = 0; ["fit", "stretch", "loose"].forEach(function (k) { if (picks[k] === TRUE[k]) hits++; });
+      out.className = "ex-answer show " + (hits === 3 ? "correct" : "close");
+      out.innerHTML =
+        "<p style='margin:2px 0'><strong>" + (hits === 3 ? "✓ All three." : hits + " of 3.") + "</strong></p>" +
+        "<p style='margin:8px 0'>A belief is a <strong>position</strong> — a spot on a line from 0 to 1, how strongly you lean toward one cause, that you can slide. And the three pressures: <strong>fit</strong> wants to explain the data you actually saw; <strong>stretch</strong> wants to stay near your prior; <strong>looseness</strong> wants you no more certain than you’ve earned. Each pulls a different way — which is why one number has to fuse them.</p>";
+    });
+  })();
+
+  // ── §3–§4 THE COMPUTABLE HEIGHT ───────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#freeenergy"); if (!root) return;
+    $("#fe-hunt").addEventListener("click", function () { $("#fe-pyhunt").classList.add("show"); });
+
+    var check = $("#fe-check");
+    function reveal(b, label, agreeing) {
+      var t0 = term(b, J_ON), t1 = term(1 - b, J_OFF), f = F(b);
+      check.className = "ex-answer show correct";
+      check.innerHTML =
+        "<p style='margin:2px 0'><strong>F at b = " + b + " — " + label + "</strong></p>" +
+        "<p style='margin:8px 0' class='mono'>" + b + "·[ln " + b + " − ln 0.63] + " + (1 - b).toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "·[ln " + (1 - b).toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + " − ln 0.06]</p>" +
+        "<p style='margin:8px 0' class='mono'>= " + t0.toFixed(4) + " + " + t1.toFixed(4) + " = <strong>" + f.toFixed(6) + "</strong> nats</p>" +
+        "<p class='hint' style='margin-top:8px'>" +
+        (agreeing
+          ? "The loose, torn belief sits high — and <strong>0.944576</strong> is Module 1’s sealed surprisal golden; the height you just computed is a number the sealed system lands on."
+          : "Far <em>lower</em> than 0.944576 — and <strong>0.371064</strong> is as low as this height ever goes (you’ll see it land exactly next module). The well-aimed belief dropped the height the most — and the evidence was never computed once.") +
+        "</p>";
+    }
+    $("#fe-05").addEventListener("click", function () { reveal(0.5, "the loose, torn belief (agreeing case first)", true); });
+    $("#fe-913").addEventListener("click", function () { reveal(0.913, "sharp, well-aimed", false); });
+
+    var inp = $("#fe-b"), err = $("#fe-err"), out = $("#fe-out");
+    $("#fe-go").addEventListener("click", function () {
+      var b = parseFloat(inp.value);
+      if (isNaN(b) || b < 0.01 || b > 0.99) { err.style.display = "block"; err.textContent = "Enter a belief between 0.01 and 0.99."; return; }
+      err.style.display = "none";
+      var t0 = term(b, J_ON), t1 = term(1 - b, J_OFF), f = F(b);
+      out.innerHTML =
+        "<div class='figures'><div class='figure'><div class='lab'>F(" + b + ") — the height</div><div class='val'>" + f.toFixed(6) + " nats</div></div></div>" +
+        "<p class='mono' style='margin:8px 0'>on-term " + t0.toFixed(4) + " + off-term " + t1.toFixed(4) + "</p>" +
+        "<p class='hint' style='margin-top:6px'>Computed from your belief and the joint only — <strong>no evidence term</strong>. Lower is a better-aimed belief; the lowest reachable here is 0.371064 at b = 0.913.</p>";
+    });
+  })();
+})();
+</script>
+</body>
+</html>
