@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 2 — The wall</title>
+<meta name="description" content="The true surprise of what you sense is −ln of the evidence — a sum over every hidden cause. Build that sum by hand in a two-cause world (it is Lesson 1's 0.69 all along), then watch the term count explode past any hope of finishing: the wall." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#e0b878; --warn-soft:#2a2214;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(30px,5vw,44px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.check{border-color:var(--ok)}
+  details.box.check>summary{color:var(--ok-ink)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .step{margin:10px 0; padding-top:4px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button:disabled{opacity:.5; cursor:not-allowed}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  input[type="number"],input[type="text"]{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:120px;}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:8px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .big{font-size:26px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-.01em}
+  .figures{display:flex; flex-wrap:wrap; gap:18px; margin-top:6px}
+  .figure .lab{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+  .figure .val{font-size:24px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink)}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  .reveal{display:none}
+  .reveal.show{display:block}
+
+  .wordpick{display:flex; flex-wrap:wrap; gap:8px}
+  .wordpick button{flex:1 1 auto; min-width:92px}
+  .ruler{position:relative; height:58px; margin:14px 0 6px; border:1px solid var(--line2); border-radius:10px; background:linear-gradient(90deg, var(--panel) , var(--accent-soft)); }
+  .ruler .tick{position:absolute; top:0; bottom:22px; width:2px; background:var(--line2)}
+  .ruler .ticklab{position:absolute; bottom:4px; transform:translateX(-50%); font-size:11px; color:var(--muted); white-space:nowrap}
+  .ruler .zone{position:absolute; top:4px; bottom:24px; background:rgba(14,110,99,.16); border:1px dashed var(--accent); border-radius:6px; display:none}
+  .ruler .pin{position:absolute; top:-4px; bottom:18px; width:3px; background:var(--bad); display:none}
+  .ruler .pin::after{content:""; position:absolute; top:-2px; left:-4px; width:11px; height:11px; border-radius:50%; background:var(--bad)}
+
+  /* two-cause table (§2) */
+  table.world{border-collapse:collapse; width:100%; font-size:14.5px; margin:8px 0}
+  table.world th,table.world td{border:1px solid var(--line); padding:8px 10px; text-align:left; font-variant-numeric:tabular-nums}
+  table.world th{background:var(--panel2); font-size:13px}
+  table.world td.mono{font-family:var(--mono)}
+
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+  textarea{font:inherit; width:100%; min-height:74px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+
+  /* wall: term stack + cost (§4) */
+  .termstack{font-family:var(--mono); font-size:14px; background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:10px 12px; margin:10px 0; line-height:1.9; word-break:break-word}
+  .term{display:inline-block; padding:1px 6px; margin:2px; border:1px solid var(--line2); border-radius:6px; background:var(--accent-soft)}
+  .costgrid{display:flex; flex-wrap:wrap; gap:16px; margin-top:8px}
+  .costgrid .cell .lab{font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .costgrid .cell .v{font-size:22px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink)}
+  .wallbanner{margin-top:12px; padding:14px 16px; border-radius:12px; border:1px solid var(--bad); background:var(--bad-soft); display:none}
+  .wallbanner.show{display:block}
+  .wallbanner b{color:var(--bad-ink)}
+  .finish-ok{color:var(--ok-ink); font-weight:700}
+  .finish-no{color:var(--bad-ink); font-weight:700}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:30px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 2</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>The wall</h1>
+    <p class="lede">
+      The number you built in Module 1 was <em>your model’s</em>. This module asks what the <strong>true</strong> surprise
+      is — and discovers it hides behind a wall no mind can walk through. You’ll build the sum by hand, watch Lesson 1’s
+      golden numbers fall out of it, then feel it explode past any hope of finishing.
+    </p>
+    <p class="legend">
+      Same four doors as Module 1 — the plain line runs straight through; take whichever extras fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally in your browser — no account, no network — and adapts to light and dark.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Surprise,” “evidence,” “belief” are <strong>functional quantities</strong> —
+      numbers a model computes about its own predictions. For <em>you</em> we use felt words, because you’re a person
+      reading a sky; for UNI we use functional words — it reads a hint through a model and its dynamics move a number.
+      Neither is awareness, feeling, or sentience.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, with no peeking</h2>
+    <div class="prose">
+      <p>
+        No scrolling back to Module 1. A sailor comes up on deck at dawn. The swell is longer than yesterday, the air
+        has gone heavy, the gulls have quit the water. Something leans. Rebuild the idea cold — in a world you’ve never
+        used for it before.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="sailor">
+      <div class="tool-head">
+        <h3>Cold retrieval — the sailor’s surprise</h3>
+        <p class="why">From memory, in a brand-new domain (no rain, coins or dice): name the sailor’s numberless lean, commit a probability you build yourself, then the squall hits and you read the surprise. No re-reading — reconstruct it.</p>
+      </div>
+      <div class="tool-body">
+        <div class="step">
+          <div class="steplabel">Step 1 · From memory (commit, then reveal)</div>
+          <p style="margin:4px 0 8px">In one sentence, with no peeking: the sailor wasn’t <em>handed</em> a number — so where does a number even come from?</p>
+          <label class="sr-only" for="sail-mem">Where does a number come from</label>
+          <textarea id="sail-mem" placeholder="Write your one sentence…"></textarea>
+          <div class="btnrow" style="margin-top:8px"><button type="button" id="sail-mem-go" class="ghost">Show the answer</button></div>
+          <div class="ex-answer" id="sail-mem-out"></div>
+        </div>
+        <div class="step">
+          <div class="steplabel">Step 2 · Name the lean (no digits)</div>
+          <div class="wordpick" id="sail-words" role="group" aria-label="The sailor's lean toward a squall">
+            <button type="button" data-word="no-way" data-z="0.03">No way</button>
+            <button type="button" data-word="unlikely" data-z="0.2">Unlikely</button>
+            <button type="button" data-word="even" data-z="0.5">Even</button>
+            <button type="button" data-word="likely" data-z="0.8">Likely</button>
+            <button type="button" data-word="certain" data-z="0.97">Certain</button>
+          </div>
+        </div>
+        <div class="step reveal" id="sail-b">
+          <div class="steplabel">Step 3 · Commit the sailor’s probability of a squall within the hour</div>
+          <div class="ruler" id="sail-ruler" aria-hidden="true">
+            <div class="tick" style="left:0%"></div><div class="ticklab" style="left:0%">0 · no way</div>
+            <div class="tick" style="left:50%"></div><div class="ticklab" style="left:50%">0.5 · even</div>
+            <div class="tick" style="left:100%"></div><div class="ticklab" style="left:100%">1 · certain</div>
+            <div class="zone" id="sail-zone"></div>
+            <div class="pin" id="sail-pin"></div>
+          </div>
+          <div class="field">
+            <label for="sail-p">p(squall) you’d commit (0 to 1)</label>
+            <input type="number" id="sail-p" min="0.01" max="1" step="0.01" />
+            <button type="button" id="sail-go" class="primary">The squall hits — reveal the surprise</button>
+          </div>
+          <div class="err" id="sail-err" role="alert" style="display:none"></div>
+        </div>
+        <div class="ex-answer" id="sail-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, you’re ready. Now the crack in that number.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · Whose surprise is the real one?</div>
+    <h2>The number was only ever a model’s</h2>
+    <div class="prose">
+      <p>
+        Back to your own doorway — grey-green morning, damp air, your lean of <span class="k">0.60</span> toward rain. In
+        Module 1 you scored your surprise against <em>your</em> 0.60. But your neighbour, with a different life of skies,
+        stood in the same doorway and leaned <span class="k">0.40</span>. Same morning, same rain, two different
+        surprises. So neither is “the” surprise — each is <em>a model’s</em> surprise.
+      </p>
+      <p>
+        That pushes a harder question: what is the surprise of the morning <strong>in itself</strong> — the surprise of
+        <em>the sky you saw</em>, not filtered through one person’s lean? And the moment you ask it, a thing you’ve been
+        ignoring steps forward: the sky didn’t appear from nowhere. <strong>Something caused it</strong> — a real weather
+        system you never get to see. You only ever get the <em>sky</em>, the hint. Call that hidden thing the
+        <strong>cause</strong>.
+      </p>
+    </div>
+    <details class="box picture" open>
+      <summary>▶ Picture it — the smudge and the card <span class="tag">kid</span></summary>
+      <div class="box-body">
+        Pull a card from a shuffled deck and lay it face-down; now you see only its <em>reflection</em> in a dim window —
+        a smudge of red. The smudge is the sky; the actual card is the cause. How surprising is a red smudge? You can’t
+        say without thinking about <em>every</em> card that could cast that smudge. <strong>The surprise of what you
+        sense depends on the causes you can’t see.</strong>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · The evidence</div>
+    <h2>Adding up the causes</h2>
+    <div class="prose">
+      <p>Shrink the world to <strong>two</strong> causes, and borrow Module 1’s exact numbers so you can see the seam:</p>
+      <table class="world">
+        <thead><tr><th>Hidden cause η</th><th>Prior p(η) — how likely the cause</th><th>p(sky | η) — this wet-grey sky, given the cause</th></tr></thead>
+        <tbody>
+          <tr><td><strong>front ON</strong> (a real front)</td><td class="mono">0.7</td><td class="mono">0.9</td></tr>
+          <tr><td><strong>front OFF</strong> (no front)</td><td class="mono">0.3</td><td class="mono">0.2</td></tr>
+        </tbody>
+      </table>
+      <p>
+        How probable is <em>today’s sky itself</em> — not assuming any one cause, but all told? There’s one honest way.
+        The sky can arrive by <strong>either</strong> road: the front is on <em>and</em> it produced the sky, or the front
+        is off <em>and</em> it produced the sky anyway. Add the two roads — but commit your arithmetic first.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="evidence">
+      <div class="tool-head">
+        <h3>Sum the two roads — and watch Lesson 1 fall out</h3>
+        <p class="why">Compute the two products by hand and commit them; the tool adds them to the evidence, and Module 1’s surprisal and posterior drop out of that one sum. It was this sum all along.</p>
+      </div>
+      <div class="tool-body">
+        <div class="field">
+          <label for="ev-a">front ON road: 0.9 × 0.7 =</label>
+          <input type="number" id="ev-a" min="0" max="1" step="0.01" />
+        </div>
+        <div class="field">
+          <label for="ev-b">front OFF road: 0.2 × 0.3 =</label>
+          <input type="number" id="ev-b" min="0" max="1" step="0.01" />
+          <button type="button" id="ev-go" class="primary">Add them — reveal the evidence</button>
+        </div>
+        <div class="err" id="ev-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="ev-out" role="status"></div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>So the true surprise of an observation is <span class="k">−ln</span> of the evidence, and the evidence is <strong>a sum over the hidden causes.</strong> The one earned symbol of this rung:</p>
+      <p style="text-align:center; font-family:var(--mono); font-size:18px"><strong>p(y) = Σ<sub>η</sub> p(y | η) p(η)</strong></p>
+      <p class="hint" style="max-width:72ch">the probability of the observation <span class="k">y</span> is the sum, over every hidden cause <span class="k">η</span>, of <em>(chance that cause produces y)</em> × <em>(chance of that cause)</em>.</p>
+    </div>
+    <details class="box deeper">
+      <summary>▸ Go deeper — the joint <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        Each product <span class="mono">p(y|η)p(η)</span> is the <strong>joint</strong> <span class="mono">p(y, η)</span> —
+        the chance of “this sky <em>and</em> that cause, together.” The evidence is the joint summed over causes:
+        <span class="mono">p(y) = Σ<sub>η</sub> p(y,η)</span>. The joint is the thing you actually have a formula for
+        (your likelihood × your prior); the evidence is what you get by summing it over everything hidden.
+      </div>
+    </details>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-kicker">3 · No back door</div>
+    <h2>You can’t dodge it with Bayes</h2>
+    <div class="prose">
+      <p>
+        Maybe you’re thinking: forget the true surprise — I’ll just <em>update my belief</em> about the front and move on.
+        That’s Bayes, the honest update. But look what it needs:
+      </p>
+      <p style="text-align:center; font-family:var(--mono); font-size:16px">p(front on | sky) = p(sky | on) p(on) / p(y) = 0.63 / 0.69 = <strong>0.913</strong></p>
+      <p>
+        That <span class="k">0.913</span> is — again — Module 1’s posterior, exactly. And notice the denominator: it’s
+        <span class="k">p(y) = 0.69</span>, the very evidence sum from §2 (the tool above already showed it falling out).
+        <strong>Even to update your belief, you must divide by that same sum over all causes.</strong> There is no back
+        door.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI <span class="tag">functional</span></summary>
+      <div class="box-body">
+        The organism faces this with no shortcut: to know how surprised it “should” be, or to update what it believes
+        about its world’s hidden state, the honest quantity needs a sum over every cause that could have produced its
+        sensors’ reading. A quantity its dynamics work with — never a feeling.
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · The wall</div>
+    <h2>Two causes were kind. The world isn’t.</h2>
+    <div class="prose">
+      <p>
+        Our sum had <strong>2</strong> terms. Suppose the morning’s cause isn’t just front / no-front, but one of many
+        distinguishable weather situations — each needing its own term. Turn the dial and watch what happens to the sum
+        you’d have to finish. (This isn’t a graph of a formula — it’s the <em>count of terms</em>, and its cost.)
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="wall">
+      <div class="tool-head">
+        <h3>Watch the cost explode</h3>
+        <p class="why">The evidence sum has exactly ONE term per hidden cause. Add causes and the term count — and the work to finish the sum — grows with it. Find where “finishable” ends.</p>
+      </div>
+      <div class="tool-body">
+        <div class="btnrow" id="wall-ctrl" role="group" aria-label="Number of hidden causes">
+          <span style="align-self:center; font-size:14px; font-weight:600">Hidden causes:</span>
+          <button type="button" data-n="2" aria-pressed="true">2 · front / no-front</button>
+          <button type="button" data-n="10">10 situations</button>
+          <button type="button" data-n="1000">1,000 situations</button>
+          <button type="button" data-n="skyful">a skyful of air</button>
+        </div>
+        <div class="readout">
+          <div class="termstack" id="wall-stack" aria-hidden="true"></div>
+          <div class="costgrid">
+            <div class="cell"><div class="lab">terms in the sum</div><div class="v" id="wall-terms"></div></div>
+            <div class="cell"><div class="lab">multiply + add steps</div><div class="v" id="wall-ops"></div></div>
+            <div class="cell"><div class="lab">at a billion steps/second</div><div class="v" id="wall-time"></div></div>
+          </div>
+          <p class="hint" id="wall-note"></p>
+          <div class="wallbanner" id="wall-banner" role="status">
+            <b>That is the wall.</b> The number a mind most wants — how surprised it truly is, and how it should truly
+            update — is defined by a sum with one term per hidden cause. For any world rich enough to be worth living in,
+            the causes are astronomically many, so the sum <strong>cannot be finished, in principle</strong>, by the very
+            mind that needs it. Not “hard” — <em>unreachable</em>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <details class="box deeper">
+      <summary>▸ Go deeper — the intractable evidence <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        This is the intractable-evidence (partition-function) problem. <span class="mono">p(y) = Σ<sub>η</sub> p(y,η)</span>
+        — or <span class="mono">∫ p(y,η) dη</span> in the continuous case — is a sum/integral over the entire hidden-state
+        space; its cost grows explosively with the number of causes and their combinations. Everything downstream (the
+        surprisal <span class="mono">−ln p(y)</span>, the posterior <span class="mono">p(η|y) = p(y,η)/p(y)</span>)
+        inherits that intractability. The wall is a theorem about cost, not a lack of effort.
+      </div>
+    </details>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-kicker">5 · Where this goes next</div>
+    <h2>The shape of the trap</h2>
+    <div class="prose">
+      <p>You now know three things precisely:</p>
+      <ol>
+        <li>The <strong>true surprise</strong> of what you sense is <span class="k">−ln p(y)</span>, and <span class="k">p(y)</span> is a <strong>sum over every hidden cause</strong>.</li>
+        <li><strong>Bayes needs the same sum</strong> — you can’t dodge it by “just updating.”</li>
+        <li>For any real world that sum <strong>cannot be finished.</strong> The wall.</li>
+      </ol>
+      <p>
+        So a mind cannot compute the thing it most needs — and yet minds, and the organism we’re building, plainly
+        <em>do</em> make sense of the world in real time, blind to the cause. Not by finishing the sum. By a trick:
+        instead of the true belief it can’t reach, a mind carries a <strong>belief it can move</strong> — a guess it’s
+        allowed to slide around — and a <em>score</em> it can actually compute that tells it which way to slide. Build
+        that movable belief and the score, and you’ve built your way around the wall. That movable belief is Lesson 3;
+        the score, two lessons on, is the one this book is named for.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You didn’t take anyone’s word for the wall. You started from your own Module 1 number, asked whose surprise was
+        <em>real</em>, were forced to the hidden causes, summed them by hand into 0.69, watched Module 1’s surprisal and
+        posterior fall out of that one sum, and then felt the sum explode past any hope of finishing. <strong>You derived
+        the wall.</strong> That’s the honest footing the rest of the book stands on.
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 2 — The wall.</strong> Built on the Active-Inference Pedagogy spec: a cold-retrieval opener in a
+      new domain (the sailor), the evidence sum earned by hand in a two-cause world, and the term-count explosion that
+      lands the wall as a forced consequence. Self-contained — no network, no account, CPU only; adapts to light and dark.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 2. Every number here is computed live from what you enter; the sealed
+      Lesson 1 references it lands on — evidence <code>0.69</code>, surprisal <code>−ln(0.69) = 0.3710636814</code>,
+      posterior <code>0.63/0.69 = 0.913</code> — are shown only so your own arithmetic can meet them. The
+      <code>⬡ See it in UNI</code> claims describe the engine’s mechanism; no runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var ln = function (x) { return Math.log(x); };
+  function fx(x, n) { return isFinite(x) ? x.toFixed(n == null ? 4 : n) : "∞"; }
+
+  // ── §0 SAILOR COLD-RETRIEVAL ──────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#sailor"); if (!root) return;
+    // from-memory commit-reveal
+    var mem = $("#sail-mem"), memGo = $("#sail-mem-go"), memOut = $("#sail-mem-out");
+    memGo.addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { memOut.className = "ex-answer show"; memOut.innerHTML = "<span class='err' style='display:block'>Write your one sentence first — reconstruct it before you check.</span>"; return; }
+      memOut.className = "ex-answer show correct";
+      memOut.innerHTML = "<p style='margin:2px 0'>The number is <strong>built</strong> — years of dawns compressed into a model that turns swell-and-air-and-gulls into an expectation. Nobody hands it over; the number only writes the lean down.</p>";
+    });
+    // word pick → ruler/commit
+    var words = $("#sail-words"), stepB = $("#sail-b"), zone = $("#sail-zone"), pin = $("#sail-pin"),
+        pIn = $("#sail-p"), err = $("#sail-err"), out = $("#sail-out");
+    var chosenZ = null;
+    $$("button[data-word]", words).forEach(function (b) {
+      b.addEventListener("click", function () {
+        chosenZ = parseFloat(b.getAttribute("data-z"));
+        $$("button[data-word]", words).forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        var lo = Math.max(0, chosenZ - 0.08), hi = Math.min(1, chosenZ + 0.08);
+        zone.style.left = (lo * 100) + "%"; zone.style.width = ((hi - lo) * 100) + "%"; zone.style.display = "block";
+        stepB.classList.add("show");
+      });
+    });
+    $("#sail-go").addEventListener("click", function () {
+      var p = parseFloat(pIn.value);
+      if (isNaN(p) || p <= 0 || p > 1) { err.style.display = "block"; err.textContent = "Commit a probability strictly between 0 and 1 (e.g. 0.70)."; return; }
+      err.style.display = "none";
+      pin.style.left = (p * 100) + "%"; pin.style.display = "block";
+      var s = -ln(p);
+      var size = s < 0.5 ? "a small jolt" : s < 1.5 ? "a real jolt" : "a hard jolt";
+      out.className = "ex-answer show correct";
+      out.innerHTML =
+        "<p style='margin:2px 0'><strong>The squall came.</strong> The sailor’s model gave it " + p.toFixed(2) + ", so the surprise is <span class='mono'>−ln(" + p.toFixed(2) + ") = <strong>" + fx(s, 3) + "</strong></span> nats — " + size + ".</p>" +
+        "<p style='margin:8px 0'>Same shape as Module 1, new world: surprise is <span class='mono'>−ln</span> of the number the sailor’s own model built — nobody handed it over. (Had the model said 0.1, the squall would cost <span class='mono'>−ln(0.1) ≈ 2.303</span> — a far harder jolt.)</p>";
+    });
+  })();
+
+  // ── §2 EVIDENCE SUM (commit two products → goldens fall out) ─────────────────────────────────
+  (function () {
+    var root = $("#evidence"); if (!root) return;
+    var a = $("#ev-a"), b = $("#ev-b"), err = $("#ev-err"), out = $("#ev-out");
+    $("#ev-go").addEventListener("click", function () {
+      var va = parseFloat(a.value), vb = parseFloat(b.value);
+      if (isNaN(va) || isNaN(vb)) { err.style.display = "block"; err.textContent = "Compute and enter both products first (0.9×0.7 and 0.2×0.3)."; return; }
+      err.style.display = "none";
+      var trueA = 0.63, trueB = 0.06, sum = trueA + trueB; // 0.69, from the canonical two-cause world
+      var okA = Math.abs(va - trueA) < 0.005, okB = Math.abs(vb - trueB) < 0.005;
+      var surprisal = -ln(sum), posterior = trueA / sum;
+      var lead = (okA && okB) ? "✓ Both right." : "Here’s the working.";
+      out.className = "ex-answer show " + ((okA && okB) ? "correct" : "close");
+      out.innerHTML =
+        "<p style='margin:2px 0'><strong>" + lead + "</strong> 0.9 × 0.7 = <strong>0.63</strong>" + (okA ? "" : " (you entered " + va + ")") +
+        ", and 0.2 × 0.3 = <strong>0.06</strong>" + (okB ? "" : " (you entered " + vb + ")") + ".</p>" +
+        "<p style='margin:8px 0'>Add the two roads: <span class='mono'>0.63 + 0.06 = <strong>0.69</strong></span>. That is the <strong>evidence</strong> — the probability of the sky you saw, summed over every way it could have been caused.</p>" +
+        "<div class='figures'>" +
+        "<div class='figure'><div class='lab'>evidence p(y)</div><div class='val'>" + sum.toFixed(2) + "</div></div>" +
+        "<div class='figure'><div class='lab'>true surprise −ln p(y)</div><div class='val'>" + surprisal.toFixed(10) + "</div></div>" +
+        "<div class='figure'><div class='lab'>posterior p(on|y) = 0.63/0.69</div><div class='val'>" + posterior.toFixed(3) + "</div></div>" +
+        "</div>" +
+        "<p class='hint' style='margin-top:10px'>Those are <strong>Module 1’s</strong> golden numbers — the surprisal 0.3710636814 and the posterior 0.913 — falling out of this one sum. It was this sum all along; you just saw where it was born. (The sealed references are not why you believe them; your own arithmetic just landed on them.)</p>";
+    });
+    a.addEventListener("keydown", function (e) { if (e.key === "Enter") b.focus(); });
+    b.addEventListener("keydown", function (e) { if (e.key === "Enter") $("#ev-go").click(); });
+  })();
+
+  // ── §4 THE WALL (cause-count → term/cost explosion) ──────────────────────────────────────────
+  (function () {
+    var root = $("#wall"); if (!root) return;
+    var stack = $("#wall-stack"), termsEl = $("#wall-terms"), opsEl = $("#wall-ops"),
+        timeEl = $("#wall-time"), note = $("#wall-note"), banner = $("#wall-banner"), ctrl = $("#wall-ctrl");
+
+    // one term per hidden cause; ops = N multiplies + (N-1) adds. A fast machine does ~1e9 steps/sec.
+    var UNIVERSE_SECONDS = 4.35e17; // ~13.8 billion years, stated as an illustrative yardstick
+
+    function renderStack(n) {
+      if (n === 2) return "p(y) = <span class='term'>0.9×0.7</span> + <span class='term'>0.2×0.3</span>";
+      if (n === "skyful") return "p(y) = <span class='term'>term₁</span> + <span class='term'>term₂</span> + <span class='term'>term₃</span> + … + <span class='term'>term₍∞₎</span>";
+      var parts = [], cap = Math.min(n, 6);
+      for (var i = 1; i <= cap; i++) parts.push("<span class='term'>term" + i + "</span>");
+      var s = "p(y) = " + parts.join(" + ");
+      if (n > cap) s += " + … + <span class='term'>term" + n + "</span>";
+      return s;
+    }
+    function human(n) { // compact big-number label
+      if (n < 1e4) return String(n);
+      if (n === Infinity) return "∞";
+      var e = Math.floor(Math.log10(n));
+      return "10^" + e;
+    }
+    function timeLabel(ops) {
+      if (!isFinite(ops)) return "never";
+      var sec = ops / 1e9;
+      if (sec < 1e-3) return "< a millisecond";
+      if (sec < 1) return "< a second";
+      if (sec < 3600) return Math.round(sec) + " s";
+      var ratio = sec / UNIVERSE_SECONDS;
+      if (ratio < 1e-6) return "still a blink";
+      return "~10^" + Math.round(Math.log10(ratio)) + "× the age of the universe";
+    }
+
+    function pick(nRaw, btn) {
+      $$("button[data-n]", ctrl).forEach(function (x) { x.setAttribute("aria-pressed", x === btn ? "true" : "false"); });
+      var finishable, terms, ops, N;
+      if (nRaw === "skyful") {
+        N = Infinity; terms = "a skyful ≈ 10^80 (atoms-in-the-universe scale)"; ops = Infinity; finishable = false;
+      } else {
+        N = parseInt(nRaw, 10); terms = String(N); ops = 2 * N - 1; finishable = (ops / 1e9) < UNIVERSE_SECONDS * 1e-6;
+      }
+      stack.innerHTML = renderStack(nRaw === "skyful" ? "skyful" : N);
+      termsEl.textContent = (nRaw === "skyful") ? "≈ 10^80" : human(N);
+      opsEl.textContent = (nRaw === "skyful") ? "∞ (uncountable)" : human(ops);
+      timeEl.innerHTML = (nRaw === "skyful")
+        ? "<span class='finish-no'>longer than the age of the universe</span>"
+        : "<span class='finish-ok'>" + timeLabel(ops) + "</span>";
+      if (nRaw === "skyful") {
+        note.innerHTML = "One term for <strong>each</strong> of a skyful of causes — more terms than there are seconds in the universe’s life. You cannot finish it.";
+        banner.classList.add("show");
+      } else {
+        note.innerHTML = N + " cause" + (N === 1 ? "" : "s") + " → " + N + " term" + (N === 1 ? "" : "s") + ", " + (2 * N - 1) + " multiply/add steps. Tedious, maybe — but <strong>finishable</strong>. Keep turning the dial.";
+        banner.classList.remove("show");
+      }
+    }
+
+    $$("button[data-n]", ctrl).forEach(function (b) { b.addEventListener("click", function () { pick(b.getAttribute("data-n"), b); }); });
+    pick("2", $("button[data-n='2']", ctrl));
+  })();
+})();
+</script>
+</body>
+</html>
