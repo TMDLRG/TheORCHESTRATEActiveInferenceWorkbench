@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 6 — The floor you cannot cross</title>
+<meta name="description" content="Split free energy the other way and a floor appears: F = surprise + gap, and the gap can never be negative, so F can never fall below the surprise −ln(0.69)=0.371064. Try to push F below the floor — you can't. The proof is one line above a curve." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --surprise:#0e6e63; --gap:#8a6a10; --curve:#0e6e63; --tangent:#a8341f;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --surprise:#7fc6bb; --gap:#d9b56a; --curve:#7fc6bb; --tangent:#e89580;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.check{border-color:var(--ok)}
+  details.box.check>summary{color:var(--ok-ink)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+  pre.deriv{font-family:var(--mono); font-size:13px; line-height:1.6; background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:10px 12px; overflow-x:auto; white-space:pre}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  input[type="number"]{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:8px 10px; width:110px;}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  /* floor bar (§2–§4) */
+  .floorwrap{display:flex; gap:20px; flex-wrap:wrap; align-items:flex-end; margin:8px 0}
+  .bar{position:relative; width:110px; height:200px; border:1px solid var(--line2); border-radius:8px 8px 0 0; background:var(--panel); display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden}
+  .bar .gapseg{background:var(--gap); width:100%; transition:height .18s ease}
+  .bar .surpriseseg{background:var(--surprise); width:100%}
+  .bar .floorline{position:absolute; left:-6px; right:-6px; border-top:2px dashed var(--tangent)}
+  .floorlab{font-size:11px; color:var(--tangent); font-weight:700; margin-top:2px}
+  .legend-chip{display:inline-flex; align-items:center; gap:6px; font-size:13px; margin-right:14px}
+  .legend-chip .sw{width:12px; height:12px; border-radius:3px; display:inline-block}
+  .figures{display:flex; flex-wrap:wrap; gap:18px; margin-top:6px}
+  .figure .lab{font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .figure .val{font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink)}
+  .verdict{font-weight:800; font-size:13px; padding:3px 10px; border-radius:999px; display:inline-block; margin-top:8px}
+  .verdict.above{background:var(--gold-soft); color:var(--warn)}
+  .verdict.onfloor{background:var(--ok-soft); color:var(--ok-ink)}
+
+  svg.tangent{display:block; width:100%; max-width:460px; height:auto; margin:8px 0}
+  svg.tangent .ax{stroke:var(--line); stroke-width:1}
+  svg.tangent .lncurve{fill:none; stroke:var(--curve); stroke-width:2.5}
+  svg.tangent .tanline{fill:none; stroke:var(--tangent); stroke-width:2; stroke-dasharray:5 3}
+  svg.tangent .touch{fill:var(--tangent)}
+  svg.tangent .lab{font:12px var(--mono)}
+  svg.tangent .lab.c{fill:var(--curve)} svg.tangent .lab.t{fill:var(--tangent)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 6</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>The floor you cannot cross</h1>
+    <p class="lede">
+      Split free energy the other way and a floor appears under the valley — one no belief can ever dig below. Its name
+      is the surprise. You’ll make the floor appear by rearranging one number, try (and fail) to push free energy beneath
+      it, and prove <em>why</em> you can’t with a single line drawn above a curve.
+    </p>
+    <p class="legend">
+      Five doors as before — the plain line runs straight through; take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally — no account, no network — and adapts to light and dark.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Free energy,” “surprise,” “gap” are <strong>functional quantities</strong>
+      — numbers a model computes over its own belief. For <em>you</em> we use felt words; for UNI, functional ones.
+      Neither is awareness, feeling, or sentience. The bound proved here is the sealed Gate-F0 <span class="mono">:exact</span>
+      case; looser tags for harder worlds are the build underway.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, with no peeking</h2>
+    <div class="prose">
+      <p>No scrolling back to Module 5. A gardener finds a wilted plant — too much water, too little, or a pest. The gardener’s free energy over beliefs about the cause makes a <em>valley</em>. Reconstruct, cold.</p>
+    </div>
+
+    <div class="tool centerpiece" id="gardener">
+      <div class="tool-head">
+        <h3>Cold retrieval — reaching the bottom blind</h3>
+        <p class="why">From memory, new domain (the wilted plant): how does the gardener reach the valley bottom without seeing it, and what famous thing sits there? Reconstruct it — no re-reading.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="gard-mem">How does the gardener reach the bottom, and what sits there</label>
+        <textarea id="gard-mem" placeholder="From memory: how does the gardener reach the valley bottom without seeing it, and what sits at the bottom?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field"><label for="gard-how">Reaches the bottom by…</label>
+          <select id="gard-how"><option value="">—</option><option value="roll">rolling downhill — feeling the local slope and stepping, blind</option><option value="solve">solving the evidence sum directly</option><option value="guess">guessing and checking randomly</option></select></div>
+        <div class="field"><label for="gard-what">At the bottom sits…</label>
+          <select id="gard-what"><option value="">—</option><option value="post">the posterior — Bayes, without the evidence</option><option value="prior">the prior</option><option value="zero">zero</option></select>
+          <button type="button" id="gard-go" class="primary">Check</button></div>
+        <div class="err" id="gard-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="gard-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, let’s find how deep the valley goes.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · The same height, split a different way</div>
+    <h2>Free energy = surprise + gap</h2>
+    <div class="prose">
+      <p>
+        In Module 4 you built free energy from the <strong>joint</strong>: <span class="k">F = Σ q(η)[ln q(η) − ln p(y,η)]</span>
+        — perfect for <em>computing</em>, no evidence in it. The same number rearranges to show something the first form
+        hid, because the joint splits: <span class="k">p(y,η) = p(η|y)·p(y)</span> (posterior × evidence). Out drops:
+      </p>
+      <p style="text-align:center; font-family:var(--mono); font-size:19px"><strong>F = −ln p(y) + KL(q ‖ posterior)</strong></p>
+      <p>
+        In plain words: <strong>free energy = the surprise of what happened + how far your belief is from the true one.</strong>
+        The evidence <span class="k">p(y)</span> reappears — but as a <strong>fixed constant</strong> (it doesn’t depend
+        on your belief <span class="k">b</span>). You still never computed it to <em>use</em> F; it only shows up when we
+        ask what F is <em>made of</em>.
+      </p>
+    </div>
+    <details class="box deeper">
+      <summary>▸ Go deeper — the rearrangement, by hand <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        <pre class="deriv">F = Σ q(η)[ln q(η) − ln p(y,η)]
+  = Σ q(η)[ln q(η) − ln p(η|y) − ln p(y)]     (split the joint)
+  = Σ q(η) ln( q(η)/p(η|y) )  −  ln p(y)·Σ q(η)
+  = KL( q ‖ posterior )  +  ( −ln p(y) )</pre>
+        So <span class="mono">F = −ln p(y) + KL(q ‖ p(η|y))</span> — the surprise plus a gap that is the distance from your belief to the true posterior.
+      </div>
+    </details>
+  </section>
+
+  <!-- 2 + 3 + 4 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · The gap can’t be negative · 3 · Why · 4 · In the numbers</div>
+    <h2>There is a floor, and you cannot cross it</h2>
+    <div class="prose">
+      <p>
+        Everything hinges on that second piece, the <strong>gap = KL(q ‖ posterior)</strong>, and one fact finishes the
+        spine: <strong>the gap is never negative</strong> — zero only when your belief <em>is</em> the posterior, positive
+        for every other belief. Since <span class="k">F = surprise + gap</span> and <span class="k">gap ≥ 0</span>:
+      </p>
+      <p style="text-align:center; font-family:var(--mono); font-size:19px"><strong>F ≥ −ln p(y) = 0.3710636814</strong></p>
+      <p>
+        The valley has a <strong>floor</strong> — the surprise — and no belief, however clever, can push free energy
+        beneath it. Try it: set any belief and watch F sit on or above the floor, never below.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="floor">
+      <div class="tool-head">
+        <h3>Try to push F below the floor</h3>
+        <p class="why">Set a belief b. The bar shows F = surprise (fixed floor) + gap (how wrong you are). Hunt for a belief that pushes F under the dashed floor line — you can’t: the gap can’t go negative. It only touches the floor at the posterior b=0.913.</p>
+      </div>
+      <div class="tool-body">
+        <div class="btnrow" id="fl-presets">
+          <span style="align-self:center; font-size:14px; font-weight:600">Set belief b:</span>
+          <button type="button" data-b="0.1">0.1</button>
+          <button type="button" data-b="0.5">0.5</button>
+          <button type="button" data-b="0.7">0.7</button>
+          <button type="button" data-b="0.85">0.85</button>
+          <button type="button" data-b="0.913">0.913</button>
+          <button type="button" data-b="0.99">0.99</button>
+        </div>
+        <div class="field">
+          <label for="fl-b">…or type b (0.01–0.99):</label>
+          <input type="number" id="fl-b" min="0.01" max="0.99" step="0.01" value="0.5" />
+          <button type="button" id="fl-go" class="primary">Set</button>
+        </div>
+        <div class="err" id="fl-err" role="alert" style="display:none"></div>
+        <div class="readout">
+          <div class="floorwrap">
+            <div>
+              <div class="bar" id="fl-bar" aria-hidden="true">
+                <div class="gapseg" id="fl-gapseg" style="height:0"></div>
+                <div class="surpriseseg" id="fl-surpriseseg" style="height:0"></div>
+                <div class="floorline" id="fl-floorline" style="bottom:0"></div>
+              </div>
+              <div class="floorlab">▬ floor = −ln(0.69) = 0.371064</div>
+            </div>
+            <div>
+              <p style="margin:0 0 8px"><span class="legend-chip"><span class="sw" style="background:var(--surprise)"></span> surprise (fixed floor)</span> <span class="legend-chip"><span class="sw" style="background:var(--gap)"></span> gap = KL(q‖posterior)</span></p>
+              <div class="figures">
+                <div class="figure"><div class="lab">belief b</div><div class="val" id="fl-vb">—</div></div>
+                <div class="figure"><div class="lab">free energy F</div><div class="val" id="fl-vf">—</div></div>
+                <div class="figure"><div class="lab">gap (≥ 0)</div><div class="val" id="fl-vgap">—</div></div>
+              </div>
+              <div id="fl-verdict"></div>
+              <p class="hint" id="fl-note" aria-live="polite">Set a belief and watch where F sits.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <details class="box picture" open>
+      <summary>▶ Picture it — the proof, one line above a curve <span class="tag">kid · the why</span></summary>
+      <div class="box-body">
+        Draw <span class="mono">y = ln(x)</span>, then the straight line <span class="mono">y = x − 1</span>. They touch
+        at exactly one spot, <span class="mono">x = 1</span>, and everywhere else the line sits <strong>above</strong> the
+        curve: <span class="mono">ln(x) ≤ x − 1</span>, equality only at 1. Apply it inside the gap with
+        <span class="mono">x = p(η|y)/q(η)</span>, sum up, and the “≤ x−1” pieces cancel to zero — leaving the gap
+        <strong>≥ 0</strong>, equality only when your belief <em>is</em> the posterior. That’s <strong>Gibbs’
+        inequality</strong>, and the floor is forced by the shape of the logarithm.
+        <svg class="tangent" id="tansvg" viewBox="0 0 460 260" role="img" aria-label="y = ln x always sits at or below the straight line y = x − 1; the two touch only at x = 1, which is why the gap can never be negative.">
+          <line class="ax" x1="30" y1="130" x2="440" y2="130"></line>
+          <line class="ax" x1="70" y1="20" x2="70" y2="250"></line>
+          <polyline class="tanline" id="tanline" points=""></polyline>
+          <polyline class="lncurve" id="lncurve" points=""></polyline>
+          <circle class="touch" id="tantouch" cx="0" cy="0" r="4"></circle>
+          <text class="lab t" id="tanlab" x="0" y="0">y = x − 1</text>
+          <text class="lab c" id="lnlab" x="0" y="0">y = ln x</text>
+          <text class="lab" x="300" y="150" fill="var(--muted)">touch only at x = 1</text>
+        </svg>
+      </div>
+    </details>
+    <details class="box check" open>
+      <summary>✓ Check it yourself — the gap in numbers <span class="tag">equation · by hand</span></summary>
+      <div class="box-body">
+        At <span class="mono">b = 0.5</span>: gap = F − surprise = <span class="mono">0.944576 − 0.371064 = 0.573512</span>
+        — and <span class="mono">KL(0.5‖0.913) = 0.5·ln(0.5/0.913) + 0.5·ln(0.5/0.087) = 0.573512</span>, matching
+        exactly. At <span class="mono">b = 0.913</span>: gap = <span class="mono">0.371064 − 0.371064 = 0</span> — the
+        belief <em>is</em> the posterior, so it sits <strong>on the floor</strong>. Every other belief sits strictly above.
+      </div>
+    </details>
+    <details class="box deeper">
+      <summary>▸ Go deeper — Gibbs, and the bound tags <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        <span class="mono">−gap = Σ q(η) ln(p(η|y)/q(η)) ≤ Σ q(η)[p(η|y)/q(η) − 1] = Σ p(η|y) − Σ q(η) = 1 − 1 = 0</span>,
+        so <span class="mono">gap ≥ 0</span>, equality iff <span class="mono">q</span> is the posterior. This is the
+        exact-case bound; F carries the tag <span class="mono">:exact</span>. Looser tags (<span class="mono">:laplace</span>,
+        <span class="mono">:sampled</span>, <span class="mono">:mmp</span>) are ceilings for harder worlds — the
+        <span class="mono">:mmp</span> form can even dip below the surprisal, so it is never used as a bound or fed back
+        as a belief (the discipline MMP-BOUND-01). That is why every F wears a tag.
+      </div>
+    </details>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI <span class="tag">functional · Gate F0 proven</span></summary>
+      <div class="box-body">
+        The organism’s descent rests on this floor: minimizing F drives its belief toward the posterior, and F can’t
+        fall below the surprise. <strong>The exact two-state bound is the proven Gate-F0 case; the looser-tag bounds for
+        richer worlds are the build underway, held open rather than claimed.</strong> A number its dynamics respect,
+        never a thing it feels.
+      </div>
+    </details>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-kicker">5 · Where this goes next</div>
+    <h2>The punchline is set up</h2>
+    <div class="prose">
+      <p>
+        Free energy wears <strong>two faces</strong>: <em>energy − entropy</em> (computable, no evidence) and
+        <em>surprise + gap</em> (which reveals the floor, <span class="k">F ≥ −ln p(y)</span>, touched only at the
+        posterior) — and you proved the floor by hand with a tangent line. So the punchline is set: if the lowest free
+        energy equals the surprise and is reached at the posterior, then <strong>minimizing the thing you can compute
+        hands you back both the thing you couldn’t compute (the surprise) and the belief you couldn’t reach (Bayes), at
+        once.</strong> Making that exact, with the “tag with teeth” that keeps it honest, is Module 7.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You took one number, split it a way that made a floor appear, then <em>proved the floor couldn’t be crossed</em>
+        with a single line above a curve — no authority, your own tangent. A floor you can draw is a floor you can trust.
+        That is the difference between being told the theory and owning it.
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 6 — The floor you cannot cross.</strong> Built on the Active-Inference Pedagogy spec: a
+      cold-retrieval opener (the gardener), free energy re-split into surprise + gap, a falsification tool (try to push F
+      below the floor — you can’t), and the ln x ≤ x−1 tangent that proves the gap ≥ 0. Self-contained — no network, no
+      account, CPU only; adapts to light and dark.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 6. Numbers computed live from the two-cause joints (0.63/0.06); the
+      floor −ln(0.69) = 0.371064 and gap(0.5) = 0.573512 are the sealed Module 1/2 goldens met by your own arithmetic.
+      The proven bound is the Gate-F0 <code>:exact</code> case; looser tags are held open as the build underway. No DDNA
+      runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var ln = Math.log;
+  var J_ON = 0.63, J_OFF = 0.06;
+  var FLOOR = -ln(J_ON + J_OFF);          // −ln(0.69) = 0.3710636814, the surprise
+  function term(q, j) { return q <= 0 ? 0 : q * (ln(q) - ln(j)); }
+  function F(b) { return term(b, J_ON) + term(1 - b, J_OFF); }
+
+  // ── §0 GARDENER COLD-RETRIEVAL ────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#gardener"); if (!root) return;
+    var mem = $("#gard-mem"), how = $("#gard-how"), what = $("#gard-what"), err = $("#gard-err"), out = $("#gard-out");
+    $("#gard-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — a line or two, from memory."; return; }
+      if (!how.value || !what.value) { err.style.display = "block"; err.textContent = "Answer both before you check."; return; }
+      err.style.display = "none";
+      var hits = (how.value === "roll") + (what.value === "post");
+      out.className = "ex-answer show " + (hits === 2 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 2 ? "✓ Both." : hits + " of 2.") + "</strong></p>" +
+        "<p style='margin:8px 0'>The gardener reaches the bottom by <strong>rolling downhill</strong> — feeling the local slope (a log-odds mismatch, computable from the joint) and stepping, blind, until the ground goes flat. And at the bottom sits the <strong>posterior</strong> — the honest Bayesian belief, recovered without ever dividing by the evidence. Now: how deep is that valley?</p>";
+    });
+  })();
+
+  // ── §2–§4 THE FLOOR (falsify: push F below the floor) ────────────────────────────────────────
+  (function () {
+    var root = $("#floor"); if (!root) return;
+    var gapseg = $("#fl-gapseg"), surpriseseg = $("#fl-surpriseseg"), floorline = $("#fl-floorline"),
+        vb = $("#fl-vb"), vf = $("#fl-vf"), vgap = $("#fl-vgap"), verdict = $("#fl-verdict"),
+        note = $("#fl-note"), inp = $("#fl-b"), err = $("#fl-err");
+    var BAR_H = 200, FSCALE = 2.9; // px height maps F in [0, FSCALE]
+    var px = function (f) { return Math.max(0, Math.min(BAR_H, f / FSCALE * BAR_H)); };
+    var best = Infinity;
+
+    function show(b) {
+      var f = F(b), gap = f - FLOOR;
+      if (gap < 0) gap = 0; // numerical floor guard — the gap is ≥ 0 by Gibbs
+      surpriseseg.style.height = px(FLOOR) + "px";
+      gapseg.style.height = px(gap) + "px";
+      floorline.style.bottom = px(FLOOR) + "px";
+      vb.textContent = b.toFixed(3); vf.textContent = f.toFixed(6); vgap.textContent = gap.toFixed(6);
+      var onFloor = gap < 1e-4;
+      verdict.innerHTML = onFloor
+        ? "<span class='verdict onfloor'>F is ON the floor — gap = 0, belief = posterior</span>"
+        : "<span class='verdict above'>F sits ABOVE the floor by the gap — still can’t go below</span>";
+      if (f < best) best = f;
+      note.innerHTML = onFloor
+        ? "At b = 0.913 the belief IS the posterior: the gap vanishes and F rests exactly on the floor (0.371064). You cannot get lower."
+        : "F = " + f.toFixed(4) + " = floor 0.371064 + gap " + gap.toFixed(4) + ". The gap can’t be negative, so F stays at or above the floor. Lowest you’ve reached: " + best.toFixed(4) + ".";
+    }
+    $$("button[data-b]", root).forEach(function (btn) {
+      btn.addEventListener("click", function () { var b = parseFloat(btn.getAttribute("data-b")); inp.value = String(b); show(b); });
+    });
+    $("#fl-go").addEventListener("click", function () {
+      var b = parseFloat(inp.value);
+      if (isNaN(b) || b < 0.01 || b > 0.99) { err.style.display = "block"; err.textContent = "Enter a belief between 0.01 and 0.99."; return; }
+      err.style.display = "none"; show(b);
+    });
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") $("#fl-go").click(); });
+    show(0.5);
+  })();
+
+  // ── §3 THE TANGENT PICTURE (ln x ≤ x − 1) ────────────────────────────────────────────────────
+  (function () {
+    var svg = $("#tansvg"); if (!svg) return;
+    // map math (x in [0.1,3.2], y in [-2.4,2.2]) to the viewBox
+    var X0 = 70, XS = 115;   // x=0 at px 70, one unit = 115px → x=3.2 → 70+368=438
+    var Y0 = 130, YS = 45;   // y=0 at px 130, one unit = 45px (down is +)
+    function X(x) { return X0 + x * XS; }
+    function Y(y) { return Y0 - y * YS; }
+    var lnPts = [], tanPts = [];
+    for (var i = 1; i <= 64; i++) { var x = 0.05 + i * 0.05; if (x > 3.2) break; lnPts.push(X(x).toFixed(1) + "," + Y(ln(x)).toFixed(1)); }
+    for (var x2 = 0.1; x2 <= 3.2; x2 += 0.1) { tanPts.push(X(x2).toFixed(1) + "," + Y(x2 - 1).toFixed(1)); }
+    $("#lncurve").setAttribute("points", lnPts.join(" "));
+    $("#tanline").setAttribute("points", tanPts.join(" "));
+    var t = $("#tantouch"); t.setAttribute("cx", X(1).toFixed(1)); t.setAttribute("cy", Y(0).toFixed(1));
+    var tl = $("#tanlab"); tl.setAttribute("x", X(2.3).toFixed(1)); tl.setAttribute("y", Y(1.5).toFixed(1));
+    var cl = $("#lnlab"); cl.setAttribute("x", X(2.5).toFixed(1)); cl.setAttribute("y", (Y(ln(2.5)) + 16).toFixed(1));
+  })();
+})();
+</script>
+</body>
+</html>
