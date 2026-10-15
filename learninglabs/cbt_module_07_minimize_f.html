@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 7 — Minimize free energy</title>
+<meta name="description" content="The punchline: rolling downhill on the one number you can compute hands you back both things the wall took — the true belief (the posterior) and the true surprise (−ln 0.69 = 0.371064) — at once. And a bound tag keeps the whole claim honest." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --curve:#0e6e63; --ball:#a8341f; --post:#8a6a10;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --curve:#7fc6bb; --ball:#e89580; --post:#d9b56a;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.check{border-color:var(--ok)}
+  details.box.check>summary{color:var(--ok-ink)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  .valley-wrap{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:8px}
+  svg.valley{display:block; width:100%; height:auto}
+  svg.valley .grid{stroke:var(--line); stroke-width:1}
+  svg.valley .curve{fill:none; stroke:var(--curve); stroke-width:2.5}
+  svg.valley .axlab{fill:var(--muted); font:12px var(--sans)}
+  svg.valley .floor{stroke:var(--post); stroke-width:1.5; stroke-dasharray:4 4}
+  svg.valley .ball{fill:var(--ball); stroke:#fff; stroke-width:1.5}
+  svg.valley .balltrail{fill:none; stroke:var(--ball); stroke-width:1.5; stroke-dasharray:2 3; opacity:.6}
+  .dual{display:flex; flex-wrap:wrap; gap:18px; margin-top:8px}
+  .dual .cell{border:1px solid var(--line); border-radius:10px; padding:10px 12px; background:var(--panel); min-width:200px}
+  .dual .cell .lab{font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .dual .cell .v{font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink); margin-top:3px}
+  .dual .cell .sub{font-size:12px; color:var(--muted); margin-top:3px}
+  .arc{margin-top:12px; padding:14px 16px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); display:none}
+  .arc.show{display:block}
+  .arc b{color:var(--accent-ink)}
+
+  /* bound-tag panel (§3) */
+  .tagscale{position:relative; height:150px; border:1px solid var(--line2); border-radius:10px; background:linear-gradient(180deg,var(--bad-soft) 0 45%, var(--panel) 45% 47%, var(--ok-soft) 47% 100%); margin:10px 0}
+  .tagscale .floorline{position:absolute; left:0; right:0; top:46%; border-top:2px dashed var(--post)}
+  .tagscale .floorlab{position:absolute; right:8px; top:calc(46% - 18px); font-size:11px; color:var(--post); font-weight:700}
+  .tagscale .mk{position:absolute; transform:translate(-50%,-50%); width:16px; height:16px; border-radius:50%; border:2px solid #fff; box-shadow:var(--shadow); display:none}
+  .tagscale .zonelab{position:absolute; left:8px; font-size:11px; color:var(--muted)}
+  .tagchips{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0}
+  .tagverdict{margin-top:10px; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); font-size:14px}
+  .tagverdict.safe{border-color:var(--ok); background:var(--ok-soft)}
+  .tagverdict.unsafe{border-color:var(--bad); background:var(--bad-soft)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 7</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>Minimize free energy</h1>
+    <p class="lede">
+      The punchline. Rolling downhill on the one number you can compute hands you back both things the wall took: the
+      true belief you couldn’t reach, and the true surprise you couldn’t compute — at once. Then one piece of
+      bookkeeping — the bound tag — keeps the whole claim from ever becoming a lie.
+    </p>
+    <p class="legend">
+      Five doors as before — the plain line runs straight through; take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally — no account, no network — and adapts to light and dark; honours reduced motion.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Free energy,” “surprise,” “belief,” “bound” are <strong>functional
+      quantities</strong> — numbers a model computes and the honesty tags on them. For <em>you</em> we use felt words;
+      for UNI, functional ones. Neither is awareness, feeling, or sentience. The exact loop proved here is the sealed
+      Gate-F0 two-state case; the hierarchy and the organism’s behaviour are the build underway, held open.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, with no peeking</h2>
+    <div class="prose">
+      <p>No scrolling back to Module 6. A ship’s navigator fixes position from a few stars, each sighting a little off. Free energy split into surprise + gap — reconstruct, cold.</p>
+    </div>
+
+    <div class="tool centerpiece" id="navigator">
+      <div class="tool-head">
+        <h3>Cold retrieval — the floor and the gap</h3>
+        <p class="why">From memory, new domain (the star-sights): why can free energy never fall below the surprise, and at which belief is the gap exactly zero? Reconstruct it — no re-reading.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="nav-mem">Why can F never fall below the surprise, and where is the gap zero</label>
+        <textarea id="nav-mem" placeholder="From memory: why can F never fall below the surprise, and at which belief is the gap zero?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field"><label for="nav-why">F can’t fall below the surprise because…</label>
+          <select id="nav-why"><option value="">—</option><option value="kl">the gap is a KL distance, and distances are never negative</option><option value="small">the surprise is a small number</option><option value="round">of rounding</option></select></div>
+        <div class="field"><label for="nav-zero">The gap is exactly zero at…</label>
+          <select id="nav-zero"><option value="">—</option><option value="post">the posterior (the valley bottom)</option><option value="half">b = 0.5</option><option value="zero">b = 0</option></select>
+          <button type="button" id="nav-go" class="primary">Check</button></div>
+        <div class="err" id="nav-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="nav-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, here’s the payoff the whole book was built for.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · Put the two faces together</div>
+    <h2>Minimizing F means minimizing the gap</h2>
+    <div class="prose">
+      <p>Both are exact descriptions of the <em>same</em> height <span class="k">F[q]</span>:</p>
+      <ul>
+        <li><strong>Computable face:</strong> <span class="k">F = energy − entropy</span> — built from the joint, no evidence. <em>You can actually minimize this.</em></li>
+        <li><strong>Meaning face:</strong> <span class="k">F = surprise + gap</span>, with <span class="k">gap ≥ 0</span>. <em>This tells you what the minimum must be.</em></li>
+      </ul>
+      <p>
+        You can slide your belief to make F as small as possible. The surprise is a <strong>fixed</strong> number, so
+        minimizing F means minimizing the <strong>gap</strong> — and the smallest the gap can be is <strong>zero</strong>,
+        reached only at the <strong>posterior</strong>. So, forced:
+      </p>
+      <p style="text-align:center; font-family:var(--mono); font-size:17px"><strong>argmin F = the posterior</strong> &nbsp;·&nbsp; <strong>min F = −ln p(y) = the surprise</strong></p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · The punchline</div>
+    <h2>One descent, both impossible things</h2>
+    <div class="prose">
+      <p>
+        Roll the ball to the floor and read <strong>both</strong> dials as it stops: <em>where</em> it stops is the true
+        belief; <em>how deep</em> it sank is the true surprise. The mind never saw either in advance — it only felt which
+        way was downhill. That is active inference’s beating heart.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="punchline">
+      <div class="tool-head">
+        <h3>Roll downhill — recover the belief AND the surprise</h3>
+        <p class="why">Drop the ball; as it lands at the floor, the belief dial hits the posterior (0.913) AND the height dial hits the surprise (0.371064), gap → 0. One blind descent hands back both things the wall took — the evidence never computed once.</p>
+      </div>
+      <div class="tool-body">
+        <div class="valley-wrap">
+          <svg class="valley" id="vsvg" viewBox="0 0 420 250" role="img" aria-label="The free-energy valley over beliefs b. A ball dropped on the wall rolls to the floor at b=0.913, where the belief equals the posterior and the height equals the surprise 0.371064.">
+            <line class="grid" x1="40" y1="225" x2="400" y2="225"></line>
+            <line class="grid" x1="40" y1="20" x2="40" y2="225"></line>
+            <polyline class="curve" id="vcurve" points=""></polyline>
+            <line class="floor" id="vfloor" x1="0" y1="0" x2="0" y2="0"></line>
+            <polyline class="balltrail" id="vtrail" points=""></polyline>
+            <circle class="ball" id="vball" cx="0" cy="0" r="6" style="display:none"></circle>
+            <text class="axlab" x="40" y="242">b = 0</text>
+            <text class="axlab" x="360" y="242">b = 1</text>
+            <text class="axlab" x="6" y="26">F high</text>
+            <text class="axlab" x="6" y="222">F low</text>
+          </svg>
+        </div>
+        <div class="btnrow">
+          <span style="align-self:center; font-size:14px; font-weight:600">Drop the ball at:</span>
+          <button type="button" data-b="0.2">b = 0.2</button>
+          <button type="button" data-b="0.6">b = 0.6</button>
+          <button type="button" data-b="0.99">b = 0.99</button>
+          <button type="button" id="v-reset" class="ghost">Reset</button>
+        </div>
+        <div class="readout">
+          <div class="dual">
+            <div class="cell"><div class="lab">where it stopped — the belief</div><div class="v" id="v-belief">—</div><div class="sub" id="v-belief-sub"></div></div>
+            <div class="cell"><div class="lab">how deep it sank — the height F</div><div class="v" id="v-height">—</div><div class="sub" id="v-height-sub"></div></div>
+          </div>
+          <p class="hint" id="v-note" aria-live="polite">Drop the ball and watch both dials resolve together.</p>
+          <div class="arc" id="v-arc" role="status">
+            <b>One descent handed you both.</b> Where it stopped — <strong>b = 0.913</strong> — is the <strong>posterior</strong>,
+            the belief you couldn’t reach. How deep it sank — <strong>F = 0.371064</strong> — is the <strong>surprise</strong>,
+            the number you couldn’t compute (<span class="mono">−ln 0.69</span>). The arc closes: every golden in this
+            book — <span class="mono">0.69, 0.913, 0.944576, 0.371064</span> — was one computation, seen from a different
+            rung. The evidence was never computed once.
+          </div>
+        </div>
+      </div>
+    </div>
+    <details class="box check" open>
+      <summary>✓ Check it yourself — the arc closes <span class="tag">equation · by hand</span></summary>
+      <div class="box-body">
+        Minimum at <span class="mono">b = 0.913</span>; value there <span class="mono">F = 0.371064</span>. The surprise,
+        all the way back from Module 1, was <span class="mono">−ln(0.69) = 0.3710636814</span>. <strong>They are the same
+        number.</strong> You just closed the loop by hand.
+      </div>
+    </details>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-kicker">3 · The tag with teeth</div>
+    <h2>Not every free energy is a safe bound</h2>
+    <div class="prose">
+      <p>
+        In our two-cause world you could minimize F <em>perfectly</em>, so <span class="k">min F</span> <em>equalled</em>
+        the surprise. Real worlds are too big to minimize perfectly — you land a little <strong>above</strong> the floor,
+        where F is a <strong>ceiling over</strong> the surprise (still <span class="k">F ≥ −ln p(y)</span>). A ceiling is
+        useful — <em>only if you never mistake it for the surprise itself.</em> So every free-energy number carries a
+        <strong>bound tag</strong>. Pick one and see where it can land relative to the true surprise:
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="tags">
+      <div class="tool-head">
+        <h3>Where each tag can land</h3>
+        <p class="why">The dashed line is the true surprise — the floor you proved. A tag is a safe stand-in only if it lands AT or ABOVE the floor. Find the one that can dip below — that’s the one never trusted as a bound.</p>
+      </div>
+      <div class="tool-body">
+        <div class="tagchips" id="tag-chips" role="group" aria-label="Bound tags">
+          <button type="button" data-tag="exact">:exact</button>
+          <button type="button" data-tag="mean">:exact_mean_field</button>
+          <button type="button" data-tag="laplace">:laplace / :sampled</button>
+          <button type="button" data-tag="mmp">:mmp</button>
+        </div>
+        <div class="tagscale" id="tag-scale" aria-hidden="true">
+          <div class="floorline"></div>
+          <div class="floorlab">▬ true surprise (the floor)</div>
+          <div class="zonelab" style="top:18%">above: valid ceiling (F ≥ surprise)</div>
+          <div class="zonelab" style="top:74%; color:var(--bad-ink)">below: impossible for a real bound</div>
+          <div class="mk" id="tag-mk" style="background:var(--accent)"></div>
+        </div>
+        <div class="tagverdict" id="tag-verdict">Pick a tag to see where it can land — and whether it’s a safe stand-in for the surprise.</div>
+      </div>
+    </div>
+
+    <details class="box deeper">
+      <summary>▸ Go deeper — the Friston sign and MMP-BOUND-01 <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        F is always reported with the <strong>Friston sign</strong> — an <em>upper bound on surprisal</em>,
+        <span class="mono">F ≥ −ln p(y)</span>. The tag says whether that number is a trustworthy stand-in
+        (<span class="mono">:exact</span>) or only a loose ceiling. A number without its tag is not evidence — in the
+        code, F is never a bare float but a value <em>and</em> its tag, and a bound is “guaranteed” only for
+        <span class="mono">:exact</span> / <span class="mono">:exact_mean_field</span>. The one that bites: a
+        <span class="mono">:mmp</span> form can fall <em>below</em> the surprisal — e.g. on a two-state chain where the
+        true surprise is <span class="mono">ln 2 = 0.693147</span>, the <span class="mono">:mmp</span> value is
+        <span class="mono">ln 2 / 2 = 0.346574</span>, under the floor — so it is never used as a bound or fed back as a
+        belief (the rule <span class="mono">MMP-BOUND-01</span>).
+      </div>
+    </details>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI <span class="tag">functional · Gate F0 proven</span></summary>
+      <div class="box-body">
+        The exact loop — minimize F, recover the posterior and the surprise — is the proven Gate-F0 two-state case the
+        organism stands on, and every F it reports wears its bound tag so a loose ceiling is never mistaken for the
+        surprise. <strong>The hierarchy (loose <span class="mono">:exact_mean_field</span> ceilings) and the organism’s
+        full behaviour are the build underway, held open rather than claimed.</strong> Numbers and their honesty tags —
+        never a thing it feels.
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Where this goes next</div>
+    <h2>The spine is closed</h2>
+    <div class="prose">
+      <p>
+        That’s the spine: <strong>minimizing free energy recovers the surprise and the posterior at once, from a number
+        computed without the evidence, reported as a tagged bound so it never overclaims.</strong> Two directions open
+        into Part II: <strong>scale it up</strong> — vast causes stacked in layers, where you get a genuine
+        <span class="k">:exact_mean_field</span> ceiling instead of an exact floor (Module 8) — and <strong>turn it into
+        doing</strong> — acting to change the world so sensations fall in line, scored by a forward cousin of free energy
+        (<span class="k">G</span>), the gateway to behaviour.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You took a surprise you could never compute, built a different number you could, proved it was a ceiling over the
+        first, and watched the ceiling come down to touch it exactly — handing you the unreachable answer as a side
+        effect of rolling downhill. You didn’t learn <em>about</em> active inference. Across seven modules, from a
+        feeling in a doorway, <strong>you built it.</strong>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 7 — Minimize free energy.</strong> Built on the Active-Inference Pedagogy spec: a cold-retrieval
+      opener (the navigator), the capstone descent where the belief dial and the height dial resolve together (posterior
+      + surprise from one blind roll), and a bound-tag panel that falsifies “any F is a safe bound.” Self-contained — no
+      network, no account, CPU only; adapts to light and dark; honours reduced motion.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 7. The valley is computed live from the two-cause joints (0.63/0.06);
+      the floor b=0.913 / F=0.371064 are the sealed Module 1/2 goldens met by the ball’s own descent. The
+      <code>:mmp</code> example (two-state chain, ln 2 = 0.693147 vs ln 2 / 2 = 0.346574) is the canonical
+      MMP-BOUND-01 case. The exact loop is the Gate-F0 <code>:exact</code> case; looser tags are held open as the build
+      underway. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var ln = Math.log;
+  var J_ON = 0.63, J_OFF = 0.06, LO_J = ln(J_ON / J_OFF);
+  var FLOOR_B = J_ON / (J_ON + J_OFF);     // 0.913043 — the posterior
+  var SURPRISE = -ln(J_ON + J_OFF);        // 0.3710636814 — min F
+  function term(q, j) { return q <= 0 ? 0 : q * (ln(q) - ln(j)); }
+  function F(b) { return term(b, J_ON) + term(1 - b, J_OFF); }
+  function slope(b) { return ln(b / (1 - b)) - LO_J; }
+
+  // ── §0 NAVIGATOR COLD-RETRIEVAL ───────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#navigator"); if (!root) return;
+    var mem = $("#nav-mem"), why = $("#nav-why"), zero = $("#nav-zero"), err = $("#nav-err"), out = $("#nav-out");
+    $("#nav-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — a line or two, from memory."; return; }
+      if (!why.value || !zero.value) { err.style.display = "block"; err.textContent = "Answer both before you check."; return; }
+      err.style.display = "none";
+      var hits = (why.value === "kl") + (zero.value === "post");
+      out.className = "ex-answer show " + (hits === 2 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 2 ? "✓ Both." : hits + " of 2.") + "</strong></p>" +
+        "<p style='margin:8px 0'>F can’t fall below the surprise because the gap is a <strong>KL distance</strong>, and distances are never negative (you proved it with the ln x ≤ x−1 tangent): F = surprise + gap ≥ surprise. And the gap is exactly zero only when the belief <strong>is the posterior</strong> — the valley bottom. Here’s the payoff.</p>";
+    });
+  })();
+
+  // ── §2 THE PUNCHLINE (valley descent, dual readout) ──────────────────────────────────────────
+  (function () {
+    var root = $("#punchline"); if (!root) return;
+    var curve = $("#vcurve"), floorLine = $("#vfloor"), ball = $("#vball"), trail = $("#vtrail"),
+        belief = $("#v-belief"), beliefSub = $("#v-belief-sub"), height = $("#v-height"), heightSub = $("#v-height-sub"),
+        note = $("#v-note"), arc = $("#v-arc");
+    var X0 = 40, X1 = 400, Y0 = 20, Y1 = 225, FMAX = 2.9, FMIN = 0.33;
+    function x(b) { return X0 + b * (X1 - X0); }
+    function y(f) { return Y0 + (FMAX - f) / (FMAX - FMIN) * (Y1 - Y0); }
+    (function () {
+      var pts = [];
+      for (var i = 1; i <= 99; i++) { var b = i / 100; pts.push(x(b).toFixed(1) + "," + y(F(b)).toFixed(1)); }
+      curve.setAttribute("points", pts.join(" "));
+      floorLine.setAttribute("x1", x(FLOOR_B).toFixed(1)); floorLine.setAttribute("x2", x(FLOOR_B).toFixed(1));
+      floorLine.setAttribute("y1", y(F(FLOOR_B)).toFixed(1)); floorLine.setAttribute("y2", Y1);
+    })();
+    var timer = null, reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function place(b) {
+      ball.style.display = ""; ball.setAttribute("cx", x(b).toFixed(1)); ball.setAttribute("cy", y(F(b)).toFixed(1));
+      belief.textContent = b.toFixed(3); height.textContent = F(b).toFixed(4);
+      var atFloor = Math.abs(b - FLOOR_B) < 0.01;
+      beliefSub.textContent = atFloor ? "= the posterior (Bayes)" : "still rolling…";
+      heightSub.textContent = atFloor ? "= the surprise −ln 0.69" : "still falling…";
+      if (atFloor) arc.classList.add("show");
+    }
+    function drop(start) {
+      if (timer) { clearInterval(timer); timer = null; }
+      arc.classList.remove("show");
+      var b = start, trailPts = [x(b).toFixed(1) + "," + y(F(b)).toFixed(1)];
+      note.innerHTML = "Dropped at b = " + start + " — rolling downhill, both dials moving…";
+      if (reduce) { place(start); place(FLOOR_B); trail.setAttribute("points", x(start).toFixed(1) + "," + y(F(start)).toFixed(1) + " " + x(FLOOR_B).toFixed(1) + "," + y(F(FLOOR_B)).toFixed(1)); note.innerHTML = "Rolled to the floor: belief = posterior, height = surprise."; return; }
+      place(b);
+      var steps = 0;
+      timer = setInterval(function () {
+        var sl = slope(b);
+        if (Math.abs(sl) < 0.01 || steps++ > 200) { clearInterval(timer); timer = null; b = FLOOR_B; place(b); note.innerHTML = "The ball settled at the floor. Both dials resolved <strong>together</strong>: belief → posterior, height → surprise."; return; }
+        b = b - 0.06 * sl; if (b < 0.002) b = 0.002; if (b > 0.998) b = 0.998;
+        place(b);
+        if (Math.abs(b - FLOOR_B) < 0.01) { note.innerHTML = "The ball settled at the floor. Both dials resolved <strong>together</strong>: belief → posterior, height → surprise."; }
+        trailPts.push(x(b).toFixed(1) + "," + y(F(b)).toFixed(1)); trail.setAttribute("points", trailPts.join(" "));
+      }, 45);
+    }
+    $$("button[data-b]", root).forEach(function (btn) { btn.addEventListener("click", function () { drop(parseFloat(btn.getAttribute("data-b"))); }); });
+    $("#v-reset").addEventListener("click", function () {
+      if (timer) { clearInterval(timer); timer = null; }
+      ball.style.display = "none"; trail.setAttribute("points", ""); arc.classList.remove("show");
+      belief.textContent = height.textContent = "—"; beliefSub.textContent = heightSub.textContent = "";
+      note.textContent = "Drop the ball and watch both dials resolve together.";
+    });
+  })();
+
+  // ── §3 THE BOUND TAG PANEL ───────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#tags"); if (!root) return;
+    var mk = $("#tag-mk"), verdict = $("#tag-verdict");
+    // vertical positions: 46% = floor. above (smaller %) = valid ceiling; below (larger %) = invalid.
+    var TAGS = {
+      exact:   { top: "46%", color: "var(--ok)", safe: true,  text: "<strong>:exact</strong> — the ceiling IS the floor (our two-state case): F = 0.371064 = the surprise exactly. A trustworthy stand-in for the surprise." },
+      mean:    { top: "24%", color: "var(--gold)", safe: true, text: "<strong>:exact_mean_field</strong> — a genuine but LOOSE ceiling (the hierarchy, Module 8): F sits above the surprise. Still a valid bound — push it down to corner the surprise — but never equal to it." },
+      laplace: { top: "32%", color: "var(--gold)", safe: true, text: "<strong>:laplace / :sampled</strong> — ceilings from approximations, each with its own looseness. Above the floor, so valid bounds — handle with care." },
+      mmp:     { top: "72%", color: "var(--bad)", safe: false, text: "<strong>:mmp</strong> — can dip BELOW the surprise. On a two-state chain where the true surprise is ln 2 = 0.693147, the :mmp value is ln 2 / 2 = 0.346574 — under the floor. So it is NEVER used as a bound or fed back as a belief (MMP-BOUND-01)." }
+    };
+    $$("button[data-tag]", root).forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var t = TAGS[btn.getAttribute("data-tag")];
+        $$("button[data-tag]", root).forEach(function (x) { x.setAttribute("aria-pressed", x === btn ? "true" : "false"); });
+        mk.style.display = "block"; mk.style.top = t.top; mk.style.left = "50%"; mk.style.background = t.color;
+        verdict.className = "tagverdict " + (t.safe ? "safe" : "unsafe");
+        verdict.innerHTML = t.text + "<br/><strong>" + (t.safe ? "✓ Safe stand-in / valid bound — at or above the floor." : "✗ NOT a safe bound — it can fall below the true surprise. The tag is what warns you.") + "</strong>";
+      });
+    });
+  })();
+})();
+</script>
+</body>
+</html>
