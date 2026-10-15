@@ -439,6 +439,7 @@
         b = b - 0.06 * sl;                       // one downhill step (gradient descent on F)
         if (b < 0.002) b = 0.002; if (b > 0.998) b = 0.998;
         place(b);
+        if (Math.abs(b - FLOOR) < 0.01) recordLanding(start); // record as soon as it reaches the floor (robust to throttling)
         trailPts.push(x(b).toFixed(1) + "," + y(F(b)).toFixed(1));
         trail.setAttribute("points", trailPts.join(" "));
       }, 45);
