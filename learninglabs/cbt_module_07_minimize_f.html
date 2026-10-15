@@ -299,7 +299,7 @@
     <div class="tool centerpiece" id="tags">
       <div class="tool-head">
         <h3>Where each tag can land</h3>
-        <p class="why">The dashed line is the true surprise — the floor you proved. A tag is a safe stand-in only if it lands AT or ABOVE the floor. Find the one that can dip below — that’s the one never trusted as a bound.</p>
+        <p class="why">This panel’s dashed floor belongs to a DIFFERENT model — a two-state chain, whose floor is ln 2 = 0.693147 (not this lesson’s two-cause world, floor 0.371064; the two floors are never put on one line). A tag is a safe stand-in only if it lands AT or ABOVE that floor. Find the one that can dip below — that’s the one never trusted as a bound.</p>
       </div>
       <div class="tool-body">
         <div class="tagchips" id="tag-chips" role="group" aria-label="Bound tags">
@@ -310,7 +310,7 @@
         </div>
         <div class="tagscale" id="tag-scale" aria-hidden="true">
           <div class="floorline"></div>
-          <div class="floorlab">▬ true surprise (the floor)</div>
+          <div class="floorlab">▬ two-state chain · floor = ln 2 = 0.693147</div>
           <div class="zonelab" style="top:18%">above: valid ceiling (F ≥ surprise)</div>
           <div class="zonelab" style="top:74%; color:var(--bad-ink)">below: impossible for a real bound</div>
           <div class="mk" id="tag-mk" style="background:var(--accent)"></div>
@@ -473,10 +473,10 @@
     var mk = $("#tag-mk"), verdict = $("#tag-verdict");
     // vertical positions: 46% = floor. above (smaller %) = valid ceiling; below (larger %) = invalid.
     var TAGS = {
-      exact:   { top: "46%", color: "var(--ok)", safe: true,  text: "<strong>:exact</strong> — the ceiling IS the floor (our two-state case): F = 0.371064 = the surprise exactly. A trustworthy stand-in for the surprise." },
+      exact:   { top: "46%", color: "var(--ok)", safe: true,  text: "<strong>:exact</strong> — the ceiling IS the floor: on this two-state chain F = ln 2 = 0.693147 = its surprise exactly. (This lesson's own two-cause world has a different exact floor, 0.371064 = −ln 0.69 — a separate model, never on this line.) A trustworthy stand-in for the surprise." },
       mean:    { top: "24%", color: "var(--gold)", safe: true, text: "<strong>:exact_mean_field</strong> — a genuine but LOOSE ceiling (the hierarchy, Module 8): F sits above the surprise. Still a valid bound — push it down to corner the surprise — but never equal to it." },
       laplace: { top: "32%", color: "var(--gold)", safe: true, text: "<strong>:laplace / :sampled</strong> — ceilings from approximations, each with its own looseness. Above the floor, so valid bounds — handle with care." },
-      mmp:     { top: "72%", color: "var(--bad)", safe: false, text: "<strong>:mmp</strong> — can dip BELOW the surprise. On a two-state chain where the true surprise is ln 2 = 0.693147, the :mmp value is ln 2 / 2 = 0.346574 — under the floor. So it is NEVER used as a bound or fed back as a belief (MMP-BOUND-01)." }
+      mmp:     { top: "72%", color: "var(--bad)", safe: false, text: "<strong>:mmp</strong> — can dip BELOW the surprise. On this two-state chain (floor ln 2 = 0.693147) the :mmp value is ln 2 / 2 = 0.346574 — under that floor. So it is NEVER used as a bound or fed back as a belief (MMP-BOUND-01)." }
     };
     $$("button[data-tag]", root).forEach(function (btn) {
       btn.addEventListener("click", function () {
