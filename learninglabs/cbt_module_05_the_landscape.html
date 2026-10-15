@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 5 — The landscape</title>
+<meta name="description" content="Free energy over every belief makes a valley. Its slope is a log-odds mismatch you can feel blind; a ball dropped anywhere rolls to the floor at b=0.913 — which is the Lesson 2 posterior. The valley bottom is Bayes, reached without the evidence." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --curve:#0e6e63; --ball:#a8341f; --post:#8a6a10;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --curve:#7fc6bb; --ball:#e89580; --post:#d9b56a;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(30px,5vw,44px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.check{border-color:var(--ok)}
+  details.box.check>summary{color:var(--ok-ink)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  .valley-wrap{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:8px}
+  svg.valley{display:block; width:100%; height:auto}
+  svg.valley .grid{stroke:var(--line); stroke-width:1}
+  svg.valley .curve{fill:none; stroke:var(--curve); stroke-width:2.5}
+  svg.valley .axlab{fill:var(--muted); font:12px var(--sans)}
+  svg.valley .pt{fill:var(--post)}
+  svg.valley .ptlab{fill:var(--ink); font:11px var(--mono)}
+  svg.valley .floor{stroke:var(--post); stroke-width:1.5; stroke-dasharray:4 4}
+  svg.valley .ball{fill:var(--ball); stroke:#fff; stroke-width:1.5}
+  svg.valley .balltrail{fill:none; stroke:var(--ball); stroke-width:1.5; stroke-dasharray:2 3; opacity:.6}
+  .slopebox{display:flex; flex-wrap:wrap; gap:16px; margin-top:8px}
+  .slopebox .cell .lab{font-size:12px; letter-spacing:.05em; text-transform:uppercase; color:var(--muted)}
+  .slopebox .cell .v{font-size:19px; font-weight:800; font-variant-numeric:tabular-nums; color:var(--accent-ink)}
+  .bayes{margin-top:12px; padding:14px 16px; border-radius:12px; background:var(--accent-soft); border:1px solid var(--accent); display:none}
+  .bayes.show{display:block}
+  .bayes b{color:var(--accent-ink)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:30px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 5</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>The landscape</h1>
+    <p class="lede">
+      Free energy over <em>every</em> belief makes a shape — a valley. Its slope is a log-odds mismatch you can feel
+      <strong>blind</strong>; a ball dropped anywhere rolls to the same floor. And the belief at that floor is the one
+      you couldn’t compute — the posterior. The valley bottom is Bayes, reached without the evidence.
+    </p>
+    <p class="legend">
+      Five doors as before — the plain line runs straight through; take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>, <b>▸ Go deeper</b>,
+      <b>⬡ See it in UNI</b>. Runs locally — no account, no network — and adapts to light and dark.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves.</b> “Free energy,” “belief,” “slope” are <strong>functional quantities</strong>
+      — a height over a belief and its local tilt. For <em>you</em> we use felt words; for UNI, functional ones: a
+      height its dynamics descend. Neither is awareness, feeling, or sentience. The two-state descent is proven
+      arithmetic (Gate F0, sealed); the valley is a picture of a computation, not a claim about experience.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, with no peeking</h2>
+    <div class="prose">
+      <p>No scrolling back to Module 4. A mechanic listens to an engine — a faint knock, could be one of a few things. The mechanic carries free energy as a <em>height under a belief</em> about the knock. Reconstruct, cold.</p>
+    </div>
+
+    <div class="tool centerpiece" id="mechanic">
+      <div class="tool-head">
+        <h3>Cold retrieval — what the height needs</h3>
+        <p class="why">From memory, new domain (the engine knock): name F’s two ingredients, the notorious thing it does NOT need, and whether a better belief sits higher or lower. Reconstruct it — no re-reading.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="mech-mem">What two ingredients does the height need, and which thing does it not need</label>
+        <textarea id="mech-mem" placeholder="From memory: what two ingredients does F need, which notorious thing does it NOT need, and does a better belief sit higher or lower?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field"><label for="mech-need">F is built from…</label>
+          <select id="mech-need"><option value="">—</option><option value="bj">your belief q and the joint (likelihood × prior)</option><option value="ev">the evidence p(y)</option><option value="raw">the raw sensor reading alone</option></select></div>
+        <div class="field"><label for="mech-not">F does NOT need…</label>
+          <select id="mech-not"><option value="">—</option><option value="ev">the evidence p(y) — the unfinishable sum</option><option value="prior">your prior</option><option value="belief">a belief at all</option></select></div>
+        <div class="field"><label for="mech-dir">A better belief sits…</label>
+          <select id="mech-dir"><option value="">—</option><option value="lower">lower (free energy is a height; good = low)</option><option value="higher">higher</option></select>
+          <button type="button" id="mech-go" class="primary">Check</button></div>
+        <div class="err" id="mech-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="mech-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back cold, let’s draw the whole shape.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · One belief, one height → the whole curve</div>
+    <h2>Sweep the belief, and a curve appears</h2>
+    <div class="prose">
+      <p>
+        In Module 4 you computed the height at two beliefs. But your belief <span class="k">b</span> can sit
+        <em>anywhere</em> on <span class="k">[0,1]</span>, and every spot has a height. Sweep <span class="k">b</span>
+        from 0 to 1 and plot <span class="k">F(b)</span> at each — a <strong>curve</strong> appears.
+      </p>
+    </div>
+    <details class="box try" open>
+      <summary>✎ Try it — sketch it before you see it <span class="tag">commit first</span></summary>
+      <div class="box-body">
+        You know four of its points in the two-cause world: <span class="mono">F(0)=2.813</span>,
+        <span class="mono">F(0.5)=0.944576</span>, <span class="mono">F(0.913)=0.371064</span>,
+        <span class="mono">F(1)=0.462</span>. Plot those roughly — b across, height up. What shape do they trace?
+        <details style="margin-top:10px"><summary style="cursor:pointer; font-weight:700; color:var(--ok-ink)">✓ Check it yourself</summary>
+          <p style="margin:8px 0 0">High on the far left (2.813 at b=0, “certain it’s off” — badly wrong), dropping to a <strong>low point near b=0.913</strong> (0.371), then ticking back up to 0.462 at b=1. It’s a <strong>bowl</strong> — a valley — with its floor over b≈0.913. That bowl is the <strong>landscape</strong>.</p>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <!-- 2 + 3 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · Feel the slope, blind · 3 · Whose face is at the bottom?</div>
+    <h2>Drop a ball and let it roll</h2>
+    <div class="prose">
+      <p>
+        You can’t see the bottom (that would be knowing the answer). But you <em>can</em> feel the <strong>slope</strong>
+        under your feet — computable from your belief and the joint, <strong>no evidence</strong>:
+        <span class="k">dF/db = ln(b/(1−b)) − ln(0.63/0.06)</span> = your belief’s log-odds minus the joint’s. Feel it,
+        step downhill, feel again, step again — and roll to the bottom blind. Drop the ball anywhere.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="valley">
+      <div class="tool-head">
+        <h3>The valley — roll to the floor blind</h3>
+        <p class="why">Drop the ball at any start; it feels the local slope (shown) and steps downhill to the floor. Every start lands at the SAME floor, b=0.913 — and that is the Lesson 2 posterior. Try to find a start that rolls elsewhere; you can’t.</p>
+      </div>
+      <div class="tool-body">
+        <div class="valley-wrap">
+          <svg class="valley" id="vsvg" viewBox="0 0 420 270" role="img" aria-label="A valley: free energy F plotted over every belief b from 0 to 1, with its floor at b=0.913. A ball dropped on the wall rolls down to the floor.">
+            <line class="grid" x1="40" y1="245" x2="400" y2="245"></line>
+            <line class="grid" x1="40" y1="20" x2="40" y2="245"></line>
+            <polyline class="curve" id="vcurve" points=""></polyline>
+            <line class="floor" id="vfloor" x1="0" y1="0" x2="0" y2="0"></line>
+            <g id="vpts"></g>
+            <polyline class="balltrail" id="vtrail" points=""></polyline>
+            <circle class="ball" id="vball" cx="0" cy="0" r="6" style="display:none"></circle>
+            <text class="axlab" x="40" y="262">b = 0 (off)</text>
+            <text class="axlab" x="330" y="262">b = 1 (on)</text>
+            <text class="axlab" x="6" y="26" transform="rotate(0)">F high</text>
+            <text class="axlab" x="6" y="243">F low</text>
+          </svg>
+        </div>
+        <div class="btnrow">
+          <span style="align-self:center; font-size:14px; font-weight:600">Drop the ball at:</span>
+          <button type="button" data-b="0.15">b = 0.15</button>
+          <button type="button" data-b="0.5">b = 0.5</button>
+          <button type="button" data-b="0.75">b = 0.75</button>
+          <button type="button" data-b="0.97">b = 0.97</button>
+          <button type="button" id="v-reset" class="ghost">Reset</button>
+        </div>
+        <div class="readout">
+          <div class="slopebox">
+            <div class="cell"><div class="lab">ball at belief b</div><div class="v" id="v-b">—</div></div>
+            <div class="cell"><div class="lab">slope dF/db (log-odds mismatch)</div><div class="v" id="v-slope">—</div></div>
+            <div class="cell"><div class="lab">height F(b)</div><div class="v" id="v-f">—</div></div>
+          </div>
+          <p class="hint" id="v-note" aria-live="polite">Drop the ball on the valley wall and watch it feel its way down.</p>
+        </div>
+        <div class="bayes" id="v-bayes" role="status">
+          <b>Every start rolled to the same floor: b = 0.913.</b> Blind downhill steps — each using only the belief it
+          stood on and the joint — found the one bottom (the bowl has a single floor; there is no other to reach). And
+          look at the number: <strong>b = 0.913 is the Module 2 posterior, 0.63/0.69</strong> — the true, honest,
+          Bayesian belief you walled off because it needed the evidence 0.69. Rolling downhill on free energy carried you
+          to <em>exactly</em> Bayes’ answer — without ever dividing by the evidence. The valley bottom <strong>is Bayes.</strong>
+        </div>
+      </div>
+    </div>
+
+    <details class="box deeper">
+      <summary>▸ Go deeper — the slope is a log-odds mismatch <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        <span class="mono">dF/db = ln(b/(1−b)) − ln(p(y,on)/p(y,off)) = ln(b/(1−b)) − ln(10.5)</span> — your belief’s
+        log-odds minus the joint’s log-odds, using only belief and joint (<strong>no evidence</strong>). It is zero
+        exactly when <span class="mono">b/(1−b) = 10.5</span>, i.e. <span class="mono">b = 0.913</span>. “Slope =
+        log-odds mismatch”: how far your belief’s confidence sits from what the joint alone recommends.
+      </div>
+    </details>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI <span class="tag">functional · Gate F0 proven</span></summary>
+      <div class="box-body">
+        This is, functionally, what inference in the organism <em>is</em>: not solving for the posterior (walled off),
+        but descending free energy until the belief stops moving — landing on the belief Bayes would pick. <strong>The
+        two-state descent here is the proven <span class="mono">:exact</span> case (Gate F0, sealed); the full
+        hierarchical version is the build underway, held open.</strong> A height its dynamics roll down, never a thing
+        it feels.
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Where this goes next</div>
+    <h2>How low is the floor?</h2>
+    <div class="prose">
+      <p>
+        You drew the landscape and read everything off it: free energy is a <strong>valley</strong> over all beliefs;
+        its <strong>slope is a log-odds mismatch</strong> you can feel blind; rolling downhill is inference; and the
+        <strong>bottom is the posterior</strong> — Bayes, recovered without the evidence. One question is left, the
+        sharpest: you found <em>where</em> the bottom is — but how <strong>low</strong> is it? What is the actual height
+        at the floor, and could a cleverer belief ever dig <em>below</em> it? The answer is a hard floor with a famous
+        name that ties this whole book back to Module 1’s very first number. That’s Module 6: the floor you cannot cross.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You turned a formula into a place. You reached the unreachable answer not by computing it, but by <em>feeling
+        which way is downhill</em> and walking — and where you land is exactly where honest Bayesian reasoning would
+        have put you. A mind doesn’t solve the world; it rolls downhill on a landscape it can feel. You just watched it
+        happen.
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 5 — The landscape.</strong> Built on the Active-Inference Pedagogy spec: a cold-retrieval
+      opener (the mechanic), the F(b) valley drawn from four known points, and a ball that rolls blind down the slope
+      (= log-odds mismatch) to the floor at b=0.913 — the Module 2 posterior, Bayes without the evidence. Self-contained
+      — no network, no account, CPU only; adapts to light and dark; honours reduced motion.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 5. The curve and the descent are computed live from the two-cause
+      joints (0.63/0.06); the floor b=0.913 is the sealed Module 2 posterior (0.63/0.69), met by the ball’s own descent.
+      The two-state descent is the proven Gate-F0 <code>:exact</code> case; the hierarchical version is held open as the
+      build underway. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var ln = Math.log;
+  var J_ON = 0.63, J_OFF = 0.06, LO_J = ln(J_ON / J_OFF); // ln(10.5)
+  var FLOOR = J_ON / (J_ON + J_OFF); // 0.913043… = the posterior 0.63/0.69
+
+  function term(q, j) { return q <= 0 ? 0 : q * (ln(q) - ln(j)); }
+  function F(b) { return term(b, J_ON) + term(1 - b, J_OFF); }
+  function slope(b) { return ln(b / (1 - b)) - LO_J; }
+
+  // ── §0 MECHANIC COLD-RETRIEVAL ────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#mechanic"); if (!root) return;
+    var mem = $("#mech-mem"), need = $("#mech-need"), not = $("#mech-not"), dir = $("#mech-dir"),
+        err = $("#mech-err"), out = $("#mech-out");
+    var TRUE = { need: "bj", not: "ev", dir: "lower" };
+    $("#mech-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — a line or two, from memory."; return; }
+      if (!need.value || !not.value || !dir.value) { err.style.display = "block"; err.textContent = "Answer all three before you check."; return; }
+      err.style.display = "none";
+      var hits = (need.value === TRUE.need) + (not.value === TRUE.not) + (dir.value === TRUE.dir);
+      out.className = "ex-answer show " + (hits === 3 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 3 ? "✓ All three." : hits + " of 3.") + "</strong></p>" +
+        "<p style='margin:8px 0'>Free energy needs your <strong>belief q</strong> and the <strong>joint</strong> (likelihood × prior) — one multiply per cause — and it does <strong>not</strong> need the <strong>evidence p(y)</strong>, the unfinishable sum. And a better belief sits <strong>lower</strong> — free energy is a height; good beliefs are low. Now let’s draw the whole valley.</p>";
+    });
+  })();
+
+  // ── §2–§3 THE VALLEY ──────────────────────────────────────────────────────────────────────────
+  (function () {
+    var root = $("#valley"); if (!root) return;
+    var svg = $("#vsvg"), curve = $("#vcurve"), floorLine = $("#vfloor"), ptsG = $("#vpts"),
+        ball = $("#vball"), trail = $("#vtrail"),
+        bEl = $("#v-b"), slopeEl = $("#v-slope"), fEl = $("#v-f"), note = $("#v-note"), bayes = $("#v-bayes");
+
+    // plot geometry
+    var X0 = 40, X1 = 400, Y0 = 20, Y1 = 245;   // drawing box
+    var FMAX = 2.9, FMIN = 0.33;                 // height range for the y-map
+    function x(b) { return X0 + b * (X1 - X0); }
+    function y(f) { return Y0 + (FMAX - f) / (FMAX - FMIN) * (Y1 - Y0); } // high F → top, low F → bottom
+
+    // draw the curve
+    (function () {
+      var pts = [];
+      for (var i = 1; i <= 99; i++) { var b = i / 100; pts.push(x(b).toFixed(1) + "," + y(F(b)).toFixed(1)); }
+      curve.setAttribute("points", pts.join(" "));
+      // floor marker (vertical dashed line at b = 0.913)
+      floorLine.setAttribute("x1", x(FLOOR).toFixed(1)); floorLine.setAttribute("x2", x(FLOOR).toFixed(1));
+      floorLine.setAttribute("y1", y(F(FLOOR)).toFixed(1)); floorLine.setAttribute("y2", Y1);
+      // four known points
+      var marks = [[0.001, "F(0)=2.813"], [0.5, "F(.5)=0.945"], [FLOOR, "floor b=0.913"], [0.999, "F(1)=0.462"]];
+      var html = "";
+      marks.forEach(function (m) {
+        var cx = x(m[0]).toFixed(1), cy = y(F(m[0])).toFixed(1);
+        html += "<circle class='pt' cx='" + cx + "' cy='" + cy + "' r='3.5'></circle>";
+        var tx = m[0] > 0.8 ? (parseFloat(cx) - 70) : parseFloat(cx) + 6;
+        html += "<text class='ptlab' x='" + tx + "' y='" + (parseFloat(cy) - 7) + "'>" + m[1] + "</text>";
+      });
+      ptsG.innerHTML = html;
+    })();
+
+    var timer = null, landedStarts = [];
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function place(b) {
+      ball.style.display = ""; ball.setAttribute("cx", x(b).toFixed(1)); ball.setAttribute("cy", y(F(b)).toFixed(1));
+      var sl = slope(b);
+      bEl.textContent = b.toFixed(3);
+      slopeEl.textContent = (sl > 0 ? "+" : "") + sl.toFixed(3) + (Math.abs(sl) < 0.02 ? " (flat)" : sl > 0 ? " → roll left" : " → roll right");
+      fEl.textContent = F(b).toFixed(4);
+    }
+    function recordLanding(start) {
+      if (landedStarts.indexOf(start) < 0) landedStarts.push(start);
+      if (landedStarts.length >= 2) bayes.classList.add("show");
+    }
+    function drop(start) {
+      if (timer) { clearInterval(timer); timer = null; }
+      var b = start, trailPts = [];
+      note.innerHTML = "Dropped at b = " + start + ". Feeling the slope and stepping downhill…";
+      if (reduce) {
+        // reduced motion: show start, then settle at the floor without animation
+        place(start);
+        b = FLOOR; place(b);
+        trail.setAttribute("points", x(start).toFixed(1) + "," + y(F(start)).toFixed(1) + " " + x(FLOOR).toFixed(1) + "," + y(F(FLOOR)).toFixed(1));
+        note.innerHTML = "Rolled from b = " + start + " to the floor at <strong>b = " + FLOOR.toFixed(3) + "</strong> (slope flat). Blind descent, no evidence used.";
+        recordLanding(start);
+        return;
+      }
+      place(b); trailPts.push(x(b).toFixed(1) + "," + y(F(b)).toFixed(1));
+      var steps = 0;
+      timer = setInterval(function () {
+        var sl = slope(b);
+        if (Math.abs(sl) < 0.01 || steps++ > 200) {
+          clearInterval(timer); timer = null;
+          b = FLOOR; place(b);
+          note.innerHTML = "Rolled from b = " + start + " to the floor at <strong>b = " + FLOOR.toFixed(3) + "</strong> — the slope went flat. Blind descent, no evidence used.";
+          recordLanding(start);
+          return;
+        }
+        b = b - 0.06 * sl;                       // one downhill step (gradient descent on F)
+        if (b < 0.002) b = 0.002; if (b > 0.998) b = 0.998;
+        place(b);
+        trailPts.push(x(b).toFixed(1) + "," + y(F(b)).toFixed(1));
+        trail.setAttribute("points", trailPts.join(" "));
+      }, 45);
+    }
+
+    $$("button[data-b]", root).forEach(function (btn) {
+      btn.addEventListener("click", function () { drop(parseFloat(btn.getAttribute("data-b"))); });
+    });
+    $("#v-reset").addEventListener("click", function () {
+      if (timer) { clearInterval(timer); timer = null; }
+      ball.style.display = "none"; trail.setAttribute("points", "");
+      bEl.textContent = slopeEl.textContent = fEl.textContent = "—";
+      note.textContent = "Drop the ball on the valley wall and watch it feel its way down.";
+      landedStarts = []; bayes.classList.remove("show");
+    });
+  })();
+})();
+</script>
+</body>
+</html>
