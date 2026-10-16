@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 14 — The formula, by hand</title>
+<meta name="description" content="Expected free energy as an actual expression: G = risk + ambiguity. Compute each half by hand on a concrete cold-cabin choice and watch the epistemic term flip the decision — the sweater is perfect on reward but loses, because the stove leaves you knowing where you stand." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --world:#0e6e63; --mind:#8a6a10;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#8a5a12; --warn-soft:#f4ead3;
+      --world:#7fc6bb; --mind:#d9b56a;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+  blockquote{margin:14px 0; padding:2px 0 2px 16px; border-left:3px solid var(--line2); color:var(--ink); font-style:italic}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button:disabled{opacity:.45; cursor:not-allowed}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  /* compute-G-and-flip (§2–§3) */
+  .acts{display:flex; gap:12px; flex-wrap:wrap; margin:10px 0}
+  .act{flex:1 1 250px; border:1px solid var(--line2); border-radius:10px; padding:12px 14px; background:var(--panel2)}
+  .act .name{font-size:15px; font-weight:700; margin-bottom:4px}
+  .act .row{font-size:13.5px; color:var(--muted); margin:3px 0}
+  .act .row b{color:var(--ink)}
+  .calc{display:none; margin-top:12px}
+  .calc.show{display:block}
+  .worked{font-family:var(--mono); font-size:13.5px; background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:12px 14px; white-space:pre-wrap; line-height:1.7; overflow-x:auto}
+  .gblock{margin-top:14px}
+  .gblock .cap{font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 4px}
+  .grow{display:flex; align-items:center; gap:10px; margin:5px 0}
+  .grow .tag{width:118px; font-size:13px; font-weight:700; flex:none}
+  .grow .bar{flex:1; height:16px; border-radius:999px; background:var(--panel); border:1px solid var(--line2); overflow:hidden}
+  .grow .bar>span{display:block; height:100%; background:var(--bad); transition:width .3s ease}
+  .grow .bar>span.win{background:var(--ok)}
+  .grow .val{width:52px; text-align:right; font-family:var(--mono); font-size:13px}
+  .grow.winner .tag{color:var(--ok-ink)}
+  .flip{margin-top:14px; padding:12px 14px; border:1px solid var(--ok); background:var(--ok-soft); border-radius:10px; font-weight:600}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 14 · Part II</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>The formula, by hand</h1>
+    <p class="lede">
+      You’ve used the shape <span class="k">G = risk + ambiguity</span> twice without ever writing it down. This module
+      puts it on the page and lets you compute both halves <strong>by hand</strong> — so the engine of choice stops
+      being a story and becomes a number you can check. And you’ll watch the epistemic term do something a pure
+      reward-chaser never could: <strong>flip the decision.</strong>
+    </p>
+    <p class="legend">
+      Five doors; the plain line runs straight through — take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>,
+      <b>▸ Go deeper</b>, <b>⬡ See it in UNI</b>. Runs locally — no account, no network — adapts to light and dark;
+      honours reduced motion.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves — and in Part II it is stricter.</b> “Expected free energy,” “risk,” “ambiguity”
+      are <strong>functional quantities</strong> a model computes over its own options. For <em>you</em> we use felt
+      words — a nurse weighing two checks. For UNI we use functional ones. Neither is desire or curiosity. The
+      arithmetic here is standard active inference, computable by hand — but DDNA’s <span class="k">G</span> term is
+      <strong>not yet built or sealed</strong> (it needs its own lab-team verdict), so the ⬡ claims about the organism
+      choosing with it stay <strong>held open</strong>. “Built to,” never “does.” (One honesty note carried throughout:
+      the <strong>risk</strong> values and their <span class="k">KL</span> are exact and checkable; the
+      <strong>ambiguity</strong> numbers are illustrative likelihood-entropies, labelled where they appear.)
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, the nurse’s two checks — cold</h2>
+    <div class="prose">
+      <p>
+        No peeking. A nurse chooses between two checks on a patient she hasn’t run yet — each would tell her something,
+        each moves the patient toward or away from where she wants them.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="recall">
+      <div class="tool-head">
+        <h3>Name the two halves — and what each asks</h3>
+        <p class="why">Reconstruct the two halves of the score from Modules 11–13 before you check, and what question each one asks in plain words. Commit first.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="rc14-mem">The two halves and what each asks</label>
+        <textarea id="rc14-mem" placeholder="From memory: the two halves of the score — and what does each half ask?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field">
+          <label for="rc14-risk">The first half, <b>risk</b>, asks…</label>
+          <select id="rc14-risk">
+            <option value="">—</option>
+            <option value="pragmatic">will this get the patient toward the outcome I want?</option>
+            <option value="epistemic">will this tell me clearly what’s going on?</option>
+            <option value="cost">how expensive is it?</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rc14-amb">The second half, <b>ambiguity</b>, asks…</label>
+          <select id="rc14-amb">
+            <option value="">—</option>
+            <option value="epistemic">will this tell me clearly what’s going on?</option>
+            <option value="pragmatic">will this get the patient toward the outcome I want?</option>
+            <option value="time">how long will it take?</option>
+          </select>
+          <button type="button" id="rc14-go" class="primary">Check</button>
+        </div>
+        <div class="err" id="rc14-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="rc14-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">Risk is the <em>pragmatic</em> half (get what I want); ambiguity is the <em>epistemic</em> half (know where I stand). Now let’s make each one a number.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · The two halves as quantities</div>
+    <h2>Write each half as something you can measure</h2>
+    <div class="prose">
+      <p>Both are in <strong>nats</strong>, the units from Part I.</p>
+      <ul>
+        <li><strong>Risk</strong> = how far the outcomes you’d <strong>predict</strong> sit from the outcomes you
+          <strong>prefer.</strong> It’s a KL divergence — the exact tool from Module 6:
+          <span class="k">risk = KL( predicted outcomes ‖ preferred outcomes )</span>. Zero when your predicted ending
+          <em>is</em> what you want; grows as they diverge. <em>(Exact and checkable.)</em></li>
+        <li><strong>Ambiguity</strong> = how <strong>blurry</strong> your observations will be about the hidden state —
+          the expected entropy of the likelihood:
+          <span class="k">ambiguity = E_state[ H( observation | state ) ]</span>. Small when an observation sharply
+          tells you where you are; large when what you’ll see barely depends on the truth. <em>(Illustrative values
+          here, read from each action’s likelihood.)</em></li>
+      </ul>
+      <blockquote><span class="k">G = risk + ambiguity</span> — minimise it. Low risk <em>and</em> low ambiguity: the
+        action gets you what you want <strong>and</strong> leaves you knowing where you stand.</blockquote>
+    </div>
+  </section>
+
+  <!-- 2–3 -->
+  <section id="s2">
+    <div class="sec-kicker">2–3 · Compute it, watch it flip</div>
+    <h2>A concrete choice, with numbers</h2>
+    <div class="prose">
+      <p>
+        You’re cold in the unfamiliar cabin. You <strong>prefer</strong> warm: write the preference over outcomes as
+        <span class="k">C(warm)=0.9</span>, <span class="k">C(cold)=0.1</span>. Two actions, each with its predicted
+        outcomes and (illustrative) ambiguity:
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="gcalc">
+      <div class="tool-head">
+        <h3>Compute G by hand — and watch the epistemic term flip the choice</h3>
+        <p class="why">Commit which action wins by RISK alone, and whether adding ambiguity changes it. Then reveal the hand computation: the risk KL step by step (exact), the two totals, and the flip. A calculator, not a curve — the point is the decision reversing.</p>
+      </div>
+      <div class="tool-body">
+        <div class="acts">
+          <div class="act" id="act-a">
+            <div class="name">A — the sweater (known, reliable)</div>
+            <div class="row">predicted outcomes: <b>warm 0.9, cold 0.1</b></div>
+            <div class="row">ambiguity (illustrative): <b>0.60</b> — tells you nothing about the cabin’s heat</div>
+          </div>
+          <div class="act" id="act-b">
+            <div class="name">B — the stove (uncertain, revealing)</div>
+            <div class="row">predicted outcomes: <b>warm 0.6, cold 0.4</b></div>
+            <div class="row">ambiguity (illustrative): <b>0.05</b> — catches or doesn’t, sharply revealing heat</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="g-riskwin">By <b>risk alone</b>, which wins?</label>
+          <select id="g-riskwin"><option value="">—</option><option value="A">A — the sweater</option><option value="B">B — the stove</option></select>
+        </div>
+        <div class="field">
+          <label for="g-flip">Add ambiguity — does the winner change?</label>
+          <select id="g-flip"><option value="">—</option><option value="yes">yes, it flips</option><option value="no">no, same winner</option></select>
+          <button type="button" id="g-go" class="primary">Compute G by hand</button>
+          <button type="button" id="g-reset" class="ghost">Reset</button>
+        </div>
+        <div class="err" id="g-err" role="alert" style="display:none"></div>
+
+        <div class="calc" id="g-calc">
+          <div class="steplabel">The risk KL, step by step (exact — check it)</div>
+          <div class="worked" id="g-worked"></div>
+          <div class="gblock">
+            <div class="cap">By risk alone — lower wins</div>
+            <div class="grow" id="row-riskA"><span class="tag">risk · sweater</span><span class="bar"><span id="bar-riskA"></span></span><span class="val" id="val-riskA"></span></div>
+            <div class="grow" id="row-riskB"><span class="tag">risk · stove</span><span class="bar"><span id="bar-riskB"></span></span><span class="val" id="val-riskB"></span></div>
+            <div class="cap">By G = risk + ambiguity — lower wins</div>
+            <div class="grow" id="row-gA"><span class="tag">G · sweater</span><span class="bar"><span id="bar-gA"></span></span><span class="val" id="val-gA"></span></div>
+            <div class="grow" id="row-gB"><span class="tag">G · stove</span><span class="bar"><span id="bar-gB"></span></span><span class="val" id="val-gB"></span></div>
+          </div>
+          <div class="flip" id="g-flip-note"></div>
+        </div>
+        <div class="readout" id="g-read" aria-live="polite">Commit your two answers, then compute. The risk KL is worked out exactly; the ambiguities are the illustrative likelihood-entropies above.</div>
+      </div>
+    </div>
+
+    <details class="box deeper">
+      <summary>▸ Go deeper — the canonical form <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        For a policy <span class="k">π</span>:
+        <span class="k">G(π) = KL[ Q(o|π) ‖ C(o) ] + E_Q(s|π)[ H[P(o|s)] ]</span> — i.e. <strong>risk + ambiguity</strong>,
+        with <span class="k">C</span> the preference prior over outcomes and <span class="k">P(o|s)</span> the
+        likelihood. Equivalent split: <span class="k">G = −E_Q[ln C(o)]</span> (expected cost under preferences)
+        <span class="k">− I(o;s)</span> (expected information gain), up to constants — so minimising
+        <span class="k">G</span> maximises preference-satisfaction <em>and</em> information gain at once. The ambiguity
+        values here (<span class="k">0.60</span>, <span class="k">0.05</span>) are the expected likelihood entropies of
+        each action’s observations — a near-state-blind sweater vs. a state-revealing stove, the same
+        <span class="k">H = −Σ p ln p</span> you used for bits/nats in Part I. (Risk and the KL are exact and checkable;
+        the ambiguities are illustrative values read from each action’s likelihood.)
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Where this goes next</div>
+    <h2>Now the engine is a number</h2>
+    <div class="prose">
+      <p>
+        <span class="k">G = risk + ambiguity</span>, minimised — and you’ve seen the epistemic half overturn a decision
+        reward alone would have gotten wrong. Explore/exploit isn’t a rule bolted on; it’s <span class="k">0.60</span>
+        versus <span class="k">0.36</span>, checkable by hand.
+      </p>
+      <p>
+        One thing we’ve assumed: that a mind, having scored its options, simply takes the lowest. But <em>how hard</em>
+        does it commit to the winner — bet everything on the best policy, or hedge across several? That “how sharply do
+        I commit” is itself a quantity a mind sets and tunes. It’s <strong>precision</strong>, and it’s
+        <strong>Module 15</strong> — the last rung of Part II.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI — held open <span class="tag">design · not a sealed capability</span></summary>
+      <div class="box-body">
+        The organism is being <strong>built to</strong> score its options with exactly this arithmetic — risk from its
+        preferences, ambiguity from its likelihood — and to pick the low-<span class="k">G</span> action. In functional
+        terms: a number its dynamics compute, never a desire or a feeling. <strong>Honesty gate.</strong> The arithmetic
+        is standard active inference you just checked by hand, but DDNA’s <span class="k">G</span> term is <strong>not
+        yet built or sealed</strong> — it needs its own lab-team verdict — so this box is the design and the theory,
+        <strong>held open</strong>. “Built to,” never “does.”
+      </div>
+    </details>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-kicker">5 · Notice what you just did</div>
+    <h2>The felt thing and the arithmetic were the same thing</h2>
+    <div class="prose">
+      <p>
+        You took the most abstract idea in the book — that a mind values <em>finding out</em> — and you
+        <strong>computed</strong> it: <span class="k">0.60</span> against <span class="k">0.36</span>, a decision
+        flipped by a number you worked out yourself. The felt thing (“I’d better go find out”) and the arithmetic turned
+        out to be the same thing, and you got to check it.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ The fence, once more <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        What you computed is the standard active-inference score, exact where it’s exact (the risk KL) and illustrative
+        where it’s illustrative (the ambiguities). For UNI, the same arithmetic is <strong>built to</strong> drive the
+        organism’s choice — but that <span class="k">G</span> term is <strong>not yet built or sealed</strong>, so every
+        ⬡ box stays <strong>held open</strong>. “Built to,” never “does.”
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 14 — The formula, by hand.</strong> Built on the Active-Inference Pedagogy spec: a
+      cold-retrieval of the two halves (the nurse’s two checks), then a calculator that computes
+      <span class="k">G = risk + ambiguity</span> by hand on a concrete cold-cabin choice — the risk KL worked step by
+      step (exact), the two totals, and the epistemic term <em>flipping</em> the decision (the stove, G≈0.36, beats the
+      reward-perfect sweater, G=0.60). A calculator, not a plotted curve. Self-contained — no network, no account, CPU
+      only; adapts to light and dark; honours reduced motion.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 14. Honesty, kept precise: the <strong>risk</strong> values and
+      their <span class="k">KL</span> are exact and checkable; the <strong>ambiguity</strong> numbers are illustrative
+      likelihood-entropies. Part II’s fence is stricter: DDNA’s <span class="k">G</span> term is <strong>not yet built
+      or sealed</strong>, so every “See it in UNI” box is held open — “built to,” never “does.” The arithmetic is
+      standard active inference. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  // ── §0 COLD RETRIEVAL — the nurse's two checks ────────────────────────────────────────────────
+  (function () {
+    var root = $("#recall"); if (!root) return;
+    var mem = $("#rc14-mem"), risk = $("#rc14-risk"), amb = $("#rc14-amb"), err = $("#rc14-err"), out = $("#rc14-out");
+    $("#rc14-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — in your own words, before you pin it down."; return; }
+      if (!risk.value || !amb.value) { err.style.display = "block"; err.textContent = "Answer both before you check."; return; }
+      err.style.display = "none";
+      var okR = risk.value === "pragmatic", okA = amb.value === "epistemic";
+      var hits = (okR ? 1 : 0) + (okA ? 1 : 0);
+      out.className = "ex-answer show " + (hits === 2 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 2 ? "✓ Both right." : "Close — one is pragmatic, one epistemic.") + "</strong></p>" +
+        "<p style='margin:8px 0'><strong>Risk</strong> asks <em>will this get the patient toward the outcome I want?</em> (the pragmatic half). <strong>Ambiguity</strong> asks <em>will this tell me clearly what’s going on?</em> (the epistemic half). Expected free energy = risk + ambiguity, and a mind picks the action that makes the sum small. Now let’s make each half a number.</p>";
+    });
+  })();
+
+  // ── §2–3 COMPUTE G AND WATCH IT FLIP — calculator + commit + reveal ───────────────────────────
+  (function () {
+    var root = $("#gcalc"); if (!root) return;
+    var riskwin = $("#g-riskwin"), flip = $("#g-flip"), err = $("#g-err"), calc = $("#g-calc"),
+        worked = $("#g-worked"), read = $("#g-read"), flipNote = $("#g-flip-note");
+    // Preference C and predicted outcomes (lesson values).
+    var C = { warm: 0.9, cold: 0.1 };
+    var A = { warm: 0.9, cold: 0.1 }, B = { warm: 0.6, cold: 0.4 };
+    var ambA = 0.60, ambB = 0.05;                 // illustrative likelihood-entropies
+    function kl(p, q) { return p.warm * Math.log(p.warm / q.warm) + p.cold * Math.log(p.cold / q.cold); }
+    var riskA = kl(A, C), riskB = kl(B, C);       // computed live (exact)
+    var gA = riskA + ambA, gB = riskB + ambB;
+    var f3 = function (x) { return (Math.round(x * 1000) / 1000).toFixed(3); };
+    var f2 = function (x) { return (Math.round(x * 100) / 100).toFixed(2); };
+
+    function setBar(barId, valId, rowId, v, max, win) {
+      $(barId).style.width = Math.round(Math.max(0, v) / max * 100) + "%";
+      $(barId).className = win ? "win" : "";
+      $(valId).textContent = f2(v);
+      $(rowId).className = "grow" + (win ? " winner" : "");
+    }
+    function reveal() {
+      worked.textContent =
+        "risk = KL(predicted ‖ preferred) = Σ p·ln(p / C)\n\n" +
+        "A (sweater): predicted 0.9/0.1, preferred 0.9/0.1\n" +
+        "  risk_A = 0.9·ln(0.9/0.9) + 0.1·ln(0.1/0.1)\n" +
+        "         = 0 + 0 = " + f3(riskA) + "   (predicted IS preferred → zero)\n\n" +
+        "B (stove): predicted 0.6/0.4, preferred 0.9/0.1\n" +
+        "  risk_B = 0.6·ln(0.6/0.9) + 0.4·ln(0.4/0.1)\n" +
+        "         = 0.6·(−0.405) + 0.4·(1.386)\n" +
+        "         = −0.243 + 0.554 = " + f3(riskB) + "\n\n" +
+        "Add ambiguity (illustrative likelihood-entropies):\n" +
+        "  G_A = risk_A + amb_A = " + f3(riskA) + " + 0.60 = " + f2(gA) + "\n" +
+        "  G_B = risk_B + amb_B = " + f3(riskB) + " + 0.05 = " + f2(gB);
+      var max = Math.max(gA, gB, riskA, riskB, 0.01);
+      setBar("#bar-riskA", "#val-riskA", "#row-riskA", riskA, max, riskA < riskB);
+      setBar("#bar-riskB", "#val-riskB", "#row-riskB", riskB, max, riskB < riskA);
+      setBar("#bar-gA", "#val-gA", "#row-gA", gA, max, gA < gB);
+      setBar("#bar-gB", "#val-gB", "#row-gB", gB, max, gB < gA);
+      flipNote.innerHTML = "<strong>The decision flipped.</strong> By risk alone the <b>sweater</b> wins (" + f2(riskA) +
+        " &lt; " + f2(riskB) + ") — it’s perfect on getting what you want. But by <b>G = risk + ambiguity</b> the " +
+        "<b>stove</b> wins (" + f2(gB) + " &lt; " + f2(gA) + ") — the reward-perfect action lost because it would leave " +
+        "you <em>blind</em>, and the worse-on-reward action won because it would leave you <em>knowing.</em> That is " +
+        "exploration, falling out of one number you computed by hand.";
+      calc.classList.add("show");
+    }
+    $("#g-go").addEventListener("click", function () {
+      if (!riskwin.value || !flip.value) { err.style.display = "block"; err.textContent = "Commit both answers first — which wins by risk alone, and whether adding ambiguity changes it."; return; }
+      err.style.display = "none";
+      reveal();
+      var gotRisk = riskwin.value === "A";    // sweater wins by risk alone
+      var gotFlip = flip.value === "yes";      // yes, it flips
+      var msg = (gotRisk && gotFlip)
+        ? "<strong>✓ Exactly.</strong> You called it: the sweater wins by risk alone, and adding ambiguity flips it to the stove."
+        : (gotRisk && !gotFlip)
+          ? "You had the risk winner right (sweater), but it <em>does</em> flip — watch the totals."
+          : (!gotRisk && gotFlip)
+            ? "You expected a flip, and there is one — though the sweater (not the stove) is the one that wins on risk alone."
+            : "Have a look — the sweater wins on risk alone, and ambiguity flips the final winner to the stove.";
+      read.innerHTML = "<p style='margin:2px 0'>" + msg + "</p><p style='margin:8px 0'>The risk KL above is exact — check it with a calculator. The ambiguity values are illustrative likelihood-entropies.</p>";
+    });
+    $("#g-reset").addEventListener("click", function () {
+      riskwin.value = ""; flip.value = ""; err.style.display = "none"; calc.classList.remove("show");
+      read.innerHTML = "Commit your two answers, then compute. The risk KL is worked out exactly; the ambiguities are the illustrative likelihood-entropies above.";
+    });
+  })();
+})();
+</script>
+</body>
+</html>
