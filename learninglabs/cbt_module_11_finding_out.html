@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 11 — The worth of finding out</title>
+<meta name="description" content="A mind doesn't only chase what it wants. It pays to resolve what it doesn't know — because information is an investment that lowers every future bill. This is the second half of choice: expected free energy = risk + ambiguity." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --world:#0e6e63; --mind:#8a6a10;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#8a5a12; --warn-soft:#f4ead3;
+      --world:#7fc6bb; --mind:#d9b56a;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+  blockquote{margin:14px 0; padding:2px 0 2px 16px; border-left:3px solid var(--line2); color:var(--ink); font-style:italic}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button:disabled{opacity:.45; cursor:not-allowed}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  input[type="range"]{width:min(300px,100%); accent-color:var(--mind); vertical-align:middle}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  /* two tied options + cold-nights counter (§2–§3) */
+  .pref{font-size:14.5px; background:var(--accent-soft); border:1px solid var(--line2); border-left:4px solid var(--accent); border-radius:10px; padding:11px 14px; margin:2px 0 14px}
+  .pref b{color:var(--accent-ink)}
+  .acts{display:flex; gap:12px; flex-wrap:wrap}
+  .act{flex:1 1 240px; border:1px solid var(--line2); border-radius:10px; padding:12px 14px; background:var(--panel2)}
+  .act.chosen{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)}
+  .act .name{font-size:15px; font-weight:700; margin-bottom:4px}
+  .act .spec{font-size:13px; color:var(--muted); margin-top:4px}
+  .act .spec .res{font-weight:700}
+  .act .spec .res.none{color:var(--bad-ink)} .act .spec .res.gain{color:var(--ok-ink)}
+  .nights{margin-top:16px; border-top:1px dashed var(--line2); padding-top:12px}
+  .ntot{display:flex; justify-content:space-between; gap:12px; font-size:14px; margin-top:8px}
+  .ntot b{font-weight:700}
+  .gapbar{height:16px; border-radius:999px; background:var(--panel); border:1px solid var(--line2); overflow:hidden; margin-top:4px}
+  .gapfill{height:100%; background:var(--bad); width:0%; transition:width .3s ease}
+  .gapfill.on{background:var(--ok)} .gapfill.warn{background:var(--warn)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 11 · Part II</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>The worth of finding out</h1>
+    <p class="lede">
+      A mind doesn’t only chase what it <em>wants.</em> It pays to resolve what it doesn’t <em>know</em> — because
+      information is an <strong>investment</strong> that lowers every future bill. This is the second half of how a mind
+      chooses, and the half that completes the engine of behaviour: <strong>expected free energy = risk + ambiguity.</strong>
+    </p>
+    <p class="legend">
+      Five doors; the plain line runs straight through — take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>,
+      <b>▸ Go deeper</b>, <b>⬡ See it in UNI</b>. Runs locally — no account, no network — adapts to light and dark;
+      honours reduced motion.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves — and in Part II it is stricter.</b> “Expected free energy,” “ambiguity,”
+      “information gain,” “boredom” are <strong>functional quantities</strong>: a model’s expected reduction in its own
+      uncertainty, and the cost when that reduction is starved. For <em>you</em> we use felt words — curiosity, the itch
+      to find out. For UNI we use functional ones. Neither is curiosity or desire. Part I’s free energy was proven and
+      sealed (Gate&nbsp;F0), but Part II’s machinery — expected free energy, risk <em>plus</em> ambiguity, the
+      <span class="k">G</span> term — is <strong>not yet built or sealed</strong> in the organism; it needs its own
+      lab-team verdict. So the math here is standard active inference you can reason through by hand, but every claim
+      about the organism is <strong>“built to,” never “does”</strong> — held open until its gate proves it.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, the cook and the two jars — cold</h2>
+    <div class="prose">
+      <p>
+        No peeking at Module 10. A cook tastes a sauce that’s not quite right and reaches — without trying either yet —
+        for one of two jars.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="recall">
+      <div class="tool-head">
+        <h3>How does the cook choose — from memory</h3>
+        <p class="why">Reconstruct two things from Module 10 before you check: how the cook ranks the jars without tasting, and the name of the thing being scored. Commit in your own words first.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="rc11-mem">How the cook ranks the jars, and what the scored quantity is called</label>
+        <textarea id="rc11-mem" placeholder="From memory: how does the cook rank two jars WITHOUT tasting — and what is that score called?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field">
+          <label for="rc11-rank">Before tasting, the cook ranks the jars by…</label>
+          <select id="rc11-rank">
+            <option value="">—</option>
+            <option value="taste">tasting a little of each one first</option>
+            <option value="imagine">imagining each jar’s effect (running the model forward) and ranking the result</option>
+            <option value="cheap">whichever jar is cheaper</option>
+            <option value="random">flipping a coin</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="rc11-name">That distance — imagined result vs. wanted result — is called…</label>
+          <select id="rc11-name">
+            <option value="">—</option>
+            <option value="risk">risk (the pragmatic half of expected free energy)</option>
+            <option value="ambiguity">ambiguity</option>
+            <option value="surprise">surprise</option>
+            <option value="precision">precision</option>
+          </select>
+          <button type="button" id="rc11-go" class="primary">Check</button>
+        </div>
+        <div class="err" id="rc11-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="rc11-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back — <em>imagine</em>, then score by <em>risk</em> — here is the half it leaves out.</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · The blind spot</div>
+    <h2>Two options, dead equal</h2>
+    <div class="prose">
+      <p>
+        Picture two options that are <strong>dead equal</strong> on everything Module 10 can see — your model says
+        they’re <strong>equally</strong> likely to warm you, and <strong>equally</strong> little effort to reach. By the
+        rule “score by risk (and cost),” they’re a tie. You’d flip a coin.
+      </p>
+    </div>
+    <details class="box try" open>
+      <summary>✎ Try it — is a coin-flip really the best? <span class="tag">commit yes/no</span></summary>
+      <div class="box-body">
+        Before reading on: is a coin-flip really the best a mind can do here? Is there <em>anything</em> that could make
+        one of two equally-warming, equally-easy options the smarter pick — something that isn’t about how warm it makes
+        you or how little it costs? Commit a yes/no, and if yes, a guess at what. The next section is that thing.
+      </div>
+    </details>
+  </section>
+
+  <!-- 2–3 -->
+  <section id="s2">
+    <div class="sec-kicker">2–3 · One teaches you; one doesn’t</div>
+    <h2>The blanket and the strange stove</h2>
+    <div class="prose">
+      <p>
+        You’re cold in an unfamiliar cabin. Two options, truly tied on risk and effort: the <strong>blanket</strong> you
+        can already see, and the <strong>knob on a strange stove.</strong> Same expected warmth, same reach. But they are
+        <em>not</em> the same, and you feel it. Turn the stove-knob and — warm or not — you <strong>find something
+        out:</strong> does this cabin have working heat? The blanket tells you nothing new. The stove
+        <strong>resolves an uncertainty</strong> the blanket leaves sitting there.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="explore">
+      <div class="tool-head">
+        <h3>Two options, tied on everything Module 10 can see</h3>
+        <p class="why">Blanket vs a strange stove-knob, pinned EQUAL on risk and effort — so a mind scoring by outcome alone must flip a coin. Pick one, then watch what separates them, and what it’s worth over many cold nights. A reveal of a mechanism (information lowers future cost), not a plotted curve.</p>
+      </div>
+      <div class="tool-body">
+        <div class="pref">
+          Scored by Module 10 alone — <b>risk: equal</b>, <b>effort: equal.</b> Outcome-only verdict: <b>a tie.</b>
+          So is a coin-flip really the best a mind can do?
+        </div>
+
+        <div class="acts">
+          <div class="act" id="act-blanket">
+            <div class="name">Reach for the blanket</div>
+            <div class="spec">risk: equal · effort: equal</div>
+            <div class="spec">resolves: <span class="res" id="res-blanket">— pick to reveal —</span></div>
+          </div>
+          <div class="act" id="act-stove">
+            <div class="name">Turn the strange stove-knob</div>
+            <div class="spec">risk: equal · effort: equal</div>
+            <div class="spec">resolves: <span class="res" id="res-stove">— pick to reveal —</span></div>
+          </div>
+        </div>
+
+        <div class="btnrow" style="margin-top:12px">
+          <button type="button" id="pick-blanket">Reach for the blanket</button>
+          <button type="button" id="pick-stove">Turn the strange stove-knob</button>
+        </div>
+        <div class="readout" id="ex-read" aria-live="polite">By risk and effort they tie. Commit a pick — which would you reach for?</div>
+
+        <div class="nights" id="nights" style="display:none">
+          <div class="steplabel">Now live it out — one cold night after another</div>
+          <p class="hint" style="margin-top:2px">Lower is better: it’s the <em>cumulative cost</em> of being cold. One mind turned the knob once and now <em>knows</em>; the other only ever guesses.</p>
+          <div class="ntot"><span><b>The mind that found out</b> (knows the stove works)</span><span><b id="n-stove-tot">0</b></span></div>
+          <div class="gapbar"><div class="gapfill on" id="n-stove-bar"></div></div>
+          <div class="ntot"><span><b>The mind that only guessed</b> (never learned)</span><span><b id="n-blanket-tot">0</b></span></div>
+          <div class="gapbar"><div class="gapfill" id="n-blanket-bar"></div></div>
+          <div class="btnrow" style="margin-top:12px">
+            <button type="button" id="n-step" class="primary">Live another cold night →</button>
+            <button type="button" id="n-reset" class="ghost">Reset the nights</button>
+          </div>
+          <div class="hint" id="n-note">Night 0. The knob-turner pays a one-time cost to find out; the guesser pays a little every night, forever.</div>
+        </div>
+      </div>
+    </div>
+
+    <details class="box picture" open>
+      <summary>▶ Picture it — the thing that tells you something <span class="tag">kid</span></summary>
+      <div class="box-body">
+        A mind that scored <em>only</em> warmth-and-effort would never reach for the strange stove to find out. It would
+        never test the unfamiliar, never discover the fire heats the whole cabin better than any blanket. It would do the
+        known cheap thing forever — which is the <strong>dark room</strong> wearing a new mask. Creatures don’t do that.
+        Something makes them reach for the thing that <em>tells them something.</em>
+      </div>
+    </details>
+  </section>
+
+  <!-- 3b: investment -->
+  <section id="s3">
+    <div class="sec-kicker">3 · Information is an investment</div>
+    <h2>Spend a little now, save a lot later</h2>
+    <div class="prose">
+      <p>
+        Turning the knob <strong>costs energy now</strong>, and its immediate payoff is uncertain. But if it resolves
+        “does this cabin have heat?”, then <strong>every future cold moment gets cheaper</strong> — you’ll never again
+        have to guess. You spend a little now to save a lot later: <strong>an investment, borrowing energy from the
+        future against the returns the prediction yields across many cycles.</strong>
+      </p>
+      <p>
+        That is <strong>epistemic value</strong> — the worth of <em>finding out</em> — and it is not a metaphor.
+        Information is worth <strong>exactly the future free energy it saves you.</strong> A mind pays to learn because
+        learning <strong>lowers the bill forever after.</strong> So the full score of an action has two halves, and you
+        have now built both:
+      </p>
+      <blockquote>
+        <strong>Expected free energy <span class="k">G</span> = risk + ambiguity.</strong><br />
+        — <strong>risk</strong> (Module 10): will the future land where I <em>want</em>? — the pragmatic half.<br />
+        — <strong>ambiguity</strong> (this module): will it resolve what I don’t <em>know</em>? — the epistemic half.
+      </blockquote>
+      <p>
+        A mind minimises <span class="k">G</span> — it picks the action whose imagined future best <strong>gets what it
+        wants</strong> <em>and</em> <strong>tells it what it needs to know.</strong>
+      </p>
+    </div>
+    <details class="box deeper">
+      <summary>▸ Go deeper — the epistemic term is expected information gain <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        The epistemic term is <strong>expected information gain</strong> — how much an action is expected to shrink your
+        uncertainty about the hidden state (equivalently, the <strong>ambiguity</strong> of the observations it will
+        bring). Minimising <span class="k">G</span> <em>maximises</em> information gain while <em>minimising</em> risk.
+        Information gain is worth precisely the expected free energy it removes from future inference — which is why
+        “spend now to save later” is literally the arithmetic, not an analogy. (The exact form of
+        <span class="k">G = risk + ambiguity</span> is Module 14.)
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Your whole self, over the whole future</div>
+    <h2>You score against your whole stack of priors</h2>
+    <div class="prose">
+      <p>
+        Two “equally warming” options usually <strong>aren’t</strong> equal once you look further out. A blanket warms —
+        but it <strong>tethers</strong> you, pins your mobility; and sit under it long enough and you’d <strong>get
+        bored.</strong> So its future violates <em>other</em> things you’re built to want — to move, to be stimulated —
+        even while it satisfies “warm.” You don’t score an action against <em>one</em> preference. You score it against
+        your <strong>whole stack of priors</strong>, rolled over the <strong>whole future:</strong> warm, mobile, fed,
+        stimulated, safe — all of it, weighed together.
+      </p>
+      <p>
+        And notice what <strong>boredom</strong> turns out to be: the felt alarm of an <strong>unmet epistemic
+        prior</strong> — understimulation is its own kind of surprise. The drive to find out isn’t a luxury a mind adds
+        on top; it’s woven into the same stack that keeps it warm and whole.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI — held open <span class="tag">design · not a sealed capability</span></summary>
+      <div class="box-body">
+        The organism is being <strong>built to</strong> score its actions by <em>both</em> halves — to seek the
+        sensations its priors prefer <em>and</em> to resolve what it cannot yet predict — against the full set of priors
+        it is born carrying. In functional terms: a number its dynamics would lower, never curiosity or boredom as felt.
+        <strong>Honesty gate.</strong> Unlike Part I’s free energy, sealed at Gate&nbsp;F0, DDNA’s expected-free-energy
+        term — risk-plus-ambiguity and all — is <strong>not yet built or sealed</strong>; it needs its own lab-team
+        verdict. This box is the standard theory and the design, <strong>held open</strong> — never “the organism
+        explores today.” “Built to,” never “does.”
+      </div>
+    </details>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="sec-kicker">5 · Where this goes next</div>
+    <h2>Two faces of one free energy</h2>
+    <div class="prose">
+      <p>
+        The engine of choice is complete: a mind scores each action by the <strong>expected free energy</strong> of its
+        imagined future — <strong>risk</strong> (get what I want) plus <strong>ambiguity</strong> (find out what I don’t)
+        — against its whole stack of priors, and picks the lowest. Explore and exploit, want and wonder, all in one
+        number.
+      </p>
+      <p>
+        And a question has been quietly answered that we never stopped to notice: you have been computing <em>free
+        energy</em> twice over — once in Part I, over beliefs about <strong>now</strong>, and now over actions into the
+        <strong>future.</strong> Are those two different things, or the same thing wearing two faces? That’s
+        <strong>Module 12</strong>, and the answer unifies the whole book.
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You found the second half of choice from your own mouth — “spend energy now to save it later,” “I’d get bored,
+        tethered” — and in doing so you priced <em>curiosity</em> in the only currency that’s honest: the future free
+        energy it saves. You didn’t learn that minds are curious; you derived <em>why</em> a thing that wants to stay
+        warm must also want to find out. (For UNI, the same is a model <strong>built to</strong> value resolving what it
+        can’t predict — never shown to feel curious or bored. Expected free energy is <strong>not yet built or
+        sealed</strong>; the box stays held open.)
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 11 — The worth of finding out.</strong> The second half of action-selection, built on the
+      Active-Inference Pedagogy spec: a cold-retrieval of Module 10 (the cook / risk over imagined futures), then a
+      falsification tool — the blanket and the strange stove, tied on risk and effort, where only the stove resolves an
+      uncertainty, and a cold-nights counter shows information paying for itself (spend now, save later). No plotted
+      curve: the reveal is a mechanism — information lowers future cost. Self-contained — no network, no account, CPU
+      only; adapts to light and dark; honours reduced motion.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 11. Part II’s honesty fence is stricter: expected free energy (the
+      <span class="k">G</span> term, risk + ambiguity) is <strong>not yet built or sealed</strong> in the organism, so
+      every “See it in UNI” box is held open — “built to,” never “does.” The math (epistemic value = expected
+      information gain; <span class="k">G = risk + ambiguity</span>, exact form in Module 14) is standard active
+      inference, computable and teachable. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  // ── §0 COLD RETRIEVAL — the cook and the two jars ─────────────────────────────────────────────
+  (function () {
+    var root = $("#recall"); if (!root) return;
+    var mem = $("#rc11-mem"), rank = $("#rc11-rank"), name = $("#rc11-name"), err = $("#rc11-err"), out = $("#rc11-out");
+    $("#rc11-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — in your own words, before you pin it down."; return; }
+      if (!rank.value || !name.value) { err.style.display = "block"; err.textContent = "Answer both — how the cook ranks, and what the score is called — before you check."; return; }
+      err.style.display = "none";
+      var okRank = rank.value === "imagine";   // rank by imagining each result (model forward)
+      var okName = name.value === "risk";       // the distance is risk
+      var hits = (okRank ? 1 : 0) + (okName ? 1 : 0);
+      out.className = "ex-answer show " + (hits === 2 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 2 ? "✓ Both right." : "Close — check each one.") + "</strong></p>" +
+        "<p style='margin:8px 0'>The cook hasn’t tasted either jar, so the cook <strong>imagines</strong> each one’s effect — running a model of flavour forward — and ranks by the imagined result. That distance, between the <em>imagined</em> result and the result <em>wanted</em>, is <strong>risk</strong>: the pragmatic half of expected free energy, from Module 10.</p>" +
+        "<p style='margin:8px 0'>Now the half it leaves out: what if two jars were <em>equally</em> good by risk — would the cook truly not care which?</p>";
+    });
+  })();
+
+  // ── §2–3 STOVE vs BLANKET — falsify "score by outcome alone", then price information ───────────
+  (function () {
+    var root = $("#explore"); if (!root) return;
+    var resB = $("#res-blanket"), resS = $("#res-stove"), read = $("#ex-read"),
+        nights = $("#nights"), nStep = $("#n-step"), nReset = $("#n-reset"), nNote = $("#n-note"),
+        sTot = $("#n-stove-tot"), bTot = $("#n-blanket-tot"), sBar = $("#n-stove-bar"), bBar = $("#n-blanket-bar"),
+        actB = $("#act-blanket"), actS = $("#act-stove");
+    var INFO = 4, KNOWN = 1, GUESS = 3, MAXN = 20;  // found-out = INFO + KNOWN*n ; guessed = GUESS*n ; breakeven n=2
+    var picked = null, n = 0;
+
+    function revealResolves() {
+      resB.textContent = "nothing new — you already know what a blanket does";
+      resB.className = "res none";
+      resS.textContent = "does this cabin have working heat?";
+      resS.className = "res gain";
+    }
+    function renderNights() {
+      var s = INFO + KNOWN * n, b = GUESS * n, max = Math.max(s, b, 1);
+      sTot.textContent = s; bTot.textContent = b;
+      sBar.style.width = Math.round(s / max * 100) + "%";
+      bBar.style.width = Math.round(b / max * 100) + "%";
+      // the guesser's bar is the costly one once it pulls ahead
+      bBar.className = "gapfill" + (b > s ? "" : " warn");
+      sBar.className = "gapfill on";
+      if (n === 0) nNote.textContent = "Night 0. The knob-turner pays a one-time cost to find out; the guesser pays a little every night, forever.";
+      else if (s > b) nNote.innerHTML = "Night " + n + ". The knob-turner is <strong>still repaying</strong> the cost of finding out — behind, for now.";
+      else if (s === b) nNote.innerHTML = "Night " + n + ". <strong>Even</strong> — the information has just paid for itself. Every night after this, it’s pure return.";
+      else nNote.innerHTML = "Night " + n + ". The mind that <strong>found out is ahead</strong>, and pulls further ahead every night. That gap is what information was worth.";
+    }
+    function pick(which) {
+      picked = which;
+      revealResolves();
+      actB.classList.toggle("chosen", which === "blanket");
+      actS.classList.toggle("chosen", which === "stove");
+      nights.style.display = "block";
+      n = 0; renderNights();
+      var head = which === "stove"
+        ? "<strong>You reached for the thing that tells you something.</strong> "
+        : "<strong>The outcome-only pick.</strong> It’s fine for tonight — but watch what it costs over a life. ";
+      read.innerHTML = "<p style='margin:2px 0'>" + head +
+        "By risk and effort the two tie. What breaks the tie is <strong>epistemic value</strong> — only the stove " +
+        "<em>resolves an uncertainty</em> (“does this cabin have heat?”). That is the second half of the score: " +
+        "<strong>expected free energy = risk + ambiguity.</strong></p>" +
+        "<p style='margin:8px 0'>Now live it out below — a one-time cost to find out, against a little paid every night " +
+        "by the mind that never learned. Watch where they cross.</p>";
+    }
+    $("#pick-blanket").addEventListener("click", function () { pick("blanket"); });
+    $("#pick-stove").addEventListener("click", function () { pick("stove"); });
+    nStep.addEventListener("click", function () { if (n < MAXN) { n++; renderNights(); } if (n >= MAXN) nStep.disabled = true; });
+    nReset.addEventListener("click", function () { n = 0; nStep.disabled = false; renderNights(); });
+  })();
+})();
+</script>
+</body>
+</html>
