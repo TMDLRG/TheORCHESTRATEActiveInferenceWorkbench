@@ -320,7 +320,8 @@
       <p>
         <span class="k">G = risk + ambiguity</span>, minimised — and you’ve seen the epistemic half overturn a decision
         reward alone would have gotten wrong. Explore/exploit isn’t a rule bolted on; it’s <span class="k">0.60</span>
-        versus <span class="k">0.36</span>, checkable by hand.
+        versus <span class="k">0.36</span> — the risk exact by hand, the ambiguity (and so the totals) read from each
+        action’s likelihood, illustrative here.
       </p>
       <p>
         One thing we’ve assumed: that a mind, having scored its options, simply takes the lowest. But <em>how hard</em>
@@ -349,8 +350,8 @@
     <div class="prose">
       <p>
         You took the most abstract idea in the book — that a mind values <em>finding out</em> — and you
-        <strong>computed</strong> it: <span class="k">0.60</span> against <span class="k">0.36</span>, a decision
-        flipped by a number you worked out yourself. The felt thing (“I’d better go find out”) and the arithmetic turned
+        <strong>made it a computation</strong>: the risk exact by your own hand, the epistemic half flipping the choice,
+        <span class="k">0.60</span> against <span class="k">0.36</span>. The felt thing (“I’d better go find out”) and the arithmetic turned
         out to be the same thing, and you got to check it.
       </p>
     </div>
@@ -449,7 +450,7 @@
         " &lt; " + f2(riskB) + ") — it’s perfect on getting what you want. But by <b>G = risk + ambiguity</b> the " +
         "<b>stove</b> wins (" + f2(gB) + " &lt; " + f2(gA) + ") — the reward-perfect action lost because it would leave " +
         "you <em>blind</em>, and the worse-on-reward action won because it would leave you <em>knowing.</em> That is " +
-        "exploration, falling out of one number you computed by hand.";
+        "exploration — the risk by your own hand, the ambiguity read from each action’s likelihood.";
       calc.classList.add("show");
     }
     $("#g-go").addEventListener("click", function () {
