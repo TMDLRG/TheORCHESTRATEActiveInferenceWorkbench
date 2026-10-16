@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CBT Module 10 — Scoring an unlived future</title>
+<meta name="description" content="To choose an action you have never taken, you imagine the future it leads to and score that. The scoring is Part I's free energy rolled forward — expected free energy. This module builds its first half: risk, the distance between the future you'd predict and the future you prefer." />
+<style>
+  :root{
+    --bg:#f6f3ec; --panel:#fffdf8; --panel2:#ece6d9; --panel3:#f1ebdd;
+    --ink:#20242a; --muted:#595347; --line:#d8d0bf; --line2:#cabfa9;
+    --accent:#0e6e63; --accent-ink:#0a544b; --accent-soft:#e2efec;
+    --gold:#8a6a10; --gold-soft:#f3ead0;
+    --ok:#1d6b34; --ok-soft:#e4f0e2; --ok-ink:#145326;
+    --bad:#a8341f; --bad-soft:#f4e1db; --bad-ink:#86230f;
+    --warn:#8a5a12; --warn-soft:#f4ead3;
+    --world:#0e6e63; --mind:#8a6a10;
+    --on-accent:#ffffff;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,25,15,.05), 0 8px 24px rgba(30,25,15,.06);
+    --mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15120f; --panel:#211d19; --panel2:#2a2520; --panel3:#241f1a;
+      --ink:#f1ebe0; --muted:#c3b9a8; --line:#3d342c; --line2:#4a4036;
+      --accent:#7fc6bb; --accent-ink:#a8dad1; --accent-soft:#17251f;
+      --gold:#d9b56a; --gold-soft:#2b2417;
+      --ok:#8fce86; --ok-soft:#1b271b; --ok-ink:#a6dc9c;
+      --bad:#e89580; --bad-soft:#2d1d18; --bad-ink:#f0ab97;
+      --warn:#8a5a12; --warn-soft:#f4ead3;
+      --world:#7fc6bb; --mind:#d9b56a;
+      --on-accent:#0c1512;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-padding-top:16px}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:17px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:22px 20px 96px}
+  a{color:var(--accent-ink); text-underline-offset:2px}
+  a:hover{color:var(--accent)}
+  :focus-visible{outline:3px solid var(--accent); outline-offset:2px; border-radius:6px}
+
+  .topnav{display:flex; justify-content:space-between; align-items:center; gap:12px; font-size:14px; margin-bottom:14px}
+  .topnav a{font-weight:600; text-decoration:none}
+  .badge{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; color:var(--on-accent); background:var(--accent); border-radius:999px; padding:5px 11px;}
+  .masthead{border-bottom:2px solid var(--line); padding-bottom:20px; margin-bottom:8px}
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin:12px 0 10px; letter-spacing:-.01em}
+  .lede{font-size:19px; color:var(--ink); margin:0 0 14px; max-width:68ch}
+  .fence{font-size:13.5px; color:var(--muted); background:var(--panel2); border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:10px; padding:10px 14px; margin:12px 0 0;}
+  .legend{font-size:14px; color:var(--muted); margin:16px 0 0; max-width:70ch}
+  .legend b{color:var(--ink)}
+
+  section{margin-top:40px}
+  h2{font-size:26px; line-height:1.2; margin:0 0 4px; padding-top:18px; border-top:1px solid var(--line)}
+  .sec-kicker{font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:2px}
+  h3{font-size:19px; margin:24px 0 8px}
+  p{margin:14px 0}
+  .prose{max-width:72ch}
+  ul,ol{max-width:70ch; padding-left:22px}
+  li{margin:6px 0}
+  code,.mono{font-family:var(--mono); font-size:.93em}
+  .k{font-family:var(--mono); background:var(--panel2); border:1px solid var(--line); border-radius:6px; padding:1px 6px; white-space:nowrap}
+  strong{color:var(--ink)}
+  blockquote{margin:14px 0; padding:2px 0 2px 16px; border-left:3px solid var(--line2); color:var(--ink); font-style:italic}
+
+  details.box{border:1px solid var(--line); border-radius:12px; margin:16px 0; background:var(--panel); box-shadow:var(--shadow); overflow:hidden; max-width:74ch}
+  details.box>summary{cursor:pointer; list-style:none; padding:12px 16px; font-weight:700; font-size:15px; display:flex; align-items:center; gap:10px; color:var(--ink);}
+  details.box>summary::-webkit-details-marker{display:none}
+  details.box>summary .tag{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700}
+  details.box>summary::after{content:"＋"; margin-left:auto; color:var(--muted); font-weight:700}
+  details.box[open]>summary::after{content:"－"}
+  details.box .box-body{padding:2px 16px 16px; border-top:1px solid var(--line); font-size:16px}
+  details.box.picture{border-color:var(--accent); background:var(--accent-soft)}
+  details.box.picture>summary{color:var(--accent-ink)}
+  details.box.try{border-color:var(--gold)}
+  details.box.try>summary{color:var(--gold)}
+  details.box.uni{border-left:4px solid var(--accent)}
+  details.box.deeper{background:var(--panel2)}
+
+  .tool{border:1px solid var(--line); border-radius:var(--radius); background:var(--panel); box-shadow:var(--shadow); margin:22px 0; overflow:hidden}
+  .tool.centerpiece{border-color:var(--accent); border-width:2px}
+  .tool-head{padding:14px 18px; background:var(--panel3); border-bottom:1px solid var(--line)}
+  .tool-head h3{margin:0; font-size:18px}
+  .tool-head .why{margin:4px 0 0; font-size:14px; color:var(--muted)}
+  .tool-body{padding:16px 18px}
+  .steplabel{font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+  .btnrow{display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 2px}
+  button{font:inherit; font-size:14px; font-weight:600; cursor:pointer; color:var(--ink); background:var(--panel2); border:1px solid var(--line2); border-radius:10px; padding:9px 13px; transition:filter .12s ease, background .12s ease;}
+  button:hover{filter:brightness(.97)}
+  button.primary{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button.ghost{background:transparent}
+  button[aria-pressed="true"]{background:var(--accent); color:var(--on-accent); border-color:var(--accent)}
+  button:disabled{opacity:.45; cursor:not-allowed}
+  label{font-size:14px; font-weight:600; display:inline-block}
+  select{font:inherit; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:8px; padding:7px 9px}
+  input[type="range"]{width:min(300px,100%); accent-color:var(--mind); vertical-align:middle}
+  .field{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:10px 0}
+  .readout{margin-top:12px; padding:12px 14px; background:var(--panel2); border:1px solid var(--line); border-radius:10px}
+  .err{color:var(--bad-ink); font-weight:600; font-size:14px; margin-top:8px}
+  .hint{color:var(--muted); font-size:14px; margin-top:8px}
+  textarea{font:inherit; width:100%; min-height:72px; color:var(--ink); background:var(--panel); border:1px solid var(--line2); border-radius:10px; padding:10px 12px; resize:vertical}
+  .ex-answer{margin-top:10px; padding:12px 14px; border-radius:10px; border:1px solid var(--line); background:var(--panel2); display:none}
+  .ex-answer.show{display:block}
+  .ex-answer.correct{border-color:var(--ok); background:var(--ok-soft)}
+  .ex-answer.close{border-color:var(--warn); background:var(--warn-soft)}
+
+  /* preference banner + imagine-then-rank cards (§2–§3) */
+  .pref{font-size:14.5px; background:var(--accent-soft); border:1px solid var(--line2); border-left:4px solid var(--accent); border-radius:10px; padding:11px 14px; margin:2px 0 14px}
+  .pref b{color:var(--accent-ink)}
+  .acts{display:flex; flex-direction:column; gap:12px}
+  .act{border:1px solid var(--line2); border-radius:10px; padding:12px 14px; background:var(--panel2)}
+  .act .name{font-size:15px; font-weight:700; margin-bottom:4px}
+  .ending{display:none; margin:8px 0 2px; padding:9px 12px; background:var(--panel); border:1px dashed var(--line2); border-radius:8px; font-size:15px}
+  .ending.show{display:block}
+  .ending .film{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); font-weight:700; display:block; margin-bottom:2px}
+  .distwrap{margin-top:10px}
+  .gaplabels{display:flex; justify-content:space-between; gap:12px; font-size:12px; color:var(--muted); font-weight:600}
+  .gapbar{height:16px; border-radius:999px; background:var(--panel); border:1px solid var(--line2); overflow:hidden; margin-top:4px}
+  .gapfill{height:100%; background:var(--bad); width:0%; transition:width .3s ease}
+  .gapfill.near{background:var(--warn)} .gapfill.on{background:var(--ok)}
+
+  footer{margin-top:52px; border-top:1px solid var(--line); padding-top:18px; font-size:13.5px; color:var(--muted)}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0}
+
+  @media (max-width:640px){ body{font-size:16px} h1{font-size:28px} }
+  @media (prefers-reduced-motion: reduce){ *,*::before,*::after{transition-duration:.001ms !important; animation-duration:.001ms !important} html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav" aria-label="Lab navigation">
+    <a href="/labs/">← All labs</a>
+    <span class="badge">CBT · Module 10 · Part II</span>
+  </nav>
+
+  <header class="masthead">
+    <h1>Scoring an unlived future</h1>
+    <p class="lede">
+      To choose an action you have never taken, you do something quietly astonishing: you <strong>imagine</strong> the
+      future it would bring, and you <strong>score that</strong>. The scoring is Part I’s free energy, rolled forward
+      over a future you haven’t lived — it has a name, <strong>expected free energy</strong>. This module builds its
+      first half.
+    </p>
+    <p class="legend">
+      Five doors; the plain line runs straight through — take whichever fit:
+      <b>▶ Picture it</b>, <b>✎ Try it</b> (commit before the reveal), <b>✓ Check it yourself</b>,
+      <b>▸ Go deeper</b>, <b>⬡ See it in UNI</b>. Runs locally — no account, no network — adapts to light and dark;
+      honours reduced motion.
+    </p>
+    <p class="fence">
+      <b>The one fence that never moves — and in Part II it is stricter.</b> “Expected free energy,” “risk,”
+      “preference” are <strong>functional quantities</strong>: a model scoring imagined futures against the sensations
+      it is built to expect. For <em>you</em> we use felt words — you are a person choosing on a cold morning. For UNI
+      we use functional ones. Neither is awareness or desire. Part I’s free energy was proven and sealed (Gate&nbsp;F0),
+      but Part II’s machinery — expected free energy, the <span class="k">G</span> term — is
+      <strong>not yet built or sealed</strong> in the organism; it needs its own lab-team verdict. So the math here is
+      standard active inference you can compute by hand, but every claim about the organism is <strong>“built to,”
+      never “does”</strong> — held open until its gate proves it.
+    </p>
+  </header>
+
+  <!-- 0 -->
+  <section id="s0">
+    <div class="sec-kicker">0 · From memory</div>
+    <h2>First, the dog at the door — cold</h2>
+    <div class="prose">
+      <p>
+        No peeking at Module 9. A dog stands at the back door, stares at it, then at you, then back at the door. It
+        <em>wants out</em> — part of it already expects to be outside.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="recall">
+      <div class="tool-head">
+        <h3>What <em>is</em> the dog’s want — from memory</h3>
+        <p class="why">Reconstruct two things from Module 9 before you check: which engine a “want” belongs to, and what a want actually consists of, underneath. Commit in your own words first.</p>
+      </div>
+      <div class="tool-body">
+        <div class="steplabel">Step 1 · In your own words (commit first)</div>
+        <label class="sr-only" for="r10-mem">What the dog's want is, and which engine it belongs to</label>
+        <textarea id="r10-mem" placeholder="From memory: is the dog's 'want' perception or action — and what is a want, underneath?"></textarea>
+        <div class="steplabel" style="margin-top:14px">Step 2 · Pin it down</div>
+        <div class="field">
+          <label for="r10-eng">The dog’s “want” is which engine?</label>
+          <select id="r10-eng">
+            <option value="">—</option>
+            <option value="perception">perception — changing a belief to fit the world</option>
+            <option value="action">action — changing the world to fit a belief</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="r10-want">Underneath, a “want” is…</label>
+          <select id="r10-want">
+            <option value="">—</option>
+            <option value="feeling">a feeling of desire sitting on top of the mind</option>
+            <option value="prediction">a prediction it refuses to give up, reaching for the world</option>
+            <option value="measure">a readout of how cold or hungry it is right now</option>
+            <option value="reflex">a reflex the door automatically triggers</option>
+          </select>
+          <button type="button" id="r10-go" class="primary">Check</button>
+        </div>
+        <div class="err" id="r10-err" role="alert" style="display:none"></div>
+        <div class="ex-answer" id="r10-out" role="status"></div>
+      </div>
+    </div>
+    <p class="hint" style="max-width:72ch">If that came back, you’re ready for the real question: once a creature wants out, and there’s more than one way out, how does it <em>choose</em> — before it has felt any of them work?</p>
+  </section>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="sec-kicker">1 · The problem</div>
+    <h2>You have to score what hasn’t happened</h2>
+    <div class="prose">
+      <p>
+        You’re cold. On the table: a sweater, a lit fire across the room, a blanket, another person to sit close to.
+        Each is an <strong>action</strong>, and each leads to a <strong>future</strong> — but you are standing
+        <em>before</em> all of them. None has happened. You have no measured free energy for any of them, because free
+        energy needs a sensation, and you haven’t sensed these futures yet.
+      </p>
+      <p>
+        And yet you <em>will</em> pick one, in a second, without agonising. So you must be doing something with futures
+        you can’t measure. What?
+      </p>
+    </div>
+    <details class="box try" open>
+      <summary>✎ Try it — how do you pick? <span class="tag">say it first</span></summary>
+      <div class="box-body">
+        Before reading on — honestly, how <em>do</em> you pick? You’ve never stood in <em>this</em> exact cold with
+        <em>these</em> exact options. Where does your sense of “the sweater will work” even come from, if you haven’t
+        tried it here? Say it in your own words first; the next section names what you just described.
+      </div>
+    </details>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="sec-kicker">2 · The move</div>
+    <h2>You run your model forward</h2>
+    <div class="prose">
+      <p>
+        Here is the move — the one you make without noticing. You don’t try the options. You <strong>imagine</strong>
+        them. You take something you <em>do</em> know — a time a sweater warmed you, the feel of a fire — and you run
+        your <strong>model</strong> forward onto each option, predicting the future it would bring. The sweater →
+        <em>snug, warm, soon.</em> The fire → <em>warm, but I have to cross the cold room and wait.</em> You score each
+        unlived future by <strong>prediction</strong>, not by experience.
+      </p>
+      <p>
+        That’s the whole trick of choosing: <strong>you don’t need to live a future to weigh it — you need a model, and
+        you run it forward.</strong> A mind that couldn’t imagine couldn’t choose; it could only stumble into outcomes
+        and learn after. The power to score the unlived is the power to act <em>on purpose.</em>
+      </p>
+    </div>
+    <details class="box picture" open>
+      <summary>▶ Picture it — a little film of each option <span class="tag">kid</span></summary>
+      <div class="box-body">
+        Before you move a muscle, you run a little film of each option in your head and read how it ends. Not perfectly
+        — the film is your <em>model’s</em> guess, as good as the model is. But good enough to rank a sweater over a walk
+        across a cold room. Choosing is watching those films and picking the one that ends where you want to be.
+      </div>
+    </details>
+    <div class="prose">
+      <p>
+        This number — the free energy you <strong>expect</strong> in the future an action would bring, computed
+        <em>before</em> you act, from your model — has a name: <strong>expected free energy.</strong> It is Part I’s free
+        energy, rolled forward over a future you haven’t lived.
+      </p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="sec-kicker">3 · The first half</div>
+    <h2>Risk — does the future land where I want?</h2>
+    <div class="prose">
+      <p>
+        Now, <em>what</em> makes one imagined future better than another? Start with the obvious half — the one you
+        reach for first. A future is good if it <strong>ends where you want to be.</strong> You prefer “warm”; so an
+        action whose imagined future lands on <em>warm</em> is good, and one whose imagined future lands on
+        <em>still cold</em> is bad. The size of the mismatch between <strong>the future you’d predict</strong> and
+        <strong>the future you prefer</strong> is the cost of the action. It has a name: <strong>risk</strong> (or
+        pragmatic value). Low risk = the action’s imagined ending sits right on your goal.
+      </p>
+    </div>
+
+    <div class="tool centerpiece" id="rank">
+      <div class="tool-head">
+        <h3>Imagine each future, then rank by risk</h3>
+        <p class="why">Run the model forward on each action to reveal its imagined ending (the “film”). Then rank the three by RISK — how far each predicted ending sits from your preferred ending — and commit before you check. The reveal shows that distance; it is a distance scored against a preference, not a plotted curve.</p>
+      </div>
+      <div class="tool-body">
+        <div class="pref">
+          Preferred ending: <b>warm, now.</b> That’s your un-erasable “warm” prior from Module 9, written as a
+          probability over the sensations you’re built to expect. <b>Risk</b> is simply how far an imagined ending sits
+          from this.
+        </div>
+
+        <div class="acts">
+          <div class="act" id="act-sweater">
+            <div class="name">Pull on a sweater</div>
+            <div class="btnrow"><button type="button" class="ghost film-btn" data-act="sweater">▶ Run the model forward</button></div>
+            <div class="ending" id="end-sweater"><span class="film">Imagined ending</span><b>warm, dry, and soon</b> — you’re wearing it in a second.</div>
+            <div class="field"><label for="rank-sweater">Rank by risk:</label>
+              <select id="rank-sweater" class="rank-sel" data-act="sweater"><option value="">—</option><option value="1">1 · lowest risk (best)</option><option value="2">2 · middle</option><option value="3">3 · highest risk (worst)</option></select>
+            </div>
+            <div class="distwrap" id="dist-sweater" aria-hidden="true" style="display:none">
+              <div class="gaplabels"><span>distance from “warm, now”</span><span id="disttag-sweater"></span></div>
+              <div class="gapbar"><div class="gapfill" id="distfill-sweater"></div></div>
+            </div>
+          </div>
+
+          <div class="act" id="act-fire">
+            <div class="name">Cross the room to the lit fire</div>
+            <div class="btnrow"><button type="button" class="ghost film-btn" data-act="fire">▶ Run the model forward</button></div>
+            <div class="ending" id="end-fire"><span class="film">Imagined ending</span><b>warm in the end</b> — but a cold crossing first, then a wait while it does its work.</div>
+            <div class="field"><label for="rank-fire">Rank by risk:</label>
+              <select id="rank-fire" class="rank-sel" data-act="fire"><option value="">—</option><option value="1">1 · lowest risk (best)</option><option value="2">2 · middle</option><option value="3">3 · highest risk (worst)</option></select>
+            </div>
+            <div class="distwrap" id="dist-fire" aria-hidden="true" style="display:none">
+              <div class="gaplabels"><span>distance from “warm, now”</span><span id="disttag-fire"></span></div>
+              <div class="gapbar"><div class="gapfill" id="distfill-fire"></div></div>
+            </div>
+          </div>
+
+          <div class="act" id="act-nothing">
+            <div class="name">Do nothing</div>
+            <div class="btnrow"><button type="button" class="ghost film-btn" data-act="nothing">▶ Run the model forward</button></div>
+            <div class="ending" id="end-nothing"><span class="film">Imagined ending</span><b>still cold</b> — nothing changed.</div>
+            <div class="field"><label for="rank-nothing">Rank by risk:</label>
+              <select id="rank-nothing" class="rank-sel" data-act="nothing"><option value="">—</option><option value="1">1 · lowest risk (best)</option><option value="2">2 · middle</option><option value="3">3 · highest risk (worst)</option></select>
+            </div>
+            <div class="distwrap" id="dist-nothing" aria-hidden="true" style="display:none">
+              <div class="gaplabels"><span>distance from “warm, now”</span><span id="disttag-nothing"></span></div>
+              <div class="gapbar"><div class="gapfill" id="distfill-nothing"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btnrow" style="margin-top:14px">
+          <button type="button" id="rank-go" class="primary">Lock in my ranking &amp; check</button>
+          <button type="button" id="rank-reset" class="ghost">Reset</button>
+        </div>
+        <div class="err" id="rank-err" role="alert" style="display:none"></div>
+        <div class="readout" id="rank-out" aria-live="polite">Run each film, then give each action a different rank — 1 (lowest risk) to 3 (highest) — and check.</div>
+      </div>
+    </div>
+
+    <details class="box try" open>
+      <summary>✓ Check it yourself — the right order <span class="tag">verify by hand</span></summary>
+      <div class="box-body">
+        Lowest risk → <strong>sweater</strong> (imagined ending ≈ preferred ending). Then <strong>fire</strong> — same
+        destination, but the predicted path spends time still-cold, so its future is a worse match to “warm <em>now</em>.”
+        Worst → <strong>do nothing</strong> (predicted ending = still cold = maximal distance from preferred). You didn’t
+        try any of them; you scored each imagined ending against what you want. That’s pragmatic value — most of how you
+        choose, most of the time. (And Module 9’s effort folds in here: the <em>cost of reaching</em> an action — the
+        cold crossing — is part of its imagined future.)
+      </div>
+    </details>
+    <details class="box deeper">
+      <summary>▸ Go deeper — risk is a distance between distributions <span class="tag">derivation</span></summary>
+      <div class="box-body">
+        Pragmatic value is a distance between distributions: <strong>risk = KL( predicted outcomes ‖ preferred
+        outcomes )</strong>. Your “preferences” are themselves just a prior over observations you expect-to-encounter
+        (the un-erasable <span class="k">warm</span> prior from Module 9, written as a probability over sensations). So
+        “choose the low-risk action” is literally “choose the action whose predicted sensations are closest, in
+        free-energy terms, to the sensations you are built to expect.” Expected free energy is <span class="k">G</span>;
+        risk is its <em>first</em> term. The second term arrives next module.
+      </div>
+    </details>
+    <details class="box uni" open>
+      <summary>⬡ See it in UNI — held open <span class="tag">design · not a sealed capability</span></summary>
+      <div class="box-body">
+        The organism is being <strong>built to</strong> score the actions open to it by rolling its model forward and
+        comparing each predicted ending to the sensations its priors expect — pragmatic value, in functional terms: a
+        number a model computes, never a wish or a feeling.
+        <strong>Honesty gate.</strong> Unlike Part I’s free energy, sealed at Gate&nbsp;F0, expected free energy — the
+        <span class="k">G</span> term — is <strong>not yet built or sealed</strong> in the organism; a new free-energy
+        term needs its own lab-team verdict. This box describes the <strong>design and the standard theory, held
+        open</strong> — it is <em>not</em> a claim that the organism imagines, scores, or chooses anything today. “Built
+        to,” never “does.”
+      </div>
+    </details>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="sec-kicker">4 · Where this goes next</div>
+    <h2>The blind spot in “land me where I want”</h2>
+    <div class="prose">
+      <p>
+        You’ve built the first half of how a mind chooses. To pick an action you can’t yet feel, you
+        <strong>imagine</strong> the future it brings and score that imagined future by <strong>risk</strong> — how far
+        its predicted ending sits from the ending you want. That’s expected free energy’s pragmatic half, and it’s most
+        of ordinary choosing.
+      </p>
+      <p>
+        But “score by how likely it lands me where I want” has a blind spot — a second thing a mind weighs that isn’t
+        about the destination at all. You felt it in the dark room, in a single word:
+      </p>
+      <blockquote>the worth of <em>finding out.</em></blockquote>
+      <p>
+        That’s the second half, and it is <strong>Module 11.</strong>
+      </p>
+    </div>
+    <details class="box uni" open>
+      <summary>⬡ Notice what you just did <span class="tag">self-reference</span></summary>
+      <div class="box-body">
+        You ranked three actions you had <strong>not taken</strong>, confidently, and you were right — because you ran
+        your model forward and read the endings. That quiet act of imagining-then-scoring is the whole of deliberate
+        choice, and you did it on a cold morning without a single number; the numbers only <em>describe</em> it. (For
+        UNI, the same is a model <strong>built to</strong> score its options forward — never shown to want or to choose.
+        Expected free energy is <strong>not yet built or sealed</strong>; the box stays held open.)
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    <p>
+      <strong>CBT Module 10 — Scoring an unlived future.</strong> The first half of action-selection, built on the
+      Active-Inference Pedagogy spec: a cold-retrieval of Module 9 (the dog / want-as-held-prediction), then a
+      reveal tool where you run your model forward onto three actions, read each imagined ending, and rank them by
+      <em>risk</em> — the distance between a predicted ending and the ending you prefer. No plotted curve: the reveal
+      shows a distance scored against a preference. Self-contained — no network, no account, CPU only; adapts to light
+      and dark; honours reduced motion.
+    </p>
+    <p>
+      Lesson text from <em>The UNI Book</em>, Lesson 10. Part II’s honesty fence is stricter: expected free energy
+      (the <span class="k">G</span> term) is <strong>not yet built or sealed</strong> in the organism, so every “See it
+      in UNI” box is held open — “built to,” never “does.” The math (risk = KL of predicted against preferred
+      outcomes) is standard active inference, computable and teachable. No DDNA runtime source is reproduced here.
+    </p>
+  </footer>
+
+</div>
+
+<script>
+"use strict";
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  // ── §0 COLD RETRIEVAL — what a "want" is, from memory ──────────────────────────────────────────
+  (function () {
+    var root = $("#recall"); if (!root) return;
+    var mem = $("#r10-mem"), eng = $("#r10-eng"), want = $("#r10-want"), err = $("#r10-err"), out = $("#r10-out");
+    $("#r10-go").addEventListener("click", function () {
+      if (mem.value.trim().length < 10) { err.style.display = "block"; err.textContent = "Write your reconstruction first — in your own words, before you pin it down."; return; }
+      if (!eng.value || !want.value) { err.style.display = "block"; err.textContent = "Answer both — which engine, and what a want is underneath — before you check."; return; }
+      err.style.display = "none";
+      var okEng = eng.value === "action";          // want is action: it changes the world
+      var okWant = want.value === "prediction";    // a want is a prediction it won't surrender
+      var hits = (okEng ? 1 : 0) + (okWant ? 1 : 0);
+      out.className = "ex-answer show " + (hits === 2 ? "correct" : "close");
+      out.innerHTML = "<p style='margin:2px 0'><strong>" + (hits === 2 ? "✓ Both right." : "Close — check the pairing.") + "</strong></p>" +
+        "<p style='margin:8px 0'>The dog’s “want” is <strong>action</strong>: it can’t re-believe its way out of wanting out, so it must change the world — get the door opened. And underneath, a want <em>is</em> a <strong>prediction it refuses to give up</strong> (“I’m outside”), reaching for the world — a belief it will rebuild the world to satisfy rather than surrender. Not a feeling on top of the mind; the held prediction <em>is</em> the want.</p>" +
+        "<p style='margin:8px 0'>So now the real question: once it wants out and there’s more than one way out, how does it <strong>choose</strong> — before it has felt any of them work?</p>";
+    });
+  })();
+
+  // ── §2–3 IMAGINE-THEN-RANK — reveal risk as a distance, never a curve ──────────────────────────
+  (function () {
+    var root = $("#rank"); if (!root) return;
+    var ACTS = {
+      sweater: { label: "sweater", correct: 1, dist: 10,  cls: "on",   tag: "on target" },
+      fire:    { label: "fire",    correct: 2, dist: 58,  cls: "near", tag: "near — but the path spends time still-cold" },
+      nothing: { label: "do nothing", correct: 3, dist: 100, cls: "",  tag: "far — maximal distance from your goal" }
+    };
+    var order = ["sweater", "fire", "nothing"];
+    var err = $("#rank-err"), out = $("#rank-out");
+
+    // "Run the model forward" reveals an imagined ending — the mechanism, available before you score.
+    root.querySelectorAll(".film-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var a = b.getAttribute("data-act");
+        var e = $("#end-" + a); if (e) e.classList.add("show");
+        b.setAttribute("aria-pressed", "true"); b.textContent = "▶ Ran — imagined ending shown";
+        b.disabled = true;
+      });
+    });
+
+    function showDistance(a) {
+      var d = ACTS[a];
+      var wrap = $("#dist-" + a); if (!wrap) return;
+      wrap.style.display = "block";
+      var fill = $("#distfill-" + a); fill.className = "gapfill " + d.cls; fill.style.width = d.dist + "%";
+      $("#disttag-" + a).textContent = d.tag;
+      var e = $("#end-" + a); if (e) e.classList.add("show");
+    }
+
+    $("#rank-go").addEventListener("click", function () {
+      var chosen = {}; var vals = [];
+      for (var i = 0; i < order.length; i++) {
+        var v = $("#rank-" + order[i]).value;
+        if (!v) { err.style.display = "block"; err.textContent = "Rank all three before you check."; return; }
+        chosen[order[i]] = +v; vals.push(+v);
+      }
+      // must be a permutation of 1,2,3
+      var sorted = vals.slice().sort().join("");
+      if (sorted !== "123") { err.style.display = "block"; err.textContent = "Give each action a different rank — one 1, one 2, one 3."; return; }
+      err.style.display = "none";
+
+      // reveal every distance (scored result), and name risk
+      var right = 0;
+      for (var j = 0; j < order.length; j++) {
+        showDistance(order[j]);
+        if (chosen[order[j]] === ACTS[order[j]].correct) right++;
+      }
+      var exact = right === 3;
+      out.className = "readout";
+      var head = exact
+        ? "<strong>✓ You ranked them by risk — without living any of them.</strong>"
+        : "<strong>You placed " + right + " of 3 in the right risk order.</strong>";
+      out.innerHTML =
+        "<p style='margin:2px 0'>" + head + "</p>" +
+        "<p style='margin:8px 0'>Lowest risk → <strong>sweater</strong> (imagined ending sits right on “warm, now”). " +
+        "Then <strong>fire</strong> — same destination, but the predicted path spends time still-cold, a worse match to " +
+        "“warm <em>now</em>.” Worst → <strong>do nothing</strong> (predicted ending = still cold = maximal distance). " +
+        "<strong>Risk</strong> is exactly that distance — between the future you’d <em>predict</em> and the future you " +
+        "<em>prefer</em>. You scored three futures you never lived, by prediction, not experience.</p>" +
+        "<p style='margin:8px 0'>That is expected free energy’s pragmatic half. The bars show the <em>distance</em> to " +
+        "your preferred ending — a score, revealed, not a curve. One more thing a mind weighs isn’t about the " +
+        "destination at all; that’s Module 11.</p>";
+    });
+
+    $("#rank-reset").addEventListener("click", function () {
+      err.style.display = "none";
+      for (var i = 0; i < order.length; i++) {
+        var a = order[i];
+        $("#rank-" + a).value = "";
+        var e = $("#end-" + a); if (e) e.classList.remove("show");
+        var w = $("#dist-" + a); if (w) w.style.display = "none";
+        var fill = $("#distfill-" + a); if (fill) { fill.style.width = "0%"; fill.className = "gapfill"; }
+      }
+      root.querySelectorAll(".film-btn").forEach(function (b) {
+        b.disabled = false; b.removeAttribute("aria-pressed"); b.textContent = "▶ Run the model forward";
+      });
+      out.className = "readout";
+      out.innerHTML = "Run each film, then give each action a different rank — 1 (lowest risk) to 3 (highest) — and check.";
+    });
+  })();
+})();
+</script>
+</body>
+</html>
